@@ -1,0 +1,103 @@
+/* ============================================================
+   DialX — Semantic typography roles
+   ------------------------------------------------------------
+   Same shape as EmpathyLab's role list: display, h1, h2, h3,
+   h4, eyebrow, lead, body, small, meta, quote. No extras.
+
+   Tiempos Headline carries display, h1, h2, quote.
+   Söhne carries h3, h4, body, lead, ui, eyebrows, meta.
+   Italic is reserved for editorial emphasis — never for inline
+   stress in body copy.
+   ============================================================ */
+
+.dx-display {
+  font-family: var(--dx-font-serif);
+  font-size: var(--dx-text-6xl);
+  line-height: var(--dx-lh-tight);
+  letter-spacing: var(--dx-track-tight);
+  font-weight: 400;
+  color: var(--dx-fg-1);
+  text-wrap: balance;
+}
+.dx-h1 {
+  font-family: var(--dx-font-serif);
+  font-size: var(--dx-text-5xl);
+  line-height: var(--dx-lh-tight);
+  letter-spacing: var(--dx-track-tight);
+  font-weight: 400;
+  color: var(--dx-fg-1);
+  text-wrap: balance;
+}
+.dx-h2 {
+  font-family: var(--dx-font-serif);
+  font-size: var(--dx-text-3xl);
+  line-height: var(--dx-lh-snug);
+  letter-spacing: var(--dx-track-snug);
+  font-weight: 400;
+  color: var(--dx-fg-1);
+}
+.dx-h3 {
+  font-family: var(--dx-font-sans);
+  font-size: var(--dx-text-xl);
+  line-height: var(--dx-lh-snug);
+  letter-spacing: var(--dx-track-snug);
+  font-weight: 600;
+  color: var(--dx-fg-1);
+}
+.dx-h4 {
+  font-family: var(--dx-font-sans);
+  font-size: var(--dx-text-lg);
+  line-height: var(--dx-lh-snug);
+  font-weight: 600;
+  color: var(--dx-fg-1);
+}
+.dx-eyebrow {
+  font-family: var(--dx-font-sans);
+  font-size: var(--dx-text-xs);
+  letter-spacing: var(--dx-track-caps);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--dx-fg-3);
+}
+.dx-lead {
+  font-family: var(--dx-font-sans);
+  font-size: var(--dx-text-md);
+  line-height: var(--dx-lh-relaxed);
+  font-weight: 400;
+  color: var(--dx-fg-2);
+}
+.dx-body {
+  font-family: var(--dx-font-sans);
+  font-size: var(--dx-text-base);
+  line-height: var(--dx-lh-relaxed);
+  font-weight: 400;
+  color: var(--dx-fg-1);
+}
+.dx-small {
+  font-family: var(--dx-font-sans);
+  font-size: var(--dx-text-sm);
+  line-height: var(--dx-lh-normal);
+  color: var(--dx-fg-2);
+}
+.dx-meta {
+  font-family: var(--dx-font-sans);
+  font-size: var(--dx-text-xs);
+  line-height: var(--dx-lh-normal);
+  color: var(--dx-fg-3);
+}
+.dx-quote {
+  font-family: var(--dx-font-serif);
+  font-style: italic;
+  font-size: var(--dx-text-2xl);
+  line-height: var(--dx-lh-snug);
+  letter-spacing: var(--dx-track-snug);
+  color: var(--dx-fg-1);
+}
+
+/* Gradient text — used for one or two words per page, no more. */
+.dx-grad-text {
+  background: var(--dx-gradient);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}

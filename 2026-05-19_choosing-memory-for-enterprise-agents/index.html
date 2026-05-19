@@ -1,388 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Choosing memory for enterprise agents · Applied AI Research · EPAM · 2026-05-19</title>
+<link rel="stylesheet" href="../assets/dialx/tokens.css" />
+<link rel="stylesheet" href="../assets/dialx/type.css" />
+<link rel="stylesheet" href="../assets/dialx/research.css" />
+<link rel="stylesheet" href="../assets/dialx/diagrams.css" />
 <style>
-:root {
-  --bg:        #0F0F10;
-  --surface-1: #141414;
-  --surface-2: #1A1A1A;
-  --surface-3: #232325;
-  --line:      #2A2A2A;
-  --line-2:    #353537;
-
-  --white:     #FFFFFF;
-  --light:     #E6E6E8;
-  --mid:       #8A8A8A;
-  --dim:       #555555;
-  --faint:     #3A3A3C;
-
-  --cyan:      #00F6FF;
-  --purple:    #B896FF;
-  --blue:      #7BA8FF;
-  --med-blue:  #428DFF;
-  --mint:      #00F4AB;
-  --warn:      #FFB347;
-
-  --tier-1:    var(--cyan);
-  --tier-2:    var(--purple);
-  --tier-3:    var(--blue);
-  --determinism: var(--mint);
-  --llm:       var(--purple);
-
-  --maxw: 1240px;
-  --gutter: 32px;
-  --radius: 4px;
-
-  --font-display: "Fraunces", "Iowan Old Style", "Charter", "Georgia", serif;
-  --font-body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--light);
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.55;
-  font-feature-settings: "ss01", "ss02", "cv11";
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 12% 8%, rgba(0,246,255,0.04) 0%, transparent 35%),
-    radial-gradient(circle at 88% 92%, rgba(184,150,255,0.04) 0%, transparent 38%),
-    radial-gradient(circle at 50% 50%, rgba(123,168,255,0.025) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
-}
-main { position: relative; z-index: 1; }
-.section { padding: 96px 0; border-top: 1px solid var(--line); position: relative; scroll-margin-top: 24px; }
-.section:first-child { border-top: none; }
-.container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
-.section-label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mid);
-  margin-bottom: 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.section-label::before { content: ""; width: 24px; height: 1px; background: var(--cyan); display: inline-block; }
-.section-label .num { color: var(--cyan); font-weight: 600; }
-h1, h2, h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; color: var(--white); }
-h1 { font-size: clamp(48px, 7.5vw, 96px); line-height: 0.96; font-variation-settings: "SOFT" 30, "WONK" 0; }
-h2 { font-size: clamp(32px, 4.5vw, 52px); line-height: 1.05; margin-bottom: 18px; }
-h3 { font-size: 24px; line-height: 1.2; margin-top: 32px; margin-bottom: 12px; color: var(--white); }
-h4 {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--mid);
-  margin-bottom: 10px;
-}
-p { color: var(--light); margin-bottom: 14px; max-width: 70ch; }
-p.lede { font-size: 19px; color: var(--light); max-width: 62ch; line-height: 1.5; }
-p.dim { color: var(--mid); }
-a { color: var(--cyan); text-decoration: none; border-bottom: 1px solid rgba(0,246,255,0.25); }
-code, .mono {
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  color: var(--cyan);
-  background: rgba(0,246,255,0.06);
-  padding: 1px 5px;
-  border-radius: 2px;
-  border: 1px solid rgba(0,246,255,0.1);
-}
-ul, ol { margin: 8px 0 14px 22px; }
-li { margin-bottom: 6px; color: var(--light); max-width: 70ch; }
-strong { color: var(--white); }
-em { font-style: italic; }
-
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 56px 0 64px;
-}
-.hero-inner { display: grid; grid-template-columns: 1fr; gap: 64px; flex: 1; align-content: center; }
-.hero-inner .lede { margin-top: 40px; max-width: 64ch; }
-.interaction-diagram { margin-top: 18px; width: 100%; height: auto; }
-.hero h1 .accent-cyan { color: var(--cyan); }
-.hero h1 .accent-purple { color: var(--purple); }
-.hero h1 .accent-blue { color: var(--blue); }
-.hero h1 em { font-style: italic; font-family: var(--font-display); color: var(--light); }
-.hero-meta {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 36px;
-  padding-top: 32px;
-  border-top: 1px solid var(--line);
-}
-.meta-stat .v {
-  font-family: var(--font-display);
-  font-size: 38px;
-  color: var(--white);
-  display: block;
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.meta-stat .v .unit {
-  font-size: 14px;
-  color: var(--mid);
-  font-family: var(--font-mono);
-  vertical-align: middle;
-  margin-left: 4px;
-}
-.meta-stat .l {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--mid);
-}
-.hero-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-.hero-bar .right span { color: var(--mid); margin-left: 18px; }
-.hero-bar .live::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  background: var(--mint);
-  border-radius: 50%;
-  margin-right: 8px;
-  box-shadow: 0 0 10px var(--mint);
-}
-
-.series-nav {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  flex-wrap: wrap;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--mid);
-}
-.series-nav .series-label { color: var(--cyan); margin-right: 18px; }
-.series-nav a, .series-nav span.this, .series-nav span.series-prior {
-  color: var(--mid);
-  border-bottom: none;
-  padding: 4px 10px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  text-decoration: none;
-}
-.series-nav a:hover { color: var(--cyan); border-color: rgba(0,246,255,0.35); }
-.series-nav span.this { color: var(--white); border-color: rgba(0,246,255,0.45); background: rgba(0,246,255,0.05); }
-.series-nav span.placeholder { color: var(--dim); border-color: var(--faint); border-style: dashed; }
-.series-nav .series-date { color: var(--dim); margin-right: 6px; }
-
-.tier-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
-  border: 1px solid var(--line);
-  margin-top: 48px;
-}
-.tier-card { padding: 36px 32px; border-right: 1px solid var(--line); position: relative; overflow: hidden; }
-.tier-card:last-child { border-right: none; }
-.tier-card::before { content: ""; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
-.tier-card .tier-num {
-  font-family: var(--font-display);
-  font-size: 64px;
-  color: var(--accent);
-  line-height: 0.9;
-  display: block;
-  margin-bottom: 4px;
-  font-variation-settings: "SOFT" 0, "WONK" 0;
-}
-.tier-card .tier-name {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--mid);
-  margin-bottom: 18px;
-}
-.tier-card h3 { font-size: 22px; margin: 0 0 12px; color: var(--white); }
-.tier-card p { color: var(--mid); font-size: 13.5px; max-width: 40ch; }
-.tier-card .specs {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
-  font-size: 11.5px;
-  font-family: var(--font-mono);
-  color: var(--mid);
-  display: grid;
-  gap: 6px;
-}
-.tier-card .specs span.k { color: var(--dim); margin-right: 8px; }
-.tier-card .specs span.v { color: var(--light); }
-
-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 13.5px; }
-th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--light); vertical-align: top; }
-th { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); font-weight: 500; border-bottom: 1px solid var(--line-2); }
-tbody tr:hover { background: rgba(255,255,255,0.015); }
-td.mono { font-family: var(--font-mono); font-size: 12px; color: var(--cyan); background: transparent; border: none; padding: 12px 14px; }
-.pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
-.pill.cy   { background: rgba(0,246,255,0.1);   color: var(--cyan);   border: 1px solid rgba(0,246,255,0.2); }
-.pill.pu   { background: rgba(184,150,255,0.1); color: var(--purple); border: 1px solid rgba(184,150,255,0.2); }
-.pill.bl   { background: rgba(123,168,255,0.1); color: var(--blue);   border: 1px solid rgba(123,168,255,0.2); }
-.pill.mi   { background: rgba(0,244,171,0.1);   color: var(--mint);   border: 1px solid rgba(0,244,171,0.2); }
-.pill.warn { background: rgba(255,179,71,0.1);  color: var(--warn);   border: 1px solid rgba(255,179,71,0.25); }
-.pill.dim  { background: rgba(138,138,138,0.06); color: var(--mid);   border: 1px solid var(--line); }
-
-.callout { padding: 22px 28px; margin: 24px 0; border-left: 2px solid var(--cyan); background: rgba(0,246,255,0.03); position: relative; }
-.callout.cyan   { border-color: var(--cyan);   background: rgba(0,246,255,0.05); }
-.callout.purple { border-color: var(--purple); background: rgba(184,150,255,0.03); }
-.callout.blue   { border-color: var(--blue);   background: rgba(123,168,255,0.03); }
-.callout.mint   { border-color: var(--mint);   background: rgba(0,244,171,0.03); }
-.callout.warn   { border-color: var(--warn);   background: rgba(255,179,71,0.04); }
-.callout h4 { color: var(--cyan); margin-bottom: 8px; }
-.callout.cyan h4   { color: var(--cyan); }
-.callout.purple h4 { color: var(--purple); }
-.callout.blue h4   { color: var(--blue); }
-.callout.mint h4   { color: var(--mint); }
-.callout.warn h4   { color: var(--warn); }
-.callout p { font-size: 14px; color: var(--light); }
-.callout p:last-child { margin-bottom: 0; }
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin: 32px 0; }
-
-.code-block {
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  padding: 22px 24px;
-  margin: 18px 0;
-  color: var(--light);
-  white-space: pre;
-  overflow-x: auto;
-  border-radius: 0;
-  line-height: 1.5;
-  position: relative;
-}
-
-.toc {
-  position: fixed;
-  right: 32px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--dim);
-  border-left: 1px solid var(--line);
-  padding-left: 14px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-.toc a {
-  color: var(--mid);
-  border: none;
-  padding: 2px 0;
-  display: block;
-  text-transform: uppercase;
-  transition: color 0.2s;
-}
-.toc a:hover, .toc a.active { color: var(--cyan); }
-.toc .toc-num { color: var(--dim); margin-right: 8px; }
-@media (min-width: 1201px) {
-  main { padding-right: 220px; }
-}
-@media (max-width: 1200px) { .toc { display: none; } }
-
-@media (max-width: 880px) {
-  .hero-meta { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .tier-grid { grid-template-columns: 1fr; }
-  .tier-card { border-right: none; border-bottom: 1px solid var(--line); }
-  .two-col { grid-template-columns: 1fr; gap: 24px; }
-  .section { padding: 64px 0; }
-}
-
-footer {
-  border-top: 1px solid var(--line);
-  padding: 48px 0 64px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-footer .container { display: flex; justify-content: space-between; align-items: baseline; }
-
-svg text { font-family: var(--font-mono), monospace; }
-svg .svg-title { font-family: var(--font-display); }
-svg .svg-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; fill: var(--mid); }
-svg .svg-mono  { font-size: 11px; fill: var(--light); }
-svg .svg-emp   { fill: var(--white); font-weight: 500; }
-
-.progress { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: var(--line); z-index: 100; }
-.progress-bar { height: 100%; width: 0; background: var(--cyan); transition: width 0.1s; }
-
-.grid-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-  background-size: 80px 80px;
-  pointer-events: none;
-  mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
-}
-
-.section.appendix { background: rgba(20,20,20,0.4); }
-.section.appendix h2 { color: var(--mid); }
+/* dialx retrofit compat shim: width-constrain inner wrappers from legacy markup */
+main .rs-container { max-width: none; margin: 0; padding: 0; }
+/* Some legacy reports had figure / diagram frames not yet in dialx; preserve. */
+.diagram-frame { margin: 24px 0; }
+.svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
+.svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
+.svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
 </style>
 </head>
-<body>
-<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+<body class="rs-page">
 
-<nav class="toc">
-  <a href="#hero"><span class="toc-num">00</span>Cover</a>
-  <a href="#s01"><span class="toc-num">01</span>Summary</a>
-  <a href="#s02"><span class="toc-num">02</span>Why memory matters</a>
-  <a href="#s03"><span class="toc-num">03</span>The adoption bar</a>
-  <a href="#s04"><span class="toc-num">04</span>Test design</a>
-  <a href="#s05"><span class="toc-num">05</span>Headline result</a>
-  <a href="#s06"><span class="toc-num">06</span>Reliability</a>
-  <a href="#s07"><span class="toc-num">07</span>Tier interaction</a>
-  <a href="#s08"><span class="toc-num">08</span>Adoption decision</a>
-  <a href="#s09"><span class="toc-num">09</span>Platform implications</a>
-  <a href="#s10"><span class="toc-num">10</span>Recommendations</a>
-  <a href="#s11"><span class="toc-num">11</span>Scope limits</a>
-  <a href="#s12"><span class="toc-num">12</span>Closing</a>
-  <a href="#sA"><span class="toc-num">A</span>Methods</a>
+<div class="rs-progress"><div class="rs-progress__bar" id="rs-progress"></div></div>
+
+<header class="rs-topbar">
+  <div class="rs-topbar__inner">
+    <a class="rs-mark" href="../">
+      <span>Applied AI Research</span>
+      <span class="sep">·</span>
+      <span class="meta">EPAM · Arseny Gorokh</span>
+    </a>
+    <nav class="rs-nav">
+      <a href="../">Index</a>
+      <a href="./" class="is-current">This report</a>
+      <a href="https://github.com/agorokh/applied-ai-research">GitHub</a>
+    </nav>
+    <div class="rs-nav-meta">
+      <span class="live">live</span>
+      <span>Iteration 3 · 2026-05-19</span>
+    </div>
+  </div>
+</header>
+
+
+<nav class="rs-toc">
+  <a href="#hero"><span class="num">00</span>Cover</a>
+  <a href="#s01"><span class="num">01</span>Summary</a>
+  <a href="#s02"><span class="num">02</span>Why memory matters</a>
+  <a href="#s03"><span class="num">03</span>The adoption bar</a>
+  <a href="#s04"><span class="num">04</span>Test design</a>
+  <a href="#s05"><span class="num">05</span>Headline result</a>
+  <a href="#s06"><span class="num">06</span>Reliability</a>
+  <a href="#s07"><span class="num">07</span>Tier interaction</a>
+  <a href="#s08"><span class="num">08</span>Adoption decision</a>
+  <a href="#s09"><span class="num">09</span>Platform implications</a>
+  <a href="#s10"><span class="num">10</span>Recommendations</a>
+  <a href="#s11"><span class="num">11</span>Scope limits</a>
+  <a href="#s12"><span class="num">12</span>Closing</a>
+  <a href="#sA"><span class="num">A</span>Methods</a>
 </nav>
 
 <main>
@@ -390,9 +64,9 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 00 HERO -->
 <!-- ============================================================ -->
-<section class="section hero" id="hero">
-  <div class="grid-bg"></div>
-  <div class="container hero-bar">
+<section class="rs-section rs-hero" id="hero">
+  <div class="rs-grid-bg"></div>
+  <div class="rs-hero-bar">
     <div>Applied AI Research · EPAM · Iteration 3 · working draft toward v1.0 · 2026-05-19</div>
     <div class="right">
       <span class="live">live</span>
@@ -401,29 +75,23 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     </div>
   </div>
 
-  <div class="container">
-    <div class="series-nav" aria-label="Series navigation">
-      <span class="series-label">Applied AI Research · EPAM ·</span>
-      <a class="series-prior" href="../2026-05-15_claude-code-via-dial-poc/" title="Prior report: Claude Code via EPAM DIAL · POC (2026-05-15)"><span class="series-date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</a>
-      <span class="this" title="This report (2026-05-19)"><span class="series-date">2026-05-19 ·</span>Choosing memory for enterprise agents</span>
+  <div class="rs-container">
+    <div class="rs-series-nav" aria-label="Series navigation">
+      <span class="rs-series-nav__label">Applied AI Research · EPAM ·</span>
+      <a class="" href="../2026-05-15_claude-code-via-dial-poc/" title="Prior report: Claude Code via EPAM DIAL · POC (2026-05-15)"><span class="date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</a>
+      <span class="this" title="This report (2026-05-19)"><span class="date">2026-05-19 ·</span>Choosing memory for enterprise agents</span>
     </div>
   </div>
 
-  <div class="container hero-inner">
+  <div class="rs-hero-inner">
     <div>
-      <div class="section-label"><span class="num">00</span> Cover · Applied AI · The middle band</div>
+      <div class="rs-section-label"><span class="num">00</span> Cover · Applied AI · The middle band</div>
       <h1>
-        Frontier research<br>
-        <em>ships as</em>
-        <span class="accent-cyan">papers.</span>
-        <em>Consumer AI</em><br>
-        <em>ships as</em>
-        <span class="accent-purple">demos.</span>
-        <em>Applied AI</em><br>
-        <em>ships as</em>
-        <span class="accent-blue">systems.</span>
+        Frontier ships as <em><span class="ax-teal">papers.</span></em><br>
+        Consumer ships as <em><span class="ax-violet">demos.</span></em><br>
+        Applied AI ships as <em><span class="ax-magenta">systems.</span></em>
       </h1>
-      <p class="lede" style="margin-top: 40px; max-width: 66ch;">
+      <p class="rs-lede" style="margin-top: 40px; max-width: 66ch;">
         The AI market splits three ways in 2026: research that proves a
         capability, consumer products that dramatise it, and enterprise
         systems that have to survive scale, tenancy, audit, schema
@@ -439,21 +107,21 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     </div>
   </div>
 
-  <div class="container">
-    <div class="hero-meta">
-      <div class="meta-stat">
+  <div class="rs-container">
+    <div class="rs-hero-meta">
+      <div class="rs-meta-stat">
         <span class="v">36<span class="unit">pp gap</span></span>
         <span class="l">Top vs second under realistic weighting</span>
       </div>
-      <div class="meta-stat">
+      <div class="rs-meta-stat">
         <span class="v">0<span class="unit">vs 4</span></span>
         <span class="l">Fabricated answers across 128 trials</span>
       </div>
-      <div class="meta-stat">
+      <div class="rs-meta-stat">
         <span class="v">2<span class="unit">tiers</span></span>
         <span class="l">Executor capability tiers compared</span>
       </div>
-      <div class="meta-stat">
+      <div class="rs-meta-stat">
         <span class="v">5<span class="unit">criteria</span></span>
         <span class="l">Stated adoption bar, applied uniformly</span>
       </div>
@@ -464,11 +132,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 01 EXECUTIVE SUMMARY -->
 <!-- ============================================================ -->
-<section class="section" id="s01">
-<div class="container">
-  <div class="section-label"><span class="num">01</span> Executive summary · The middle band, one instance</div>
+<section class="rs-section" id="s01">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">01</span> Executive summary · The middle band, one instance</div>
   <h2>What this report decides, in one page.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     Structured as a deployment-decision memo, not a benchmark recap.
     The bullets below are the headline; the body sections that follow
     are the supporting argument; the methods appendix carries the
@@ -496,7 +164,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     orchestration agents</em>.
   </p>
 
-  <div class="callout cyan">
+  <div class="rs-callout rs-callout--teal">
     <h4>Findings</h4>
     <ul>
       <li><strong>The chunk-text retrieval approach outperformed the entity-graph approach by ~36 percentage points</strong> when the test was weighted to match real production query frequency. Under naïve uniform weighting the two looked tied; the weighting decided the outcome.</li>
@@ -508,7 +176,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 
   <p><strong>For delivery teams</strong>: default to the chunk-text retrieval approach for SDLC-shaped corpora, reserve graph-summary substrates for the narrow entity-disambiguation task, gate any bi-temporal context on the executor's capability tier, and reject adoption candidates against named criteria rather than against taste. Sections 09 and 10 carry the specific platform and delivery implications.</p>
 
-  <div class="callout warn">
+  <div class="rs-callout rs-callout--magenta">
     <h4>What this report is not</h4>
     <p>
       Not exhaustive vendor coverage. The agent-memory / RAG-substrate
@@ -548,36 +216,36 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 02 WHY MEMORY MATTERS -->
 <!-- ============================================================ -->
-<section class="section" id="s02">
-<div class="container">
-  <div class="section-label"><span class="num">02</span> Why memory matters · Two enterprise classes</div>
+<section class="rs-section" id="s02">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">02</span> Why memory matters · Two enterprise classes</div>
   <h2>Two corpora, one retrieval problem.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     Across EPAM accounts the memory-substrate question recurs because
     agents are useful only when they retrieve the right knowledge at
     the right moment. The corpus shape varies; the underlying problem
     does not. Two classes cover the majority of the work.
   </p>
 
-  <div class="tier-grid">
-    <div class="tier-card" style="--accent: var(--cyan);">
-      <span class="tier-num">A</span>
-      <span class="tier-name">SDLC corpus</span>
+  <div class="rs-tiers">
+    <div class="rs-tier" style="--accent: var(--dx-teal);">
+      <span class="rs-tier__num">A</span>
+      <span class="rs-tier__name">SDLC corpus</span>
       <h3>Architecture decisions, tickets, source-control heritage.</h3>
       <p>ADRs, design records, ticket history, post-incident reviews, runbooks, architecture invariants - the project's own past, queried by the people working on its present.</p>
-      <div class="specs">
+      <div class="rs-tier__specs">
         <div><span class="k">size</span><span class="v">10² to 10⁴ documents</span></div>
         <div><span class="k">update rate</span><span class="v">high; documents evolve</span></div>
         <div><span class="k">top query class</span><span class="v">current rule + handoff state</span></div>
         <div><span class="k">hallucination cost</span><span class="v">reversed architectural decisions</span></div>
       </div>
     </div>
-    <div class="tier-card" style="--accent: var(--purple);">
-      <span class="tier-num">B</span>
-      <span class="tier-name">Business / domain corpus</span>
+    <div class="rs-tier" style="--accent: var(--dx-violet);">
+      <span class="rs-tier__num">B</span>
+      <span class="rs-tier__name">Business / domain corpus</span>
       <h3>Customer-specific knowledge with high retention pressure.</h3>
       <p>Case files (legal, medical, insurance, support), regulatory references, product knowledge, customer-account history - high volume, high query specificity, high cost of a wrong answer that gets acted on.</p>
-      <div class="specs">
+      <div class="rs-tier__specs">
         <div><span class="k">size</span><span class="v">10² to 10⁵ documents</span></div>
         <div><span class="k">update rate</span><span class="v">high at the boundary; past immutable</span></div>
         <div><span class="k">top query class</span><span class="v">specific fact + entity disambiguation</span></div>
@@ -618,7 +286,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 
   <h3>Why memory is the canonical example of the frontier-to-enterprise gap</h3>
 
-  <div class="callout">
+  <div class="rs-callout rs-callout--violet">
     <h4>The plain-language version</h4>
     <p>
       Two of the biggest consumer-AI products on the market ship a
@@ -680,7 +348,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     the open literature.
   </p>
 
-  <div class="callout warn">
+  <div class="rs-callout rs-callout--magenta">
     <h4>What this section is not arguing</h4>
     <p>
       It is not arguing that consumer-AI memory is badly designed.
@@ -700,11 +368,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 03 THE ADOPTION BAR -->
 <!-- ============================================================ -->
-<section class="section" id="s03">
-<div class="container">
-  <div class="section-label"><span class="num">03</span> The adoption bar · What "good" looks like in production</div>
+<section class="rs-section" id="s03">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">03</span> The adoption bar · What "good" looks like in production</div>
   <h2>Five criteria, stated before any candidate was scored.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     A substrate that survives the first production query is one we
     selected against named criteria, not against taste. Stating the
     criteria first is what makes a rejection reproducible by another
@@ -745,7 +413,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 
   <p><strong>For delivery teams</strong>: write your adoption bar before you evaluate candidates. A bar applied post-hoc rationalises a decision already made; a bar applied a priori constrains the decision and is reproducible by the next reviewer.</p>
 
-  <div class="callout">
+  <div class="rs-callout rs-callout--violet">
     <h4>The honest framing</h4>
     <p>The five criteria above are not universal. They are calibrated to one specific delivery context (Python-first stack, EPAM DIAL gateway, MCP-compatible agent surface). A team with a TypeScript-only stack would have a different "integration surface" criterion; a team with a different gateway would have a different "operational fit" criterion. The discipline is to state the bar; the contents of the bar are domain-specific.</p>
   </div>
@@ -755,11 +423,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 04 WHAT WE TESTED -->
 <!-- ============================================================ -->
-<section class="section" id="s04">
-<div class="container">
-  <div class="section-label"><span class="num">04</span> Test design · Substrates, tasks, judging</div>
+<section class="rs-section" id="s04">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">04</span> Test design · Substrates, tasks, judging</div>
   <h2>Three substrates, eight task families, two judges in opposite orderings.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     The empirical design served one question: which substrate would
     perform best on the SDLC corpus's actual production query
     distribution, evaluated by two independent judges in a way that
@@ -871,14 +539,14 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
       <tr><th>Task family</th><th>What the agent is trying to do</th><th>Frequency in production</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Current canonical text</strong></td><td>"What is the current rule / invariant / decision for X?" Read the literal source so the agent can quote it back.</td><td><span class="pill cy">~50%</span></td></tr>
-      <tr><td><strong>Handoff continuity</strong></td><td>"Where did the previous session leave off, and what is the next action?" Read the current handoff state.</td><td><span class="pill bl">~20%</span></td></tr>
-      <tr><td><strong>Entity disambiguation</strong></td><td>"Which of several entities sharing a name is meant in this context?" Resolve a noun across multiple sources.</td><td><span class="pill pu">~10%</span></td></tr>
-      <tr><td>Temporal supersession</td><td>"What changed between two points in time? What deprecated what?"</td><td><span class="pill dim">~4%</span></td></tr>
-      <tr><td>Multi-hop traversal</td><td>"Which investigations led to this decision? What chain of evidence supports this rule?"</td><td><span class="pill dim">~4%</span></td></tr>
-      <tr><td>Knowledge updates</td><td>"What did the new doctrine just impose that the old one did not?"</td><td><span class="pill dim">~4%</span></td></tr>
-      <tr><td>Abstention on false premise</td><td>"This question references a rule that does not exist. Refuse to answer."</td><td><span class="pill dim">~4%</span></td></tr>
-      <tr><td>Link-graph traversal</td><td>"Which other documents link to this one?"</td><td><span class="pill dim">~4%</span></td></tr>
+      <tr><td><strong>Current canonical text</strong></td><td>"What is the current rule / invariant / decision for X?" Read the literal source so the agent can quote it back.</td><td><span class="rs-pill rs-pill--teal">~50%</span></td></tr>
+      <tr><td><strong>Handoff continuity</strong></td><td>"Where did the previous session leave off, and what is the next action?" Read the current handoff state.</td><td><span class="rs-pill rs-pill--blue">~20%</span></td></tr>
+      <tr><td><strong>Entity disambiguation</strong></td><td>"Which of several entities sharing a name is meant in this context?" Resolve a noun across multiple sources.</td><td><span class="rs-pill rs-pill--violet">~10%</span></td></tr>
+      <tr><td>Temporal supersession</td><td>"What changed between two points in time? What deprecated what?"</td><td><span class="rs-pill rs-pill--dim">~4%</span></td></tr>
+      <tr><td>Multi-hop traversal</td><td>"Which investigations led to this decision? What chain of evidence supports this rule?"</td><td><span class="rs-pill rs-pill--dim">~4%</span></td></tr>
+      <tr><td>Knowledge updates</td><td>"What did the new doctrine just impose that the old one did not?"</td><td><span class="rs-pill rs-pill--dim">~4%</span></td></tr>
+      <tr><td>Abstention on false premise</td><td>"This question references a rule that does not exist. Refuse to answer."</td><td><span class="rs-pill rs-pill--dim">~4%</span></td></tr>
+      <tr><td>Link-graph traversal</td><td>"Which other documents link to this one?"</td><td><span class="rs-pill rs-pill--dim">~4%</span></td></tr>
     </tbody>
   </table>
 
@@ -889,7 +557,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
   </p>
 
   <h3>How the judging worked</h3>
-  <div class="callout">
+  <div class="rs-callout rs-callout--violet">
     <h4>What "position-swap judging" means (one sentence)</h4>
     <p>The same question is shown to each judge twice - with the two candidate retrievals in opposite orderings; a pair only "wins" when the judge prefers the same candidate in both orderings. This rules out a class of bias where the judge prefers whichever retrieval is shown first.</p>
   </div>
@@ -926,11 +594,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 05 HEADLINE RESULT -->
 <!-- ============================================================ -->
-<section class="section" id="s05">
-<div class="container">
-  <div class="section-label"><span class="num">05</span> Headline result · The weighting is the finding</div>
+<section class="rs-section" id="s05">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">05</span> Headline result · The weighting is the finding</div>
   <h2>Naïve weighting said tie. Production weighting said 36 points.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     The retrieval-quality comparison between the two purpose-built
     substrates went in opposite directions depending on how the eight
     task families were combined into a single aggregate number.
@@ -940,7 +608,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 
   <p><strong>For delivery teams</strong>: when a vendor reports a single aggregate number across multiple task families, ask which weighting they used. A vendor's aggregate that gives every family equal weight is not the aggregate that maps to your production. The discrepancy between the two weightings is often larger than the difference between the substrates themselves.</p>
 
-  <div class="callout">
+  <div class="rs-callout rs-callout--violet">
     <h4>What "uniform vs frequency-weighted aggregate" means (one sentence)</h4>
     <p>A <strong>uniform-weighted aggregate</strong> counts every test family equally; a <strong>frequency-weighted aggregate</strong> counts each family by how often it actually shows up in real production queries. The two often disagree on which substrate wins - that disagreement is usually the finding.</p>
   </div>
@@ -967,7 +635,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
   </p>
 
   <h3>What the same data does not say</h3>
-  <div class="callout warn">
+  <div class="rs-callout rs-callout--magenta">
     <h4>Caveats</h4>
     <p>The 36-point gap is for an SDLC-shaped corpus with the production query distribution stated above. A corpus where entity disambiguation dominates (a customer-support knowledge base where the same product is named differently across regions, for instance) would re-weight in favour of the entity-graph approach. The pattern transfers ("weight by your own production distribution, not by uniform"); the magnitude does not transfer without re-measurement.</p>
   </div>
@@ -985,7 +653,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 
   <p><strong>For delivery teams</strong>: when the corpus is SDLC-history-shaped, default to a chunk-text retrieval approach. Reserve graph-summary substrates for the narrow set of queries that need cross-document entity resolution. Don't deploy a single substrate as a universal default; pair the substrate to the dominant query family.</p>
 
-  <div class="callout warn">
+  <div class="rs-callout rs-callout--magenta">
     <h4>What I got wrong before this measurement</h4>
     <p>
       I initially favored Graphiti as the canonical substrate for
@@ -1006,11 +674,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 06 RELIABILITY -->
 <!-- ============================================================ -->
-<section class="section" id="s06">
-<div class="container">
-  <div class="section-label"><span class="num">06</span> Reliability · The shape of the failure mode matters</div>
+<section class="rs-section" id="s06">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">06</span> Reliability · The shape of the failure mode matters</div>
   <h2>Zero versus four out of 128. Small in absolute, structural in shape.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     Counting fabricated answers is not the most powerful retrieval-
     quality discriminator at this sample size. The shape of the
     failure mode behind the count is the part that should change a
@@ -1019,7 +687,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 
   <p><strong>For delivery teams</strong>: restrict autonomous-writeback paths (the agent drafts a decision document, files a ticket, generates a handoff) to the substrate whose failure mode is "the wrong source chunk" rather than the substrate whose failure mode is "an invented relation". The first is recoverable on read; the second is not.</p>
 
-  <div class="callout">
+  <div class="rs-callout rs-callout--violet">
     <h4>What "hallucination" means here (one sentence)</h4>
     <p>A retrieval is <strong>hallucinated</strong> when it returns content that does not exist in any source document; a retrieval is <strong>incorrect</strong> when it returns the wrong source document; the distinction matters because an incorrect-but-real source can be cross-checked, and a fabricated source cannot.</p>
   </div>
@@ -1055,7 +723,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     failure mode lives.
   </p>
 
-  <div class="callout warn">
+  <div class="rs-callout rs-callout--magenta">
     <h4>What this finding does not say</h4>
     <p>It does not say the entity-graph substrate is unsafe at scale. Four out of 128 cannot be generalised that strongly. It says: under autonomous-writeback paths where a single fabricated relation gets acted on, the substrate whose failure mode is "the wrong chunk" has a safer profile than the substrate whose failure mode is "an invented relation". For review-gated assist paths (with explicit approval before any write), the gap is much smaller.</p>
   </div>
@@ -1065,11 +733,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 07 TIER INTERACTION -->
 <!-- ============================================================ -->
-<section class="section" id="s07">
-<div class="container">
-  <div class="section-label"><span class="num">07</span> Tier interaction · Context design must match executor capability</div>
+<section class="rs-section" id="s07">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">07</span> Tier interaction · Context design must match executor capability</div>
   <h2>The same extra context helps a smaller executor and hurts a more-capable one.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     The structural finding from the closed-loop pilot - the part that
     does not appear in any vendor's published numbers - is that the
     value of extra structural context (the bi-temporal "valid-from
@@ -1077,7 +745,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     executor capability tiers tested on the same workload.
   </p>
 
-  <div class="callout warn">
+  <div class="rs-callout rs-callout--magenta">
     <h4>Pilot data, not the formal closed-loop suite</h4>
     <p>The closed-loop stale-fact counts in this section come from a
     pilot run (eight tasks per cell, three conditions). The formal
@@ -1088,7 +756,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 
   <p><strong>For platform teams setting defaults</strong>: do not enable bi-temporal context as a global default. Gate it on the executor's capability tier. A smaller / cheaper executor benefits from the explicit supersession metadata; a more-capable executor sometimes re-quotes the older fact because the metadata told it the older fact existed at all. Context design must match executor capability.</p>
 
-  <div class="callout">
+  <div class="rs-callout rs-callout--violet">
     <h4>What "stale-fact inversion" means (one sentence)</h4>
     <p>The number of times the executor cites an older fact when a newer fact should be the right answer - counted before and after enabling bi-temporal context - moves in opposite directions for two executors on the same workload.</p>
   </div>
@@ -1117,54 +785,54 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
   </p>
 
   <h3>The flip</h3>
-  <div class="diagram-frame" style="margin: 32px 0; padding: 32px; border: 1px solid var(--line); background: linear-gradient(180deg, var(--surface-1) 0%, rgba(20,20,20,0.4) 100%); position: relative;">
-    <span style="position: absolute; top: -1px; left: -1px; background: var(--surface-2); border: 1px solid var(--line); padding: 4px 10px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid);">DIAGRAM · 07 · CONTEXT × CAPABILITY-TIER INTERACTION</span>
+  <div class="diagram-frame" style="margin: 32px 0; padding: 32px; border: 1px solid var(--dx-border); background: linear-gradient(180deg, var(--dx-surface) 0%, rgba(20,20,20,0.4) 100%); position: relative;">
+    <span style="position: absolute; top: -1px; left: -1px; background: var(--dx-surface-2); border: 1px solid var(--dx-border); padding: 4px 10px; font-family: var(--dx-font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dx-fg-3);">DIAGRAM · 07 · CONTEXT × CAPABILITY-TIER INTERACTION</span>
     <svg class="interaction-diagram" role="img" aria-labelledby="diagram-s07-title diagram-s07-desc" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
       <title id="diagram-s07-title">Context and capability-tier interaction diagram</title>
       <desc id="diagram-s07-desc">Bi-temporal context appears to reduce stale-fact citations for the smaller executor tier and increase them for the more-capable tier on the same pilot workload.</desc>
       <defs>
         <marker id="arrow-mi" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
-          <path d="M 0 0 L 12 6 L 0 12 Z" fill="#00F4AB"/>
+          <path d="M 0 0 L 12 6 L 0 12 Z" fill="var(--dx-teal)"/>
         </marker>
         <marker id="arrow-warn" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
-          <path d="M 0 0 L 12 6 L 0 12 Z" fill="#FFB347"/>
+          <path d="M 0 0 L 12 6 L 0 12 Z" fill="var(--dx-magenta)"/>
         </marker>
       </defs>
 
       <text x="32" y="40" class="svg-label" fill="#8A8A8A">EXECUTOR · SMALLER / CHEAPER TIER</text>
 
-      <rect x="32" y="80" width="240" height="140" fill="rgba(123,168,255,0.05)" stroke="#7BA8FF" stroke-width="1"/>
-      <text x="48" y="104" class="svg-label" fill="#7BA8FF">CONTEXT · CHUNK-TEXT ONLY</text>
+      <rect x="32" y="80" width="240" height="140" fill="rgba(123,168,255,0.05)" stroke="var(--dx-blue)" stroke-width="1"/>
+      <text x="48" y="104" class="svg-label" fill="var(--dx-blue)">CONTEXT · CHUNK-TEXT ONLY</text>
       <text x="48" y="142" class="svg-mono" fill="#E6E6E8">stale-fact citations</text>
       <text x="48" y="186" class="svg-title" font-size="44" fill="#FFFFFF">2</text>
       <text x="48" y="208" class="svg-label" fill="#8A8A8A">PER 8-TASK PILOT</text>
 
-      <line x1="280" y1="150" x2="390" y2="150" stroke="#00F4AB" stroke-width="2" marker-end="url(#arrow-mi)"/>
-      <text x="296" y="138" class="svg-label" fill="#00F4AB">↓ IMPROVES</text>
+      <line x1="280" y1="150" x2="390" y2="150" stroke="var(--dx-teal)" stroke-width="2" marker-end="url(#arrow-mi)"/>
+      <text x="296" y="138" class="svg-label" fill="var(--dx-teal)">↓ IMPROVES</text>
 
-      <rect x="398" y="80" width="240" height="140" fill="rgba(184,150,255,0.10)" stroke="#B896FF" stroke-width="2"/>
-      <text x="414" y="104" class="svg-label" fill="#B896FF">CONTEXT · + BI-TEMPORAL</text>
+      <rect x="398" y="80" width="240" height="140" fill="rgba(184,150,255,0.10)" stroke="var(--dx-violet)" stroke-width="2"/>
+      <text x="414" y="104" class="svg-label" fill="var(--dx-violet)">CONTEXT · + BI-TEMPORAL</text>
       <text x="414" y="142" class="svg-mono" fill="#E6E6E8">stale-fact citations</text>
-      <text x="414" y="186" class="svg-title" font-size="44" fill="#00F4AB">0</text>
+      <text x="414" y="186" class="svg-title" font-size="44" fill="var(--dx-teal)">0</text>
       <text x="414" y="208" class="svg-label" fill="#8A8A8A">PER 8-TASK PILOT</text>
 
       <line x1="690" y1="150" x2="690" y2="40" stroke="#2A2A2A" stroke-width="1" stroke-dasharray="2,2"/>
 
       <text x="710" y="40" class="svg-label" fill="#8A8A8A">EXECUTOR · MORE-CAPABLE TIER</text>
 
-      <rect x="710" y="80" width="200" height="140" fill="rgba(123,168,255,0.05)" stroke="#7BA8FF" stroke-width="1"/>
-      <text x="726" y="104" class="svg-label" fill="#7BA8FF">CONTEXT · CHUNK-TEXT</text>
+      <rect x="710" y="80" width="200" height="140" fill="rgba(123,168,255,0.05)" stroke="var(--dx-blue)" stroke-width="1"/>
+      <text x="726" y="104" class="svg-label" fill="var(--dx-blue)">CONTEXT · CHUNK-TEXT</text>
       <text x="726" y="142" class="svg-mono" fill="#E6E6E8">stale-fact citations</text>
       <text x="726" y="186" class="svg-title" font-size="44" fill="#FFFFFF">0</text>
       <text x="726" y="208" class="svg-label" fill="#8A8A8A">PER 8-TASK PILOT</text>
 
-      <line x1="918" y1="150" x2="1028" y2="150" stroke="#FFB347" stroke-width="2" marker-end="url(#arrow-warn)"/>
-      <text x="934" y="138" class="svg-label" fill="#FFB347">↑ DEGRADES</text>
+      <line x1="918" y1="150" x2="1028" y2="150" stroke="var(--dx-magenta)" stroke-width="2" marker-end="url(#arrow-warn)"/>
+      <text x="934" y="138" class="svg-label" fill="var(--dx-magenta)">↑ DEGRADES</text>
 
-      <rect x="1036" y="80" width="140" height="140" fill="rgba(184,150,255,0.10)" stroke="#B896FF" stroke-width="2"/>
-      <text x="1052" y="104" class="svg-label" fill="#B896FF">+ BI-TEMPORAL</text>
+      <rect x="1036" y="80" width="140" height="140" fill="rgba(184,150,255,0.10)" stroke="var(--dx-violet)" stroke-width="2"/>
+      <text x="1052" y="104" class="svg-label" fill="var(--dx-violet)">+ BI-TEMPORAL</text>
       <text x="1052" y="142" class="svg-mono" fill="#E6E6E8">stale-fact</text>
-      <text x="1052" y="186" class="svg-title" font-size="44" fill="#FFB347">2</text>
+      <text x="1052" y="186" class="svg-title" font-size="44" fill="var(--dx-magenta)">2</text>
       <text x="1052" y="208" class="svg-label" fill="#8A8A8A">PER PILOT</text>
 
       <text x="32" y="280" class="svg-label" fill="#8A8A8A">PILOT · 8 TASKS · 3 CONDITIONS · CLOSED-LOOP K=3</text>
@@ -1185,7 +853,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     reading of it changed.
   </p>
 
-  <div class="callout warn">
+  <div class="rs-callout rs-callout--magenta">
     <h4>What this finding does not say</h4>
     <p>It does not say more-capable executors are worse at memory. It does not say bi-temporal context is bad. It says: structural metadata interacts with executor capability in a way that vendor benchmarks do not surface, because vendor benchmarks rarely cross-multiply executor tier with substrate variant. Two checkpoints is not enough to rule out family bias; the conservative reading is "capability tier matters, family may also matter, the interaction is worth measuring per pair".</p>
   </div>
@@ -1197,11 +865,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 08 ADOPTION DECISION -->
 <!-- ============================================================ -->
-<section class="section" id="s08">
-<div class="container">
-  <div class="section-label"><span class="num">08</span> Adoption decision · Tencent DB Agent-Memory against the bar</div>
+<section class="rs-section" id="s08">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">08</span> Adoption decision · Tencent DB Agent-Memory against the bar</div>
   <h2>Four-of-five fails. Decision reproducible against the bar.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     The fourth candidate I considered was <a href="#sA">Tencent
     DB Agent-Memory</a>, the most architecturally-distinct option in
     the set - a four-layer local-memory pipeline with a Mermaid-based
@@ -1231,27 +899,27 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
       <tr>
         <td><strong>Integration surface</strong></td>
         <td>Distributed primarily as a TypeScript / Node package targeted at a single coding-agent framework. The consuming stack is Python-first; no Python integration surface.</td>
-        <td><span class="pill warn">fail</span></td>
+        <td><span class="rs-pill rs-pill--magenta">fail</span></td>
       </tr>
       <tr>
         <td><strong>Install hygiene</strong></td>
         <td>The package's post-install step rewrites a sibling package's runtime files on install, silently falling through on error. This is the canonical supply-chain pattern I treat as a fail.</td>
-        <td><span class="pill warn">fail</span></td>
+        <td><span class="rs-pill rs-pill--magenta">fail</span></td>
       </tr>
       <tr>
         <td><strong>Test coverage in the public surface</strong></td>
         <td>Test harness is wired (test runner configured, test commands present in the build manifest), but a search for test files in the published source surface returns zero. The harness exists; the suites do not.</td>
-        <td><span class="pill warn">fail</span></td>
+        <td><span class="rs-pill rs-pill--magenta">fail</span></td>
       </tr>
       <tr>
         <td><strong>Maintenance posture</strong></td>
         <td>Project age at evaluation: roughly six weeks at the most recent release. Two contributors visible in the public history, with one author responsible for the majority of commits.</td>
-        <td><span class="pill dim">partial</span></td>
+        <td><span class="rs-pill rs-pill--dim">partial</span></td>
       </tr>
       <tr>
         <td><strong>Operational fit</strong></td>
         <td>No MCP server surface for agent integration; no graph database (depends on a local vector store and a third-party vector-DB SDK); no fit with the per-workspace HTTP server pattern or with DIAL-gateway-routed model calls.</td>
-        <td><span class="pill warn">fail</span></td>
+        <td><span class="rs-pill rs-pill--magenta">fail</span></td>
       </tr>
     </tbody>
   </table>
@@ -1264,7 +932,7 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     against the bar today, it does not fit.
   </p>
 
-  <div class="callout">
+  <div class="rs-callout rs-callout--violet">
     <h4>The honest framing</h4>
     <p>The four-of-five failure does not say the project is poorly designed. The four-layer pipeline idea is reasonable; the lack of an MCP surface is a deliberate choice given the framework it targets; the post-install patch is solving a real integration problem in its host framework. "Did not fit this adoption bar" is not the same as "is a bad project". The bar is calibrated to one specific delivery context; in another context the same project might clear the bar straightforwardly.</p>
   </div>
@@ -1276,11 +944,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 09 PLATFORM IMPLICATIONS -->
 <!-- ============================================================ -->
-<section class="section" id="s09">
-<div class="container">
-  <div class="section-label"><span class="num">09</span> Platform implications · DIAL-based delivery</div>
+<section class="rs-section" id="s09">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">09</span> Platform implications · DIAL-based delivery</div>
   <h2>What the findings imply for how memory is provisioned and routed.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     The findings translate to four concrete defaults that the
     platform team should apply when standing up memory for the next
     DIAL-routed agent deployment, regardless of which account is
@@ -1301,11 +969,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 10 RECOMMENDATIONS -->
 <!-- ============================================================ -->
-<section class="section" id="s10">
-<div class="container">
-  <div class="section-label"><span class="num">10</span> Recommendations · For EPAM delivery teams</div>
+<section class="rs-section" id="s10">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">10</span> Recommendations · For EPAM delivery teams</div>
   <h2>What to do this quarter, what to do this year, what to leave alone.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     The findings translate to three time-horizons of action for
     delivery teams choosing memory for the next enterprise-agent
     engagement.
@@ -1336,11 +1004,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 11 SCOPE LIMITS -->
 <!-- ============================================================ -->
-<section class="section" id="s11">
-<div class="container">
-  <div class="section-label"><span class="num">11</span> Scope limits · What this report does not claim</div>
+<section class="rs-section" id="s11">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">11</span> Scope limits · What this report does not claim</div>
   <h2>The contract between the report and the next reader who acts on it.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     Each of the findings has a scope. Stating the scope as plainly as
     the finding is what keeps the report from being over-read into
     contexts where the magnitudes do not transfer.
@@ -1363,11 +1031,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- 12 CLOSING -->
 <!-- ============================================================ -->
-<section class="section" id="s12">
-<div class="container">
-  <div class="section-label"><span class="num">12</span> Closing · The take-away</div>
+<section class="rs-section" id="s12">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">12</span> Closing · The take-away</div>
   <h2>The substrate decision is downstream of the measurement.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     The headline numbers in this report do not generalise. The
     discipline that produced them does. A deployment decision that
     survives the first production query is one that was settled by
@@ -1388,9 +1056,9 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
     decision falls out.
   </p>
 
-  <div class="callout cyan" style="margin-top: 56px;">
+  <div class="rs-callout rs-callout--teal" style="margin-top: 56px;">
     <h4>The closing thesis</h4>
-    <p style="font-family: var(--font-display); font-size: 22px; line-height: 1.35; color: var(--white); margin-bottom: 12px;">
+    <p style="font-family: var(--dx-font-serif); font-size: 22px; line-height: 1.35; color: var(--dx-fg-1); margin-bottom: 12px;">
       Applied AI is the discipline that converts frontier research and consumer-grade features into enterprise systems with measured properties, named failure modes, and a stated adoption bar.
     </p>
     <p>
@@ -1418,11 +1086,11 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 <!-- ============================================================ -->
 <!-- A METHODS APPENDIX -->
 <!-- ============================================================ -->
-<section class="section appendix" id="sA">
-<div class="container">
-  <div class="section-label"><span class="num">A</span> Methods appendix · For staff who would re-run this</div>
+<section class="rs-section" id="sA">
+<div class="rs-container">
+  <div class="rs-section-label"><span class="num">A</span> Methods appendix · For staff who would re-run this</div>
   <h2>The apparatus, the routing, the model table.</h2>
-  <p class="lede">
+  <p class="rs-lede">
     Everything in the body discussed what the numbers mean. This
     appendix documents what they are. Apparatus, model table, judging
     rubric, statistical bar. Internal artefact paths and exact
@@ -1526,41 +1194,31 @@ svg .svg-emp   { fill: var(--white); font-weight: 500; }
 </main>
 
 <footer>
-  <div class="container">
+  <div class="rs-container">
     <div>Choosing memory for enterprise agents · Applied AI Research · EPAM · Iteration 3 · working draft · 2026-05-19</div>
     <div>Arseny Gorokh · published draft</div>
   </div>
 </footer>
 
-<script>
-const progressBar = document.getElementById('progressBar');
-let scrollHeight = document.documentElement.scrollHeight;
-let clientHeight = document.documentElement.clientHeight;
-window.addEventListener('resize', () => {
-  scrollHeight = document.documentElement.scrollHeight;
-  clientHeight = document.documentElement.clientHeight;
-}, { passive: true });
-window.addEventListener('scroll', () => {
-  const scrollableHeight = scrollHeight - clientHeight;
-  const scrolled = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
-  if (progressBar) progressBar.style.width = scrolled + '%';
-}, { passive: true });
 
-const sections = document.querySelectorAll('.section');
-const tocLinks = document.querySelectorAll('.toc a');
-const linkMap = new Map(Array.from(tocLinks).map(l => [l.getAttribute('href'), l]));
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && entry.target.id) {
-      const link = linkMap.get('#' + entry.target.id);
-      if (link) {
-        tocLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-      }
-    }
-  });
-}, { rootMargin: '0% 0px -50% 0px' });
-sections.forEach(s => observer.observe(s));
+
+<script>
+(function () {
+  var bar = document.getElementById('rs-progress');
+  var links = [].slice.call(document.querySelectorAll('.rs-toc a'));
+  var targets = links.map(function (a) { return { a: a, t: document.querySelector(a.getAttribute('href')) }; }).filter(function (o) { return o.t; });
+  function onScroll() {
+    var sd = document.documentElement.scrollTop || document.body.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (bar) bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    var y = sd + 120, active = targets[0];
+    for (var i = 0; i < targets.length; i++) if (targets[i].t.offsetTop <= y) active = targets[i];
+    for (var j = 0; j < targets.length; j++) targets[j].a.classList.toggle('is-active', targets[j] === active);
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
 </script>
+
 </body>
 </html>
