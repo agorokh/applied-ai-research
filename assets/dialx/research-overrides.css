@@ -18,11 +18,28 @@
 main .rs-container { max-width: none; margin: 0; padding: 0; }
 
 /* Sticky topbar offset. Hero owns its own breathing room; main has
-   zero padding so section-padding does the inter-section work. */
+   zero padding so section-padding does the inter-section work. v8
+   bumps hero padding-top so the eyebrow + h1 sit clear of the
+   sticky bar with the same breathing room used between sections. */
 :root { --rs-topbar-h: 72px; }
 html { scroll-padding-top: var(--rs-topbar-h); }
 .rs-section { scroll-margin-top: var(--rs-topbar-h); }
-.rs-hero { padding-top: 120px; }
+.rs-hero { padding-top: 180px; }
+
+/* v8 — Hero gradient unification.
+   Index uses the dialx gradient on one italic phrase
+   (.rs-index-hero h1 em). Reports were using 3 solid ax-teal /
+   ax-violet / ax-magenta accents on three italic phrases — read
+   as a rainbow against the index's restrained single-phrase
+   pattern. Reports now adopt the same rule. */
+.rs-section.rs-hero h1 em {
+  font-style: italic;
+  background: var(--dx-gradient);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+/* Solid-color helpers still used elsewhere (eyebrow accents, etc.) */
 
 /* ---- Width discipline -------------------------------------------
    The reference paper uses canonical `.rs-section p { max-width:
