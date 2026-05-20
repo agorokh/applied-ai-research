@@ -96,8 +96,10 @@ fi
 
 echo "=== landing ==="
 hero=$(count_matches 'class=["'\''][^"'\'']*\brs-index-hero\b' "$LANDING")
+posts=$(count_matches 'class=["'\''][^"'\'']*\brs-posts\b' "$LANDING")
 h1=$(count_matches '<h1\b' "$LANDING")
 check_count "rs-index-hero" "$hero" 1 1 "$LANDING"
+check_count "rs-posts"      "$posts" 1 1 "$LANDING"
 check_count "h1"            "$h1"  1 1 "$LANDING"
 check_zero  "inline <style>" '<style\b' "$LANDING"
 check_zero  "research-overrides link" 'research-overrides' "$LANDING"
