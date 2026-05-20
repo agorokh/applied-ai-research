@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="assets/dialx/tokens.css" />
 <link rel="stylesheet" href="assets/dialx/type.css" />
 <link rel="stylesheet" href="assets/dialx/research.css" />
-<link rel="stylesheet" href="assets/dialx/research-nav.css" />
 </head>
 <body class="rs-page">
 
@@ -20,81 +19,52 @@
       <span class="meta">EPAM · Arseny Gorokh</span>
     </a>
     <nav class="rs-nav">
-      <div class="rs-nav-reports">
-        <button type="button" class="rs-nav-reports__trigger">Reports</button>
-        <div class="rs-nav-reports__panel" aria-label="Reports">
-          <ul class="rs-nav-reports__list">
-            <li class="rs-nav-reports__item">
-              <a class="rs-nav-reports__link" href="2026-05-19_choosing-memory-for-enterprise-agents/">
-                <span class="rs-nav-reports__date">2026-05-19</span>
-                <span class="rs-nav-reports__title">Choosing memory for enterprise agents</span>
-              </a>
-            </li>
-            <li class="rs-nav-reports__item">
-              <a class="rs-nav-reports__link" href="2026-05-15_claude-code-via-dial-poc/">
-                <span class="rs-nav-reports__date">2026-05-15</span>
-                <span class="rs-nav-reports__title">Claude Code via EPAM DIAL · POC</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <a href="https://github.com/agorokh/applied-ai-research">GitHub</a>
+      <a href="./" class="is-current">Index</a>
+      <a href="https://github.com/agorokh/applied-ai-research">About</a>
     </nav>
-    <div class="rs-nav-meta">
-      <span class="live">live</span>
-      <span>2026</span>
-    </div>
   </div>
 </header>
 
 <main>
 
-<section class="rs-index-hero">
-  <h1>Research from the <em>middle band.</em></h1>
-  <p>Working notes on what it takes to convert a frontier or consumer-grade AI capability into an enterprise substrate. Memory, gateways, agent harnesses — measured on real stacks, with named failure modes and an adoption path stated up front.</p>
-</section>
+  <section class="rs-index-hero">
+    <h1>Research from the <em>middle band.</em></h1>
+    <p>Working notes on what it takes to convert a frontier or consumer-grade AI capability into an enterprise substrate. Memory, gateways, agent harnesses, measured on real stacks, with named failure modes and an adoption path stated up front.</p>
+  </section>
 
-<section class="rs-posts">
-  <article class="rs-post">
-    <div class="rs-post__date">2026 · 05 · 19</div>
-    <div>
-      <h3 class="rs-post__title"><a href="2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for <em>enterprise agents.</em></a></h3>
-      <p class="rs-post__excerpt">Production-weighted retrieval on an SDLC-history corpus. The chunk-text approach beats the entity-graph approach by 36 percentage points under realistic weighting; the same weighting that called them a tie under uniform aggregation. Stale-fact inversion by executor tier. Why a fourth candidate did not clear the adoption bar.</p>
+  <section class="rs-posts">
+    <div class="rs-posts__header">
+      <p class="rs-section-label"><span class="num">·</span> Publications</p>
+      <p class="rs-posts__count">2 reports</p>
     </div>
-    <div class="rs-post__meta">
-      <span class="tag">Substrate study</span>
-      <span>Memory · adoption bar</span>
-      <span>14 min read</span>
-    </div>
-  </article>
 
-  <article class="rs-post">
-    <div class="rs-post__date">2026 · 05 · 15</div>
-    <div>
-      <h3 class="rs-post__title"><a href="2026-05-15_claude-code-via-dial-poc/">Claude Code via EPAM DIAL · <em>POC report.</em></a></h3>
-      <p class="rs-post__excerpt">Routing a frontier coding harness through an enterprise gateway. 192 trials, eight upstreams, AWS Bedrock list pricing. Qwen3-Coder 480B lands as the cheapest 100%-pass model at $0.101 per success; the adapter doubles as a structured observation point for the AI-native SDLC.</p>
-    </div>
-    <div class="rs-post__meta">
-      <span class="tag">POC report</span>
-      <span>Gateway · telemetry</span>
-      <span>12 min read</span>
-    </div>
-  </article>
+    <article class="rs-post">
+      <div class="rs-post__date">2026 · 05 · 19</div>
+      <div>
+        <h3 class="rs-post__title"><a href="2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for <em>enterprise agents.</em></a></h3>
+        <p class="rs-post__excerpt">Production-weighted retrieval on an SDLC-history corpus. LightRAG beats Graphiti by 36 percentage points under realistic weighting, the same weighting that called the two a tie under uniform aggregation. Stale-fact inversion by executor tier. Why a fourth candidate did not clear the adoption bar.</p>
+      </div>
+      <div class="rs-post__meta">
+        <span class="tag">Substrate study</span>
+        <span>Memory · adoption bar</span>
+        <span>14 min read</span>
+      </div>
+    </article>
 
-  <article class="rs-post rs-post--in-progress" aria-disabled="true">
-    <div class="rs-post__date">In progress</div>
-    <div>
-      <h3 class="rs-post__title">Prompt-injection resilience for <em>retrieval substrates.</em></h3>
-      <p class="rs-post__excerpt">Next rotation of the memory-substrate loop, on adversarial input. Same eight-task fixture, same adoption bar, prompt-injection payloads added at the retrieval boundary. Publishes when the matrix completes.</p>
-    </div>
-    <div class="rs-post__meta">
-      <span class="tag">Drafting</span>
-      <span>Memory · adversarial</span>
-      <span>— min read</span>
-    </div>
-  </article>
-</section>
+    <article class="rs-post">
+      <div class="rs-post__date">2026 · 05 · 15</div>
+      <div>
+        <h3 class="rs-post__title"><a href="2026-05-15_claude-code-via-dial-poc/">Claude Code via EPAM DIAL · <em>POC report.</em></a></h3>
+        <p class="rs-post__excerpt">Routing a frontier coding harness through an enterprise gateway. 192 trials, eight upstreams, AWS Bedrock list pricing. Qwen3-Coder 480B lands as the cheapest 100%-pass model at $0.101 per success. The adapter doubles as a structured observation point for the AI-native SDLC.</p>
+      </div>
+      <div class="rs-post__meta">
+        <span class="tag">POC report</span>
+        <span>Gateway · telemetry</span>
+        <span>12 min read</span>
+      </div>
+    </article>
+
+  </section>
 
 </main>
 
@@ -105,6 +75,5 @@
   </div>
 </footer>
 
-<script src="assets/dialx/research-nav.js" defer></script>
 </body>
 </html>

@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="../assets/dialx/type.css" />
 <link rel="stylesheet" href="../assets/dialx/research.css" />
 <link rel="stylesheet" href="../assets/dialx/diagrams.css" />
-<link rel="stylesheet" href="../assets/dialx/research-nav.css" />
 </head>
 <body class="rs-page">
 
@@ -22,31 +21,9 @@
       <span class="meta">EPAM · Arseny Gorokh</span>
     </a>
     <nav class="rs-nav">
-      <div class="rs-nav-reports">
-        <button type="button" class="rs-nav-reports__trigger">Reports</button>
-        <div class="rs-nav-reports__panel" aria-label="Reports">
-          <ul class="rs-nav-reports__list">
-            <li class="rs-nav-reports__item">
-              <a class="rs-nav-reports__link is-current" href="./" aria-current="page">
-                <span class="rs-nav-reports__date">2026-05-19</span>
-                <span class="rs-nav-reports__title">Choosing memory for enterprise agents</span>
-              </a>
-            </li>
-            <li class="rs-nav-reports__item">
-              <a class="rs-nav-reports__link" href="../2026-05-15_claude-code-via-dial-poc/">
-                <span class="rs-nav-reports__date">2026-05-15</span>
-                <span class="rs-nav-reports__title">Claude Code via EPAM DIAL · POC</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <a href="https://github.com/agorokh/applied-ai-research">GitHub</a>
+      <a href="../">Index</a>
+      <a href="https://github.com/agorokh/applied-ai-research">About</a>
     </nav>
-    <div class="rs-nav-meta">
-      <span class="live">live</span>
-      <span>2026</span>
-    </div>
   </div>
 </header>
 
@@ -68,339 +45,252 @@
 
 <main>
 
-<section class="rs-section rs-hero" id="hero">
-  <div class="rs-grid-bg"></div>
-  <div class="rs-hero-inner">
-    <div>
-      <p class="rs-section-label"><span class="num">00</span> Cover · the middle band</p>
-      <h1>Choosing memory for <em>enterprise agents.</em></h1>
-      <p class="rs-lede">
-        Frontier labs publish capability jumps; consumer products convert a subset into compelling features; enterprise systems still have to survive scale, tenancy, audit, schema change, and adversarial input. Applied AI is the middle band — the discipline of taking a research result or a consumer-grade feature and converting it into a substrate with measured properties, named failure modes, and an adoption path. This entry closes the gap on one capability: long-term memory for coding-orchestration agents on an SDLC-history corpus.
-      </p>
+<article>
+
+  <section class="rs-section rs-hero" id="hero">
+    <div class="rs-hero-eyebrow">
+      <span class="tag">Substrate study</span>
+      <span class="dot">·</span>
+      <span>2026 · 05 · 19</span>
+      <span class="dot">·</span>
+      <span>14 min read</span>
     </div>
-  </div>
-</section>
 
-<section class="rs-section" id="s01">
-  <p class="rs-section-label"><span class="num">01</span> Executive summary</p>
-  <h2>Three findings, <em>one decision.</em></h2>
-  <p class="rs-lede">Structured as a deployment-decision memo, not a benchmark recap. Three callouts are the headline; the body sections that follow are the supporting argument.</p>
+    <h1>Choosing memory for <em>enterprise agents.</em></h1>
 
-  <div class="rs-callout rs-callout--teal">
-    <h4>Finding 1 — Production-weighted retrieval</h4>
-    <p>The chunk-text retrieval approach (LightRAG) outperformed the entity-graph approach (Graphiti) by 36 percentage points when the test was weighted to match real production query frequency. Under naïve uniform weighting the two looked tied; the weighting decided the outcome.</p>
-  </div>
+    <p class="rs-lede">
+      Frontier ships as papers. Consumer ships as demos. Applied AI ships as systems, the discipline of taking a research result or a consumer-grade feature and converting it into an enterprise substrate with measured properties, named failure modes, and an adoption path. This entry closes the gap on one capability: long-term memory for coding-orchestration agents on an SDLC-history corpus.
+    </p>
 
-  <div class="rs-callout rs-callout--violet">
-    <h4>Finding 2 — Fabrication count</h4>
-    <p>Zero versus four out of 128 paired trials. The substrate that returns literal source text never invented content; the substrate that runs an extraction step occasionally surfaced a confidently-wrong supersession claim.</p>
-  </div>
+    <div class="rs-hero-meta">
+      <div class="rs-meta-stat"><span class="v">36<span class="unit">pp gap</span></span><span class="l">LightRAG vs Graphiti under realistic weighting</span></div>
+      <div class="rs-meta-stat"><span class="v">0<span class="unit">vs 4</span></span><span class="l">Fabricated answers across 128 trials</span></div>
+      <div class="rs-meta-stat"><span class="v">2<span class="unit">tiers</span></span><span class="l">Executor capability tiers compared</span></div>
+      <div class="rs-meta-stat"><span class="v">5<span class="unit">criteria</span></span><span class="l">Stated adoption bar, applied uniformly</span></div>
+    </div>
+  </section>
 
-  <div class="rs-callout rs-callout--magenta">
-    <h4>Finding 3 — Stale-fact inversion by executor tier</h4>
-    <p>Bi-temporal metadata helped a smaller executor and hurt a more-capable one in the pilot signal. The stronger executor sometimes re-quoted the older fact because the metadata told it the older fact existed. Context design must match executor capability; it is not a universal default until the formal suite is re-run.</p>
-  </div>
-</section>
+  <section class="rs-section" id="s01">
+    <p class="rs-section-label"><span class="num">01</span> Executive summary</p>
+    <h2>Three findings, <em>one decision.</em></h2>
+    <p>Structured as a deployment-decision memo, not a benchmark recap. The three callouts below are the headline; the body sections that follow are the supporting argument.</p>
 
-<section class="rs-section" id="s02">
-  <p class="rs-section-label"><span class="num">02</span> Why memory matters</p>
-  <h2>Coding agents do not fail on the call. They fail <em>across calls.</em></h2>
-  <p>Single-turn coding tasks are largely solved by 2026: the strongest executor models close most well-specified one-shot prompts inside one or two iterations. The failures that matter for enterprise adoption appear in multi-turn workflows. The agent has to remember what was decided three turns ago, hold a project-wide invariant across files, and resist drifting into a different solution because the conversation has accumulated noise.</p>
-  <p>That capacity sits in the memory architecture, not the language model. The model produces a next token; the memory architecture decides which prior turns, files, and decisions are visible when that next token is produced. Enterprise teams do not buy "a model." They buy a system whose memory architecture decides whether a multi-day workflow holds together.</p>
-  <h3>What "memory" means here</h3>
-  <p>Three structural choices, in combination, define a memory architecture:</p>
-  <ul>
-    <li><strong>What is retained.</strong> Conversation turns, retrieved file chunks, summarised prior sessions, decision artefacts.</li>
-    <li><strong>How retention is keyed.</strong> Recency window, semantic similarity, explicit tags, graph traversal, deterministic indexing.</li>
-    <li><strong>What gets surfaced per turn.</strong> The slice of the retained set that the executor model actually sees on a given call.</li>
-  </ul>
-  <p>The two architectures compared in this report — LightRAG (chunk-text) and Graphiti (entity-graph with bi-temporal metadata) — differ on all three.</p>
-</section>
+    <div class="rs-callout">
+      <h4>Finding 1. Production-weighted retrieval separates the substrates by 36 points</h4>
+      <p>The chunk-text retrieval approach (LightRAG) outperformed the entity-graph approach (Graphiti) by 36 percentage points when the test was weighted to match real production query frequency. Under naïve uniform weighting the two looked tied; the weighting decided the outcome. The bar is stated, the weights are stated, and the dispersion across executors is small enough to attribute the win to substrate architecture, not lucky pairings.</p>
+    </div>
 
-<section class="rs-section" id="s03">
-  <p class="rs-section-label"><span class="num">03</span> The adoption bar</p>
-  <h2>Five criteria, weighted, <em>stated up front.</em></h2>
-  <p class="rs-lede">Every benchmark is partial. The honest move is to publish the weighting before running the scoring, so the result cannot drift to match a preferred winner.</p>
+    <div class="rs-callout">
+      <h4>Finding 2. Reliability is binary across tiers</h4>
+      <p>The top tier produced <strong>zero fabricated answers</strong> across 128 trials. The second tier produced four, across the same prompt set, the same eight tasks, the same executors. In enterprise terms this is the difference between a system one ships and a system one runs in shadow until further notice.</p>
+    </div>
 
-  <table class="rs-table">
-    <thead>
-      <tr>
-        <th>Criterion</th>
-        <th>What it asks</th>
-        <th>Weight</th>
-        <th>Pass bar</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Integration surface</strong></td>
-        <td>Python-callable read path, MCP-compatible agent interface, multi-tenant per-workspace mode.</td>
-        <td class="mono">0.25</td>
-        <td>All three</td>
-      </tr>
-      <tr>
-        <td><strong>Install hygiene</strong></td>
-        <td>Installing leaves third-party software unchanged. No host-environment patches, no silent fall-through.</td>
-        <td class="mono">0.20</td>
-        <td>Clean install</td>
-      </tr>
-      <tr>
-        <td><strong>Test coverage</strong></td>
-        <td>Non-trivial test suite exercising the consuming-stack API. A wired-but-empty harness fails this.</td>
-        <td class="mono">0.20</td>
-        <td>Real tests</td>
-      </tr>
-      <tr>
-        <td><strong>Maintenance posture</strong></td>
-        <td>More than one active contributor, sustainable release cadence, API stabilised over time.</td>
-        <td class="mono">0.15</td>
-        <td>≥ 6 months</td>
-      </tr>
-      <tr>
-        <td><strong>Operational fit</strong></td>
-        <td>Routes through EPAM DIAL, telemetry to existing observability stack, secrets via managed store.</td>
-        <td class="mono">0.20</td>
-        <td>No bespoke</td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="rs-callout">
+      <h4>Finding 3. Bi-temporal metadata helps a smaller executor and hurts a more-capable one</h4>
+      <p>The stronger executor sometimes re-quoted the older fact because the metadata told it the older fact existed. Context design must match executor capability; it is not a universal default until the formal closed-loop suite re-runs.</p>
+    </div>
+  </section>
 
-  <p>The bar is stated before the candidates are scored. A bar applied post-hoc rationalises a decision already made; a bar applied a priori constrains the decision and is reproducible by the next reviewer.</p>
-</section>
+  <section class="rs-section" id="s02">
+    <p class="rs-section-label"><span class="num">02</span> Why memory matters</p>
+    <h2>Coding agents do not fail on the call. They fail <em>across calls.</em></h2>
+    <p>Single-turn coding tasks are largely solved by 2026: the strongest executor models close most well-specified one-shot prompts inside one or two iterations. The failures that matter for enterprise adoption appear in multi-turn workflows. The agent has to remember what was decided three turns ago, hold a project-wide invariant across files, and resist drifting into a different solution because the conversation has accumulated noise.</p>
+    <p>That capacity sits in the memory architecture, not the language model. The model produces a next token; the memory architecture decides which prior turns, files, and decisions are visible when that next token is produced. Enterprise teams do not buy "a model." They buy a system whose memory architecture decides whether a multi-day workflow holds together.</p>
 
-<section class="rs-section" id="s04">
-  <p class="rs-section-label"><span class="num">04</span> Test design</p>
-  <h2>Two substrates × two executor tiers × eight tasks.</h2>
+    <h3>What "memory" means here</h3>
+    <p>Three structural choices, in combination, define a memory architecture:</p>
+    <ul>
+      <li><strong>What is retained.</strong> Conversation turns, retrieved file chunks, summarised prior sessions, decision artefacts.</li>
+      <li><strong>How retention is keyed.</strong> Recency window, semantic similarity, explicit tags, graph traversal, deterministic indexing.</li>
+      <li><strong>What gets surfaced per turn.</strong> The slice of the retained set that the executor model actually sees on a given call.</li>
+    </ul>
+    <p>The two architectures compared in this report, LightRAG (chunk-text) and Graphiti (entity-graph with bi-temporal metadata), differ on all three.</p>
+  </section>
 
-  <div class="dx-figure">
-    <span class="dx-figure__tag">Diagram 04 · Matrix design</span>
-    <svg class="dx-svg" viewBox="0 0 1200 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Test matrix">
-      <defs>
-        <marker id="dx-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M 0 0 L 8 4 L 0 8 z" fill="#8B5BFF"/>
-        </marker>
-      </defs>
-      <text x="100" y="36" class="svg-label">Memory substrate</text>
-      <text x="480" y="36" class="svg-label">Executor tier</text>
-      <text x="900" y="36" class="svg-label">Eight tasks</text>
+  <section class="rs-section" id="s03">
+    <p class="rs-section-label"><span class="num">03</span> The adoption bar</p>
+    <h2>Five criteria, weighted, <em>stated up front.</em></h2>
+    <p>Every benchmark is partial. The honest move is to publish the weighting before running the scoring, so the result cannot drift to match a preferred winner.</p>
 
-      <rect x="60" y="74" width="200" height="60" fill="none" stroke="#1FD3C6" stroke-width="1.4" rx="4"/>
-      <text x="160" y="108" text-anchor="middle" class="svg-emp" fill="#1FD3C6">LightRAG</text>
-      <text x="160" y="126" text-anchor="middle" class="svg-mono">chunk-text retrieval</text>
+    <table class="rs-table">
+      <thead>
+        <tr><th>Criterion</th><th>What it asks</th><th>Weight</th><th>Pass bar</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Integration surface</strong></td><td>Python-callable read path, MCP-compatible agent interface, multi-tenant per-workspace mode.</td><td class="mono">0.25</td><td>All three</td></tr>
+        <tr><td><strong>Install hygiene</strong></td><td>Installing leaves third-party software unchanged. No host-environment patches, no silent fall-through.</td><td class="mono">0.20</td><td>Clean install</td></tr>
+        <tr><td><strong>Test coverage</strong></td><td>Non-trivial test suite exercising the consuming-stack API. A wired-but-empty harness fails this.</td><td class="mono">0.20</td><td>Real tests</td></tr>
+        <tr><td><strong>Maintenance posture</strong></td><td>More than one active contributor, sustainable release cadence, API stabilised over time.</td><td class="mono">0.15</td><td>≥ 6 months</td></tr>
+        <tr><td><strong>Operational fit</strong></td><td>Routes through EPAM DIAL, telemetry to existing observability stack, secrets via managed store.</td><td class="mono">0.20</td><td>No bespoke</td></tr>
+      </tbody>
+    </table>
+    <p>The bar is stated before the candidates are scored. A bar applied post-hoc rationalises a decision already made; a bar applied a priori constrains the decision and is reproducible by the next reviewer.</p>
+  </section>
 
-      <rect x="60" y="160" width="200" height="60" fill="none" stroke="#E54B9C" stroke-width="1.4" rx="4"/>
-      <text x="160" y="194" text-anchor="middle" class="svg-emp" fill="#E54B9C">Graphiti</text>
-      <text x="160" y="212" text-anchor="middle" class="svg-mono">entity-graph + bi-temporal</text>
+  <section class="rs-section" id="s04">
+    <p class="rs-section-label"><span class="num">04</span> Test design</p>
+    <h2>Two substrates, two executor tiers, <em>eight tasks.</em></h2>
+    <p>The matrix is small and deliberate: two memory architectures (LightRAG, Graphiti) paired with two executor capability tiers (frontier and economical), evaluated against eight repository-shaped task families, two passes per cell. 128 trials total. The eight task families are weighted by their production query frequency on the SDLC-history corpus; uniform weighting is reported alongside for comparison.</p>
+    <p>Hidden validators decide each task at the binary level: the agent either produced the right artefact or it did not. Refusal, when memory was designed to be insufficient, counts as a correct response in the reliability column.</p>
+  </section>
 
-      <rect x="440" y="74" width="200" height="60" fill="none" stroke="#4F86FF" stroke-width="1.4" rx="4"/>
-      <text x="540" y="108" text-anchor="middle" class="svg-emp" fill="#4F86FF">Executor T1</text>
-      <text x="540" y="126" text-anchor="middle" class="svg-mono">Claude Sonnet · frontier</text>
+  <section class="rs-section" id="s05">
+    <p class="rs-section-label"><span class="num">05</span> Headline result</p>
+    <h2>LightRAG clears the bar; <em>Graphiti does not.</em></h2>
 
-      <rect x="440" y="160" width="200" height="60" fill="none" stroke="#8B5BFF" stroke-width="1.4" rx="4"/>
-      <text x="540" y="194" text-anchor="middle" class="svg-emp" fill="#8B5BFF">Executor T2</text>
-      <text x="540" y="212" text-anchor="middle" class="svg-mono">Gemini Flash · economical</text>
-
-      <rect x="820" y="74" width="320" height="146" fill="none" stroke="#2B2E44" rx="4"/>
-      <text x="980" y="106" text-anchor="middle" class="svg-emp">Eight tasks per cell</text>
-      <text x="840" y="132" class="svg-mono">T1 current rule · T5 entity disambig</text>
-      <text x="840" y="150" class="svg-mono">T2 handoff state · T6 supersession</text>
-      <text x="840" y="168" class="svg-mono">T3 multi-hop · T7 abstention</text>
-      <text x="840" y="186" class="svg-mono">T4 link traversal · T8 knowledge update</text>
-      <text x="840" y="208" class="svg-mono">128 trials total · two passes per cell</text>
-
-      <line x1="260" y1="104" x2="440" y2="104" class="svg-line-accent" marker-end="url(#dx-arr)"/>
-      <line x1="260" y1="190" x2="440" y2="190" class="svg-line-accent" marker-end="url(#dx-arr)"/>
-      <line x1="640" y1="104" x2="820" y2="125" class="svg-line-accent" marker-end="url(#dx-arr)"/>
-      <line x1="640" y1="190" x2="820" y2="170" class="svg-line-accent" marker-end="url(#dx-arr)"/>
-    </svg>
-    <p class="dx-figure__cap">Two substrates × two executor tiers × eight repository tasks × two passes = 128 trials. Eight task families weighted by their production query frequency on the SDLC-history corpus; uniform weighting reported for comparison.</p>
-  </div>
-</section>
-
-<section class="rs-section" id="s05">
-  <p class="rs-section-label"><span class="num">05</span> Headline result</p>
-  <h2>LightRAG clears the bar; <em>Graphiti does not.</em></h2>
-
-  <div class="rs-tiers rs-tiers--2">
-    <div class="rs-tier" style="--accent: var(--dx-teal);">
-      <span class="rs-tier__num">A</span>
-      <div class="rs-tier__name">LightRAG · chunk-text</div>
-      <h3>Production-weighted win · clears the bar</h3>
-      <p>Returns literal source text. Surfaces canonical chunks without an extraction step. Refuses cleanly when memory is insufficient.</p>
-      <div class="rs-tier__specs">
-        <div><span class="k">Win rate (weighted)</span><span class="v">68%</span></div>
-        <div><span class="k">Win rate (uniform)</span><span class="v">32%</span></div>
-        <div><span class="k">Fabrications</span><span class="v">0 / 128</span></div>
-        <div><span class="k">Adoption bar</span><span class="v">5 of 5</span></div>
+    <div class="rs-tiers rs-tiers--2">
+      <div class="rs-tier" style="--accent: var(--dx-teal);">
+        <span class="rs-tier__num">A</span>
+        <div class="rs-tier__name">LightRAG · chunk-text</div>
+        <h3>Production-weighted win · clears the bar</h3>
+        <p>Returns literal source text. Surfaces canonical chunks without an extraction step. Refuses cleanly when memory is insufficient.</p>
+        <div class="rs-tier__specs">
+          <div><span class="k">Win rate (weighted)</span><span class="v">68%</span></div>
+          <div><span class="k">Win rate (uniform)</span><span class="v">32%</span></div>
+          <div><span class="k">Fabrications</span><span class="v">0 / 128</span></div>
+          <div><span class="k">Adoption bar</span><span class="v">5 of 5</span></div>
+        </div>
+      </div>
+      <div class="rs-tier" style="--accent: var(--dx-magenta);">
+        <span class="rs-tier__num">B</span>
+        <div class="rs-tier__name">Graphiti · entity-graph</div>
+        <h3>Tied under uniform · below under realistic</h3>
+        <p>Runs an extraction step over ingested documents. Bi-temporal metadata helps where supersession matters; hurts where the executor over-trusts the graph.</p>
+        <div class="rs-tier__specs">
+          <div><span class="k">Win rate (weighted)</span><span class="v">32%</span></div>
+          <div><span class="k">Win rate (uniform)</span><span class="v">36%</span></div>
+          <div><span class="k">Fabrications</span><span class="v">4 / 128</span></div>
+          <div><span class="k">Adoption bar</span><span class="v">5 of 5</span></div>
+        </div>
       </div>
     </div>
-    <div class="rs-tier" style="--accent: var(--dx-magenta);">
-      <span class="rs-tier__num">B</span>
-      <div class="rs-tier__name">Graphiti · entity-graph</div>
-      <h3>Tied under uniform · below under realistic</h3>
-      <p>Runs an extraction step over ingested documents. Bi-temporal metadata helps where supersession matters; hurts where the executor over-trusts the graph.</p>
-      <div class="rs-tier__specs">
-        <div><span class="k">Win rate (weighted)</span><span class="v">32%</span></div>
-        <div><span class="k">Win rate (uniform)</span><span class="v">36%</span></div>
-        <div><span class="k">Fabrications</span><span class="v">4 / 128</span></div>
-        <div><span class="k">Adoption bar</span><span class="v">5 of 5</span></div>
+    <p>The 36-point gap is the weighted score difference, not the raw correctness delta. Most of the spread is driven by recall and reliability on canonical-text queries. Graphiti can still produce a passing answer; it cannot demonstrate that it would refuse to produce a wrong one under production query mix.</p>
+  </section>
+
+  <section class="rs-section" id="s06">
+    <p class="rs-section-label"><span class="num">06</span> Reliability</p>
+    <h2>The fabrication test, and <em>what passing it means.</em></h2>
+    <p>Each trial included a designed insufficiency: a task where the substrate did not have the file or the prior decision required to answer. The correct behaviour is to refuse and ask. Fabrication is producing an answer that looks reasonable but cites the wrong document, the wrong supersession date, or invents an architecture invariant.</p>
+
+    <div class="rs-callout">
+      <h4>The result</h4>
+      <p>LightRAG refused all 16 insufficiency cases (twice each across two passes) and produced zero fabrications across the 128 total trials. Graphiti fabricated on four cases, all in T2-executor pairings. The structural reason: when the entity graph carries a confidently-wrong supersession claim, the executor cannot disambiguate against the underlying source.</p>
+    </div>
+
+    <p>Reliability is not a smooth metric. A system that fabricates once per hundred is the same shape of system as one that fabricates four times per hundred; both require a human reviewer on every output. The difference between "passes the bar" and "fails the bar" is binary at zero.</p>
+  </section>
+
+  <section class="rs-section" id="s07">
+    <p class="rs-section-label"><span class="num">07</span> Tier interaction</p>
+    <h2>Substrate sets the ceiling. <em>Executor decides how close you get.</em></h2>
+
+    <table class="rs-table">
+      <thead>
+        <tr><th>Cell</th><th>Substrate · Executor</th><th>Weighted</th><th>Uniform</th><th>Fabrications</th><th>Verdict</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>A × T1</strong></td><td>LightRAG · Sonnet</td><td>68%</td><td>32%</td><td>0 / 32</td><td><span class="rs-pill rs-pill--teal">Adopt</span></td></tr>
+        <tr><td><strong>A × T2</strong></td><td>LightRAG · Gemini Flash</td><td>61%</td><td>28%</td><td>0 / 32</td><td><span class="rs-pill rs-pill--blue">Adopt (scoped)</span></td></tr>
+        <tr><td><strong>B × T1</strong></td><td>Graphiti · Sonnet</td><td>32%</td><td>36%</td><td>2 / 32</td><td><span class="rs-pill rs-pill--magenta">Reject</span></td></tr>
+        <tr><td><strong>B × T2</strong></td><td>Graphiti · Gemini Flash</td><td>40%</td><td>30%</td><td>2 / 32</td><td><span class="rs-pill rs-pill--magenta">Reject</span></td></tr>
+      </tbody>
+    </table>
+
+    <p>The pilot signal showed bi-temporal metadata helping the smaller executor (B × T2) and hurting the more-capable one (B × T1), the stale-fact inversion. The cheaper executor benefits from explicit supersession structure; the stronger executor over-trusts it. The formal closed-loop suite for that hypothesis is deferred; the cell-level numbers here are directional input, not the headline.</p>
+  </section>
+
+  <section class="rs-section" id="s08">
+    <p class="rs-section-label"><span class="num">08</span> Decision</p>
+    <h2>What we ship, and <em>on what schedule.</em></h2>
+    <p>The matrix produces three decisions, not one. They sit on three different timelines.</p>
+
+    <div class="dx-flow" style="--cols: 3;">
+      <div class="dx-station">
+        <span class="dx-station__n">Now · Q3 26</span>
+        <div class="dx-station__t">Adopt LightRAG × Sonnet for production</div>
+        <div class="dx-station__b">All multi-day repository workflows route to chunk-text on the frontier executor, on the <a href="../2026-05-15_claude-code-via-dial-poc/#s08">DIAL gateway path</a>. Roll-forward by team, not by feature.</div>
+      </div>
+      <div class="dx-station">
+        <span class="dx-station__n">Pilot · Q4 26</span>
+        <div class="dx-station__t">Pilot LightRAG × Gemini Flash on bounded surfaces</div>
+        <div class="dx-station__b">Same substrate, cheaper executor. Bounded to refactor, rename, single-file changes. Quarterly review of fabrication rate.</div>
+      </div>
+      <div class="dx-station">
+        <span class="dx-station__n">Sunset · Q1 27</span>
+        <div class="dx-station__t">Retire Graphiti as the canonical substrate</div>
+        <div class="dx-station__b">No path to the bar at either executor tier under production weighting. Existing deployments migrate by end of Q1; no new pilots.</div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <p>The 36-point gap is the weighted score difference, not the raw correctness delta. Most of the spread is driven by recall and reliability on canonical-text queries — Graphiti can still produce a passing answer; it cannot demonstrate that it would refuse to produce a wrong one under production query mix.</p>
-</section>
+  <section class="rs-section" id="s09">
+    <p class="rs-section-label"><span class="num">09</span> Platform</p>
+    <h2>What the substrate has to <em>expose.</em></h2>
+    <p>If the memory architecture is the thing that wins, the platform contract that wraps it needs four properties that today's gateways do not all have.</p>
 
-<section class="rs-section" id="s06">
-  <p class="rs-section-label"><span class="num">06</span> Reliability — the 0 vs 4 result</p>
-  <h2>The fabrication test, and what passing it means.</h2>
-  <p>Each trial included a designed insufficiency: a task where the substrate did not have the file or the prior decision required to answer. The correct behaviour is to refuse and ask. Fabrication is producing an answer that looks reasonable but cites the wrong document, the wrong supersession date, or invents an architecture invariant.</p>
-
-  <div class="rs-callout rs-callout--violet">
-    <h4>The result</h4>
-    <p>LightRAG refused all 16 insufficiency cases — twice each across two passes — and produced zero fabrications across the 128 total trials. Graphiti fabricated on four cases, all in T2-executor pairings. The structural reason: when the entity graph carries a confidently-wrong supersession claim, the executor cannot disambiguate against the underlying source.</p>
-  </div>
-
-  <p>Reliability is not a smooth metric. A system that fabricates once per hundred is the same shape of system as one that fabricates four times per hundred; both require a human reviewer on every output. The difference between "passes the bar" and "fails the bar" is binary at zero.</p>
-</section>
-
-<section class="rs-section" id="s07">
-  <p class="rs-section-label"><span class="num">07</span> Tier interaction</p>
-  <h2>Substrate sets the ceiling. <em>Executor decides how close you get.</em></h2>
-
-  <table class="rs-table">
-    <thead>
-      <tr>
-        <th>Cell</th>
-        <th>Substrate × Executor</th>
-        <th>Weighted</th>
-        <th>Uniform</th>
-        <th>Fabrications</th>
-        <th>Verdict</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>A × T1</strong></td>
-        <td>LightRAG · Sonnet</td>
-        <td>68%</td>
-        <td>32%</td>
-        <td>0 / 32</td>
-        <td><span class="rs-pill rs-pill--teal">Adopt</span></td>
-      </tr>
-      <tr>
-        <td><strong>A × T2</strong></td>
-        <td>LightRAG · Gemini Flash</td>
-        <td>61%</td>
-        <td>28%</td>
-        <td>0 / 32</td>
-        <td><span class="rs-pill rs-pill--blue">Adopt (scoped)</span></td>
-      </tr>
-      <tr>
-        <td><strong>B × T1</strong></td>
-        <td>Graphiti · Sonnet</td>
-        <td>32%</td>
-        <td>36%</td>
-        <td>2 / 32</td>
-        <td><span class="rs-pill rs-pill--magenta">Reject</span></td>
-      </tr>
-      <tr>
-        <td><strong>B × T2</strong></td>
-        <td>Graphiti · Gemini Flash</td>
-        <td>40%</td>
-        <td>30%</td>
-        <td>2 / 32</td>
-        <td><span class="rs-pill rs-pill--magenta">Reject</span></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>The pilot signal showed bi-temporal metadata helping the smaller executor (B × T2) and hurting the more-capable one (B × T1) — the stale-fact inversion. The cheaper executor benefits from explicit supersession structure; the stronger executor over-trusts it. The formal closed-loop suite for that hypothesis is deferred; the cell-level numbers here are directional input, not the headline.</p>
-</section>
-
-<section class="rs-section" id="s08">
-  <p class="rs-section-label"><span class="num">08</span> Adoption decision</p>
-  <h2>What we ship, and on what schedule.</h2>
-  <p class="rs-lede">The matrix produces three decisions, not one. They sit on three different timelines.</p>
-
-  <div class="dx-flow" style="--cols: 3;">
-    <div class="dx-station">
-      <span class="dx-station__n">Now · Q3 26</span>
-      <div class="dx-station__t">Adopt LightRAG × Sonnet for production</div>
-      <div class="dx-station__b">All multi-day repository workflows route to chunk-text on the frontier executor, on the <a href="../2026-05-15_claude-code-via-dial-poc/#s08">DIAL gateway path</a>. Roll-forward by team, not by feature.</div>
+    <div class="rs-2col">
+      <div>
+        <h3>Per-session memory state, addressable</h3>
+        <p>Each session needs an externalised memory state that survives executor model swap. If the executor changes mid-session, the memory layer cannot reset.</p>
+      </div>
+      <div>
+        <h3>Audit of what was surfaced</h3>
+        <p>For governance, the substrate has to log the slice of memory the executor actually saw on each call, not only the outgoing prompt. Otherwise an inspector cannot reconstruct why a particular answer was produced.</p>
+      </div>
+      <div>
+        <h3>Refusal as a first-class outcome</h3>
+        <p>"Refused: insufficient context" needs to be a recordable, queryable terminal state on the same axis as a successful response. Today most platforms treat it as a transport layer detail or drop it into freeform text.</p>
+      </div>
+      <div>
+        <h3>Decoupled cost accounting</h3>
+        <p>Memory operations (retrieval, summarisation, graph traversal) have their own cost shape. Cost-per-success only reads correctly when memory and executor billing are separable in the telemetry.</p>
+      </div>
     </div>
-    <div class="dx-station">
-      <span class="dx-station__n">Pilot · Q4 26</span>
-      <div class="dx-station__t">Pilot LightRAG × Gemini Flash on bounded surfaces</div>
-      <div class="dx-station__b">Same substrate, cheaper executor. Bounded to refactor / rename / single-file changes. Quarterly review of fabrication rate.</div>
-    </div>
-    <div class="dx-station">
-      <span class="dx-station__n">Sunset · Q1 27</span>
-      <div class="dx-station__t">Retire Graphiti as the canonical substrate</div>
-      <div class="dx-station__b">No path to the bar at either executor tier under production weighting. Existing deployments migrate by end of Q1; no new pilots.</div>
-    </div>
-  </div>
-</section>
 
-<section class="rs-section" id="s09">
-  <p class="rs-section-label"><span class="num">09</span> Platform implications</p>
-  <h2>What the substrate has to expose.</h2>
-  <p>If the memory architecture is the thing that wins, the platform contract that wraps it needs four properties that today's gateways do not all have.</p>
-
-  <div class="rs-2col">
-    <div>
-      <h3>Per-session memory state, addressable</h3>
-      <p>Each session needs an externalised memory state that survives executor model swap. If the executor changes mid-session, the memory layer cannot reset.</p>
+    <div class="rs-callout">
+      <h4>The DIAL ask</h4>
+      <p>EPAM's substrate already exposes <a href="../2026-05-15_claude-code-via-dial-poc/#s02">a translation adapter, a project-keyed gateway, and request-level telemetry</a>. The four properties above are the next contract increment: memory state as a first-class side-channel, surfaced memory in the audit record, refusal as a terminal outcome, and decoupled cost accounting per memory operation.</p>
     </div>
-    <div>
-      <h3>Audit of what was surfaced</h3>
-      <p>For governance, the substrate has to log the slice of memory the executor actually saw on each call — not only the outgoing prompt. Otherwise an inspector cannot reconstruct why a particular answer was produced.</p>
-    </div>
-    <div>
-      <h3>Refusal as a first-class outcome</h3>
-      <p>"Refused: insufficient context" needs to be a recordable, queryable terminal state on the same axis as a successful response. Today most platforms treat it as a transport layer detail or drop it into freeform text.</p>
-    </div>
-    <div>
-      <h3>Decoupled cost accounting</h3>
-      <p>Memory operations (retrieval, summarisation, graph traversal) have their own cost shape. Cost-per-success only reads correctly when memory and executor billing are separable in the telemetry.</p>
-    </div>
-  </div>
+  </section>
 
-  <div class="rs-callout rs-callout--blue">
-    <h4>The DIAL ask</h4>
-    <p>EPAM's substrate already exposes <a href="../2026-05-15_claude-code-via-dial-poc/#s02">a translation adapter, a project-keyed gateway, and request-level telemetry</a>. The four properties above are the next contract increment — memory state as a first-class side-channel, surfaced memory in the audit record, refusal as a terminal outcome, and decoupled cost accounting per memory operation.</p>
-  </div>
-</section>
+  <section class="rs-section" id="s10">
+    <p class="rs-section-label"><span class="num">10</span> Recommendations</p>
+    <h2>Three for engineering, <em>two for the platform.</em></h2>
+    <ol>
+      <li><strong>Standardise on LightRAG.</strong> Within EPAM, every coding-orchestration deployment that touches more than a single file moves to chunk-text retrieval by the end of Q3 2026.</li>
+      <li><strong>Cap Gemini Flash to scoped workflows.</strong> The cheaper executor passes the bar when the workflow is bounded. Publish the list of qualifying workflow shapes; reject pilots that fall outside it.</li>
+      <li><strong>Refuse-rate as an SLA.</strong> A coding-orchestration deployment publishes a refuse-rate alongside its success-rate. Customers see both; absence of refusals is a red flag, not a green one.</li>
+      <li><strong>Memory state as an exported artefact.</strong> The platform exposes the per-session memory state via a stable read API. Operators can inspect it; auditors can attach it to incident records; the next executor can read it on swap.</li>
+      <li><strong>Cost decomposition by memory op.</strong> The platform's telemetry separates memory operations from executor calls at the billing layer. Cost-per-success becomes legible across executor swaps.</li>
+    </ol>
+  </section>
 
-<section class="rs-section" id="s10">
-  <p class="rs-section-label"><span class="num">10</span> Recommendations</p>
-  <h2>Three for engineering, two for the platform.</h2>
-  <ol>
-    <li><strong>Standardise on LightRAG.</strong> Within EPAM, every coding-orchestration deployment that touches more than a single file moves to chunk-text retrieval by the end of Q3 2026.</li>
-    <li><strong>Cap Gemini Flash to scoped workflows.</strong> The cheaper executor passes the bar when the workflow is bounded. Publish the list of qualifying workflow shapes; reject pilots that fall outside it.</li>
-    <li><strong>Refuse-rate as an SLA.</strong> A coding-orchestration deployment publishes a refuse-rate alongside its success-rate. Customers see both; absence of refusals is a red flag, not a green one.</li>
-    <li><strong>Memory state as an exported artefact.</strong> The platform exposes the per-session memory state via a stable read API. Operators can inspect it; auditors can attach it to incident records; the next executor can read it on swap.</li>
-    <li><strong>Cost decomposition by memory op.</strong> The platform's telemetry separates memory operations from executor calls at the billing layer. Cost-per-success becomes legible across executor swaps.</li>
-  </ol>
-</section>
+  <section class="rs-section" id="s11">
+    <p class="rs-section-label"><span class="num">11</span> Scope limits</p>
+    <h2>What this report <em>does not cover.</em></h2>
+    <ul>
+      <li><strong>Non-coding workflows.</strong> The eight tasks are repository-shaped. A customer-support agent, a clinical-research agent, or a sales-ops agent has different memory pressure. Treat the findings as a strong prior, not a transfer.</li>
+      <li><strong>Sessions over a month.</strong> The longest session in this matrix is five working days. Memory architectures have different decay profiles past that; the matrix does not reach there.</li>
+      <li><strong>Multi-agent coordination.</strong> One executor, one memory, one session. Multi-agent setups introduce inter-agent memory which is its own pressure shape.</li>
+      <li><strong>Adversarial input.</strong> The matrix is benign. Prompt-injection resilience of either architecture is the next report.</li>
+    </ul>
+    <p><strong>Methodology and raw artefacts.</strong> Adoption-bar weights, task families, retrieval traces, and evaluator prompts live alongside the report source on GitHub: <a href="https://github.com/agorokh/applied-ai-research">agorokh/applied-ai-research</a>. Re-running the matrix against either substrate is a clone-and-pytest exercise.</p>
+  </section>
 
-<section class="rs-section" id="s11">
-  <p class="rs-section-label"><span class="num">11</span> Scope limits</p>
-  <h2>What this report does not cover.</h2>
-  <ul>
-    <li><strong>Non-coding workflows.</strong> The eight tasks are repository-shaped. A customer-support agent, a clinical-research agent, or a sales-ops agent has different memory pressure. Treat the findings as a strong prior, not a transfer.</li>
-    <li><strong>Sessions over a month.</strong> The longest session in this matrix is five working days. Memory architectures have different decay profiles past that; the matrix does not reach there.</li>
-    <li><strong>Multi-agent coordination.</strong> One executor, one memory, one session. Multi-agent setups introduce inter-agent memory which is its own pressure shape.</li>
-    <li><strong>Adversarial input.</strong> The matrix is benign. Prompt-injection resilience of either architecture is the next report.</li>
-  </ul>
-  <p><strong>Methodology and raw artefacts.</strong> Adoption-bar weights, task families, retrieval traces, and evaluator prompts live alongside the report source on GitHub: <a href="https://github.com/agorokh/applied-ai-research">agorokh/applied-ai-research</a>. Re-running the matrix against either substrate is a clone-and-pytest exercise.</p>
-</section>
+  <section class="rs-section" id="s12">
+    <p class="rs-section-label"><span class="num">12</span> Closing</p>
+    <h2>Applied AI is the work of <em>moving the bar to the right place.</em></h2>
+    <p>The headline number across this engagement is not the 36-point gap. It is that we know the gap because the bar was stated before the trials ran. Restate the bar, retest the architectures, republish the gap, that is the loop. This entry is one rotation of that loop, on one capability. The next rotation, on prompt-injection resilience, is in progress.</p>
+  </section>
 
-<section class="rs-section" id="s12">
-  <p class="rs-section-label"><span class="num">12</span> Closing</p>
-  <h2>Applied AI is the work of <em>moving the bar to the right place.</em></h2>
-  <p>The headline number across this engagement is not the 36-point gap. It is that we know the gap because the bar was stated before the trials ran. Restate the bar, retest the architectures, republish the gap — that is the loop. This entry is one rotation of that loop, on one capability. The next rotation, on prompt-injection resilience, is in progress.</p>
-</section>
+  <nav class="rs-article-end" aria-label="More research">
+    <a href="../" class="rs-article-end__back">
+      <span class="l">All research</span>
+      <span class="t">Browse the index <span class="arrow">→</span></span>
+    </a>
+  </nav>
+
+</article>
 
 </main>
 
@@ -411,7 +301,6 @@
   </div>
 </footer>
 
-<script src="../assets/dialx/research-nav.js" defer></script>
 <script>
 (function () {
   var bar = document.getElementById('rs-progress');
