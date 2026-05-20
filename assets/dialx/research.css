@@ -95,6 +95,11 @@
   padding: 4px 0;
 }
 .rs-nav a:hover { color: var(--dx-fg-1); }
+.rs-nav a:focus-visible {
+  color: var(--dx-fg-1);
+  outline: 2px solid var(--dx-violet);
+  outline-offset: 2px;
+}
 .rs-nav a.is-current { color: var(--dx-fg-1); }
 .rs-nav a.is-current::after {
   content: "";
