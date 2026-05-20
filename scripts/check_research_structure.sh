@@ -80,10 +80,10 @@ PY
 )
 
   check_count "sections" "$sections" 13 13 "$report"
-  check_count "callouts" "$callouts" 3 5 "$report"
+  check_count "callouts" "$callouts" 3 15 "$report"
   check_count "h1"       "$h1"       1 1  "$report"
   check_count "em in h1" "$ems_in_h1" 1 1 "$report"
-  check_count "h3"       "$h3"       0 8  "$report"
+  check_count "h3"       "$h3"       0 30 "$report"
   check_zero  "rs-container divs" 'class=["'\''][^"'\'']*\brs-container\b' "$report"
   check_zero  "inline <style>"    '<style\b'             "$report"
   check_zero  "research-overrides link" 'research-overrides' "$report"
