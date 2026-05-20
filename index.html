@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Applied AI Research · EPAM · Arseny Gorokh</title>
-<meta name="description" content="Engineering research papers from EPAM Applied AI. Each report takes one frontier or consumer-grade AI capability — memory, agents, gateways, observability — and measures what it takes to make it enterprise-deployable." />
+<meta name="description" content="Engineering research notes from Arseny Gorokh, EPAM Applied AI. Each report takes one frontier or consumer-grade AI capability and measures what it takes to make it enterprise-deployable." />
 <link rel="stylesheet" href="assets/dialx/tokens.css" />
 <link rel="stylesheet" href="assets/dialx/type.css" />
 <link rel="stylesheet" href="assets/dialx/research.css" />
@@ -19,92 +19,59 @@
       <span class="meta">EPAM · Arseny Gorokh</span>
     </a>
     <nav class="rs-nav">
-      <a href="./" class="is-current">Index</a>
-      <a href="2026-05-19_choosing-memory-for-enterprise-agents/">Latest</a>
-      <a href="https://github.com/agorokh/applied-ai-research">GitHub</a>
+      <a href="./" class="is-current" aria-current="page">Index</a>
+      <a href="https://github.com/agorokh/applied-ai-research">About</a>
     </nav>
-    <div class="rs-nav-meta">
-      <span class="live">live</span>
-      <span>2026</span>
-    </div>
   </div>
 </header>
 
 <main>
 
-<section class="rs-index-hero">
-  <h1>
-    Frontier ships coding agents as products.<br />
-    Applied AI ships <em>governed systems.</em>
-  </h1>
-  <p>
-    The AI market splits three ways in 2026: research that proves a capability, consumer products that dramatise it, and enterprise systems that have to survive scale, tenancy, audit, schema change, and adversarial input. Applied AI is the middle band — the discipline of taking a research-grade or consumer-grade capability and converting it into an enterprise substrate with measured properties, named failure modes, and an adoption path. This site publishes the working drafts of that work.
-  </p>
-</section>
+  <section class="rs-index-hero">
+    <h1>Research from the <em>middle band.</em></h1>
+    <p>Working notes on what it takes to convert a frontier or consumer-grade AI capability into an enterprise substrate. Memory, gateways, agent harnesses, measured on real stacks, with named failure modes and an adoption path stated up front.</p>
+  </section>
 
-<section class="rs-section" style="padding: 56px 0 0; border-top: none;">
-  <p class="rs-section-label"><span class="num">·</span> About this site</p>
-  <h3>Why this site exists.</h3>
-  <p>
-    I publish these reports in the spirit of open source — research shared widely to help engineering teams make better enterprise-AI adoption decisions. None of it claims to be the only way, or the right way for everyone; each report is one practitioner's notes on a specific question, measured on a specific stack. AI moves fast enough that any of this could be stale next week; I commit to updating my thinking here on a best-effort basis as the picture sharpens. The series is specialised — applied AI, not AI in general. Take what's useful; the rest is honest about where it stops.
-  </p>
-</section>
-
-<section class="rs-section" style="padding: 64px 0 32px;">
-  <p class="rs-section-label"><span class="num">01</span> The series so far</p>
-</section>
-
-<section class="rs-posts" style="padding-top: 0;">
-  <article class="rs-post">
-    <div class="rs-post__date">2026 · 05 · 19</div>
-    <div>
-      <h3 class="rs-post__title">
-        <a href="2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for <em>enterprise agents.</em></a>
-      </h3>
-      <p class="rs-post__excerpt">
-        Production-weighted retrieval on an SDLC-history corpus. LightRAG beats Graphiti by 36 percentage points under realistic weighting; the same weighting that called the two a tie under uniform aggregation. Stale-fact inversion by executor tier. Why an alternative open-source candidate did not clear the adoption bar.
-      </p>
+  <section class="rs-posts">
+    <div class="rs-posts__header">
+      <p class="rs-section-label"><span class="num">·</span> Publications</p>
+      <p class="rs-posts__count">2 reports</p>
     </div>
-    <div class="rs-post__meta">
-      <span class="tag">Iteration 3</span>
-      <span>Memory · substrates</span>
-      <span>Adoption bar</span>
-    </div>
-  </article>
 
-  <article class="rs-post">
-    <div class="rs-post__date">2026 · 05 · 15</div>
-    <div>
-      <h3 class="rs-post__title">
-        <a href="2026-05-15_claude-code-via-dial-poc/">Claude Code via EPAM DIAL · <em>POC report.</em></a>
-      </h3>
-      <p class="rs-post__excerpt">
-        Routing a frontier coding harness through an enterprise gateway. 192 trials, 8 upstreams, AWS Bedrock list pricing. Qwen3-Coder 480B is the cheapest 100%-pass model in the matrix; the gateway becomes a structured observation point for the AI-native SDLC.
-      </p>
-    </div>
-    <div class="rs-post__meta">
-      <span class="tag">Iteration 3</span>
-      <span>Harness · gateway</span>
-      <span>Telemetry</span>
-    </div>
-  </article>
-</section>
+    <article class="rs-post">
+      <div class="rs-post__date">2026 · 05 · 19</div>
+      <div>
+        <h3 class="rs-post__title"><a href="2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for <em>enterprise agents.</em></a></h3>
+        <p class="rs-post__excerpt">Production-weighted retrieval on an SDLC-history corpus. LightRAG beats Graphiti by 36 percentage points under realistic weighting; under uniform aggregation Graphiti edged ahead slightly before weighting inverted the spread. Stale-fact inversion by executor tier. Why a fourth candidate did not clear the adoption bar.</p>
+      </div>
+      <div class="rs-post__meta">
+        <span class="tag">Substrate study</span>
+        <span>Memory · adoption bar</span>
+        <span>14 min read</span>
+      </div>
+    </article>
 
-<section class="rs-section" style="padding: 32px 0 96px; border-top: none;">
-  <div class="rs-callout rs-callout--violet">
-    <h4>About the format</h4>
-    <p>
-      Working drafts. Each report is versioned by iteration ("Iteration N · working draft toward v1.0"), not by date — so a v0.x label that ages into a v1.0 release is honest about how settled the thinking is. Comments, corrections, and contributions are welcome via the GitHub repository linked in the footer.
-    </p>
-  </div>
-</section>
+    <article class="rs-post">
+      <div class="rs-post__date">2026 · 05 · 15</div>
+      <div>
+        <h3 class="rs-post__title"><a href="2026-05-15_claude-code-via-dial-poc/">Claude Code via EPAM DIAL · <em>POC report.</em></a></h3>
+        <p class="rs-post__excerpt">Routing a frontier coding harness through an enterprise gateway. 192 trials, eight upstreams, AWS Bedrock list pricing. Qwen3-Coder 480B lands as the cheapest 100%-pass model at $0.101 per success. The adapter doubles as a structured observation point for the AI-native SDLC.</p>
+      </div>
+      <div class="rs-post__meta">
+        <span class="tag">POC report</span>
+        <span>Gateway · telemetry</span>
+        <span>12 min read</span>
+      </div>
+    </article>
+
+  </section>
 
 </main>
 
 <footer class="rs-footer">
   <div class="rs-footer__inner">
     <span>Applied AI Research · EPAM · 2026</span>
-    <span><a href="https://github.com/agorokh/applied-ai-research" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">github.com/agorokh/applied-ai-research</a></span>
+    <span><a href="https://github.com/agorokh/applied-ai-research">github.com/agorokh/applied-ai-research</a></span>
   </div>
 </footer>
 

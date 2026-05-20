@@ -8,19 +8,10 @@
 <link rel="stylesheet" href="../assets/dialx/type.css" />
 <link rel="stylesheet" href="../assets/dialx/research.css" />
 <link rel="stylesheet" href="../assets/dialx/diagrams.css" />
-<style>
-/* dialx retrofit compat shim: width-constrain inner wrappers from legacy markup */
-main .rs-container { max-width: none; margin: 0; padding: 0; }
-/* Some legacy reports had figure / diagram frames not yet in dialx; preserve. */
-.diagram-frame { margin: 24px 0; }
-.svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
-.svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
-.svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
-</style>
 </head>
 <body class="rs-page">
 
-<div class="rs-progress"><div class="rs-progress__bar" id="rs-progress" style="width: 0%;"></div></div>
+<div class="rs-progress"><div class="rs-progress__bar" id="rs-progress"></div></div>
 
 <header class="rs-topbar">
   <div class="rs-topbar__inner">
@@ -31,1508 +22,302 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </a>
     <nav class="rs-nav">
       <a href="../">Index</a>
-      <a href="./" class="is-current">This report</a>
-      <a href="https://github.com/agorokh/applied-ai-research">GitHub</a>
+      <a href="https://github.com/agorokh/applied-ai-research">About</a>
     </nav>
-    <div class="rs-nav-meta">
-      <span class="live">live</span>
-      <span>2026 · 05 · 15</span>
-    </div>
   </div>
 </header>
 
-
-<nav class="rs-toc">
-  <a href="#hero" class="active"><span class="num">00</span>Cover</a>
-  <a href="#s01" class=""><span class="num">01</span>Three findings</a>
-  <a href="#s02" class=""><span class="num">02</span>Bridge proven</a>
-  <a href="#s03" class=""><span class="num">03</span>Matrix verdict</a>
-  <a href="#s04" class=""><span class="num">04</span>Data plane</a>
-  <a href="#s05" class=""><span class="num">05</span>Telemetry today</a>
-  <a href="#s06" class=""><span class="num">06</span>Enrichment hierarchy</a>
-  <a href="#s07" class=""><span class="num">07</span>Before / after</a>
-  <a href="#s08" class=""><span class="num">08</span>Use cases</a>
-  <a href="#s09" class=""><span class="num">09</span>KPI framework</a>
-  <a href="#s10" class=""><span class="num">10</span>Director questions</a>
-  <a href="#s11" class=""><span class="num">11</span>Applications</a>
-  <a href="#s12" class=""><span class="num">12</span>Architectural ask</a>
-  <a href="#s13" class=""><span class="num">13</span>Caveats</a>
+<nav class="rs-toc" aria-label="Contents">
+  <a href="#hero"><span class="num">00</span>Cover</a>
+  <a href="#s01"><span class="num">01</span>Summary</a>
+  <a href="#s02"><span class="num">02</span>Why bridging matters</a>
+  <a href="#s03"><span class="num">03</span>The adoption bar</a>
+  <a href="#s04"><span class="num">04</span>Test design</a>
+  <a href="#s05"><span class="num">05</span>Headline result</a>
+  <a href="#s06"><span class="num">06</span>Reliability</a>
+  <a href="#s07"><span class="num">07</span>Tier interaction</a>
+  <a href="#s08"><span class="num">08</span>Decision</a>
+  <a href="#s09"><span class="num">09</span>Platform</a>
+  <a href="#s10"><span class="num">10</span>Recommendations</a>
+  <a href="#s11"><span class="num">11</span>Scope</a>
+  <a href="#s12"><span class="num">12</span>Closing</a>
 </nav>
 
 <main>
 
-<!-- ============================================================ -->
-<!-- 00 · HERO -->
-<!-- ============================================================ -->
-<section class="rs-section rs-hero" id="hero">
-  <div class="rs-grid-bg"></div>
-  <div class="rs-series-nav" aria-label="Series navigation">
-    <span class="rs-series-nav__label">Series ·</span>
-    <span class="this"><span class="date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</span>
-    <a href="../2026-05-19_choosing-memory-for-enterprise-agents/"><span class="date">2026-05-19 ·</span>Choosing memory for enterprise agents</a>
-  </div>
+<article>
 
-  <div class="rs-hero-inner">
-    <div>
-      <div class="rs-section-label"><span class="num">00</span> Cover · Applied AI · The middle band</div>
-      <h1>
-        Frontier ships coding agents <em><span class="ax-teal">as products.</span></em><br>
-        Applied AI turns them into <em><span class="ax-magenta">governed systems.</span></em>
-      </h1>
-      <p class="rs-lede" style="margin-top: 40px; max-width: 66ch;">
-        The AI market splits three ways in 2026: research that proves a
-        capability, consumer products that dramatise it, and enterprise
-        systems that have to survive scale, tenancy, audit, and the
-        governance contract every regulated delivery context insists on.
-        Applied AI is the middle band between the first two and the
-        third - the discipline of taking a research-grade or
-        consumer-grade capability and converting it into an enterprise
-        substrate with measured properties, named failure modes, and an
-        adoption path. I wrote this report as one instance of that
-        work, on one specific frontier-to-enterprise translation:
-        routing Anthropic's Claude Code 2.1 coding agent through
-        EPAM's DIAL gateway via a small translation adapter, then
-        measuring eight upstreams (Anthropic Bedrock plus the OSS coder
-        cohort - Qwen, Kimi, MiniMax, DeepSeek) under one fixture.
-        The strategic angle in Part III is the part most worth
-        carrying forward: the adapter doubles as a structured
-        observation point for the AI-native SDLC.
-      </p>
+  <section class="rs-section rs-hero" id="hero">
+    <div class="rs-hero-eyebrow">
+      <span class="tag">POC report</span>
+      <span class="dot">·</span>
+      <span>2026 · 05 · 15</span>
+      <span class="dot">·</span>
+      <span>12 min read</span>
     </div>
-  </div>
-  <div class="rs-container">
+
+    <h1>Claude Code via EPAM DIAL · <em>POC report.</em></h1>
+
+    <p class="rs-lede">
+      Frontier ships as papers. Consumer ships as demos. Applied AI ships as systems, the discipline of taking a research result or a consumer-grade feature and converting it into an enterprise substrate with measured properties, named failure modes, and an adoption path. This entry closes the gap on one capability: routing Anthropic's Claude Code 2.1 through EPAM's DIAL gateway, measuring eight upstreams under one fixture, and treating the adapter as a structured observation point for the AI-native SDLC.
+    </p>
+
     <div class="rs-hero-meta">
-      <div class="rs-meta-stat"><span class="v">8<span class="unit">models</span></span><span class="l">Anthropic + Qwen + Kimi + MiniMax + DeepSeek</span></div>
-      <div class="rs-meta-stat"><span class="v">$0.101<span class="unit">/ succ</span></span><span class="l">Qwen 480B · cheapest 100%-pass</span></div>
-      <div class="rs-meta-stat"><span class="v">~30<span class="unit">fields</span></span><span class="l">retained per request in InfluxDB</span></div>
-      <div class="rs-meta-stat"><span class="v">POC<span class="unit">stage</span></span><span class="l">centralizing into DIAL is Part III ask</span></div>
+      <div class="rs-meta-stat"><span class="v">$0.101<span class="unit">/ success</span></span><span class="l">Qwen3-Coder 480B, cost leader of the 100%-pass cluster</span></div>
+      <div class="rs-meta-stat"><span class="v">8<span class="unit">upstreams</span></span><span class="l">Three tiers of viability across one harness</span></div>
+      <div class="rs-meta-stat"><span class="v">192<span class="unit">trials</span></span><span class="l">Eight task families, three runs per cell</span></div>
+      <div class="rs-meta-stat"><span class="v">~30<span class="unit">fields</span></span><span class="l">Per-request telemetry retained at the adapter</span></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============================================================ -->
-<!-- 01 · THREE FINDINGS AT A GLANCE -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s01">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">01</span> Findings · The middle band, one instance</div>
-  <h2>Three findings.</h2>
+  <section class="rs-section" id="s01">
+    <p class="rs-section-label"><span class="num">01</span> Executive summary</p>
+    <h2>Three findings, <em>one strategic angle.</em></h2>
+    <p>Structured as a deployment-decision memo, not a vendor benchmark recap. The three callouts below are the headline; the body sections that follow are the supporting argument.</p>
 
-  <p class="rs-lede">
-    The work below is one instance of the Applied AI discipline named
-    in the cover. Frontier labs ship coding harnesses (Claude Code,
-    Codex CLI, Cursor) that point at the vendor's own endpoint by
-    default; consumer products lock the same harness to a single
-    upstream. Neither layer answers the enterprise question: can the
-    harness run on the gateway every other LLM call already goes
-    through, on whichever upstream the cost-quality curve actually
-    favours, with the per-request telemetry an enterprise needs to
-    operate it? I wrote this report to test that question on one
-    specific setup, and to surface the strategic angle - the wire is
-    a structured observation point - that a per-laptop adapter
-    hints at but a centralised version would deliver.
-  </p>
-
-  <p><strong>What this report is not</strong>: a vendor benchmark, or a recommendation that EPAM adopt any specific upstream. I measured eight upstreams I had operational access to via DIAL on one harness; Cursor, Aider, Codex CLI, OpenHands, and the various Continue / Cline stacks sit outside this evaluation. The pattern transfers; the magnitudes do not transfer without re-measurement on another stack. The sibling report (<a href="../2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for enterprise agents</a>) covers the substrate question on top of the same DIAL routing.</p>
-
-  <div class="rs-callout rs-callout--teal">
-    <h4>Finding 1 — The bridge works on the EPAM-compliant inference path</h4>
-    <p>Claude Code 2.1 talks to any DIAL-hosted upstream through one Anthropic-to-OpenAI translation adapter. 192 trials produced zero authentication incidents and required no Claude Code source modifications.</p>
-  </div>
-
-  <div class="rs-callout rs-callout--violet">
-    <h4>Finding 2 — Cost-per-success at Bedrock list pricing</h4>
-    <p>Qwen3-Coder 480B is the cheapest 100%-pass model at $0.101 per successful task — 38% below Claude Haiku 4.5, 4.7× below Sonnet 4.6, 6.8× below Opus 4.7. Three OSS upstreams below the Sonnet tier fail with a scale-driven, vendor-independent signature.</p>
-  </div>
-
-  <div class="rs-callout rs-callout--magenta">
-    <h4>Finding 3 — The adapter retains per-request telemetry today</h4>
-    <p>Each request writes a structured JSON record with tokens, tool inventory, cache behaviour, latency, and Bedrock-priced cost to three InfluxDB measurements. Two business dimensions (client and model family) are wired today; three more identifiers in the wire can become tags with no client change.</p>
-  </div>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 01b · THE ARCHITECTURE IN ONE PICTURE -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s01b">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">01b</span> The architecture in one picture</div>
-  <h2>One harness, three model paths, one gateway boundary.</h2>
-  <p class="rs-lede">
-    The rest of the report unpacks the measurements and the
-    findings. The single picture that holds them together is the
-    diagram below: the harness runs three model paths internally,
-    only two of which are rerouteable from the client side; the
-    gateway is the boundary where tenancy, audit, routing, and
-    observability are enforced; the upstreams sit behind it.
-  </p>
-
-  <div class="diagram-frame" style="margin-top: 32px;">
-    <span class="dx-figure__tag">DIAGRAM · 01b · CONTROL-PLANE BOUNDARY · HARNESS → GATEWAY → UPSTREAMS</span>
-    <svg viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg" style="margin-top: 18px; width: 100%; height: auto;" role="img" aria-label="Control-plane boundary diagram showing Claude Code's three model paths routed through the EPAM DIAL gateway to Bedrock-backed OSS upstreams">
-      <defs>
-        <marker id="ah-cy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dx-teal)"/></marker>
-        <marker id="ah-pu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dx-violet)"/></marker>
-        <marker id="ah-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dx-magenta)"/></marker>
-        <marker id="ah-mi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dx-teal)"/></marker>
-      </defs>
-
-      <!-- Column headers -->
-      <text x="40" y="40" class="svg-label" fill="#8A8A8A">CLIENT · CLAUDE CODE 2.1</text>
-      <text x="500" y="40" class="svg-label" fill="var(--dx-teal)">BOUNDARY · EPAM DIAL GATEWAY</text>
-      <text x="900" y="40" class="svg-label" fill="#8A8A8A">UPSTREAMS · BEDROCK-BACKED OSS</text>
-
-      <!-- Subtle column dividers -->
-      <line x1="380" y1="20" x2="380" y2="500" stroke="#2A2A2A" stroke-dasharray="2,3"/>
-      <line x1="780" y1="20" x2="780" y2="500" stroke="#2A2A2A" stroke-dasharray="2,3"/>
-
-      <!-- HARNESS box (cyan outline, holds three model paths) -->
-      <rect x="40" y="70" width="320" height="380" fill="rgba(0,246,255,0.04)" stroke="var(--dx-teal)" stroke-width="1.2" rx="2"/>
-      <text x="60" y="100" class="svg-label" fill="var(--dx-teal)">HARNESS · 3 MODEL PATHS</text>
-
-      <!-- Path 1: Main loop (cyan, rerouteable) -->
-      <rect x="60" y="120" width="280" height="80" fill="rgba(0,246,255,0.06)" stroke="var(--dx-teal)" stroke-width="1" rx="2"/>
-      <text x="76" y="144" class="svg-label" fill="var(--dx-teal)">MAIN CODING LOOP</text>
-      <text x="76" y="168" class="svg-emp" font-size="13">ANTHROPIC_DEFAULT_OPUS_MODEL</text>
-      <text x="76" y="188" class="svg-mono" fill="#E6E6E8">qwen.qwen3-coder-480b</text>
-
-      <!-- Path 2: Summariser (purple, rerouteable) -->
-      <rect x="60" y="220" width="280" height="80" fill="rgba(184,150,255,0.06)" stroke="var(--dx-violet)" stroke-width="1" rx="2"/>
-      <text x="76" y="244" class="svg-label" fill="var(--dx-violet)">NAMER / SUMMARISER</text>
-      <text x="76" y="268" class="svg-emp" font-size="13">ANTHROPIC_SMALL_FAST_MODEL</text>
-      <text x="76" y="288" class="svg-mono" fill="#E6E6E8">moonshotai.kimi-k2.5</text>
-
-      <!-- Path 3: Classifier (warn, NOT rerouteable) -->
-      <rect x="60" y="320" width="280" height="80" fill="rgba(255,179,71,0.05)" stroke="var(--dx-magenta)" stroke-width="1" stroke-dasharray="4,3" rx="2"/>
-      <text x="76" y="344" class="svg-label" fill="var(--dx-magenta)">AUTO-MODE CLASSIFIER</text>
-      <text x="76" y="368" class="svg-emp" font-size="13">(hardcoded · env var ignored)</text>
-      <text x="76" y="388" class="svg-mono" fill="#E6E6E8">forced to main-loop model</text>
-
-      <text x="60" y="430" class="svg-label" fill="#8A8A8A">CLAUDE CODE 2.1.X DESIGN LIMIT</text>
-
-      <!-- GATEWAY column: four enforcement properties stacked -->
-      <rect x="400" y="70" width="360" height="380" fill="rgba(0,246,255,0.07)" stroke="var(--dx-teal)" stroke-width="2" rx="2"/>
-      <text x="420" y="100" class="svg-label" fill="var(--dx-teal)">ENFORCED AT THE BOUNDARY</text>
-
-      <rect x="420" y="120" width="320" height="68" fill="rgba(0,244,171,0.05)" stroke="var(--dx-teal)" stroke-width="1" rx="2"/>
-      <text x="436" y="144" class="svg-label" fill="var(--dx-teal)">TENANCY</text>
-      <text x="436" y="172" class="svg-mono" fill="#E6E6E8">project key · per-project routing · quotas</text>
-
-      <rect x="420" y="200" width="320" height="68" fill="rgba(0,244,171,0.05)" stroke="var(--dx-teal)" stroke-width="1" rx="2"/>
-      <text x="436" y="224" class="svg-label" fill="var(--dx-teal)">AUDIT</text>
-      <text x="436" y="252" class="svg-mono" fill="#E6E6E8">every call logged · gateway-side · retained</text>
-
-      <rect x="420" y="280" width="320" height="68" fill="rgba(0,244,171,0.05)" stroke="var(--dx-teal)" stroke-width="1" rx="2"/>
-      <text x="436" y="304" class="svg-label" fill="var(--dx-teal)">ROUTING</text>
-      <text x="436" y="332" class="svg-mono" fill="#E6E6E8">deployment id per project · model swap central</text>
-
-      <rect x="420" y="360" width="320" height="68" fill="rgba(0,244,171,0.05)" stroke="var(--dx-teal)" stroke-width="1" rx="2"/>
-      <text x="436" y="384" class="svg-label" fill="var(--dx-teal)">OBSERVABILITY</text>
-      <text x="436" y="412" class="svg-mono" fill="#E6E6E8">per-request telemetry · joinable with business metadata</text>
-
-      <!-- Three arrows: harness → gateway -->
-      <line x1="340" y1="160" x2="420" y2="160" stroke="var(--dx-teal)" stroke-width="1.4" marker-end="url(#ah-cy)"/>
-      <line x1="340" y1="260" x2="420" y2="260" stroke="var(--dx-violet)" stroke-width="1.4" marker-end="url(#ah-pu)"/>
-      <line x1="340" y1="360" x2="420" y2="360" stroke="var(--dx-magenta)" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#ah-warn)"/>
-
-      <!-- UPSTREAMS column: three boxes -->
-      <rect x="800" y="70" width="360" height="380" fill="rgba(123,168,255,0.04)" stroke="var(--dx-blue)" stroke-width="1" rx="2"/>
-      <text x="820" y="100" class="svg-label" fill="var(--dx-blue)">UPSTREAMS · 8 EVALUATED · 3 SHOWN</text>
-
-      <rect x="820" y="120" width="320" height="80" fill="rgba(0,246,255,0.06)" stroke="var(--dx-teal)" stroke-width="1.2" rx="2"/>
-      <text x="836" y="144" class="svg-label" fill="var(--dx-teal)">CAPABLE TIER · MAIN LOOP TARGET</text>
-      <text x="836" y="170" class="svg-emp" font-size="14">Qwen3-Coder 480B</text>
-      <text x="836" y="190" class="svg-mono" fill="#E6E6E8">cheapest 100%-pass · §03</text>
-
-      <rect x="820" y="220" width="320" height="80" fill="rgba(184,150,255,0.06)" stroke="var(--dx-violet)" stroke-width="1.2" rx="2"/>
-      <text x="836" y="244" class="svg-label" fill="var(--dx-violet)">SECOND CAPABLE · SUMMARISER TARGET</text>
-      <text x="836" y="270" class="svg-emp" font-size="14">Kimi K2.5 (Moonshot)</text>
-      <text x="836" y="290" class="svg-mono" fill="#E6E6E8">background namer / summariser · §12</text>
-
-      <rect x="820" y="320" width="320" height="80" fill="rgba(255,179,71,0.05)" stroke="var(--dx-magenta)" stroke-width="1.2" stroke-dasharray="4,3" rx="2"/>
-      <text x="836" y="344" class="svg-label" fill="var(--dx-magenta)">CLASSIFIER · ROUTES TO MAIN-LOOP MODEL</text>
-      <text x="836" y="370" class="svg-emp" font-size="14">= Qwen3-Coder 480B</text>
-      <text x="836" y="390" class="svg-mono" fill="#E6E6E8">decoupling env var ignored · hot path</text>
-
-      <!-- Three arrows: gateway → upstreams -->
-      <line x1="740" y1="160" x2="820" y2="160" stroke="var(--dx-teal)" stroke-width="1.4" marker-end="url(#ah-cy)"/>
-      <line x1="740" y1="260" x2="820" y2="260" stroke="var(--dx-violet)" stroke-width="1.4" marker-end="url(#ah-pu)"/>
-      <line x1="740" y1="360" x2="820" y2="360" stroke="var(--dx-magenta)" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#ah-warn)"/>
-
-      <!-- Footer note -->
-      <text x="40" y="480" class="svg-label" fill="#8A8A8A">SOLID CYAN / PURPLE · REROUTEABLE FROM CLIENT ENV</text>
-      <text x="40" y="500" class="svg-label" fill="var(--dx-magenta)">DASHED AMBER · HARDCODED PATH · CLAUDE CODE 2.1.X DESIGN</text>
-    </svg>
-  </div>
-
-  <p style="margin-top: 16px;">
-    The picture lands two things the rest of the report quantifies.
-    First, the cost lever - the only one currently available from
-    the client side - lives on the summariser path, not on the
-    classifier path. Second, the gateway is the boundary where every
-    enterprise concern (tenancy, audit, routing, observability) is
-    enforced once and once only; the harness in front and the
-    upstreams behind both inherit from it for free.
-  </p>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 02 · PART I · BRIDGE PROVEN -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s02">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">02</span> Part I · The bridge and the EPAM-compliant path</div>
-  <h2>One translation adapter; eight upstreams; the same EPAM gateway every other LLM call already goes through.</h2>
-  <p class="rs-lede">
-    The adapter accepts <code>POST /v1/messages</code> (the request shape Claude Code emits), translates it to DIAL’s OpenAI-style chat-completions, and streams the SSE response back in the shape Claude Code expects. A thin wrapper around the <code>claude</code> CLI sets the harness’s standard environment variables to route traffic at the adapter and to redirect Claude Code’s built-in <code>/model</code> picker (Default, Sonnet, Haiku) at any DIAL deployment without restarting the session.
-  </p>
-
-  <p>
-    <strong>Compliance posture.</strong> The bridge routes Claude Code through <code>ai-proxy.lab.epam.com</code> using a DIAL project key the engineer already has under their EPAM enterprise subscription. Traffic that would otherwise leave the EPAM perimeter for <code>api.anthropic.com</code> stays on the sanctioned inference path. From DIAL’s perspective these requests look the same as any other OpenAI-shape call (same project key, same project routing, same logs) with the adapter handling Anthropic-shape input/output on the client side. The engineer’s side of the change is one environment variable (<code>ANTHROPIC_BASE_URL</code>); the gateway side is unchanged in this POC.
-  </p>
-
-  <div class="diagram-frame" style="margin-top: 32px;">
-    <span class="dx-figure__tag">DIAGRAM · 02 · Bridge topology · eight upstreams behind one wire</span>
-    <svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bridge topology">
-      <defs>
-        <marker id="ar-cy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dx-teal)"></path></marker>
-        <marker id="ar-pu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dx-violet)"></path></marker>
-      </defs>
-      <text x="100" y="40" class="svg-label" fill="#8A8A8A">HARNESS</text>
-      <text x="380" y="40" class="svg-label" fill="#8A8A8A">BRIDGE</text>
-      <text x="700" y="40" class="svg-label" fill="#8A8A8A">DIAL GATEWAY</text>
-      <text x="1000" y="40" class="svg-label" fill="#8A8A8A">EIGHT UPSTREAMS</text>
-      <line x1="280" y1="20" x2="280" y2="400" stroke="#2A2A2A"></line>
-      <line x1="600" y1="20" x2="600" y2="400" stroke="#2A2A2A"></line>
-      <line x1="900" y1="20" x2="900" y2="400" stroke="#2A2A2A"></line>
-
-      <rect x="60" y="170" width="200" height="80" fill="#141414" stroke="var(--dx-teal)" stroke-width="1.2"></rect>
-      <text x="160" y="200" text-anchor="middle" class="svg-emp" fill="#fff" font-size="14">Claude Code 2.1</text>
-      <text x="160" y="222" text-anchor="middle" class="svg-mono" fill="#8A8A8A">unmodified harness</text>
-      <text x="160" y="240" text-anchor="middle" class="svg-mono" fill="var(--dx-teal)">POST /v1/messages</text>
-
-      <rect x="320" y="120" width="240" height="180" fill="#141414" stroke="var(--dx-violet)" stroke-width="1.2"></rect>
-      <text x="440" y="148" text-anchor="middle" class="svg-emp" fill="#fff" font-size="14">anthropic-dial-adapter</text>
-      <text x="440" y="172" text-anchor="middle" class="svg-mono" fill="#8A8A8A">Anthropic ⇄ OpenAI shape</text>
-      <line x1="340" y1="184" x2="540" y2="184" stroke="#2A2A2A"></line>
-      <text x="340" y="206" class="svg-mono" fill="#E6E6E8">· strip cache_control (OSS)</text>
-      <text x="340" y="226" class="svg-mono" fill="#E6E6E8">· emit ~30 GFLog fields/req</text>
-      <text x="340" y="246" class="svg-mono" fill="#E6E6E8">· bedrock-priced cost_usd_estimate</text>
-      <text x="340" y="266" class="svg-mono" fill="#E6E6E8">· stream SSE pass-through</text>
-      <text x="340" y="286" class="svg-mono" fill="var(--dx-teal)">· latent fingerprint plane</text>
-
-      <rect x="640" y="160" width="220" height="100" fill="#141414" stroke="var(--dx-blue)" stroke-width="1.2"></rect>
-      <text x="750" y="190" text-anchor="middle" class="svg-emp" fill="#fff" font-size="14">DIAL (EPAM)</text>
-      <text x="750" y="212" text-anchor="middle" class="svg-mono" fill="#8A8A8A">ai-proxy.lab.epam.com</text>
-      <text x="750" y="232" text-anchor="middle" class="svg-mono" fill="var(--dx-blue)">project routing · auth</text>
-
-      <rect x="940" y="60" width="220" height="50" fill="#141414" stroke="var(--dx-teal)" stroke-width="1"></rect>
-      <text x="1050" y="80" text-anchor="middle" class="svg-emp" fill="#fff" font-size="12">Anthropic Bedrock</text>
-      <text x="1050" y="98" text-anchor="middle" class="svg-mono" fill="var(--dx-teal)">Opus / Sonnet / Haiku 4.x</text>
-
-      <rect x="940" y="120" width="220" height="50" fill="#141414" stroke="var(--dx-teal)" stroke-width="1"></rect>
-      <text x="1050" y="140" text-anchor="middle" class="svg-emp" fill="#fff" font-size="12">Qwen3-Coder 480B-A35B</text>
-      <text x="1050" y="158" text-anchor="middle" class="svg-mono" fill="var(--dx-teal)">$0.45 / $1.80 · viable</text>
-
-      <rect x="940" y="180" width="220" height="50" fill="#141414" stroke="var(--dx-teal)" stroke-width="1"></rect>
-      <text x="1050" y="200" text-anchor="middle" class="svg-emp" fill="#fff" font-size="12">Kimi K2.5 / MiniMax M2.5</text>
-      <text x="1050" y="218" text-anchor="middle" class="svg-mono" fill="var(--dx-teal)">partial viability</text>
-
-      <rect x="940" y="240" width="220" height="50" fill="#141414" stroke="var(--dx-magenta)" stroke-width="1"></rect>
-      <text x="1050" y="260" text-anchor="middle" class="svg-emp" fill="#fff" font-size="12">DeepSeek v3.2</text>
-      <text x="1050" y="278" text-anchor="middle" class="svg-mono" fill="var(--dx-magenta)">prose-mode · fails harness</text>
-
-      <rect x="940" y="300" width="220" height="50" fill="#141414" stroke="var(--dx-violet)" stroke-width="1"></rect>
-      <text x="1050" y="320" text-anchor="middle" class="svg-emp" fill="#fff" font-size="12">Qwen3-Coder 30B-A3B</text>
-      <text x="1050" y="338" text-anchor="middle" class="svg-mono" fill="var(--dx-violet)">one-call stall · toy</text>
-
-      <line x1="260" y1="210" x2="320" y2="210" stroke="var(--dx-teal)" stroke-width="1.4" marker-end="url(#ar-cy)"></line>
-      <line x1="560" y1="210" x2="640" y2="210" stroke="var(--dx-violet)" stroke-width="1.4" marker-end="url(#ar-pu)"></line>
-      <line x1="860" y1="195" x2="940" y2="85" stroke="var(--dx-blue)" stroke-width="1"></line>
-      <line x1="860" y1="200" x2="940" y2="145" stroke="var(--dx-blue)" stroke-width="1"></line>
-      <line x1="860" y1="210" x2="940" y2="205" stroke="var(--dx-blue)" stroke-width="1"></line>
-      <line x1="860" y1="220" x2="940" y2="265" stroke="var(--dx-blue)" stroke-width="1"></line>
-      <line x1="860" y1="225" x2="940" y2="325" stroke="var(--dx-blue)" stroke-width="1"></line>
-    </svg>
-  </div>
-
-  <p>
-    Two technical realities to flag here for Part III. First, the adapter strips <code>cache_control</code> on every non-Anthropic upstream (else DIAL returns <code>502 No route</code>), a known gateway gap. Second, on every <code>response_out</code> the adapter emits a structured GFLog record with token counts, tool inventory hash, MCP servers seen, cache strategy, elapsed milliseconds, and a Bedrock-verified <code>cost_usd_estimate</code> field. Today that record lands in Influx <code>adapter_metrics</code> as a tag-and-field rollup, and Grafana shows it as KPIs. Tomorrow, with one extra header, the same record carries project, team, and industry. That is what Part III addresses.
-  </p>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 03 · PART II · 192-RUN MATRIX VERDICT -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s03">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">03</span> Part II · 192-trial evaluation across eight upstreams</div>
-  <h2>Three viability tiers, Bedrock-verified economics.</h2>
-  <p class="rs-lede">
-    Two evaluation waves, 192 trials total. 120 against Anthropic + Qwen (May 14, 18:19 UTC); 72 against the additional contenders Kimi K2.5 / MiniMax M2.5 / DeepSeek v3.2 (May 14, 20:15 UTC). Same harness (Claude Code 2.1), same 8-task portfolio, same hidden <code>pytest</code> validators, same DIAL gateway. All cost numbers below come from the AWS Bedrock pricing console (US East Ohio, captured 2026-05-14).
-  </p>
-
-  <div class="rs-tiers" style="margin-top: 40px;">
-    <div class="rs-tier" style="--accent: var(--dx-teal);">
-      <span class="rs-tier__num">A</span>
-      <span class="rs-tier__name">Full viability · 92-100% · Haiku, Sonnet, Opus, Qwen 480B</span>
-      <p>Pass all 8 tasks consistently. Qwen 480B is the cost leader inside the cluster at $0.101 per success, 38% cheaper than Haiku 4.5.</p>
-      <div class="rs-tier__specs">
-        <div><span class="k">Qwen 480B</span><span class="v">24/24 · $0.101</span></div>
-        <div><span class="k">Haiku 4.5</span><span class="v">24/24 · $0.162</span></div>
-        <div><span class="k">Sonnet 4.6</span><span class="v">22/24 · $0.474</span></div>
-        <div><span class="k">Opus 4.7</span><span class="v">24/24 · $0.691</span></div>
-      </div>
+    <div class="rs-callout">
+      <h4>Finding 1. The bridge works on the EPAM-compliant inference path</h4>
+      <p>Claude Code 2.1 talks to any DIAL-hosted upstream through one Anthropic-to-OpenAI translation adapter. 192 trials produced zero authentication incidents and required no Claude Code source modifications. Traffic stays inside the EPAM perimeter the gateway already controls.</p>
     </div>
-    <div class="rs-tier" style="--accent: var(--dx-teal);">
-      <span class="rs-tier__num">B</span>
-      <span class="rs-tier__name">Partial · 62-71% · Kimi K2.5, MiniMax M2.5</span>
-      <p>Both sustain multi-turn loops, both fail T8 (refactor → test → document). Useful on scoped task surfaces; not general substitutes.</p>
-      <div class="rs-tier__specs">
-        <div><span class="k">MiniMax M2.5</span><span class="v">17/24 · $0.036</span></div>
-        <div><span class="k">Kimi K2.5</span><span class="v">15/24 · $0.058</span></div>
-        <div><span class="k">Discriminator</span><span class="v">T8 state retention</span></div>
-        <div><span class="k">Pilot scope</span><span class="v">refactor / rename only</span></div>
-      </div>
+
+    <div class="rs-callout">
+      <h4>Finding 2. Qwen3-Coder 480B is the cost leader at $0.101 per success</h4>
+      <p>At Bedrock list pricing, Qwen 480B is the cheapest 100%-pass model in the matrix, 38% below Claude Haiku 4.5, 4.7× below Sonnet 4.6, 6.8× below Opus 4.7. The two tier-C OSS upstreams below the Sonnet tier fail with a scale-driven, vendor-independent signature.</p>
     </div>
-    <div class="rs-tier" style="--accent: var(--dx-violet);">
-      <span class="rs-tier__num">C</span>
-      <span class="rs-tier__name">Toy · loop-level failure · Qwen 30B, DeepSeek v3.2 + retired</span>
-      <p>Five OSS upstreams across four vendor families fail at the loop level, same signature each time. Scale, not vendor, is the determining variable.</p>
-      <div class="rs-tier__specs">
-        <div><span class="k">Qwen 30B</span><span class="v">9/24 · one-call stall</span></div>
-        <div><span class="k">DeepSeek v3.2</span><span class="v">0/24 · prose-only</span></div>
-        <div><span class="k">Devstral 123B</span><span class="v">8/21 (retired)</span></div>
-        <div><span class="k">Gemma 27B IT</span><span class="v">smoke fail (retired)</span></div>
-      </div>
+
+    <div class="rs-callout">
+      <h4>Finding 3. Per-request telemetry, wired today plus a clean follow-up</h4>
+      <p>Each request writes a structured record with tokens, tool inventory, cache behaviour, latency, and Bedrock-priced cost. Two business dimensions (client, model family) are wired today. Three more identifiers already in the wire can become tags with no client change. Business-context tags (project, team, industry, use-case) remain a follow-up.</p>
     </div>
-  </div>
-
-  <p><strong>Eight-model ranked table · Bedrock-verified $/success</strong></p>
-  <table class="rs-table">
-    <thead>
-      <tr><th>Model</th><th>Vendor</th><th style="text-align:right">Pass</th><th style="text-align:right">Avg turns</th><th style="text-align:right">$/M in · out</th><th style="text-align:right">Bedrock spend</th><th style="text-align:right">$ / success</th><th>Tier</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>MiniMax M2.5</strong></td><td>MiniMax</td><td align="right">17/24</td><td align="right">5.5</td><td align="right" class="mono">$0.30 · $1.20</td><td align="right">$0.61</td><td align="right" style="color: var(--dx-teal); font-weight: 600;">$0.036</td><td><span class="rs-pill rs-pill--teal">B partial</span></td></tr>
-      <tr><td><strong>Kimi K2.5</strong></td><td>Moonshot AI</td><td align="right">15/24</td><td align="right">4.8</td><td align="right" class="mono">$0.60 · $3.00</td><td align="right">$0.86</td><td align="right" style="color: var(--dx-teal); font-weight: 600;">$0.058</td><td><span class="rs-pill rs-pill--teal">B partial</span></td></tr>
-      <tr style="background: rgba(0,244,171,0.04);"><td><strong>Qwen3-Coder 480B</strong></td><td>Alibaba</td><td align="right">24/24</td><td align="right">8.3</td><td align="right" class="mono">$0.45 · $1.80</td><td align="right">$2.43</td><td align="right" style="color: var(--dx-teal); font-weight: 700;">$0.101</td><td><span class="rs-pill rs-pill--teal">A cost leader</span></td></tr>
-      <tr><td>Claude Haiku 4.5</td><td>Anthropic</td><td align="right">24/24</td><td align="right">10.4</td><td align="right" class="mono">$1.00 · $5.00</td><td align="right">$3.88</td><td align="right">$0.162</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
-      <tr><td>Claude Sonnet 4.6</td><td>Anthropic</td><td align="right">22/24</td><td align="right">9.5</td><td align="right" class="mono">$3.00 · $15.00</td><td align="right">$10.44</td><td align="right">$0.474</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
-      <tr><td>Claude Opus 4.7</td><td>Anthropic</td><td align="right">24/24</td><td align="right">7.1</td><td align="right" class="mono">$5.00 · $25.00</td><td align="right">$16.44</td><td align="right">$0.685</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
-      <tr style="background: rgba(184,150,255,0.04);"><td>Qwen3-Coder 30B-A3B</td><td>Alibaba</td><td align="right" style="color: var(--dx-violet);">9/24</td><td align="right">1.6</td><td align="right" class="mono">$0.15 · $0.60</td><td align="right">$0.10</td><td align="right" style="color: var(--dx-fg-3);">n/a</td><td><span class="rs-pill rs-pill--violet">C toy</span></td></tr>
-      <tr style="background: rgba(184,150,255,0.04);"><td>DeepSeek v3.2</td><td>DeepSeek</td><td align="right" style="color: var(--dx-violet);">0/24</td><td align="right">1.0</td><td align="right" class="mono">$0.62 · $1.85</td><td align="right">$0.13</td><td align="right" style="color: var(--dx-fg-3);">∞</td><td><span class="rs-pill rs-pill--violet">C toy</span></td></tr>
-    </tbody>
-  </table>
-
-  <div class="rs-callout rs-callout--teal" style="margin-top: 32px;">
-    <h4>Ranking inside the 100%-pass cluster</h4>
-    <p>
-      <strong>Qwen 480B &lt; Haiku 4.5 &lt; Sonnet 4.6 &lt; Opus 4.7</strong> on $/success. The Sonnet-tier OSS swap is no longer “viable at higher cost”: at the verified Bedrock rates it is the economic optimum on this matrix, with identical quality on the same 8 tasks. Below that tier, no OSS upstream in this evaluation can replace Anthropic.
-    </p>
-  </div>
-
-  <p style="margin-top: 16px; color: var(--dx-fg-3); font-size: 13.5px;">
-    Per-task heatmap, three-failure-mode taxonomy, frontier scatter, and matrix-run methodology detail are kept alongside the raw transcripts as aggregated summaries.
-  </p>
-
-  <div class="rs-callout rs-callout--magenta" style="margin-top: 32px;">
-    <h4>What I got wrong before this measurement</h4>
-    <p>
-      Going into the matrix run I expected the Sonnet-tier OSS swap to be <em>viable at higher cost</em>, the implicit posture in most Q1 2026 industry write-ups. The verified Bedrock-list-pricing pass turned that around within the same evaluation window: Qwen3-Coder 480B is the economic optimum on this matrix at identical 100% pass on the eight tasks, not a fallback for cost-sensitive teams. The retraction is itself a finding: a benchmark that updates a prior belief is worth more than one that confirms the received wisdom.
-    </p>
-  </div>
-
-  <p><strong>Where this sits in the public landscape</strong></p>
-  <p>
-    Prior public work on coding-agent benchmarking is rich on the
-    <em>model</em> side (the SWE-bench-Verified leaderboard, the
-    Aider polyglot benchmark, BigCodeBench, the published vendor numbers
-    for Claude Code on internal Anthropic benchmarks). It is sparse on
-    the <em>harness-routed-through-an-enterprise-gateway</em> side. To
-    the best of my public-source review, this is the first non-vendor
-    evaluation that runs Claude Code 2.1 specifically as the harness
-    against the OSS-coder cohort (Qwen, Kimi, MiniMax, DeepSeek) on
-    AWS Bedrock list pricing under one shared fixture. The published
-    OSS coder leaderboards converge on similar capability rankings
-    inside the 100%-pass cluster; what this report contributes is
-    the gateway-routed economics. If counter-examples exist, the
-    report is happy to be the second.
-  </p>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 04 · PART III · THE DATA-PLANE REFRAME -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s04">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">04</span> Part III · The adapter as a telemetry plane</div>
-  <h2>What the adapter records on every request.</h2>
-  <p class="rs-lede">
-    The adapter is the only component in the request path that sees the full Anthropic-shape request, the translated upstream call, and the full streamed response. On every <code>response_out</code> it writes a structured JSON log record summarising token counts, tool inventory, cache-control behaviour, elapsed latency, the upstream <code>stop_reason</code>, and a Bedrock-priced <code>cost_usd_estimate</code> derived from the configured price table. Two sidecar exporters tail those records into InfluxDB measurements (<code>adapter_metrics</code>, <code>claude_code_events</code>) which Grafana queries to produce the operational dashboard.
-  </p>
-
-  <p>
-    Today those records are tagged by <code>client_name</code> and <code>target_model_family</code>. That is sufficient for operational health views (“how is the wire doing?”) but not for per-session, per-project, or per-team analysis. Sections 05-08 walk through which fields are already captured, which are present in the wire but not yet promoted to Influx tags, and what kinds of joined queries become available once those three tag promotions land.
-  </p>
-
-  <div class="diagram-frame" style="margin-top: 32px;">
-    <span class="dx-figure__tag">DIAGRAM · 04 · From wire-translator to data plane</span>
-    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DIAL adapter as coding-session data plane">
-      <defs>
-        <lineargradient id="hero1" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stop-color="var(--dx-teal)"></stop><stop offset=".5" stop-color="var(--dx-blue)"></stop><stop offset="1" stop-color="var(--dx-violet)"></stop>
-        </lineargradient>
-        <marker id="arrRaw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M0,0 L10,5 L0,10 z" fill="rgba(255,255,255,0.55)"></path>
-        </marker>
-        <marker id="arrMint" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M0,0 L10,5 L0,10 z" fill="var(--dx-teal)"></path>
-        </marker>
-        <pattern id="grid1" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"></path>
-        </pattern>
-      </defs>
-      <rect width="1200" height="500" fill="url(#grid1)"></rect>
-
-      <text x="100" y="28" class="svg-label" fill="#8A8A8A" text-anchor="middle">Source</text>
-      <text x="290" y="28" class="svg-label" fill="#8A8A8A" text-anchor="middle">Capture</text>
-      <text x="480" y="28" class="svg-label" fill="#8A8A8A" text-anchor="middle">Storage</text>
-      <text x="700" y="28" class="svg-label" fill="#8A8A8A" text-anchor="middle">Enrichment</text>
-      <text x="900" y="28" class="svg-label" fill="#8A8A8A" text-anchor="middle">Decision</text>
-      <text x="1090" y="28" class="svg-label" fill="#8A8A8A" text-anchor="middle">Outputs</text>
-
-      <!-- enrichment boundary -->
-      <line x1="590" y1="50" x2="590" y2="470" stroke="rgba(255,255,255,0.18)" stroke-dasharray="3 5"></line>
-      <text x="582" y="260" class="svg-label" fill="var(--dx-teal)" text-anchor="middle" transform="rotate(-90 582 260)">JOIN: session_id · project · team</text>
-
-      <!-- lane 1 -->
-      <rect x="30" y="60" width="140" height="92" rx="6" fill="#141414" stroke="var(--dx-teal)" opacity="0.9"></rect>
-      <text x="46" y="84" class="svg-emp" fill="var(--dx-teal)" font-size="13">Claude Code session</text>
-      <text x="46" y="102" class="svg-mono" fill="#8A8A8A">per-turn agentic events</text>
-      <text x="46" y="124" class="svg-mono" fill="#E6E6E8">api_request</text>
-      <text x="46" y="138" class="svg-mono" fill="#E6E6E8">tool_result</text>
-      <text x="46" y="152" class="svg-mono" fill="#E6E6E8">cost.usage</text>
-      <rect x="30" y="170" width="140" height="72" rx="6" fill="#141414" stroke="var(--dx-teal)" opacity="0.9"></rect>
-      <text x="46" y="194" class="svg-emp" fill="var(--dx-teal)" font-size="13">IDE / SDK</text>
-      <text x="46" y="212" class="svg-mono" fill="#8A8A8A">CLI · Cursor · JetBrains</text>
-      <text x="46" y="232" class="svg-mono" fill="#E6E6E8">x-session-id</text>
-      <rect x="30" y="260" width="140" height="72" rx="6" fill="#141414" stroke="var(--dx-teal)" opacity="0.9"></rect>
-      <text x="46" y="284" class="svg-emp" fill="var(--dx-teal)" font-size="13">Headers in</text>
-      <text x="46" y="302" class="svg-mono" fill="#8A8A8A">project · issue · branch</text>
-      <text x="46" y="322" class="svg-mono" fill="#E6E6E8">x-epam-project</text>
-      <rect x="30" y="350" width="140" height="72" rx="6" fill="#141414" stroke="var(--dx-teal)" opacity="0.9"></rect>
-      <text x="46" y="374" class="svg-emp" fill="var(--dx-teal)" font-size="13">Repo signal</text>
-      <text x="46" y="392" class="svg-mono" fill="#8A8A8A">.dial/profile.yaml</text>
-      <text x="46" y="412" class="svg-mono" fill="#E6E6E8">use_case=refactor</text>
-
-      <!-- lane 2: Capture (hero adapter) -->
-      <rect x="220" y="120" width="160" height="220" rx="6" fill="url(#hero1)" stroke="none"></rect>
-      <text x="300" y="150" text-anchor="middle" class="svg-emp" fill="#fff" font-size="15">DIAL Adapter</text>
-      <text x="300" y="168" text-anchor="middle" class="svg-mono" fill="rgba(255,255,255,0.85)">OpenAI ⇄ Anthropic wire</text>
-      <text x="300" y="186" text-anchor="middle" class="svg-mono" fill="rgba(255,255,255,0.85)">+ fingerprint emitter</text>
-      <line x1="240" y1="200" x2="360" y2="200" stroke="rgba(255,255,255,0.25)"></line>
-      <text x="300" y="220" text-anchor="middle" class="svg-mono" fill="#fff">model_id · tokens</text>
-      <text x="300" y="236" text-anchor="middle" class="svg-mono" fill="#fff">tool_inventory_hash</text>
-      <text x="300" y="252" text-anchor="middle" class="svg-mono" fill="#fff">mcp_servers_seen[]</text>
-      <text x="300" y="268" text-anchor="middle" class="svg-mono" fill="#fff">elapsed_ms · ttft_ms</text>
-      <text x="300" y="284" text-anchor="middle" class="svg-mono" fill="#fff">cache_control_strat</text>
-      <text x="300" y="300" text-anchor="middle" class="svg-mono" fill="#fff">cost_usd_estimate</text>
-      <text x="300" y="316" text-anchor="middle" class="svg-mono" fill="#fff">final_stop_reason</text>
-
-      <!-- lane 3: Storage -->
-      <rect x="410" y="100" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-violet)" opacity="0.9"></rect>
-      <text x="426" y="124" class="svg-emp" fill="var(--dx-violet)" font-size="13">InfluxDB</text>
-      <text x="426" y="142" class="svg-mono" fill="#8A8A8A">measurements:</text>
-      <text x="426" y="162" class="svg-mono" fill="#E6E6E8">adapter_metrics</text>
-      <text x="426" y="178" class="svg-mono" fill="#E6E6E8">claude_code_events</text>
-      <rect x="410" y="210" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-violet)" opacity="0.9"></rect>
-      <text x="426" y="234" class="svg-emp" fill="var(--dx-violet)" font-size="13">Grafana KPI surface</text>
-      <text x="426" y="252" class="svg-mono" fill="#8A8A8A">today · operational view</text>
-      <text x="426" y="272" class="svg-mono" fill="#E6E6E8">$/session · p95 ttft</text>
-      <text x="426" y="288" class="svg-mono" fill="#E6E6E8">tool_loop_rate</text>
-      <rect x="410" y="320" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-violet)" opacity="0.9"></rect>
-      <text x="426" y="344" class="svg-emp" fill="var(--dx-violet)" font-size="13">Raw GFLog</text>
-      <text x="426" y="362" class="svg-mono" fill="#8A8A8A">parquet · S3 · replay-able</text>
-      <text x="426" y="382" class="svg-mono" fill="#E6E6E8">13-month retention</text>
-
-      <!-- lane 4: Enrichment -->
-      <rect x="620" y="80" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-blue)" opacity="0.9"></rect>
-      <text x="636" y="104" class="svg-emp" fill="var(--dx-blue)" font-size="13">Project registry</text>
-      <text x="636" y="122" class="svg-mono" fill="#8A8A8A">CodeBeamer · Jira</text>
-      <text x="636" y="142" class="svg-mono" fill="#E6E6E8">project_code</text>
-      <text x="636" y="158" class="svg-mono" fill="#E6E6E8">industry_tag</text>
-      <rect x="620" y="190" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-blue)" opacity="0.9"></rect>
-      <text x="636" y="214" class="svg-emp" fill="var(--dx-blue)" font-size="13">Team identity</text>
-      <text x="636" y="232" class="svg-mono" fill="#8A8A8A">SSO · org graph</text>
-      <text x="636" y="252" class="svg-mono" fill="#E6E6E8">account.team.role</text>
-      <rect x="620" y="300" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-blue)" opacity="0.9"></rect>
-      <text x="636" y="324" class="svg-emp" fill="var(--dx-blue)" font-size="13">Issue + commit join</text>
-      <text x="636" y="342" class="svg-mono" fill="#8A8A8A">branch → ticket → PR</text>
-      <text x="636" y="362" class="svg-mono" fill="#E6E6E8">JIRA-1234</text>
-      <text x="636" y="378" class="svg-mono" fill="#E6E6E8">use_case=migration</text>
-
-      <!-- lane 5: Decision -->
-      <rect x="820" y="100" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-violet)" stroke-width="1.2"></rect>
-      <text x="836" y="124" class="svg-emp" fill="var(--dx-violet)" font-size="13">Feasibility scorer</text>
-      <text x="836" y="142" class="svg-mono" fill="#8A8A8A">model × task fitness</text>
-      <text x="836" y="162" class="svg-mono" fill="#E6E6E8">score = f(succ, $, ttft)</text>
-      <rect x="820" y="210" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-violet)" stroke-width="1.2"></rect>
-      <text x="836" y="234" class="svg-emp" fill="var(--dx-violet)" font-size="13">Adaptive router</text>
-      <text x="836" y="252" class="svg-mono" fill="#8A8A8A">rules learned from data</text>
-      <text x="836" y="272" class="svg-mono" fill="#E6E6E8">refactor-multi → Qwen 480</text>
-      <text x="836" y="288" class="svg-mono" fill="#E6E6E8">trap-comp → Sonnet</text>
-      <rect x="820" y="320" width="160" height="92" rx="6" fill="#141414" stroke="var(--dx-violet)" stroke-width="1.2"></rect>
-      <text x="836" y="344" class="svg-emp" fill="var(--dx-violet)" font-size="13">Cost guard</text>
-      <text x="836" y="362" class="svg-mono" fill="#8A8A8A">per-project budget hooks</text>
-      <text x="836" y="382" class="svg-mono" fill="#E6E6E8">cap = $4/dev/day</text>
-
-      <!-- lane 6: Outputs -->
-      <rect x="1020" y="80" width="155" height="78" rx="6" fill="#141414" stroke="var(--dx-teal)" opacity="0.9"></rect>
-      <text x="1036" y="104" class="svg-emp" fill="var(--dx-teal)" font-size="13">BI dashboards</text>
-      <text x="1036" y="122" class="svg-mono" fill="#8A8A8A">account · industry · use-case</text>
-      <text x="1036" y="142" class="svg-mono" fill="#E6E6E8">Looker / Power BI</text>
-      <rect x="1020" y="180" width="155" height="78" rx="6" fill="#141414" stroke="var(--dx-teal)" opacity="0.9"></rect>
-      <text x="1036" y="204" class="svg-emp" fill="var(--dx-teal)" font-size="13">Routing rules</text>
-      <text x="1036" y="222" class="svg-mono" fill="#8A8A8A">YAML pushed to DIAL</text>
-      <text x="1036" y="242" class="svg-mono" fill="#E6E6E8">routes.live.yaml</text>
-      <rect x="1020" y="280" width="155" height="78" rx="6" fill="#141414" stroke="var(--dx-teal)" opacity="0.9"></rect>
-      <text x="1036" y="304" class="svg-emp" fill="var(--dx-teal)" font-size="13">Model preference</text>
-      <text x="1036" y="322" class="svg-mono" fill="#8A8A8A">per-team report card</text>
-      <text x="1036" y="342" class="svg-mono" fill="#E6E6E8">monthly digest</text>
-      <rect x="1020" y="380" width="155" height="78" rx="6" fill="#141414" stroke="var(--dx-teal)" opacity="0.9"></rect>
-      <text x="1036" y="404" class="svg-emp" fill="var(--dx-teal)" font-size="13">Pricing telemetry</text>
-      <text x="1036" y="422" class="svg-mono" fill="#8A8A8A">cost-per-outcome model</text>
-      <text x="1036" y="442" class="svg-mono" fill="#E6E6E8">$/merged-PR</text>
-
-      <!-- connectors raw half -->
-      <g fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="0.8">
-        <path d="M170,106 C195,106 200,230 220,230" marker-end="url(#arrRaw)"></path>
-        <path d="M170,206 C195,206 200,230 220,230" marker-end="url(#arrRaw)"></path>
-        <path d="M170,296 C195,296 200,230 220,230" marker-end="url(#arrRaw)"></path>
-        <path d="M170,386 C195,386 200,230 220,230" marker-end="url(#arrRaw)"></path>
-        <path d="M380,180 C395,180 395,146 410,146" marker-end="url(#arrRaw)"></path>
-        <path d="M380,256 C395,256 395,256 410,256" marker-end="url(#arrRaw)"></path>
-        <path d="M380,300 C395,300 395,366 410,366" marker-end="url(#arrRaw)"></path>
-      </g>
-      <!-- connectors enriched half (mint) -->
-      <g fill="none" stroke="var(--dx-teal)" stroke-width="1.2" opacity="0.85">
-        <path d="M570,146 C600,146 605,126 620,126" marker-end="url(#arrMint)"></path>
-        <path d="M570,256 C600,256 605,236 620,236" marker-end="url(#arrMint)"></path>
-        <path d="M570,366 C600,366 605,346 620,346" marker-end="url(#arrMint)"></path>
-        <path d="M780,126 C800,126 810,146 820,146" marker-end="url(#arrMint)"></path>
-        <path d="M780,236 C800,236 810,256 820,256" marker-end="url(#arrMint)"></path>
-        <path d="M780,346 C800,346 810,366 820,366" marker-end="url(#arrMint)"></path>
-        <path d="M980,146 C1000,146 1010,119 1020,119" marker-end="url(#arrMint)"></path>
-        <path d="M980,256 C1000,256 1010,219 1020,219" marker-end="url(#arrMint)"></path>
-        <path d="M980,256 C1000,256 1010,319 1020,319" marker-end="url(#arrMint)"></path>
-        <path d="M980,366 C1000,366 1010,419 1020,419" marker-end="url(#arrMint)"></path>
-      </g>
-
-      <text x="600" y="488" class="svg-mono" fill="#8A8A8A" text-anchor="middle">Mint edges = data carries business metadata. Grey edges = raw wire telemetry.</text>
-    </svg>
-  </div>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 05 · WHAT'S CAPTURED TODAY -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s05">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">05</span> Part III · Telemetry inventory · three layers</div>
-  <h2>What’s retained today, what’s in the wire but not yet tagged, and what would require client cooperation.</h2>
-  <p class="rs-lede">
-    To avoid overstating the POC’s data plane, this section separates three distinct layers: <strong>(A)</strong> fields that already reach InfluxDB and surface in Grafana today, <strong>(B)</strong> fields the adapter captures in its JSON log but does not currently promote to an Influx tag (mechanical to wire, no client change), and <strong>(C)</strong> hypothetical business-context fields (project, team, industry, use-case) that would require headers Claude Code is not sending today. The POC implements layer A. Layer B is mechanical follow-up. Layer C is the architectural ask in Section 12.
-  </p>
-
-  <div class="diagram-frame" style="margin-top: 24px;">
-    <span class="dx-figure__tag">DIAGRAM · 05 · Layer 1 · raw session telemetry</span>
-    <svg viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg" aria-label="Layer 1 raw telemetry">
-      <defs>
-        <pattern id="g2" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,0.04)"></path></pattern>
-      </defs>
-      <rect width="1200" height="260" fill="url(#g2)"></rect>
-      <text x="40" y="32" class="svg-label" fill="#8A8A8A">Layer 1 · raw session telemetry</text>
-      <text x="40" y="56" class="svg-title" fill="#fff" font-size="14">What the DIAL adapter sees on the wire</text>
-
-      <rect x="40" y="80" width="220" height="56" rx="6" fill="rgba(0,246,255,0.14)" stroke="rgba(0,246,255,0.55)" stroke-width="1"></rect>
-      <text x="56" y="102" class="svg-emp" fill="#fff" font-size="13">api_request</text>
-      <text x="56" y="120" class="svg-mono" fill="#8A8A8A">per-turn model invocation</text>
-      <rect x="285" y="80" width="220" height="56" rx="6" fill="rgba(0,246,255,0.14)" stroke="rgba(0,246,255,0.55)" stroke-width="1"></rect>
-      <text x="301" y="102" class="svg-emp" fill="#fff" font-size="13">tool_result</text>
-      <text x="301" y="120" class="svg-mono" fill="#8A8A8A">edit · bash · read · grep</text>
-      <rect x="530" y="80" width="220" height="56" rx="6" fill="rgba(0,246,255,0.14)" stroke="rgba(0,246,255,0.55)" stroke-width="1"></rect>
-      <text x="546" y="102" class="svg-emp" fill="#fff" font-size="13">cost.usage</text>
-      <text x="546" y="120" class="svg-mono" fill="#8A8A8A">tokens · cache · $</text>
-      <rect x="775" y="80" width="220" height="56" rx="6" fill="rgba(0,246,255,0.14)" stroke="rgba(0,246,255,0.55)" stroke-width="1"></rect>
-      <text x="791" y="102" class="svg-emp" fill="#fff" font-size="13">stream_event</text>
-      <text x="791" y="120" class="svg-mono" fill="#8A8A8A">ttft, ttlt, abort</text>
-      <rect x="1020" y="80" width="140" height="56" rx="6" fill="rgba(0,246,255,0.14)" stroke="rgba(0,246,255,0.55)" stroke-width="1"></rect>
-      <text x="1036" y="102" class="svg-emp" fill="#fff" font-size="13">session_meta</text>
-      <text x="1036" y="120" class="svg-mono" fill="#8A8A8A">id, ide, version</text>
-
-      <g>
-        <rect x="40" y="160" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="100" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">tokens_in</text>
-        <rect x="170" y="160" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="230" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">tokens_out</text>
-        <rect x="300" y="160" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="360" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">cache_read</text>
-        <rect x="430" y="160" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="490" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">cache_write</text>
-        <rect x="560" y="160" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="620" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">ttft_ms</text>
-        <rect x="690" y="160" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="750" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">elapsed_ms</text>
-        <rect x="820" y="160" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="880" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">tool_count</text>
-        <rect x="950" y="160" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="1010" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">tool_inv_hash</text>
-        <rect x="1080" y="160" width="100" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="1130" y="178" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">cost_est</text>
-
-        <rect x="40" y="198" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="100" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">model_id</text>
-        <rect x="170" y="198" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="230" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">stop_reason</text>
-        <rect x="300" y="198" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="360" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">mcp_servers[]</text>
-        <rect x="430" y="198" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="490" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">tool_calls_by</text>
-        <rect x="560" y="198" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="620" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">cache_strat</text>
-        <rect x="690" y="198" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="750" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">client_name</text>
-        <rect x="820" y="198" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="880" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">session_id*</text>
-        <rect x="950" y="198" width="120" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="1010" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">trace_id</text>
-        <rect x="1080" y="198" width="100" height="28" rx="6" fill="rgba(0,246,255,0.08)" stroke="rgba(0,246,255,0.35)" stroke-width="1"></rect><text x="1130" y="216" class="svg-mono" fill="var(--dx-teal)" text-anchor="middle">request_id</text>
-      </g>
-      <text x="40" y="250" class="svg-mono" fill="#8A8A8A">*session_id is captured but not yet promoted to an Influx tag (the single biggest enrichment gap).</text>
-    </svg>
-  </div>
-
-  <p><strong>Layer A · what already reaches InfluxDB today</strong></p>
-  <p>
-    Three Influx measurements are populated continuously by the existing sidecar exporters and queried by the Grafana dashboard at <code>config/grafana/dashboards/dial-bridge-overview.json</code>. Each row below is a real field landing in InfluxDB in this POC.
-  </p>
-
-  <table class="rs-table">
-    <thead>
-      <tr><th>Measurement</th><th>Tags (queryable dimensions)</th><th>Selected fields</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>adapter_metrics</code></td>
-        <td><code>client_name</code>, <code>target_model_family</code></td>
-        <td><code>input_tokens_total</code>, <code>output_tokens_total</code>, <code>cache_read_input_tokens_total</code>, <code>cost_usd_estimate_total</code> (Bedrock-priced), <code>end_to_end_p50_ms</code>, <code>end_to_end_p95_ms</code>, <code>sse_event_emission_ratio_mean</code>, <code>tool_use_round_trip_success_rate</code>, <code>partial_message_error_rate</code>, <code>errors_upstream_rate_limit_429</code>, <code>cache_control_*</code></td>
-      </tr>
-      <tr>
-        <td><code>claude_code_events</code></td>
-        <td><code>event_name</code>, <code>model</code>, <code>client.name</code>, plus event-specific (e.g. <code>tool_name</code>, <code>command_name</code>, <code>hook_source</code>, <code>from_mode</code>/<code>to_mode</code>)</td>
-        <td><code>count</code>, <code>duration_ms</code>, <code>input_tokens</code>, <code>output_tokens</code>, <code>cost_usd</code>, plus event-specific</td>
-      </tr>
-      <tr>
-        <td><code>claude_code_traces</code></td>
-        <td><code>trace_id</code>, <code>span_id</code>, <code>span_name</code>, <code>client_name</code>, <code>target_model_family</code></td>
-        <td><code>ttft_ms</code>, <code>count</code></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>
-    Plus the raw NDJSON log file on disk (<code>/var/log/anthropic-dial-adapter/adapter.log</code>, one JSON line per <code>request_in</code> / <code>response_out</code> / <code>error</code> event) is retained at file level. That file is the superset; the three Influx measurements are derived views.
-  </p>
-
-  <p><strong>Layer B · in the log but not yet tagged in Influx</strong></p>
-  <p>
-    The following identifiers are emitted on every request by the adapter and / or the Claude Code SDK’s OTel output and reach the on-disk log, but are not currently surfaced as tags on the Influx measurements. Promotion is mechanical, an exporter-side change only; no client cooperation required.
-  </p>
-
-  <table class="rs-table">
-    <thead>
-      <tr><th>Field</th><th>Source today</th><th>What it identifies</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><code>session.id</code></td><td>Claude Code OTel attribute; the events exporter uses it as a row-pair key but discards it after pairing</td><td>Per-conversation join axis</td></tr>
-      <tr><td><code>request_id</code></td><td>Adapter GFLog field, reaches <code>claude_code_traces</code> but not <code>adapter_metrics</code></td><td>Per-request correlation across log, span, rollup</td></tr>
-      <tr><td><code>tool_inventory_hash</code></td><td>Adapter GFLog field on <code>request_in</code></td><td>SHA over the canonical tool surface offered to the model, stable workspace signature</td></tr>
-      <tr><td><code>mcp_servers_seen[]</code></td><td>Aggregated to JSON inside <code>metrics_from_log.compute</code>; not exported as Influx tags</td><td>Which MCP servers the workspace binds, task-class hint</td></tr>
-      <tr><td><code>command_name</code></td><td><code>claude_code.user_prompt</code> attribute; reaches log truncated to 64 chars</td><td>Which Claude Code slash-skills are used</td></tr>
-    </tbody>
-  </table>
-
-  <p><strong>Layer C · hypothetical business-context tags (not in the wire today)</strong></p>
-  <p>
-    The downstream analyses sketched in Sections 06-08 (per-project cost reports, per-team model fitness profiles, adaptive routing rules) depend on joining the layer-A telemetry to business identifiers that <em>this POC does not capture</em>. The table below names the kind of identifier each analysis would need and is explicit about the POC’s state.
-  </p>
-
-  <table class="rs-table">
-    <thead>
-      <tr><th>Hypothetical field</th><th>Likely production source</th><th>Status in this POC</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><code>project_code</code></td><td>EPAM’s project metadata systems; injected as a request header by a wrapper or corporate proxy</td><td>Not wired. Header names like <code>x-epam-project</code> used elsewhere in this document are illustrative placeholders, not an existing contract.</td></tr>
-      <tr><td><code>team_id</code></td><td>EPAM org graph / SSO claims</td><td>Not wired. Same caveat.</td></tr>
-      <tr><td><code>jira_issue</code></td><td>Local branch → ticket mapping injected by wrapper from <code>.git</code> context or environment</td><td>Not wired. No Jira integration in this POC.</td></tr>
-      <tr><td><code>industry_vertical</code></td><td>Per-account tag in EPAM’s engagement metadata</td><td>Not wired. Mentioned for analytical structure only.</td></tr>
-      <tr><td><code>use_case_label</code></td><td>Derived from commit message + diff shape, or a per-repo profile file</td><td>Not wired. The derivation logic itself is also hypothetical.</td></tr>
-    </tbody>
-  </table>
-
-  <p style="margin-top: 16px;">
-    The wire-level mechanism that would carry layer C is the same one DIAL already uses for forwarded headers (the adapter already passes through <code>Traceparent</code>, <code>X-Conversation-Id</code>, <code>X-DIAL-CHAT-ID</code>). <strong>Whether EPAM’s production environment exposes these identifiers to a Claude Code session today is a question for the platform team and is not answered by this POC.</strong> Sections 06-08 below should be read with that explicit caveat: their downstream analyses are <em>contingent on layer C being wired</em>, in whatever form EPAM’s data-governance policy permits.
-  </p>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 06 · ENRICHMENT HIERARCHY -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s06">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">06</span> Part III · Enrichment hierarchy · illustrative</div>
-  <h2>What layer-A telemetry looks like operationally vs after the (hypothetical) layer-C join.</h2>
-  <p class="rs-lede">
-    The two diagrams below contrast the operational panels the bridge surfaces today (Layer 2, rollups of layer-A telemetry, sliced by <code>target_model_family</code> and <code>client_name</code>) with the kind of view that becomes possible once a layer-C join lands (Layer 3 / 4, the same metrics pivoted by business identifiers). <strong>The Layer-3 and Layer-4 cells are illustrative.</strong> The values shown are not measurements from this POC; they are placeholders the diagram uses to show the structural form of the query. As Section 05 lays out, the join keys those queries depend on (<code>project_code</code>, <code>team_id</code>, <code>use_case_label</code>) are not present in this POC’s wire.
-  </p>
-
-  <div class="diagram-frame" style="margin-top: 24px;">
-    <span class="dx-figure__tag">DIAGRAM · 06a · Layer 2 · operational rollups (Grafana today)</span>
-    <svg viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg" aria-label="Layer 2 operational rollups">
-      <defs><pattern id="g3" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,0.04)"></path></pattern></defs>
-      <rect width="1200" height="260" fill="url(#g3)"></rect>
-      <text x="40" y="32" class="svg-label" fill="#8A8A8A">Layer 2 · operational rollups · Grafana today</text>
-      <text x="40" y="56" class="svg-title" fill="#fff" font-size="14">SUM, AVG, p95 over Layer 1, sliced by model only</text>
-
-      <g>
-        <rect x="40" y="80" width="180" height="155" rx="6" fill="rgba(184,150,255,0.08)" stroke="rgba(184,150,255,0.42)" stroke-width="1"></rect>
-        <text x="56" y="100" class="svg-mono" fill="var(--dx-violet)">sessions / hour</text>
-        <text x="56" y="138" class="svg-emp" fill="#fff" font-size="22">1,284</text>
-        <line x1="56" y1="155" x2="204" y2="155" stroke="rgba(255,255,255,0.10)"></line>
-        <polyline fill="none" stroke="var(--dx-teal)" stroke-width="1.2" points="56,200 76,190 96,195 116,180 136,170 156,175 176,160 196,150 204,148"></polyline>
-        <text x="56" y="225" class="svg-mono" fill="#8A8A8A">last 7d · +9% w/w</text>
-
-        <rect x="240" y="80" width="180" height="155" rx="6" fill="rgba(184,150,255,0.08)" stroke="rgba(184,150,255,0.42)" stroke-width="1"></rect>
-        <text x="256" y="100" class="svg-mono" fill="var(--dx-violet)">p95 ttft (ms)</text>
-        <text x="256" y="138" class="svg-emp" fill="#fff" font-size="22">812</text>
-        <line x1="256" y1="155" x2="404" y2="155" stroke="rgba(255,255,255,0.10)"></line>
-        <polyline fill="none" stroke="var(--dx-teal)" stroke-width="1.2" points="256,180 276,175 296,182 316,170 336,178 356,165 376,172 396,160 404,158"></polyline>
-        <text x="256" y="225" class="svg-mono" fill="#8A8A8A">SLO budget 1100ms</text>
-
-        <rect x="440" y="80" width="180" height="155" rx="6" fill="rgba(184,150,255,0.08)" stroke="rgba(184,150,255,0.42)" stroke-width="1"></rect>
-        <text x="456" y="100" class="svg-mono" fill="var(--dx-violet)">$ / session avg</text>
-        <text x="456" y="138" class="svg-emp" fill="#fff" font-size="22">$0.184</text>
-        <line x1="456" y1="155" x2="604" y2="155" stroke="rgba(255,255,255,0.10)"></line>
-        <polyline fill="none" stroke="var(--dx-teal)" stroke-width="1.2" points="456,190 476,195 496,180 516,170 536,160 556,158 576,150 596,148 604,142"></polyline>
-        <text x="456" y="225" class="svg-mono" fill="#8A8A8A">cache hit lifting</text>
-
-        <rect x="640" y="80" width="180" height="155" rx="6" fill="rgba(184,150,255,0.08)" stroke="rgba(184,150,255,0.42)" stroke-width="1"></rect>
-        <text x="656" y="100" class="svg-mono" fill="var(--dx-violet)">cache_read_ratio</text>
-        <text x="656" y="138" class="svg-emp" fill="#fff" font-size="22">0.71</text>
-        <line x1="656" y1="155" x2="804" y2="155" stroke="rgba(255,255,255,0.10)"></line>
-        <polyline fill="none" stroke="var(--dx-teal)" stroke-width="1.2" points="656,200 676,190 696,185 716,175 736,165 756,160 776,155 796,148 804,145"></polyline>
-        <text x="656" y="225" class="svg-mono" fill="#8A8A8A">healthy &gt; 0.55</text>
-
-        <rect x="840" y="80" width="180" height="155" rx="6" fill="rgba(184,150,255,0.08)" stroke="rgba(184,150,255,0.42)" stroke-width="1"></rect>
-        <text x="856" y="100" class="svg-mono" fill="var(--dx-violet)">tool_loop_rate</text>
-        <text x="856" y="138" class="svg-emp" fill="#fff" font-size="22">3.2%</text>
-        <line x1="856" y1="155" x2="1004" y2="155" stroke="rgba(255,255,255,0.10)"></line>
-        <polyline fill="none" stroke="var(--dx-teal)" stroke-width="1.2" points="856,170 876,175 896,168 916,180 936,172 956,178 976,170 996,182 1004,179"></polyline>
-        <text x="856" y="225" class="svg-mono" fill="#8A8A8A">model = qwen-coder spikes</text>
-
-        <rect x="1040" y="80" width="140" height="155" rx="6" fill="rgba(184,150,255,0.08)" stroke="rgba(184,150,255,0.42)" stroke-width="1"></rect>
-        <text x="1056" y="100" class="svg-mono" fill="var(--dx-violet)">abort_rate</text>
-        <text x="1056" y="138" class="svg-emp" fill="#fff" font-size="22">1.1%</text>
-        <line x1="1056" y1="155" x2="1164" y2="155" stroke="rgba(255,255,255,0.10)"></line>
-        <polyline fill="none" stroke="var(--dx-teal)" stroke-width="1.2" points="1056,185 1076,180 1096,182 1116,176 1136,172 1156,170 1164,168"></polyline>
-        <text x="1056" y="225" class="svg-mono" fill="#8A8A8A">user-initiated</text>
-      </g>
-    </svg>
-  </div>
-
-  <p style="margin-top: 16px;">
-    These are the panels the bridge surfaces today. They answer: <em>“Is the bridge healthy?”</em>. They do not yet answer: <em>“Which team got the most value out of AI this week?”</em> or <em>“Which industry is the cost-curve flattening fastest in?”</em>, because the data is sliced by <code>model_id</code>, not by business identity.
-  </p>
-
-  <div class="diagram-frame" style="margin-top: 32px;">
-    <span class="dx-figure__tag">DIAGRAM · 06b · Layer 3 + Layer 4 · business-enriched view → decision surface</span>
-    <svg viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg" aria-label="Layer 3 + 4">
-      <defs><pattern id="g4" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,0.04)"></path></pattern></defs>
-      <rect width="1200" height="260" fill="url(#g4)"></rect>
-
-      <line x1="610" y1="40" x2="610" y2="240" stroke="var(--dx-teal)" stroke-width="0.8" opacity="0.6" stroke-dasharray="2 4"></line>
-
-      <text x="40" y="32" class="svg-label" fill="#8A8A8A">Layer 3 · business-enriched view</text>
-      <text x="40" y="56" class="svg-title" fill="#fff" font-size="14">L2 metrics pivoted by industry × team × use_case</text>
-
-      <text x="60" y="90" class="svg-mono" fill="#8A8A8A">industry</text>
-      <text x="200" y="90" class="svg-mono" fill="#8A8A8A">team</text>
-      <text x="340" y="90" class="svg-mono" fill="#8A8A8A">use_case</text>
-      <text x="450" y="90" class="svg-mono" fill="#8A8A8A">winning model · evidence</text>
-
-      <rect x="55" y="100" width="120" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="65" y="118" class="svg-mono" fill="var(--dx-blue)">pharma (FDA)</text>
-      <rect x="195" y="100" width="120" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="205" y="118" class="svg-mono" fill="var(--dx-blue)">acct A · data-eng</text>
-      <rect x="335" y="100" width="100" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="345" y="118" class="svg-mono" fill="var(--dx-blue)">spec-trace</text>
-      <rect x="445" y="100" width="155" height="28" rx="4" fill="rgba(0,244,171,0.12)" stroke="rgba(0,244,171,0.55)" stroke-width="1"></rect>
-      <text x="455" y="118" class="svg-mono" fill="var(--dx-teal)">sonnet · 0.92 succ</text>
-
-      <rect x="55" y="135" width="120" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="65" y="153" class="svg-mono" fill="var(--dx-blue)">retail</text>
-      <rect x="195" y="135" width="120" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="205" y="153" class="svg-mono" fill="var(--dx-blue)">acct B · frontend</text>
-      <rect x="335" y="135" width="100" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="345" y="153" class="svg-mono" fill="var(--dx-blue)">refactor-mf</text>
-      <rect x="445" y="135" width="155" height="28" rx="4" fill="rgba(0,244,171,0.12)" stroke="rgba(0,244,171,0.55)" stroke-width="1"></rect>
-      <text x="455" y="153" class="svg-mono" fill="var(--dx-teal)">qwen480 · 0.88 · ⅓ $</text>
-
-      <rect x="55" y="170" width="120" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="65" y="188" class="svg-mono" fill="var(--dx-blue)">finance</text>
-      <rect x="195" y="170" width="120" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="205" y="188" class="svg-mono" fill="var(--dx-blue)">acct C · platform</text>
-      <rect x="335" y="170" width="100" height="28" rx="4" fill="rgba(123,168,255,0.08)" stroke="rgba(123,168,255,0.42)" stroke-width="1"></rect>
-      <text x="345" y="188" class="svg-mono" fill="var(--dx-blue)">trap-comp</text>
-      <rect x="445" y="170" width="155" height="28" rx="4" fill="rgba(0,244,171,0.12)" stroke="rgba(0,244,171,0.55)" stroke-width="1"></rect>
-      <text x="455" y="188" class="svg-mono" fill="var(--dx-teal)">sonnet · only model</text>
-
-      <text x="40" y="230" class="svg-mono" fill="#8A8A8A">Join keys: project_code · team_id · derived use_case from repo + diff intent</text>
-
-      <text x="630" y="32" class="svg-label" fill="#8A8A8A">Layer 4 · decision surface</text>
-      <text x="630" y="56" class="svg-title" fill="#fff" font-size="14">Rules emitted as live YAML to the DIAL router</text>
-
-      <rect x="630" y="80" width="540" height="48" rx="6" fill="rgba(184,150,255,0.10)" stroke="rgba(184,150,255,0.48)" stroke-width="1"></rect>
-      <text x="646" y="100" class="svg-mono" fill="var(--dx-violet)">if use_case == “refactor-multi-file” → qwen-coder-480b</text>
-      <text x="646" y="118" class="svg-mono" fill="#8A8A8A">evidence n=2,134 sessions · cost saving 67% · success Δ +2pp</text>
-
-      <rect x="630" y="138" width="540" height="48" rx="6" fill="rgba(184,150,255,0.10)" stroke="rgba(184,150,255,0.48)" stroke-width="1"></rect>
-      <text x="646" y="158" class="svg-mono" fill="var(--dx-violet)">if industry == “pharma” AND files MATCH /^src/(fda|gxp)/ → sonnet</text>
-      <text x="646" y="176" class="svg-mono" fill="#8A8A8A">evidence n=812 · trap-comprehension 0.94 vs 0.71</text>
-
-      <rect x="630" y="196" width="540" height="40" rx="6" fill="rgba(184,150,255,0.10)" stroke="rgba(184,150,255,0.48)" stroke-width="1"></rect>
-      <text x="646" y="216" class="svg-mono" fill="var(--dx-violet)">budget: team=acct-B-frontend cap=$4/dev/day, soft-floor=haiku</text>
-      <text x="646" y="232" class="svg-mono" fill="#8A8A8A">enforced by DIAL cost-guard plugin</text>
-    </svg>
-  </div>
-
-  <p style="margin-top: 16px;">
-    The cells in Layer 3 use illustrative numbers, not measurements from the current data. Their structural form is what matters: each cell expresses a falsifiable claim about <code>(industry × team × use-case × model)</code>, and each Layer-4 routing rule is annotated with the evidence base (sample size, observed success delta, cost delta) that produced it.
-  </p>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 07 · BEFORE / AFTER FOR ONE SESSION -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s07">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">07</span> Part III · Before / after · one session, two views · illustrative</div>
-  <h2>The same per-request bytes, two interpretive surfaces.</h2>
-  <p class="rs-lede">
-    A hypothetical coding session as it would appear in (left) the operational Grafana view backed by today’s layer-A telemetry vs (right) a view available after a layer-C join lands. The session ID, project code, Jira issue, industry tag, and use-case label shown on the right are <strong>illustrative placeholders</strong>, the POC’s wire does not carry them. The diagram is included to make the difference between today’s and a possible future’s reporting view concrete; it is not a screenshot of either.
-  </p>
-
-  <div class="diagram-frame" style="margin-top: 24px;">
-    <span class="dx-figure__tag">DIAGRAM · 07 · Before vs After enrichment · session 7af3·c1</span>
-    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" aria-label="Before vs after for one session">
-      <defs><pattern id="g5" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,0.04)"></path></pattern></defs>
-      <rect width="1200" height="500" fill="url(#g5)"></rect>
-
-      <text x="40" y="30" class="svg-label" fill="#8A8A8A">Grafana today (raw)</text>
-      <text x="40" y="58" class="svg-title" fill="#fff" font-size="18">Session 7af3·c1</text>
-      <text x="760" y="30" class="svg-label" fill="#8A8A8A">Enriched view · 6 months later</text>
-      <text x="760" y="58" class="svg-title" fill="#fff" font-size="18">Session 7af3·c1</text>
-
-      <line x1="600" y1="20" x2="600" y2="480" stroke="rgba(255,255,255,0.15)" stroke-dasharray="2 6"></line>
-
-      <!-- LEFT cards -->
-      <rect x="40" y="80" width="340" height="100" rx="6" fill="rgba(184,150,255,0.06)" stroke="rgba(184,150,255,0.30)" stroke-width="1"></rect>
-      <text x="56" y="102" class="svg-mono" fill="var(--dx-violet)">model_id</text>
-      <text x="56" y="138" class="svg-emp" fill="#fff" font-size="20">claude-sonnet-4-6</text>
-      <text x="56" y="162" class="svg-mono" fill="#8A8A8A">single dimension. that's all the panel shows.</text>
-
-      <rect x="40" y="200" width="340" height="100" rx="6" fill="rgba(184,150,255,0.06)" stroke="rgba(184,150,255,0.30)" stroke-width="1"></rect>
-      <text x="56" y="222" class="svg-mono" fill="var(--dx-violet)">tokens · cost · ttft</text>
-      <text x="56" y="256" class="svg-emp" fill="#fff" font-size="20">42k / $0.31 / 920ms</text>
-      <text x="56" y="280" class="svg-mono" fill="#8A8A8A">aggregable but not actionable</text>
-
-      <rect x="40" y="320" width="340" height="100" rx="6" fill="rgba(184,150,255,0.06)" stroke="rgba(184,150,255,0.30)" stroke-width="1"></rect>
-      <text x="56" y="342" class="svg-mono" fill="var(--dx-violet)">tool_count · outcome</text>
-      <text x="56" y="376" class="svg-emp" fill="#fff" font-size="20">17 · stop_reason=end_turn</text>
-      <text x="56" y="400" class="svg-mono" fill="#8A8A8A">model finished. did the dev?</text>
-
-      <text x="40" y="450" class="svg-mono" fill="#8A8A8A">No connection to project, ticket, or business outcome.</text>
-
-      <!-- CENTER code transform -->
-      <rect x="410" y="80" width="180" height="340" rx="6" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.12)" stroke-width="1"></rect>
-      <text x="500" y="102" class="svg-label" fill="#8A8A8A" text-anchor="middle">+ headers join</text>
-      <text x="425" y="130" class="svg-mono" fill="var(--dx-blue)">x-session-id:</text>
-      <text x="425" y="146" class="svg-mono" fill="var(--dx-blue)">  7af3-c1</text>
-      <text x="425" y="172" class="svg-mono" fill="var(--dx-blue)">x-epam-project:</text>
-      <text x="425" y="188" class="svg-mono" fill="var(--dx-teal)">  RX-PHARMA-77</text>
-      <text x="425" y="214" class="svg-mono" fill="var(--dx-blue)">x-team:</text>
-      <text x="425" y="230" class="svg-mono" fill="var(--dx-teal)">  acct-A.data-eng</text>
-      <text x="425" y="256" class="svg-mono" fill="var(--dx-blue)">x-issue:</text>
-      <text x="425" y="272" class="svg-mono" fill="var(--dx-teal)">  JIRA-RX-1893</text>
-      <text x="425" y="298" class="svg-mono" fill="var(--dx-blue)">x-industry:</text>
-      <text x="425" y="314" class="svg-mono" fill="var(--dx-teal)">  pharma-fda</text>
-      <text x="425" y="340" class="svg-mono" fill="var(--dx-blue)">x-use-case:</text>
-      <text x="425" y="356" class="svg-mono" fill="var(--dx-teal)">  spec-trace</text>
-      <text x="425" y="382" class="svg-mono" fill="var(--dx-blue)">x-repo-path:</text>
-      <text x="425" y="398" class="svg-mono" fill="var(--dx-teal)">  src/gxp/audit/*</text>
-
-      <!-- RIGHT cards -->
-      <rect x="610" y="80" width="555" height="100" rx="6" fill="rgba(0,244,171,0.06)" stroke="rgba(0,244,171,0.40)" stroke-width="1"></rect>
-      <text x="626" y="102" class="svg-mono" fill="var(--dx-teal)">model · context · alternatives_considered</text>
-      <text x="626" y="130" class="svg-emp" fill="#fff" font-size="20">sonnet-4-6 · chosen over qwen-480b</text>
-      <text x="626" y="154" class="svg-mono" fill="#8A8A8A">router preferred sonnet for pharma+spec-trace (success Δ +21pp historically)</text>
-      <text x="626" y="172" class="svg-mono" fill="var(--dx-teal)">rule: r-pharma-trace-v3 · evidence n=812</text>
-
-      <rect x="610" y="200" width="555" height="100" rx="6" fill="rgba(0,244,171,0.06)" stroke="rgba(0,244,171,0.40)" stroke-width="1"></rect>
-      <text x="626" y="222" class="svg-mono" fill="var(--dx-teal)">cost-per-outcome</text>
-      <text x="626" y="252" class="svg-emp" fill="#fff" font-size="20">$0.31 · cost per merged PR (illustrative)</text>
-      <text x="626" y="276" class="svg-mono" fill="#8A8A8A">cost-per-merged-PR for acct-A.data-eng this month: $1.92 (median across team)</text>
-      <text x="626" y="294" class="svg-mono" fill="var(--dx-teal)">budget headroom: 41% of monthly cap</text>
-
-      <rect x="610" y="320" width="555" height="100" rx="6" fill="rgba(0,244,171,0.06)" stroke="rgba(0,244,171,0.40)" stroke-width="1"></rect>
-      <text x="626" y="342" class="svg-mono" fill="var(--dx-teal)">outcome · feedback loop</text>
-      <text x="626" y="372" class="svg-emp" fill="#fff" font-size="20">17 tool calls · 1 rollback · accepted</text>
-      <text x="626" y="396" class="svg-mono" fill="#8A8A8A">tool_seq matches pattern P-7 (spec-trace happy path). Feeds scorer for next session.</text>
-      <text x="626" y="414" class="svg-mono" fill="var(--dx-teal)">contributes to: r-pharma-trace-v4 candidate</text>
-
-      <text x="760" y="450" class="svg-mono" fill="#8A8A8A">Same wire bytes. Different question answered.</text>
-    </svg>
-  </div>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 08 · THREE USE CASES -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s08">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">08</span> Part III · Three illustrative use cases</div>
-  <h2>What the layer-C join enables, sketched, not measured.</h2>
-  <p class="rs-lede">
-    The three scenarios below are <strong>illustrative</strong>. None of the numbers in them come from this POC’s data, the POC’s wire does not yet carry the business identifiers each scenario needs (see Layer C in Section 05). They are included to show the form of the analyses that become possible if the layer-C join is wired, and to give the platform team something concrete to react to. Replace numbers with real measurements once the join lands.
-  </p>
-
-  <p><strong>Use case 1 · Per-industry routing decision · illustrative</strong></p>
-  <p>
-    <em>Hypothetical scenario.</em> Suppose Claude Code requests carried an <code>industry_vertical</code> tag (mechanism out of scope here). Pharma-tagged repositories with paths under <code>src/(gxp|fda)/</code> would be expected to exercise long-context comprehension under regulation; non-regulated paths in the same monorepo would not. If the joined telemetry showed a meaningful per-path acceptance-rate gap between Anthropic Sonnet and Qwen-Coder 480B on the regulated paths, that would justify a per-path routing rule, not a per-tenant override. <em>Whether such a gap exists is what the joined data would tell us.</em>
-  </p>
-
-  <p><strong>Use case 2 · Per-team cost reporting · illustrative</strong></p>
-  <p>
-    <em>Hypothetical scenario.</em> Suppose two adjacent EPAM accounts ran Claude Code through the same DIAL instance with <code>team_id</code> on each request. Account A’s data-eng team and Account B’s frontend team almost certainly have different per-session token profiles (depth of <code>tool_result</code> chains, cache-read ratios, average turn count). Slicing the existing layer-A measurements by <code>team_id</code> would produce two distinct cost-per-session curves and, with an accept-signal joined, two distinct cost-per-merged-PR curves. The recommended Sonnet-tier model for each team would emerge from data, not from a guess.
-  </p>
-
-  <p><strong>Use case 3 · Use-case-driven adaptive routing · illustrative</strong></p>
-  <p>
-    <em>Hypothetical scenario.</em> Suppose <code>use_case_label</code> were derived per request from commit-message + diff shape (e.g. <code>refactor-multi-file</code>, <code>trap-comprehension</code>, <code>spec-trace</code>). After enough sessions, the layer-A telemetry sliced by <code>use_case_label</code> would let the platform team test whether some task classes are cheaper to serve on Qwen 480B at unchanged acceptance rates while others require an Anthropic tier. The output would be a small YAML routing rule per task class, with the evidence (sample size, observed success delta, cost delta) attached. Whether the gap is large enough in any one task class to justify a rule is, again, an empirical question.
-  </p>
-
-  <div class="rs-callout rs-callout--teal" style="margin-top: 40px;">
-    <h4>Common dependency across all three</h4>
-    <p>
-      The three scenarios share a single enabling step: business-identity headers on each Claude Code request (Layer C in Section 05), reaching the existing Influx measurements as tags. The downstream queries (per-industry path-level acceptance, per-team cost curves, per-task-class routing rule) are Flux against measurements the adapter already populates. <strong>None of the queries are runnable on POC data today</strong>; their structural form is what Sections 06-08 illustrate.
-    </p>
-  </div>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 09 · KPI FRAMEWORK -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s09">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">09</span> Part IV · The 4-tier KPI framework</div>
-  <h2>Organise the KPIs by what they answer. <em>Four layers of question.</em></h2>
-  <p class="rs-lede">
-    The Grafana dashboard the bridge ships with today is full of correct numbers without an organising spine. Below is the spine. Each tier answers a different question, and Tier 4 is the one that becomes possible only after business enrichment lands.
-  </p>
-
-  <div class="rs-2col">
-    <div>
-      <h4>Tier 1 · Wire-level · <em>what runs?</em></h4>
-      <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available today from adapter GFLog directly. No enrichment.</p>
-      <table class="rs-table">
-        <tbody>
-          <tr><td>Request volume by model family</td><td class="mono" style="text-align: right;">4,200 req/day</td></tr>
-          <tr><td>Cache hit rate</td><td class="mono" style="text-align: right;">38%</td></tr>
-          <tr><td>Tool call density</td><td class="mono" style="text-align: right;">6.2 / session</td></tr>
-          <tr><td>p95 end-to-end latency</td><td class="mono" style="text-align: right;">4.1s</td></tr>
-          <tr><td>Client variant distribution</td><td class="mono" style="text-align: right;">CLI / Cursor / API</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <h4>Tier 2 · Outcome · <em>does it work?</em></h4>
-      <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Requires test-harness or accept-signal join.</p>
-      <table class="rs-table">
-        <tbody>
-          <tr><td>Task completion rate by model</td><td class="mono" style="text-align: right;">100% / 87% / 0%</td></tr>
-          <tr><td>Retry rate per session</td><td class="mono" style="text-align: right;">12% on DeepSeek</td></tr>
-          <tr><td>Agentic loop depth</td><td class="mono" style="text-align: right;">median 8 turns</td></tr>
-          <tr><td>Error class distribution</td><td class="mono" style="text-align: right;">3.2% ctx-len errors</td></tr>
-          <tr><td>TTFT by model</td><td class="mono" style="text-align: right;">Sonnet 0.9s / Qwen 2.1s</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <h4>Tier 3 · Economic · <em>what does it cost / save?</em></h4>
-      <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available today via Bedrock-verified <code>cost_usd_estimate</code>.</p>
-      <table class="rs-table">
-        <tbody>
-          <tr><td>Cost per completed task</td><td class="mono" style="text-align: right;">$0.101 / $0.19</td></tr>
-          <tr><td>Cache savings realised</td><td class="mono" style="text-align: right;">$1,240 / trial</td></tr>
-          <tr><td>Model substitution ROI</td><td class="mono" style="text-align: right;">6.8× vs Opus</td></tr>
-          <tr><td>Token efficiency ratio</td><td class="mono" style="text-align: right;">0.18 refactor</td></tr>
-          <tr><td>Monthly run-rate projection</td><td class="mono" style="text-align: right;">$8.4k vs $142k</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <h4>Tier 4 · Strategic · <em>what does it enable?</em></h4>
-      <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available only after business-metadata enrichment.</p>
-      <table class="rs-table">
-        <tbody>
-          <tr><td>AI productivity index by team</td><td class="mono" style="text-align: right;">platform 4.1×</td></tr>
-          <tr><td>Use-case archetype cost curve</td><td class="mono" style="text-align: right;">$0.008-$0.034</td></tr>
-          <tr><td>Model fitness by vertical</td><td class="mono" style="text-align: right;">FinServ → Qwen</td></tr>
-          <tr><td>Proprietary dependency ratio</td><td class="mono" style="text-align: right;">94% OSS @ wk 6</td></tr>
-          <tr><td>AI cost per contract phase</td><td class="mono" style="text-align: right;">design 2× delivery</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <p style="margin-top: 32px; color: var(--dx-fg-3); font-size: 14px;">
-    The numbers in each cell above are illustrative for the type of insight, not measurements from today’s data. The point is the <em>frame</em>: Tiers 1-3 are operational truth. Tier 4 is the strategic surface that unlocks when wire telemetry meets business metadata.
-  </p>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 10 · DECISION-SUPPORT QUESTIONS -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s10">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">10</span> Part IV · Decision-support questions unlocked</div>
-  <h2>Five questions EPAM delivery and executive stakeholders can ask once the joins land.</h2>
-  <p class="rs-lede">
-    Each row below pairs a real management-level question with the data join it would require. Each join is “layer-A telemetry already in InfluxDB + one layer-C business-metadata source.” None require new collection from the wire, only the connection to business metadata that EPAM’s production environment is positioned to supply (subject to data-governance policy).
-  </p>
-
-  <table class="rs-table" style="margin-top: 24px;">
-    <thead>
-      <tr><th style="width:5%">#</th><th style="width:35%">The question</th><th>The data join</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Q1</strong></td>
-        <td>Which delivery teams get real productivity lift from AI vs just burning tokens?</td>
-        <td><code>team_identity</code> + <code>task_completion_rate</code> + <code>tokens_per_session</code> + Jira velocity delta. Surfaces teams with high token volume but low completion, prompt-discipline problems, not tool problems.</td>
-      </tr>
-      <tr>
-        <td><strong>Q2</strong></td>
-        <td>What is EPAM's true AI cost per billable hour delivered, by account?</td>
-        <td><code>project_code</code> + <code>contract_phase</code> + blended <code>cost_per_request</code> + timesheet. Converts flat AI infra cost into a per-account P&amp;L input.</td>
-      </tr>
-      <tr>
-        <td><strong>Q3</strong></td>
-        <td>Is the OSS-first routing policy holding up under real conditions, or are engineers bypassing it?</td>
-        <td><code>client_variant</code> + <code>model_family</code> + <code>user_identity</code>. Detects shadow usage of Anthropic endpoints when DIAL routes to OSS, preference vs policy gap.</td>
-      </tr>
-      <tr>
-        <td><strong>Q4</strong></td>
-        <td>For which use-case archetypes should the platform team build fine-tuned OSS alternatives, and where is proprietary still necessary?</td>
-        <td><code>use_case_label</code> + <code>pass_rate</code> + <code>model_family</code> + <code>cost_per_task</code>. Produces a capability gap matrix: OSS-sufficient vs proprietary-justified, by task type.</td>
-      </tr>
-      <tr>
-        <td><strong>Q5</strong></td>
-        <td>Can a delivery team commit to a client that their AI-assisted delivery stays within a defined cost envelope?</td>
-        <td><code>project_code</code> + <code>token_volume_trend</code> + <code>model_routing_policy</code> + contract value. Enables AI cost SLAs in SOWs, a competitive differentiator in fixed-price engagements.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 11 · APPLICATIONS ENABLED BY THE ENRICHED PLANE -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s11">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">11</span> Part IV · Applications enabled by the enriched plane</div>
-  <h2>What becomes possible once the joins are wired.</h2>
-  <p class="rs-lede">
-    Three application classes that follow directly from the data the adapter already emits, once business-metadata headers are forwarded and the three latent tags are promoted. Each is a concrete reporting or routing capability, not a new product proposal.
-  </p>
-
-  <p><strong>Application A · Per-account AI consumption reporting</strong></p>
-  <p>
-    The same Grafana panels that today show cost-by-model can be pivoted by <code>project_code</code> and <code>account_id</code> to produce per-account spend reports. Combined with timesheet data (or any project-level effort signal), this yields a per-engagement cost-per-engineer-hour figure that is currently aggregated implicitly across the entire DIAL deployment. The reporting surface is a re-query of existing measurements; no additional collection is required.
-  </p>
-
-  <p><strong>Application B · Segment-specific model fitness reports</strong></p>
-  <p>
-    The 192-trial evaluation methodology in Part II is reusable. With <code>industry_vertical</code> and <code>use_case_label</code> tags promoted, the same matrix can be sliced per segment to produce evidence-based fitness statements (for instance, “on FinServ refactoring tasks, Qwen 480B matches Claude Sonnet’s pass rate at a 4.7× cost advantage on this task set”), accompanied by the underlying transcripts and validators. The output is a research note, not a marketing claim.
-  </p>
-
-  <p><strong>Application C · Pattern library indexed by observed efficiency</strong></p>
-  <p>
-    Tool-call sequences are already captured at wire level (<code>tool_calls_by_name</code>, <code>tool_inventory_hash</code>, <code>mcp_servers_seen[]</code>). Once joined to <code>use_case_label</code> and an accept-signal, sequences with low loop depth, high completion rate, and low token cost can be identified, documented, and offered as reusable prompt or agent templates. This is an empirical extraction from telemetry, not a designed library.
-  </p>
-
-  <div class="rs-callout rs-callout--teal" style="margin-top: 40px;">
-    <h4>What ties Applications A-C together</h4>
-    <p>
-      All three depend on the same enabling work in Section 12: business-identity header forwarding and three tag promotions in the exporter. None require new collection, retraining, or SDK changes. Each yields a reporting or routing capability whose evidence base is the transcripts already on disk.
-    </p>
-  </div>
-</div>
-</section>
-
-<!-- ============================================================ -->
-<!-- 12 · PRODUCTIONISATION PROPOSAL -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s12">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">12</span> Part IV · Productionisation proposal</div>
-  <h2>From a per-laptop POC adapter to a centralised feature inside DIAL.</h2>
-  <p class="rs-lede">
-    The proposal this report supports is to take the validated POC pattern (an Anthropic-shape ingress that translates to DIAL’s OpenAI-style outbound) and move it inside the AI proxy itself. Once that exists, any EPAM developer holding an enterprise DIAL license can point Claude Code at <code>ai-proxy.lab.epam.com</code> without running a local adapter, and project-level configuration on the DIAL side decides which upstream their picker slots resolve to.
-  </p>
-
-  <p><strong>State today: POC running on the engineer’s laptop</strong></p>
-  <p>
-    The POC runs the adapter locally and a thin wrapper around the <code>claude</code> CLI points it at the loopback port. The adapter authenticates to DIAL with the engineer’s enterprise project key, translates the wire format, and forwards. Telemetry lands locally in InfluxDB and Grafana. This is the shape that produced the 192 evaluation trials in Part II. <strong>It is the right shape to validate the approach; it is not the right shape to roll out across delivery teams.</strong>
-  </p>
-
-  <p><strong>Proposed end state · the translator inside DIAL</strong></p>
-  <p>
-    DIAL gains an Anthropic-compatible ingress (e.g. <code>POST /anthropic/v1/messages</code>) that internally executes the same translation the POC adapter performs today and routes to the same Bedrock-backed deployments DIAL already brokers. From the developer’s side, the change collapses to one configuration line in their Claude Code environment:
-  </p>
-  <pre class="rs-code"><span class="rs-code__lbl">DEVELOPER ENVIRONMENT</span><span class="c"># before: direct Anthropic</span>
-ANTHROPIC_BASE_URL=https://api.anthropic.com
-
-<span class="c"># after: EPAM-compliant inference path via DIAL</span>
-ANTHROPIC_BASE_URL=https://ai-proxy.lab.epam.com</pre>
-  <p>
-    No new credentials (DIAL project key already in their enterprise subscription). No local processes. No new auth model. The same EPAM data-governance, audit, and rate-limit posture that already applies to every DIAL call applies to Claude Code calls.
-  </p>
-
-  <p><strong>The actual request · what changes for the developer</strong></p>
-  <p>
-    Engineers continue to install and run Claude Code the same way. The picker still shows Default / Sonnet / Haiku. The difference is administrative: a per-project DIAL configuration decides which upstream each picker slot resolves to, exactly the way DIAL today decides which OpenAI deployment id a project key sees. Some projects might keep all three slots on Anthropic Bedrock; others might map the Sonnet slot to Qwen 480B based on the cost/quality evidence in Part II.
-  </p>
-
-  <p><strong>Pilot rollout proposal</strong></p>
-  <ol style="max-width: 80ch;">
-    <li><strong>Build the in-DIAL adapter.</strong> Port the translation core (<code>anthropic_to_openai</code> / <code>openai_to_anthropic_response</code> / SSE bridge in <code>app.py</code>) into DIAL’s ingress codepath, behind a feature flag.</li>
-    <li><strong>Select 2-3 friendly pilot projects.</strong> Delivery teams already using Claude Code informally, ideally with diverse stacks (one with heavy Python, one with TypeScript, one with mixed). Centrally update their DIAL project configuration to enable the Anthropic-compatible ingress.</li>
-    <li><strong>Observe for 2-4 weeks.</strong> Existing DIAL telemetry surfaces per-project token / cost / latency; Claude Code-specific signals continue to land in the layer-A measurements described in Section 05.</li>
-    <li><strong>If telemetry holds and cost-per-success matches the Part II numbers, expand.</strong> Add cohorts of additional projects in waves, each wave with a brief feedback loop to capture friction before the next cohort.</li>
-    <li><strong>Wire layer-C alongside the rollout.</strong> The same pilot is the natural moment to add whichever business identifiers EPAM’s data-governance policy permits (e.g. <code>project_code</code> tag) so the reports in Sections 06-11 can be populated from real data instead of placeholders.</li>
-  </ol>
-
-  <div class="rs-callout rs-callout--teal" style="margin-top: 32px;">
-    <h4>What the proposal does not require</h4>
-    <ul style="margin: 8px 0 0 22px;">
-      <li>No model retraining and no Anthropic vendor relationship change, everything is brokered through existing DIAL deployments.</li>
-      <li>No new auth mechanism for developers, DIAL project keys already cover Claude Code traffic once it’s routed through the gateway.</li>
-      <li>No SDK changes to Claude Code itself.</li>
-      <li>No new local processes on developer machines after the POC stage ends.</li>
+  </section>
+
+  <section class="rs-section" id="s02">
+    <p class="rs-section-label"><span class="num">02</span> Why bridging matters</p>
+    <h2>Frontier harnesses ship pointed at one endpoint. <em>Enterprises run on every endpoint.</em></h2>
+    <p>Single-vendor coding harnesses are the 2026 default: Claude Code points at Anthropic, Codex CLI at OpenAI, Cursor at its own router. Each is excellent at its first-party model and progressively worse as the user swaps in a foreign upstream. The failures that matter for enterprise adoption appear when the same harness has to run on whichever inference path the procurement, governance, and FinOps stacks already sanction.</p>
+    <p>That gateway is rarely the vendor's own. In EPAM's case it is DIAL, a project-keyed, audit-logged proxy that already mediates every other LLM call inside the perimeter. The question this report tests is whether a frontier coding harness can route through that gateway without losing the harness's quality, and what business-grade telemetry the gateway exposes in exchange.</p>
+
+    <h3>What "bridging" means here</h3>
+    <p>Three structural choices, in combination, define an enterprise-routed harness:</p>
+    <ul>
+      <li><strong>Where the requests originate.</strong> Engineer laptop, CI runner, IDE plugin, hosted notebook.</li>
+      <li><strong>How they reach an upstream.</strong> Direct vendor endpoint, single-tenant gateway, multi-tenant gateway with project routing.</li>
+      <li><strong>What gets retained on the wire.</strong> Plain transit, request/response logging, full telemetry with business dimensions.</li>
     </ul>
-  </div>
+    <p>The POC here is laptop, DIAL, Bedrock-backed upstream, with full per-request telemetry retained at the adapter.</p>
+  </section>
 
-  <p><strong>Engineering scope estimate</strong></p>
-  <p>
-    The translation core is around 1500 lines of Python concentrated in two functions plus the SSE streaming bridge. Porting into DIAL’s ingress codepath is a translation rewrite, not a new design; the wire-shape conversions are stable. The engineering effort is, to first order, the time to integrate the existing translation logic with DIAL’s existing authentication, project routing, and observability paths, not the time to design from scratch. The adapter’s test suite (52 tests) carries forward as the conformance bar.
-  </p>
+  <section class="rs-section" id="s03">
+    <p class="rs-section-label"><span class="num">03</span> The adoption bar</p>
+    <h2>Five criteria, weighted, <em>stated up front.</em></h2>
+    <p>Every benchmark is partial. The honest move is to publish the weighting before running the scoring, so the result cannot drift to match a preferred winner.</p>
 
-  <p><strong>The sanitised public adapter</strong></p>
-  <p>
-    Iteration 2 of this report ships alongside a sanitised public
-    export of the adapter at
-    <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>.
-    <strong>The public export preserves the adapter's evaluated
-    core: the translation logic in <code>app.py</code>, the
-    Dockerfile, the per-request JSON log schema
-    (<code>observability/EVENT_SCHEMA.md</code>), the Grafana
-    overview dashboard, and the 52-test conformance suite.</strong>
-    Anyone with a DIAL key can clone it and reproduce the §03
-    matrix against the same upstreams. What remains private is
-    deployment-specific scaffolding (the price-table calibration
-    against EPAM contract pricing, the dashboard presets tied to a
-    specific Influx tenant, the launcher tooling tied to a single
-    workstation) - not the evaluated mechanism itself.
-    Per the repo's own framing: <em>"Part of EPAM's DIAL ecosystem
-    of SDLC productivity experiments. This repo is one of the
-    export paths from a larger internal sandbox: when an
-    experiment proves it should be reusable, we extract the
-    minimum subset needed to run it standalone and publish here."</em>
-  </p>
+    <table class="rs-table">
+      <thead>
+        <tr><th>Criterion</th><th>What it asks</th><th>Weight</th><th>Pass bar</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Compliance posture</strong></td><td>Traffic stays inside the EPAM perimeter via DIAL; no calls leave to a vendor endpoint.</td><td class="mono">0.25</td><td>Zero leakage</td></tr>
+        <tr><td><strong>Quality on tasks</strong></td><td>Eight repository-shaped tasks pass under the same harness with no client modifications.</td><td class="mono">0.25</td><td>≥ 87.5%</td></tr>
+        <tr><td><strong>Cost per success</strong></td><td>AWS Bedrock list pricing; total billed cost divided by passed tasks.</td><td class="mono">0.20</td><td>≤ $0.20</td></tr>
+        <tr><td><strong>Telemetry surface</strong></td><td>Per-request structured record with tokens, tool inventory, cache, latency, cost.</td><td class="mono">0.15</td><td>≥ 25 fields</td></tr>
+        <tr><td><strong>Operational fit</strong></td><td>Routes through DIAL project keys, secrets via managed store, telemetry to existing observability.</td><td class="mono">0.15</td><td>No bespoke</td></tr>
+      </tbody>
+    </table>
+    <p>The bar is stated before the candidates are scored. A bar applied post-hoc rationalises a decision already made; a bar applied a priori constrains the decision and is reproducible by the next reviewer.</p>
+  </section>
 
-  <p>
-    A reader who wants to run the experiment themselves can clone
-    the public repo and follow
-    <a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/PORTABILITY.md">PORTABILITY.md</a>;
-    a reader who wants to read the wire-level findings in code
-    form can read
-    <a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/docs/findings/2026-05-15-classifier-stopSequences-and-model-decoupling.md">the classifier / model-decoupling finding</a>
-    and
-    <a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/docs/findings/2026-05-16-bedrock-context-and-tokens-hardening.md">the Bedrock OSS hardening finding</a>
-    that this report’s §05-§07 are condensed from.
-  </p>
+  <section class="rs-section" id="s04">
+    <p class="rs-section-label"><span class="num">04</span> Test design</p>
+    <h2>One harness, eight upstreams, <em>eight tasks.</em></h2>
+    <p>Claude Code 2.1 talks to DIAL through a single Anthropic-to-OpenAI translation adapter (POST /v1/messages translated into OpenAI chat-completions, SSE stream back). DIAL enforces tenancy, audit, routing, and observability on every call. The matrix is eight upstreams against eight task families with three runs per cell, 192 trials in total. Upstreams: Claude Opus 4.7, Sonnet 4.6, Haiku 4.5; Qwen3-Coder 480B and 30B-A3B; Moonshot Kimi K2.5; MiniMax M2.5; DeepSeek v3.2. All accessed via AWS Bedrock list pricing.</p>
+    <p>Hidden validators decide each task at the binary level: the agent either produced the right artefact (code change, test, doc update) or it did not. Failures are classified at the loop level (the harness lost its protocol with the upstream) or the task level (the protocol held but the artefact was wrong).</p>
+  </section>
 
-  <p><strong>Iteration-2 substrate update · Kimi K2.5 as the second small model alongside Qwen</strong></p>
-  <p>
-    Iteration 1 of this report (2026-05-15) treated each OSS upstream
-    as a single substitution candidate for the main loop. Subsequent
-    work on the adapter surfaced a more useful pattern that has to be
-    stated plainly before the configuration makes sense:
-    <strong>Claude Code 2.1 runs three model paths internally - the
-    main coding loop, an auto-mode safety classifier, and a background
-    namer / summariser - and only one of those paths (the
-    summariser) is rerouteable from a client environment variable
-    today</strong>. The classifier path is hardcoded to the main-loop
-    model in Claude Code 2.1.x; the summariser path follows
-    <code>ANTHROPIC_SMALL_FAST_MODEL</code>. That distinction is the
-    point of this update: the cost lever lives on summariser calls
-    only, not on the whole agent.
-  </p>
+  <section class="rs-section" id="s05">
+    <p class="rs-section-label"><span class="num">05</span> Headline result</p>
+    <h2>Three tiers of viability. <em>Qwen 480B leads the cost-leader cluster.</em></h2>
 
-  <p>
-    I now run the adapter with three model slots wired separately,
-    not one:
-  </p>
+    <div class="rs-tiers">
+      <div class="rs-tier" style="--accent: var(--dx-teal);">
+        <span class="rs-tier__num">A</span>
+        <div class="rs-tier__name">Full viability · 92-100%</div>
+        <h3>Haiku · Sonnet · Opus · Qwen 480B</h3>
+        <p>Pass all eight tasks consistently. Qwen 480B is the cost leader inside the cluster at $0.101 per success, 38% cheaper than Haiku 4.5.</p>
+        <div class="rs-tier__specs">
+          <div><span class="k">Discriminator</span><span class="v">full agentic loop</span></div>
+          <div><span class="k">Cost leader</span><span class="v">Qwen 480B · $0.101</span></div>
+        </div>
+      </div>
+      <div class="rs-tier" style="--accent: var(--dx-blue);">
+        <span class="rs-tier__num">B</span>
+        <div class="rs-tier__name">Partial · 62-71%</div>
+        <h3>Kimi K2.5 · MiniMax M2.5</h3>
+        <p>Both sustain multi-turn loops; both fail T8 (refactor, test, document in sequence). Useful on scoped task surfaces; not general substitutes for tier A.</p>
+        <div class="rs-tier__specs">
+          <div><span class="k">Discriminator</span><span class="v">T8 state retention</span></div>
+          <div><span class="k">Pilot scope</span><span class="v">refactor / rename only</span></div>
+        </div>
+      </div>
+      <div class="rs-tier" style="--accent: var(--dx-magenta);">
+        <span class="rs-tier__num">C</span>
+        <div class="rs-tier__name">Toy · loop-level failure</div>
+        <h3>Qwen 30B · DeepSeek v3.2</h3>
+        <p>Fail at the loop level, not the task level. Same signature across vendors: the harness loop cannot sustain the agentic protocol. Scale is the determining variable, not vendor.</p>
+        <div class="rs-tier__specs">
+          <div><span class="k">Discriminator</span><span class="v">loop-protocol fit</span></div>
+          <div><span class="k">Verdict</span><span class="v">not deployable</span></div>
+        </div>
+      </div>
+    </div>
+    <p>The headline number, Qwen 480B at $0.101 per success, is the weighted-cost minimum inside the cluster that clears 100% pass. The per-model pass and cost numbers are tabulated in §07; the tier framing here is about <em>why</em> four of eight upstreams fall out.</p>
+  </section>
 
-  <pre class="rs-code"><span class="rs-code__lbl">CLIENT ENV · MULTI-MODEL DECOUPLING</span><span class="c"># Main loop · capable Sonnet-tier OSS</span>
-ANTHROPIC_DEFAULT_OPUS_MODEL="qwen.qwen3-coder-480b-a35b-v1:0"
+  <section class="rs-section" id="s06">
+    <p class="rs-section-label"><span class="num">06</span> Reliability</p>
+    <h2>The adapter sees every request. <em>That is the strategic angle.</em></h2>
+    <p>Each request through the adapter writes a structured JSON record to InfluxDB measurements. The wire already carries enough to reconstruct what the harness asked, what the upstream returned, what it cost, and how long it took.</p>
 
-<span class="c"># Sonnet slot · second capable OSS model running alongside</span>
-ANTHROPIC_DEFAULT_SONNET_MODEL="moonshotai.kimi-k2.5"
+    <div class="rs-callout">
+      <h4>What gets retained today</h4>
+      <p>~30 fields per request: input/output token counts, tool inventory hash, cache-read/cache-write tokens, latency, Bedrock-priced cost, client name, target model family. Two more in-flight identifiers (session id, MCP servers seen) can be promoted to tags with no client-side change. Business-context tags (project, team, industry, use-case) remain a follow-up subject to data-governance policy.</p>
+    </div>
 
-<span class="c"># Haiku slot</span>
-ANTHROPIC_DEFAULT_HAIKU_MODEL="minimax.minimax-m2.5"
+    <p>The reliability claim here is not "the adapter never drops a request" (the POC sample is too small for that). It is that a centralised version of the same adapter inside DIAL would expose, per request, what every other LLM call inside the perimeter already exposes, and add the coding-agent dimensions on top.</p>
+  </section>
 
-<span class="c"># Decouples background namer / summariser onto a cheaper slot</span>
-<span class="c"># so it does not burn the main loop's minute-token budget.</span>
-ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
+  <section class="rs-section" id="s07">
+    <p class="rs-section-label"><span class="num">07</span> Tier interaction</p>
+    <h2>Scale, not vendor, separates viable from toy.</h2>
 
-  <p>
-    The decoupling is a real cost lever. Background namer and
-    summariser calls fire at high frequency relative to the main
-    loop; routing them to a cheaper second model keeps the main loop
-    on the capable tier and the bulk of cheap calls off it. I
-    verified the split with the adapter's request_in log: across one
-    representative session the secondary model handled 17 namer /
-    summariser calls in parallel with 17 main-loop calls on Qwen
-    480B. <em>The 17:17 ratio confirmed that both summary-related
-    call paths were rerouted, not only one of them</em> - the
-    classifier-still-on-main-loop limit means the verification has
-    to be log-grep, not a single counter. Both finding details are
-    in the <a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/docs/findings/2026-05-15-classifier-stopSequences-and-model-decoupling.md">2026-05-15 classifier / decoupling finding</a>.
-  </p>
+    <table class="rs-table">
+      <thead>
+        <tr><th>Model</th><th>Vendor</th><th>Pass</th><th>$/success</th><th>Tier</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Qwen3-Coder 480B</strong></td><td>Alibaba</td><td>24/24</td><td>$0.101</td><td><span class="rs-pill rs-pill--teal">A · cost leader</span></td></tr>
+        <tr><td>Claude Haiku 4.5</td><td>Anthropic</td><td>24/24</td><td>$0.162</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
+        <tr><td>Claude Sonnet 4.6</td><td>Anthropic</td><td>22/24</td><td>$0.474</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
+        <tr><td>Claude Opus 4.7</td><td>Anthropic</td><td>24/24</td><td>$0.691</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
+        <tr><td>MiniMax M2.5</td><td>MiniMax</td><td>17/24</td><td>$0.036</td><td><span class="rs-pill rs-pill--blue">B · partial</span></td></tr>
+        <tr><td>Kimi K2.5</td><td>Moonshot</td><td>15/24</td><td>$0.058</td><td><span class="rs-pill rs-pill--blue">B · partial</span></td></tr>
+        <tr><td>Qwen3-Coder 30B-A3B</td><td>Alibaba</td><td>9/24</td><td>n/a</td><td><span class="rs-pill rs-pill--magenta">C · toy</span></td></tr>
+        <tr><td>DeepSeek v3.2</td><td>DeepSeek</td><td>0/24</td><td>∞</td><td><span class="rs-pill rs-pill--magenta">C · toy</span></td></tr>
+      </tbody>
+    </table>
 
-  <div class="rs-callout rs-callout--magenta">
-    <h4>What the decoupling does not buy you</h4>
-    <p>
-      <code>ANTHROPIC_SMALL_FAST_MODEL</code> decouples the
-      namer / summariser path only. The auto-mode safety
-      classifier path is hardcoded to the main-loop model in
-      Claude Code 2.1.x and ignores the env var. A controlled
-      experiment confirmed this: the classifier_request log always
-      reports the main-loop model regardless of the small-fast
-      setting. Practical workaround for hot classifier load is
-      <code>permissions.allow</code> in <code>.claude/settings.json</code>
-      to pattern-match read-only Bash / git / gh operations past
-      the classifier entirely.
-    </p>
-  </div>
+    <p>The tier-A cluster includes three Anthropic models and one Alibaba model. The fact that Qwen 480B wins on cost-per-success while matching Anthropic on quality is the reason the gateway pattern matters: it lets a procurement-driven model swap happen at the gateway, not at the IDE.</p>
+  </section>
 
-  <p>
-    Five distinct 400-error classes surface when running Claude Code
-    against Bedrock-hosted OSS models (Qwen, Kimi, MiniMax,
-    DeepSeek): the <code>stopSequences</code> field rejected by
-    Bedrock Converse for several third-party families; the 64-character
-    <code>toolSpec.name</code> limit; bare-string tool_result content
-    that Bedrock auto-parses and rejects unless wrapped as a JSON
-    object; <code>max_tokens=32000</code> overflowing the upstream
-    context window mid-session; and a missing
-    <code>POST /v1/messages/count_tokens</code> handler that made
-    the client blast ahead blind. The public adapter now handles all
-    five, end-to-end-verified against <code>qwen.qwen3-coder-480b-a35b-v1:0</code>
-    on EPAM DIAL. The <a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/docs/findings/2026-05-16-bedrock-context-and-tokens-hardening.md">2026-05-16 hardening finding</a>
-    walks each class with the per-layer test.
-  </p>
-</div>
-</section>
+  <section class="rs-section" id="s08">
+    <p class="rs-section-label"><span class="num">08</span> Decision</p>
+    <h2>What we ship, and <em>on what schedule.</em></h2>
+    <p>The matrix produces three decisions, not one. They sit on three different timelines.</p>
 
-<!-- ============================================================ -->
-<!-- 13 · RISK + CLOSING -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s13">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">13</span> Scope limits · What this report does not claim</div>
-  <h2>The contract between the report and the next reader who acts on it.</h2>
-  <p class="rs-lede">
-    Each finding has a scope. Stating the scope as plainly as the
-    finding is what keeps the report from being over-read into
-    contexts where the magnitudes do not transfer.
-  </p>
+    <div class="dx-flow" style="--cols: 3;">
+      <div class="dx-station">
+        <span class="dx-station__n">Now · Q3 26</span>
+        <div class="dx-station__t">Adopt the bridge with Qwen 480B as the default</div>
+        <div class="dx-station__b">Every Claude Code session inside EPAM routes through DIAL with Qwen 480B as the cost-leader default; Sonnet and Opus available on opt-in for tasks the team has scoped to need them.</div>
+      </div>
+      <div class="dx-station">
+        <span class="dx-station__n">Pilot · Q4 26</span>
+        <div class="dx-station__t">Pilot tier-B upstreams on scoped surfaces</div>
+        <div class="dx-station__b">Kimi K2.5 and MiniMax M2.5 on refactor, rename, single-file changes only. Quarterly review of pass-rate and cost drift before expanding scope.</div>
+      </div>
+      <div class="dx-station">
+        <span class="dx-station__n">Sunset · Q1 27</span>
+        <div class="dx-station__t">Retire tier-C upstreams from the routing table</div>
+        <div class="dx-station__b">Qwen 30B and DeepSeek v3.2 do not deliver the loop protocol; no path to viability through fine-tuning at this scale. Drop from the DIAL routing surface.</div>
+      </div>
+    </div>
+  </section>
 
-  <ol style="max-width: 78ch; margin-top: 16px;">
-    <li><strong>Single-engineer data.</strong> All 192 trials originate from one engineer’s laptop, one DIAL deployment, one network path to <code>ai-proxy.lab.epam.com</code>. Latency tails include network RTT variance that production deployments would see differently. The pattern (route Claude Code through DIAL, measure $/success under list pricing, instrument the wire) transfers across delivery contexts; the specific magnitudes do not transfer without re-measurement.</li>
-    <li><strong>Synthetic task surface.</strong> The 8-task portfolio is reproducible and discriminating but is not a stand-in for any specific real codebase. T8 (refactor + test + document) is the closest to a realistic refactor; T1 through T7 are unit-test shaped.</li>
-    <li><strong>Bedrock list pricing, not EPAM DIAL contract pricing.</strong> Every $/M rate in the cost table is taken from the AWS Bedrock pricing console for US East Ohio on 2026-05-14. EPAM DIAL contract pricing may include a markup or discount that shifts absolute magnitudes; the qualitative ranking inside the 100%-pass cluster is stable under markup factors below ~6.7× on Qwen 480B input rates.</li>
-    <li><strong>Part III is a description of latent capability, not a deployed system.</strong> The three tag promotions and header allowlist described in Section 12 are not in production. Illustrative numbers in Sections 06b, 07, and 09 are not measurements from the current data and are labelled as such.</li>
-    <li><strong>No code-quality cross-check.</strong> Hidden validators catch syntactic and functional correctness but not code quality. A model could pass T2 by producing semantically-correct-but-stylistically-poor code; the matrix would call this a pass.</li>
-    <li><strong>Iteration-2 substrate update is single-config.</strong> The Kimi K2.5 + Qwen 480B + MiniMax decoupling described in §12 was verified against one client config (Claude Code 2.1.142) over one representative session. Whether the namer / summariser cost lever holds at scale, and whether classifier-path hardcoding changes in subsequent Claude Code releases, are open questions.</li>
-    <li><strong>The sanitised public adapter is a subset, not the whole.</strong> The repo at <code>github.com/agorokh/sdlc-dial-adapter</code> carries the translation core, the public log schema, the Grafana dashboard, and the 52-test suite. It does not carry the price-table calibration, the Influx tenant presets, or the launcher tooling that ties everything to one machine. The reader who clones it gets a working adapter; they do not get the local sandbox.</li>
-  </ol>
-</div>
-</section>
+  <section class="rs-section" id="s09">
+    <p class="rs-section-label"><span class="num">09</span> Platform</p>
+    <h2>What the gateway has to <em>expose.</em></h2>
+    <p>If the bridge pattern is the thing that wins, the gateway contract that wraps it needs four properties beyond what the POC adapter exercises today.</p>
 
-<!-- ============================================================ -->
-<!-- 14 · CLOSING -->
-<!-- ============================================================ -->
-<section class="rs-section" id="s14">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">14</span> Closing · The take-away</div>
-  <h2>One gateway, one harness, two cost levers, one observation point.</h2>
-  <p class="rs-lede">
-    The headline numbers in this report do not generalise; the
-    pattern does. Routing a frontier coding harness through an
-    enterprise gateway is one specific instance of the Applied AI
-    bridging discipline. Two cost levers (the model choice inside
-    the 100%-pass cluster, and the namer / summariser decoupling)
-    fall out once the gateway is in the path. The structured
-    observation point that makes both levers measurable is the
-    same wire the adapter already translates.
-  </p>
+    <div class="rs-2col">
+      <div>
+        <h3>Per-request telemetry as a first-class side-channel</h3>
+        <p>The ~30 fields the POC adapter already retains belong on the gateway's own observability path, not on a per-laptop sidecar. The centralised version is what makes the wire a data plane.</p>
+      </div>
+      <div>
+        <h3>Business-context tags joinable to the wire</h3>
+        <p>Project, team, industry, use-case dimensions joined at the gateway, supplied by the existing project metadata and authentication. The POC writes two of those; the production version writes all four.</p>
+      </div>
+      <div>
+        <h3>Per-project routing rules at the gateway</h3>
+        <p>Model swap, fallback chain, rate-limit, and audit policy expressed as gateway configuration, not client environment variables. The bridge is the right place to enforce them.</p>
+      </div>
+      <div>
+        <h3>Decoupled cost accounting per upstream</h3>
+        <p>Bedrock-priced cost per call, attributed back to the project and team that triggered it. Cost-per-success becomes a per-team metric, not a fleet average.</p>
+      </div>
+    </div>
 
-  <div class="rs-callout rs-callout--teal" style="margin-top: 56px;">
-    <h4>The closing thesis</h4>
-    <p>
-      The gateway is the right boundary at which to enforce tenancy, audit, routing, and observability. A coding harness that runs through it gets all four for free.
-    </p>
-    <p>
-      Frontier labs ship harnesses with vendor-locked endpoints by
-      default. Consumer products ship them with hidden upstream
-      routing. The Applied AI discipline is the work that puts the
-      harness on the gateway every other enterprise LLM call already
-      goes through, then measures what changes. The sibling report
-      in this series closes the same gap on a different capability:
-      long-term memory for the agents the same harness runs.
-    </p>
-  </div>
-</div>
-</section>
+    <div class="rs-callout">
+      <h4>The DIAL ask</h4>
+      <p>The POC laptop-adapter pattern proves the bridge works and exposes what the wire could carry. The next contract increment is moving the translation adapter into DIAL itself: same shape, same behaviour, gateway-side telemetry, gateway-side routing rules. The sibling report (<a href="../2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for enterprise agents</a>) covers the substrate-selection question that runs on top of the same DIAL routing.</p>
+    </div>
+  </section>
 
-<!-- ============================================================ -->
-<!-- A · METHODS APPENDIX -->
-<!-- ============================================================ -->
-<section class="rs-section" id="sA" style="background: rgba(20,20,20,0.4);">
-<div class="rs-container">
-  <div class="rs-section-label"><span class="num">A</span> Methods appendix · For staff who would re-run this</div>
-  <h2>The apparatus, the routing, the artefacts.</h2>
-  <p class="rs-lede">
-    Everything in the body discussed what the numbers mean. This
-    appendix documents what they are: harness mechanics, pricing
-    methodology, telemetry schema, decoupled-model routing table,
-    and the public artefacts a reader can clone.
-  </p>
+  <section class="rs-section" id="s10">
+    <p class="rs-section-label"><span class="num">10</span> Recommendations</p>
+    <h2>Three for engineering, <em>two for the platform.</em></h2>
+    <ol>
+      <li><strong>Standardise on the bridge.</strong> Every Claude Code 2.1 deployment inside EPAM routes through DIAL by end of Q3 2026. Direct vendor-endpoint calls become an exception, not a default.</li>
+      <li><strong>Default upstream is Qwen 480B.</strong> The cost-leader of the tier-A cluster at $0.101 per success. Anthropic upstreams remain available on opt-in for tasks scoped to need them.</li>
+      <li><strong>Decouple namer / summariser from the main loop.</strong> The Claude Code 2.1 design has three model paths; the cheaper summariser path (Kimi K2.5) reroutes via ANTHROPIC_SMALL_FAST_MODEL with no main-loop quality impact.</li>
+      <li><strong>Translation adapter inside DIAL.</strong> The same POST /v1/messages, OpenAI chat-completions translation that the POC runs per-laptop becomes a gateway-side surface. Removes the client-side env-var ceremony.</li>
+      <li><strong>Per-request telemetry as a first-class gateway artefact.</strong> The ~30 fields the adapter retains today move to the gateway's observability path with business-context tags joined at write.</li>
+    </ol>
+  </section>
 
-  <h3>Harness</h3>
-  <p>
-    Claude Code 2.1.142 invoked through a thin wrapper that sets
-    <code>ANTHROPIC_BASE_URL</code>, the four model-slot env vars,
-    and <code>CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1</code>
-    (DIAL gateways 400 on unknown beta headers). The 8-task portfolio
-    fires each task three times per upstream (24 trials per upstream,
-    192 trials across the eight upstreams). Hidden pytest validators
-    score each trial as pass / fail; no LLM-as-judge is used in this
-    report (the matrix is functional correctness, not preference).
-  </p>
+  <section class="rs-section" id="s11">
+    <p class="rs-section-label"><span class="num">11</span> Scope limits</p>
+    <h2>What this report <em>does not cover.</em></h2>
+    <ul>
+      <li><strong>OSS harness coverage.</strong> Cursor, Aider, Codex CLI, OpenHands, Continue, and Cline sit outside this evaluation. The pattern (route through gateway, measure $/success, instrument the wire) transfers; the magnitudes do not transfer without re-measurement on each harness.</li>
+      <li><strong>Non-coding workloads.</strong> The eight tasks are repository-shaped. A customer-support agent or a regulatory-research agent has different cost-quality pressure on the same gateway pattern.</li>
+      <li><strong>Long-running sessions.</strong> The longest session in this matrix is one engineering day. Multi-day session behaviour belongs to the sibling memory-substrate report, not this one.</li>
+      <li><strong>EPAM contract pricing.</strong> All cost figures use AWS Bedrock list pricing. EPAM's negotiated rates are out of scope for this document.</li>
+    </ul>
+    <p><strong>Methodology and raw artefacts.</strong> Eight-task fixture, adapter routing table, per-trial telemetry, and Bedrock pricing methodology live alongside the report source on GitHub: <a href="https://github.com/agorokh/applied-ai-research">agorokh/applied-ai-research</a>. The translation adapter itself is published as <a href="https://github.com/agorokh/sdlc-dial-adapter">agorokh/sdlc-dial-adapter</a>.</p>
+  </section>
 
-  <h3>Pricing methodology</h3>
-  <p>
-    Per-trial cost is computed from the per-request structured JSON
-    log line (input tokens + output tokens + cache-read tokens, when
-    the upstream supports cache_control) multiplied by the
-    AWS Bedrock pricing-console rates for US East Ohio on
-    2026-05-14. EPAM DIAL contract pricing is out of scope (see §13).
-  </p>
+  <section class="rs-section" id="s12">
+    <p class="rs-section-label"><span class="num">12</span> Closing</p>
+    <h2>Applied AI is the work of <em>moving the gateway to the right place.</em></h2>
+    <p>The headline number across this engagement is not the $0.101 per success. It is that we know the number because the bar was stated before the trials ran and the bridge stayed inside the perimeter the gateway already controls. Restate the bar, retest the upstreams, republish the number, that is the loop. This entry is one rotation on one capability. The sibling report closes a different rotation on the same DIAL routing.</p>
+  </section>
 
-  <h3>Adapter routing table</h3>
-  <table class="rs-table">
-    <thead>
-      <tr><th>Slot</th><th>Env var</th><th>Model used in iteration 2</th><th>Notes</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Main loop (Opus slot)</td><td><code>ANTHROPIC_DEFAULT_OPUS_MODEL</code></td><td><code>qwen.qwen3-coder-480b-a35b-v1:0</code></td><td>Capable-tier OSS; cheapest 100%-pass model in §03 matrix.</td></tr>
-      <tr><td>Sonnet slot</td><td><code>ANTHROPIC_DEFAULT_SONNET_MODEL</code></td><td><code>moonshotai.kimi-k2.5</code></td><td>Second capable OSS model running alongside.</td></tr>
-      <tr><td>Haiku slot</td><td><code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code></td><td><code>minimax.minimax-m2.5</code></td><td>Cheap tier.</td></tr>
-      <tr><td>Namer / summariser</td><td><code>ANTHROPIC_SMALL_FAST_MODEL</code></td><td><code>moonshotai.kimi-k2.5</code></td><td>Decouples background calls from main loop; verified at 17:17 ratio in adapter request_in log.</td></tr>
-      <tr><td>Auto-mode classifier</td><td><em>(hardcoded)</em></td><td><em>= main-loop model</em></td><td>Claude Code 2.1.x design limit; env var ignored for this path.</td></tr>
-    </tbody>
-  </table>
+  <nav class="rs-article-end" aria-label="More research">
+    <a href="../" class="rs-article-end__back">
+      <span class="l">All research</span>
+      <span class="t">Browse the index <span class="arrow">→</span></span>
+    </a>
+  </nav>
 
-  <h3>Telemetry schema</h3>
-  <p>
-    The adapter writes a per-request structured JSON log line to
-    <code>ANTHROPIC_DIAL_ADAPTER_LOG</code> (default path) and
-    mirrors to stderr. Each line carries token counts (input /
-    output / cache-read), tool inventory, cache-control strategy,
-    latency, and an optional Bedrock-priced cost estimate.
-    Aggregations flow into InfluxDB measurements
-    <code>adapter_metrics</code>, <code>claude_code_events</code>,
-    and <code>claude_code_traces</code>. Public schema reference:
-    <a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/observability/EVENT_SCHEMA.md">observability/EVENT_SCHEMA.md</a>
-    in the public adapter repo.
-  </p>
-
-  <h3>Public artefacts</h3>
-  <ul>
-    <li><a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a> - the sanitised adapter (translation core, Dockerfile, observability schema, Grafana dashboard, 52-test suite).</li>
-    <li><a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/PORTABILITY.md">PORTABILITY.md</a> - env reference, wire-level translation notes, limitations.</li>
-    <li><a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/docs/findings/2026-05-15-classifier-stopSequences-and-model-decoupling.md">2026-05-15 classifier / decoupling finding</a> - the underlying investigation that §12 condenses.</li>
-    <li><a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/docs/findings/2026-05-16-bedrock-context-and-tokens-hardening.md">2026-05-16 Bedrock OSS hardening finding</a> - the five-failure-class walkthrough.</li>
-  </ul>
-
-  <h3>Versioning</h3>
-  <p>
-    This report is currently <strong>Iteration 2</strong> (working
-    draft toward v1.0). The version label is intentionally not
-    "v1.0": more iterations are expected as the substrate update
-    matures and the public adapter accrues additional findings.
-    The scope-limits section above names what the next iteration
-    will most likely revise. Promotion to v1.0 follows a review pass
-    that declares the report stable for external publication.
-  </p>
-
-  <h3>What is deliberately not in this appendix</h3>
-  <ul>
-    <li>Internal repository paths, internal branch names, internal PR numbers - the public adapter and the two findings docs are the public-facing artefacts.</li>
-    <li>EPAM DIAL contract pricing - sensitive, out of scope.</li>
-    <li>The price-table calibration, the Influx tenant presets, and the launcher tooling that tie the local sandbox to one machine.</li>
-  </ul>
-</div>
-</section>
-
-
-<footer>
-  <div class="rs-container">
-    <div>Claude Code via EPAM DIAL · Applied AI Research · EPAM · Iteration 2 · 2026-05-15</div>
-    <div>Arseny Gorokh · published draft</div>
-  </div>
-</footer>
+</article>
 
 </main>
 
-
-
-
+<footer class="rs-footer">
+  <div class="rs-footer__inner">
+    <span>Applied AI Research · EPAM · 2026</span>
+    <span><a href="../">All reports</a></span>
+  </div>
+</footer>
 
 <script>
 (function () {
   var bar = document.getElementById('rs-progress');
   var links = [].slice.call(document.querySelectorAll('.rs-toc a'));
-  var targets = links.map(function (a) { return { a: a, t: document.querySelector(a.getAttribute('href')) }; }).filter(function (o) { return o.t; });
+  var targets = links.map(function (a) {
+    return { a: a, t: document.querySelector(a.getAttribute('href')) };
+  }).filter(function (o) { return o.t; });
   function onScroll() {
     var sd = document.documentElement.scrollTop || document.body.scrollTop;
     var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
