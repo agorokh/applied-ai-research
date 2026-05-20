@@ -12,40 +12,46 @@
 /* dialx retrofit compat shim: width-constrain inner wrappers from legacy markup */
 main .rs-container { max-width: none; margin: 0; padding: 0; }
 
-/* v5 — sticky topbar offset. Topbar is ~72px; give hero breathing room. */
+/* v6 — sticky topbar offset. Hero owns its own breathing room via its own
+   padding-top; main has zero padding so section-padding does the work. */
 :root { --rs-topbar-h: 72px; }
 html { scroll-padding-top: var(--rs-topbar-h); }
-main { padding-top: var(--rs-topbar-h); }
 .rs-section { scroll-margin-top: var(--rs-topbar-h); }
+.rs-hero { padding-top: 120px; }
 
-/* Single reading column: prose, callouts, tables, tier-grids, diagrams all
-   constrained to 70ch within the main column (canonical scientific-paper
-   layout per Josh Comeau / Kilian Valkhof; kills the narrow/wide yo-yo). */
+/* v6 — Single reading column for prose + callouts. Wider for data/figures. */
 .rs-section > .rs-callout,
 .rs-section > .rs-container > .rs-callout { max-width: 70ch; }
-.rs-callout p { max-width: none; }
-.rs-section > .rs-table,
-.rs-section > .rs-container > .rs-table,
+/* tier-grids: wider — 3 cards at 70ch read as slivers (Council D) */
 .rs-section > .rs-tiers,
-.rs-section > .rs-container > .rs-tiers,
+.rs-section > .rs-container > .rs-tiers { max-width: 96ch; }
+/* tables and diagrams: full reading width with a humane cap (Council E F1/F2) */
+.rs-section > .rs-table,
+.rs-section > .rs-container > .rs-table { max-width: min(100%, 1080px); display: block; overflow-x: auto; }
 .rs-section > .diagram-frame,
-.rs-section > .rs-container > .diagram-frame { max-width: 70ch; }
+.rs-section > .rs-container > .diagram-frame { max-width: min(100%, 1080px); }
+/* .rs-2col was escaping any constraint — Council E F3 (your "narrow text
+   then it goes all white" complaint, POC KPI quadrant). Match prose column. */
+.rs-section > .rs-2col,
+.rs-section > .rs-container > .rs-2col { max-width: 70ch; }
 
-/* Tier cards as actual cards (gap + individual borders + tinted bg). */
+/* v6 — Tier cards: collapse double border, make name a block, harmonise. */
 .rs-tiers { border: none; gap: 20px; }
 .rs-tier { border: 1px solid var(--dx-border); border-radius: 4px; background: color-mix(in srgb, var(--dx-surface) 50%, transparent); padding: 28px 26px; }
-.rs-tier:last-child { border-right: 1px solid var(--dx-border); }
-.rs-tier__num { margin-bottom: 12px; }
-.rs-tier__name { margin-bottom: 14px; }
-.rs-tier h3 { margin: 0 0 14px; font-size: 20px; line-height: 1.25; }
+.rs-tier::before { display: none; }  /* kill the legacy 3px stripe; the border + numeral colour carry the accent */
+.rs-tier__num { display: block; margin-bottom: 12px; }
+.rs-tier__name { display: block; margin-bottom: 14px; }
+.rs-tier h3 { margin: 0 0 14px; font-size: 22px; line-height: 1.25; }  /* canonical 22, not 20 */
 .rs-tier p { font-size: 14px; line-height: 1.55; max-width: none; }
 .rs-tier__specs { margin-top: 20px; padding-top: 18px; }
 
-/* Vertical rhythm: section padding is the only inter-section spacer. */
+/* v6 — Vertical rhythm: section padding is the only inter-section spacer. */
 .rs-section > .rs-container > p:first-child,
 .rs-section > p:first-child { margin-top: 0; }
 .rs-section h2 + p,
 .rs-section h2 + .rs-container > p:first-child { margin-top: 12px; }
+/* all callouts get the same top gap regardless of inline overrides (which v6 strips) */
+.rs-callout { margin: 32px 0; }
 
 /* Legacy figure / SVG diagram + cleaned footer link styles preserved. */
 .diagram-frame { margin: 24px 0; }
@@ -99,13 +105,13 @@ main { padding-top: var(--rs-topbar-h); }
 <div class="rs-grid-bg"></div>
 <div class="rs-hero-inner">
 <div>
-<div class="rs-section-label"><span class="num">00</span> Cover · Applied AI · The middle band</div>
+<p class="rs-section-label"><span class="num">00</span> Cover · Applied AI · The middle band</p>
 <h1>
         Frontier ships as <em><span class="ax-teal">papers.</span></em><br/>
         Consumer ships as <em><span class="ax-violet">demos.</span></em><br/>
         Applied AI ships as <em><span class="ax-magenta">systems.</span></em>
 </h1>
-<p class="rs-lede" style="margin-top: 40px;">
+<p class="rs-lede">
         The AI market splits three ways in 2026: research that proves a capability, consumer products that dramatise it, and enterprise systems that have to survive scale, tenancy, audit, schema change, and adversarial input. Applied AI is the middle band — the discipline of taking a novel research result or a consumer-grade feature and converting it into an enterprise substrate with measured properties, named failure modes, and an adoption path. This entry closes the gap on one capability: long-term memory for coding-orchestration agents.
       </p>
 </div>
@@ -136,7 +142,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s01">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">01</span> Executive summary</div>
+<p class="rs-section-label"><span class="num">01</span> Executive summary</p>
 <h2>Three findings, one decision.</h2>
 <p class="rs-lede">
     Frontier labs publish capability jumps. Consumer products convert a subset into compelling features. Neither layer solves the enterprise problem: research rarely ships with tenancy, observability, or operating guarantees; consumer features optimise for one user, not for organisational load. Applied AI is the work between them. This entry closes the gap on one capability — long-term memory for coding-orchestration agents.
@@ -163,7 +169,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s02">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">02</span> Why memory matters · Two enterprise classes</div>
+<p class="rs-section-label"><span class="num">02</span> Why memory matters · Two enterprise classes</p>
 <h2>Two corpora, one retrieval problem.</h2>
 <p class="rs-lede">
     Across EPAM accounts the memory-substrate question recurs because
@@ -299,7 +305,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s03">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">03</span> The adoption bar · What "good" looks like in production</div>
+<p class="rs-section-label"><span class="num">03</span> The adoption bar · What "good" looks like in production</p>
 <h2>Five criteria, stated before any candidate was scored.</h2>
 <p class="rs-lede">
     A substrate that survives the first production query is one we
@@ -349,7 +355,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s04">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">04</span> Test design · Substrates, tasks, judging</div>
+<p class="rs-section-label"><span class="num">04</span> Test design · Substrates, tasks, judging</p>
 <h2>Three substrates, eight task families, two judges in opposite orderings.</h2>
 <p class="rs-lede">
     The empirical design served one question: which substrate would
@@ -504,7 +510,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s05">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">05</span> Headline result · The weighting is the finding</div>
+<p class="rs-section-label"><span class="num">05</span> Headline result · The weighting is the finding</p>
 <h2>Naïve weighting said tie. Production weighting said 36 points.</h2>
 <p class="rs-lede">
     The retrieval-quality comparison between the two purpose-built
@@ -564,7 +570,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s06">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">06</span> Reliability · The shape of the failure mode matters</div>
+<p class="rs-section-label"><span class="num">06</span> Reliability · The shape of the failure mode matters</p>
 <h2>Zero versus four out of 128. Small in absolute, structural in shape.</h2>
 <p class="rs-lede">
     Counting fabricated answers is not the most powerful retrieval-
@@ -616,7 +622,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s07">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">07</span> Tier interaction · Context design must match executor capability</div>
+<p class="rs-section-label"><span class="num">07</span> Tier interaction · Context design must match executor capability</p>
 <h2>The same extra context helps a smaller executor and hurts a more-capable one.</h2>
 <p class="rs-lede">
     The structural finding from the closed-loop pilot - the part that
@@ -728,7 +734,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s08">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">08</span> Adoption decision · Tencent DB Agent-Memory against the bar</div>
+<p class="rs-section-label"><span class="num">08</span> Adoption decision · Tencent DB Agent-Memory against the bar</p>
 <h2>Four-of-five fails. Decision reproducible against the bar.</h2>
 <p class="rs-lede">
     The fourth candidate evaluated was <a href="#sA">Tencent
@@ -800,7 +806,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s09">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">09</span> Platform implications · DIAL-based delivery</div>
+<p class="rs-section-label"><span class="num">09</span> Platform implications · DIAL-based delivery</p>
 <h2>What the findings imply for how memory is provisioned and routed.</h2>
 <p class="rs-lede">
     The findings translate to four concrete defaults that the
@@ -822,7 +828,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s10">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">10</span> Recommendations · For EPAM delivery teams</div>
+<p class="rs-section-label"><span class="num">10</span> Recommendations · For EPAM delivery teams</p>
 <h2>What to do this quarter, what to do this year, what to leave alone.</h2>
 <p class="rs-lede">
     The findings translate to three time-horizons of action for
@@ -853,7 +859,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s11">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">11</span> Scope limits · What this report does not claim</div>
+<p class="rs-section-label"><span class="num">11</span> Scope limits · What this report does not claim</p>
 <h2>The contract between the report and the next reader who acts on it.</h2>
 <p class="rs-lede">
     Each of the findings has a scope. Stating the scope as plainly as
@@ -878,7 +884,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="s12">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">12</span> Closing · The take-away</div>
+<p class="rs-section-label"><span class="num">12</span> Closing · The take-away</p>
 <h2>The substrate decision is downstream of the measurement.</h2>
 <p class="rs-lede">
     The headline numbers in this report do not generalise. The
@@ -899,7 +905,7 @@ main { padding-top: var(--rs-topbar-h); }
     and the executor you are about to deploy on, and the substrate
     decision falls out.
   </p>
-<div class="rs-callout rs-callout--teal" style="margin-top: 56px;">
+<div class="rs-callout rs-callout--teal">
 <h4>The closing thesis</h4>
 <p>
       Applied AI is the discipline that converts frontier research and consumer-grade features into enterprise systems with measured properties, named failure modes, and a stated adoption bar.
@@ -929,7 +935,7 @@ main { padding-top: var(--rs-topbar-h); }
 <!-- ============================================================ -->
 <section class="rs-section" id="sA">
 <div class="rs-container">
-<div class="rs-section-label"><span class="num">A</span> Methods appendix · For staff who would re-run this</div>
+<p class="rs-section-label"><span class="num">A</span> Methods appendix · For staff who would re-run this</p>
 <h2>The apparatus, the routing, the model table.</h2>
 <p class="rs-lede">
     Everything in the body discussed what the numbers mean. This
