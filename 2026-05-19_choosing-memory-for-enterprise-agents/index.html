@@ -66,18 +66,11 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 <!-- ============================================================ -->
 <section class="rs-section rs-hero" id="hero">
   <div class="rs-grid-bg"></div>
-  <div class="rs-hero-bar">
-    <div>Applied AI Research · EPAM · 2026-05-19</div>
-    <div class="right">
-      <span>Iteration 3 · working draft toward v1.0</span>
-    </div>
-  </div>
-
   <div class="rs-series-nav" aria-label="Series navigation">
-      <span class="rs-series-nav__label">Applied AI Research · EPAM ·</span>
-      <a class="" href="../2026-05-15_claude-code-via-dial-poc/" title="Prior report: Claude Code via EPAM DIAL · POC (2026-05-15)"><span class="date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</a>
-      <span class="this" title="This report (2026-05-19)"><span class="date">2026-05-19 ·</span>Choosing memory for enterprise agents</span>
-    </div>
+    <span class="rs-series-nav__label">Series ·</span>
+    <a href="../2026-05-15_claude-code-via-dial-poc/"><span class="date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</a>
+    <span class="this"><span class="date">2026-05-19 ·</span>Choosing memory for enterprise agents</span>
+  </div>
 
   <div class="rs-hero-inner">
     <div>
@@ -161,51 +154,25 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
   </p>
 
   <div class="rs-callout rs-callout--teal">
-    <h4>Findings</h4>
-    <ul>
-      <li><strong>The chunk-text retrieval approach outperformed the entity-graph approach by ~36 percentage points</strong> when the test was weighted to match real production query frequency. Under naïve uniform weighting the two looked tied; the weighting decided the outcome.</li>
-      <li><strong>Fabricated answers: zero versus four out of 128 paired trials.</strong> The substrate that returns literal source text never invented content; the substrate that runs an extraction step occasionally surfaced a confidently-wrong supersession claim.</li>
-      <li><strong>Extra structural context (bi-temporal "valid-from / superseded-on" metadata) may help a smaller-and-cheaper executor and hurt a more-capable one (pilot-only closed-loop signal; formal suite deferred).</strong> In the pilot, the more-capable executor sometimes re-quotes the older fact because the metadata told it the older fact existed. Context design must match executor capability tier; it is not a universal default until re-run.</li>
-      <li><strong>An alternative open-source memory project I evaluated against the adoption bar did not clear it.</strong> Four of five named criteria failed; the bar and the evaluation are stated below so another reviewer can reproduce the judgment against the same criteria.</li>
-    </ul>
+    <h4>Finding 1 — Production-weighted retrieval</h4>
+    <p>The chunk-text retrieval approach outperformed the entity-graph approach by 36 percentage points when the test was weighted to match real production query frequency. Under naïve uniform weighting the two looked tied; the weighting decided the outcome.</p>
   </div>
 
-  <p><strong>For delivery teams</strong>: default to the chunk-text retrieval approach for SDLC-shaped corpora, reserve graph-summary substrates for the narrow entity-disambiguation task, gate any bi-temporal context on the executor's capability tier, and reject adoption candidates against named criteria rather than against taste. Sections 09 and 10 carry the specific platform and delivery implications.</p>
+  <div class="rs-callout rs-callout--violet">
+    <h4>Finding 2 — Fabrication count</h4>
+    <p>Zero versus four out of 128 paired trials. The substrate that returns literal source text never invented content; the substrate that runs an extraction step occasionally surfaced a confidently-wrong supersession claim.</p>
+  </div>
 
   <div class="rs-callout rs-callout--magenta">
-    <h4>What this report is not</h4>
-    <p>
-      Not exhaustive vendor coverage. The agent-memory / RAG-substrate
-      space in 2026 includes at least a dozen actively-developed
-      projects - <a href="https://github.com/letta-ai/letta">Letta</a>,
-      <a href="https://memgpt.ai/">MemGPT</a>,
-      <a href="https://www.cognee.ai/">Cognee</a>,
-      <a href="https://www.getzep.com/">Zep</a> (beyond its Graphiti
-      core),
-      <a href="https://www.pinecone.io/blog/pinecone-assistant/">Pinecone Assistants</a>,
-      <a href="https://langchain-ai.github.io/langmem/">LangMem</a>,
-      <a href="https://mastra.ai/">Mastra</a>,
-      and others. I evaluated four candidates on one delivery stack
-      I had operational reason to consider (not exhaustive vendor
-      coverage):
-      <a href="https://github.com/HKUDS/LightRAG">LightRAG</a>,
-      <a href="https://github.com/getzep/graphiti">Graphiti</a>,
-      <a href="https://github.com/mem0ai/mem0">Mem0</a>, and
-      <a href="#sA">Tencent DB Agent-Memory</a>.
-      The retrieval canary in §04 measured LightRAG, Graphiti, and a
-      filesystem baseline. Mem0 was screened out as redundant with
-      Graphiti's approach (see §04). Tencent DB Agent-Memory did not
-      clear the adoption bar before any measurement run (see §08).
-    </p>
-    <p>
-      I share this report to enrich the community of practitioners
-      making memory-substrate decisions. Treat it as one data point
-      in a broader landscape - your canary on your corpus is still
-      the deciding test. The pattern transfers across vendors and
-      classes; the specific magnitudes here do not transfer without
-      re-measurement on your stack.
-    </p>
+    <h4>Finding 3 — Stale-fact inversion by executor tier</h4>
+    <p>Bi-temporal metadata helped a smaller executor and hurt a more-capable one in the pilot signal. The stronger executor sometimes re-quoted the older fact because the metadata told it the older fact existed. Context design must match executor capability; it is not a universal default until the formal suite is re-run.</p>
   </div>
+
+  <p><strong>For delivery teams</strong>: default to chunk-text retrieval for SDLC-shaped corpora, reserve graph-summary substrates for narrow entity-disambiguation, gate any bi-temporal context on the executor's capability tier, and reject adoption candidates against named criteria rather than taste. Sections 09 and 10 carry the platform and delivery implications.</p>
+
+  <p><strong>What this report is not</strong>: exhaustive vendor coverage. The agent-memory / RAG-substrate space in 2026 includes <a href="https://github.com/letta-ai/letta">Letta</a>, <a href="https://memgpt.ai/">MemGPT</a>, <a href="https://www.cognee.ai/">Cognee</a>, <a href="https://www.getzep.com/">Zep</a>, <a href="https://www.pinecone.io/blog/pinecone-assistant/">Pinecone Assistants</a>, <a href="https://langchain-ai.github.io/langmem/">LangMem</a>, <a href="https://mastra.ai/">Mastra</a>, and others. I evaluated four candidates on one delivery stack: <a href="https://github.com/HKUDS/LightRAG">LightRAG</a>, <a href="https://github.com/getzep/graphiti">Graphiti</a>, <a href="https://github.com/mem0ai/mem0">Mem0</a>, and <a href="#sA">Tencent DB Agent-Memory</a>. The retrieval canary measured LightRAG, Graphiti, and a filesystem baseline. Mem0 was screened as redundant with Graphiti (see §04). Tencent DB Agent-Memory did not clear the adoption bar (see §08).</p>
+
+  <p>I share this report to enrich the community of practitioners making memory-substrate decisions. Treat it as one data point in a broader landscape — your canary on your corpus is still the deciding test. The pattern transfers across vendors and classes; the specific magnitudes here do not transfer without re-measurement on your stack.</p>
 </div>
 </section>
 
@@ -227,8 +194,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <div class="rs-tier" style="--accent: var(--dx-teal);">
       <span class="rs-tier__num">A</span>
       <span class="rs-tier__name">SDLC corpus</span>
-      <h3>Architecture decisions, tickets, source-control heritage.</h3>
-      <p>ADRs, design records, ticket history, post-incident reviews, runbooks, architecture invariants - the project's own past, queried by the people working on its present.</p>
+      <p>Architecture decisions, tickets, source-control heritage — ADRs, design records, ticket history, post-incident reviews, runbooks, architecture invariants. The project's own past, queried by the people working on its present.</p>
       <div class="rs-tier__specs">
         <div><span class="k">size</span><span class="v">10² to 10⁴ documents</span></div>
         <div><span class="k">update rate</span><span class="v">high; documents evolve</span></div>
@@ -239,8 +205,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <div class="rs-tier" style="--accent: var(--dx-violet);">
       <span class="rs-tier__num">B</span>
       <span class="rs-tier__name">Business / domain corpus</span>
-      <h3>Customer-specific knowledge with high retention pressure.</h3>
-      <p>Case files (legal, medical, insurance, support), regulatory references, product knowledge, customer-account history - high volume, high query specificity, high cost of a wrong answer that gets acted on.</p>
+      <p>Customer-specific knowledge with high retention pressure — case files (legal, medical, insurance, support), regulatory references, product knowledge, customer-account history. High volume, high query specificity, high cost of a wrong answer that gets acted on.</p>
       <div class="rs-tier__specs">
         <div><span class="k">size</span><span class="v">10² to 10⁵ documents</span></div>
         <div><span class="k">update rate</span><span class="v">high at the boundary; past immutable</span></div>
@@ -250,7 +215,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </div>
   </div>
 
-  <h3>The shared problem</h3>
+  <p><strong>The shared problem</strong></p>
   <p>
     Both classes share the same underlying retrieval problem:
     <em>fetch the relevant knowledge at maximum retrieval efficiency,
@@ -280,7 +245,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     either class with the noted caveat on query distribution.
   </p>
 
-  <h3>Why memory is the canonical example of the frontier-to-enterprise gap</h3>
+  <p><strong>Why memory is the canonical example of the frontier-to-enterprise gap</strong></p>
 
   <div class="rs-callout rs-callout--violet">
     <h4>The plain-language version</h4>
@@ -430,7 +395,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     rules out the most common position-bias failure.
   </p>
 
-  <h3>Substrates compared</h3>
+  <p><strong>Substrates compared</strong></p>
   <p>
     Three approaches that span the practical design space for
     enterprise memory retrieval, each tested using a specific
@@ -466,7 +431,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </li>
   </ul>
 
-  <h3>Why <a href="https://github.com/mem0ai/mem0">Mem0</a> was considered and excluded</h3>
+  <p><strong>Why <a href="https://github.com/mem0ai/mem0">Mem0</a> was considered and excluded</strong></p>
   <p>
     <a href="https://github.com/mem0ai/mem0">Mem0</a> was the first
     candidate I evaluated and the one whose marketing posture sits
@@ -496,7 +461,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     does not answer it.
   </p>
 
-  <h3>Where this report sits in the public landscape</h3>
+  <p><strong>Where this report sits in the public landscape</strong></p>
   <p>
     Prior public work on agent-memory substrate comparison includes
     the Mem0 paper above, the Zep / Graphiti paper above, the
@@ -522,7 +487,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     the report is happy to be the second.
   </p>
 
-  <h3>Why these task families</h3>
+  <p><strong>Why these task families</strong></p>
   <p>
     The test set was eight task families chosen because they cover
     the operations a coding-orchestration agent actually performs on
@@ -552,7 +517,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     matters because Section 05's headline depends on it.
   </p>
 
-  <h3>How the judging worked</h3>
+  <p><strong>How the judging worked</strong></p>
   <div class="rs-callout rs-callout--violet">
     <h4>What "position-swap judging" means (one sentence)</h4>
     <p>The same question is shown to each judge twice - with the two candidate retrievals in opposite orderings; a pair only "wins" when the judge prefers the same candidate in both orderings. This rules out a class of bias where the judge prefers whichever retrieval is shown first.</p>
@@ -609,7 +574,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <p>A <strong>uniform-weighted aggregate</strong> counts every test family equally; a <strong>frequency-weighted aggregate</strong> counts each family by how often it actually shows up in real production queries. The two often disagree on which substrate wins - that disagreement is usually the finding.</p>
   </div>
 
-  <h3>The two numbers</h3>
+  <p><strong>The two numbers</strong></p>
   <p>
     Under uniform weighting (each of the eight task families given
     equal mass), the chunk-text and entity-graph substrates were
@@ -630,7 +595,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     (entity disambiguation) carries 10% of the weight.
   </p>
 
-  <h3>What the same data does not say</h3>
+  <p><strong>What the same data does not say</strong></p>
   <div class="rs-callout rs-callout--magenta">
     <h4>Caveats</h4>
     <p>The 36-point gap is for an SDLC-shaped corpus with the production query distribution stated above. A corpus where entity disambiguation dominates (a customer-support knowledge base where the same product is named differently across regions, for instance) would re-weight in favour of the entity-graph approach. The pattern transfers ("weight by your own production distribution, not by uniform"); the magnitude does not transfer without re-measurement.</p>
@@ -688,7 +653,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <p>A retrieval is <strong>hallucinated</strong> when it returns content that does not exist in any source document; a retrieval is <strong>incorrect</strong> when it returns the wrong source document; the distinction matters because an incorrect-but-real source can be cross-checked, and a fabricated source cannot.</p>
   </div>
 
-  <h3>The two counts</h3>
+  <p><strong>The two counts</strong></p>
   <p>
     Across 128 paired appearances per substrate, the chunk-text
     substrate produced zero hallucinated retrievals. The entity-graph
@@ -757,7 +722,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <p>The number of times the executor cites an older fact when a newer fact should be the right answer - counted before and after enabling bi-temporal context - moves in opposite directions for two executors on the same workload.</p>
   </div>
 
-  <h3>Which executors and why</h3>
+  <p><strong>Which executors and why</strong></p>
   <p>
     Two executor models were used for the closed-loop pilot runs:
     <em>a more-capable model</em> (a current-generation flagship from
@@ -780,7 +745,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     below is about the tier.
   </p>
 
-  <h3>The flip</h3>
+  <p><strong>The flip</strong></p>
   <div class="diagram-frame" style="margin: 32px 0; padding: 32px; border: 1px solid var(--dx-border); background: linear-gradient(180deg, var(--dx-surface) 0%, rgba(20,20,20,0.4) 100%); position: relative;">
     <span style="position: absolute; top: -1px; left: -1px; background: var(--dx-surface-2); border: 1px solid var(--dx-border); padding: 4px 10px; font-family: var(--dx-font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dx-fg-3);">DIAGRAM · 07 · CONTEXT × CAPABILITY-TIER INTERACTION</span>
     <svg class="interaction-diagram" role="img" aria-labelledby="diagram-s07-title diagram-s07-desc" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
@@ -975,21 +940,21 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     engagement.
   </p>
 
-  <h3>This quarter (immediate)</h3>
+  <p><strong>This quarter (immediate)</strong></p>
   <ul>
     <li><strong>Identify which enterprise class your customer's corpus is in</strong> (SDLC-history or business / domain). The class determines the default substrate; choosing the wrong class is the most common source of underperformance later.</li>
     <li><strong>Run a 20- to 60-question canary on the actual corpus before adoption.</strong> The canary should cover at least the two dominant query families for the corpus's class. Position-swap judging, two judges from different model families, on the inference path you will use in production (if you measured on an interim path, budget a DIAL-canonical re-run before go-live).</li>
     <li><strong>Write your adoption bar before you start evaluating candidates</strong>, calibrated to the customer's stack. Use Section 03's five criteria as a starting point and add domain-specific criteria.</li>
   </ul>
 
-  <h3>This year (medium-term)</h3>
+  <p><strong>This year (medium-term)</strong></p>
   <ul>
     <li><strong>Build a canary harness that an account team can re-run on a new corpus in a day</strong> rather than a week. The harness is the durable asset; specific findings expire when models or substrates ship new versions.</li>
     <li><strong>Cross-tier the canary across at least two executor capability tiers per substrate.</strong> The tier-interaction finding (Section 07) is invisible from single-tier evaluation; missing it is how a substrate that looked safe in evaluation surprises in production.</li>
     <li><strong>Establish a default-rejection profile against the adoption bar.</strong> Most candidates fail on integration surface or install hygiene before any retrieval-quality evaluation is needed. Filter cheap before you measure expensive.</li>
   </ul>
 
-  <h3>What to leave alone</h3>
+  <p><strong>What to leave alone</strong></p>
   <ul>
     <li><strong>The vendor's published benchmark numbers, as a deployment input.</strong> They are useful for vendor comparison; they are not the deployment decision. The deployment decision is your canary on your corpus.</li>
     <li><strong>The single-substrate-as-universal-default reflex.</strong> Pair the substrate to the dominant query family, not to a vendor preference. Most production workloads benefit from two substrate paths (chunk-text default, entity-graph side path) rather than one.</li>

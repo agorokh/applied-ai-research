@@ -66,19 +66,11 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 <!-- ============================================================ -->
 <section class="rs-section rs-hero" id="hero">
   <div class="rs-grid-bg"></div>
-  <div class="rs-hero-bar">
-    <div>Applied AI Research · EPAM · 2026-05-15</div>
-    <div class="right">
-      <span>Iteration 3 · working draft toward v1.0</span>
-      <span>192 trials · 8 upstreams · $34.91 spend</span>
-    </div>
-  </div>
-
   <div class="rs-series-nav" aria-label="Series navigation">
-      <span class="rs-series-nav__label">Applied AI Research · EPAM ·</span>
-      <span class="this"><span class="date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</span>
-      <a href="../2026-05-19_choosing-memory-for-enterprise-agents/"><span class="date">2026-05-19 ·</span>Choosing memory for enterprise agents</a>
-    </div>
+    <span class="rs-series-nav__label">Series ·</span>
+    <span class="this"><span class="date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</span>
+    <a href="../2026-05-19_choosing-memory-for-enterprise-agents/"><span class="date">2026-05-19 ·</span>Choosing memory for enterprise agents</a>
+  </div>
 
   <div class="rs-hero-inner">
     <div>
@@ -141,43 +133,21 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     hints at but a centralised version would deliver.
   </p>
 
-  <div class="rs-callout rs-callout--magenta" style="margin-top: 24px;">
-    <h4>What this report is not</h4>
-    <p>
-      Not a vendor benchmark. Not a recommendation that EPAM adopt
-      any specific upstream. I measured eight upstreams I had
-      operational access to via DIAL on one harness; the eight are
-      not exhaustive of the OSS-coder field as of mid-2026 (Cursor,
-      Aider, Codex CLI, OpenHands, and the various Continue / Cline
-      stacks all sit outside this evaluation). The pattern (route
-      through the gateway, measure $/success under list pricing,
-      instrument the wire for telemetry) transfers; the specific
-      magnitudes do not transfer without re-measurement on another
-      stack. The sibling report in this series (Choosing memory for
-      enterprise agents, 2026-05-19) covers the substrate-selection
-      question that runs on top of the same DIAL routing.
-    </p>
+  <p><strong>What this report is not</strong>: a vendor benchmark, or a recommendation that EPAM adopt any specific upstream. I measured eight upstreams I had operational access to via DIAL on one harness; Cursor, Aider, Codex CLI, OpenHands, and the various Continue / Cline stacks sit outside this evaluation. The pattern transfers; the magnitudes do not transfer without re-measurement on another stack. The sibling report (<a href="../2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for enterprise agents</a>) covers the substrate question on top of the same DIAL routing.</p>
+
+  <div class="rs-callout rs-callout--teal">
+    <h4>Finding 1 — The bridge works on the EPAM-compliant inference path</h4>
+    <p>Claude Code 2.1 talks to any DIAL-hosted upstream through one Anthropic-to-OpenAI translation adapter. 192 trials produced zero authentication incidents and required no Claude Code source modifications.</p>
   </div>
 
-  <div class="rs-callout rs-callout--teal" style="margin-top: 32px;">
-    <h4>Finding 1 · The bridge works, on the EPAM-compliant inference path (Part I)</h4>
-    <p style="font-family: var(--dx-font-serif); font-size: 20px; line-height: 1.4; color: var(--dx-fg-1); margin-bottom: 0;">
-      Claude Code 2.1 talks to any DIAL-hosted upstream through a single Anthropic-to-OpenAI translation adapter. The harness routes traffic through <code>ai-proxy.lab.epam.com</code>, the same gateway EPAM already uses for sanctioned LLM access, instead of calling <code>api.anthropic.com</code> directly. 192 trials produced zero authentication incidents and required no Claude Code source modifications.
-    </p>
+  <div class="rs-callout rs-callout--violet">
+    <h4>Finding 2 — Cost-per-success at Bedrock list pricing</h4>
+    <p>Qwen3-Coder 480B is the cheapest 100%-pass model at $0.101 per successful task — 38% below Claude Haiku 4.5, 4.7× below Sonnet 4.6, 6.8× below Opus 4.7. Three OSS upstreams below the Sonnet tier fail with a scale-driven, vendor-independent signature.</p>
   </div>
 
-  <div class="rs-callout rs-callout--teal" style="margin-top: 24px;">
-    <h4>Finding 2 · Cost-per-success at Bedrock list pricing (Part II)</h4>
-    <p style="font-family: var(--dx-font-serif); font-size: 20px; line-height: 1.4; color: var(--dx-fg-1); margin-bottom: 0;">
-      At AWS Bedrock pricing verified 2026-05-14 (US East Ohio), Qwen3-Coder 480B is the cheapest 100%-pass model in the evaluation at <strong>$0.101 / successful task</strong>, 38% below Claude Haiku 4.5, 4.7× below Sonnet 4.6, 6.8× below Opus 4.7. Below the Sonnet tier, three OSS upstreams (Mistral Devstral 123B, Qwen 30B-A3B, DeepSeek v3.2) fail the harness with a scale-driven, vendor-independent signature.
-    </p>
-  </div>
-
-  <div class="rs-callout rs-callout--blue" style="margin-top: 24px;">
-    <h4>Finding 3 · The adapter retains per-request telemetry today (Part III)</h4>
-    <p style="font-family: var(--dx-font-serif); font-size: 20px; line-height: 1.4; color: var(--dx-fg-1); margin-bottom: 0;">
-      Each request through the adapter writes a structured JSON log record (tokens, tool inventory, cache behaviour, latency, Bedrock-priced cost) to InfluxDB measurements <code>adapter_metrics</code>, <code>claude_code_events</code>, and <code>claude_code_traces</code>. Today these records carry two business-relevant dimensions: <code>client_name</code> (which wrapper / IDE) and <code>target_model_family</code> (Anthropic / Qwen / Moonshot / etc.). Three identifiers already in the wire (<code>session.id</code>, <code>tool_inventory_hash</code>, <code>mcp_servers_seen[]</code>) can be promoted to tags with no client change. Business-context tags (project, team, industry, use-case) are <em>not</em> wired in this POC; in EPAM’s production setting where developers authenticate against enterprise systems, those joins would be supplied by the existing project metadata, with the exact mechanism subject to EPAM’s data-governance policy. Part III describes both states.
-    </p>
+  <div class="rs-callout rs-callout--magenta">
+    <h4>Finding 3 — The adapter retains per-request telemetry today</h4>
+    <p>Each request writes a structured JSON record with tokens, tool inventory, cache behaviour, latency, and Bedrock-priced cost to three InfluxDB measurements. Two business dimensions (client and model family) are wired today; three more identifiers in the wire can become tags with no client change.</p>
   </div>
 </div>
 </section>
@@ -407,10 +377,9 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 
   <div class="rs-tiers" style="margin-top: 40px;">
     <div class="rs-tier" style="--accent: var(--dx-teal);">
-      <span class="rs-tier__num">A<span style="font-size: 38px; color: var(--dx-fg-3);"></span></span>
-      <div class="rs-tier__name">Full viability · 92-100%</div>
-      <h3>Haiku · Sonnet · Opus · Qwen 480B</h3>
-      <p>Pass all 8 tasks consistently. Qwen 480B is the cost leader inside the cluster at $0.101/success, 38% cheaper than Haiku 4.5.</p>
+      <span class="rs-tier__num">A</span>
+      <span class="rs-tier__name">Full viability · 92-100% · Haiku, Sonnet, Opus, Qwen 480B</span>
+      <p>Pass all 8 tasks consistently. Qwen 480B is the cost leader inside the cluster at $0.101 per success, 38% cheaper than Haiku 4.5.</p>
       <div class="rs-tier__specs">
         <div><span class="k">Qwen 480B</span><span class="v">24/24 · $0.101</span></div>
         <div><span class="k">Haiku 4.5</span><span class="v">24/24 · $0.162</span></div>
@@ -419,9 +388,8 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
       </div>
     </div>
     <div class="rs-tier" style="--accent: var(--dx-teal);">
-      <span class="rs-tier__num">B<span style="font-size: 38px; color: var(--dx-fg-3);"></span></span>
-      <div class="rs-tier__name">Partial · 62-71%</div>
-      <h3>Kimi K2.5 · MiniMax M2.5</h3>
+      <span class="rs-tier__num">B</span>
+      <span class="rs-tier__name">Partial · 62-71% · Kimi K2.5, MiniMax M2.5</span>
       <p>Both sustain multi-turn loops, both fail T8 (refactor → test → document). Useful on scoped task surfaces; not general substitutes.</p>
       <div class="rs-tier__specs">
         <div><span class="k">MiniMax M2.5</span><span class="v">17/24 · $0.036</span></div>
@@ -431,9 +399,8 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
       </div>
     </div>
     <div class="rs-tier" style="--accent: var(--dx-violet);">
-      <span class="rs-tier__num">C<span style="font-size: 38px; color: var(--dx-fg-3);"></span></span>
-      <div class="rs-tier__name">Toy · loop-level failure</div>
-      <h3>Qwen 30B · DeepSeek v3.2 + retired</h3>
+      <span class="rs-tier__num">C</span>
+      <span class="rs-tier__name">Toy · loop-level failure · Qwen 30B, DeepSeek v3.2 + retired</span>
       <p>Five OSS upstreams across four vendor families fail at the loop level, same signature each time. Scale, not vendor, is the determining variable.</p>
       <div class="rs-tier__specs">
         <div><span class="k">Qwen 30B</span><span class="v">9/24 · one-call stall</span></div>
@@ -1041,17 +1008,17 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     The three scenarios below are <strong>illustrative</strong>. None of the numbers in them come from this POC’s data, the POC’s wire does not yet carry the business identifiers each scenario needs (see Layer C in Section 05). They are included to show the form of the analyses that become possible if the layer-C join is wired, and to give the platform team something concrete to react to. Replace numbers with real measurements once the join lands.
   </p>
 
-  <h3>Use case 1 · Per-industry routing decision · illustrative</h3>
+  <p><strong>Use case 1 · Per-industry routing decision · illustrative</strong></p>
   <p>
     <em>Hypothetical scenario.</em> Suppose Claude Code requests carried an <code>industry_vertical</code> tag (mechanism out of scope here). Pharma-tagged repositories with paths under <code>src/(gxp|fda)/</code> would be expected to exercise long-context comprehension under regulation; non-regulated paths in the same monorepo would not. If the joined telemetry showed a meaningful per-path acceptance-rate gap between Anthropic Sonnet and Qwen-Coder 480B on the regulated paths, that would justify a per-path routing rule, not a per-tenant override. <em>Whether such a gap exists is what the joined data would tell us.</em>
   </p>
 
-  <h3>Use case 2 · Per-team cost reporting · illustrative</h3>
+  <p><strong>Use case 2 · Per-team cost reporting · illustrative</strong></p>
   <p>
     <em>Hypothetical scenario.</em> Suppose two adjacent EPAM accounts ran Claude Code through the same DIAL instance with <code>team_id</code> on each request. Account A’s data-eng team and Account B’s frontend team almost certainly have different per-session token profiles (depth of <code>tool_result</code> chains, cache-read ratios, average turn count). Slicing the existing layer-A measurements by <code>team_id</code> would produce two distinct cost-per-session curves and, with an accept-signal joined, two distinct cost-per-merged-PR curves. The recommended Sonnet-tier model for each team would emerge from data, not from a guess.
   </p>
 
-  <h3>Use case 3 · Use-case-driven adaptive routing · illustrative</h3>
+  <p><strong>Use case 3 · Use-case-driven adaptive routing · illustrative</strong></p>
   <p>
     <em>Hypothetical scenario.</em> Suppose <code>use_case_label</code> were derived per request from commit-message + diff shape (e.g. <code>refactor-multi-file</code>, <code>trap-comprehension</code>, <code>spec-trace</code>). After enough sessions, the layer-A telemetry sliced by <code>use_case_label</code> would let the platform team test whether some task classes are cheaper to serve on Qwen 480B at unchanged acceptance rates while others require an Anthropic tier. The output would be a small YAML routing rule per task class, with the evidence (sample size, observed success delta, cost delta) attached. Whether the gap is large enough in any one task class to justify a rule is, again, an empirical question.
   </p>
@@ -1194,17 +1161,17 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     Three application classes that follow directly from the data the adapter already emits, once business-metadata headers are forwarded and the three latent tags are promoted. Each is a concrete reporting or routing capability, not a new product proposal.
   </p>
 
-  <h3>Application A · Per-account AI consumption reporting</h3>
+  <p><strong>Application A · Per-account AI consumption reporting</strong></p>
   <p>
     The same Grafana panels that today show cost-by-model can be pivoted by <code>project_code</code> and <code>account_id</code> to produce per-account spend reports. Combined with timesheet data (or any project-level effort signal), this yields a per-engagement cost-per-engineer-hour figure that is currently aggregated implicitly across the entire DIAL deployment. The reporting surface is a re-query of existing measurements; no additional collection is required.
   </p>
 
-  <h3>Application B · Segment-specific model fitness reports</h3>
+  <p><strong>Application B · Segment-specific model fitness reports</strong></p>
   <p>
     The 192-trial evaluation methodology in Part II is reusable. With <code>industry_vertical</code> and <code>use_case_label</code> tags promoted, the same matrix can be sliced per segment to produce evidence-based fitness statements (for instance, “on FinServ refactoring tasks, Qwen 480B matches Claude Sonnet’s pass rate at a 4.7× cost advantage on this task set”), accompanied by the underlying transcripts and validators. The output is a research note, not a marketing claim.
   </p>
 
-  <h3>Application C · Pattern library indexed by observed efficiency</h3>
+  <p><strong>Application C · Pattern library indexed by observed efficiency</strong></p>
   <p>
     Tool-call sequences are already captured at wire level (<code>tool_calls_by_name</code>, <code>tool_inventory_hash</code>, <code>mcp_servers_seen[]</code>). Once joined to <code>use_case_label</code> and an accept-signal, sequences with low loop depth, high completion rate, and low token cost can be identified, documented, and offered as reusable prompt or agent templates. This is an empirical extraction from telemetry, not a designed library.
   </p>
@@ -1229,12 +1196,12 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     The proposal this report supports is to take the validated POC pattern (an Anthropic-shape ingress that translates to DIAL’s OpenAI-style outbound) and move it inside the AI proxy itself. Once that exists, any EPAM developer holding an enterprise DIAL license can point Claude Code at <code>ai-proxy.lab.epam.com</code> without running a local adapter, and project-level configuration on the DIAL side decides which upstream their picker slots resolve to.
   </p>
 
-  <h3>State today: POC running on the engineer’s laptop</h3>
+  <p><strong>State today: POC running on the engineer’s laptop</strong></p>
   <p>
     The POC runs the adapter locally and a thin wrapper around the <code>claude</code> CLI points it at the loopback port. The adapter authenticates to DIAL with the engineer’s enterprise project key, translates the wire format, and forwards. Telemetry lands locally in InfluxDB and Grafana. This is the shape that produced the 192 evaluation trials in Part II. <strong>It is the right shape to validate the approach; it is not the right shape to roll out across delivery teams.</strong>
   </p>
 
-  <h3>Proposed end state · the translator inside DIAL</h3>
+  <p><strong>Proposed end state · the translator inside DIAL</strong></p>
   <p>
     DIAL gains an Anthropic-compatible ingress (e.g. <code>POST /anthropic/v1/messages</code>) that internally executes the same translation the POC adapter performs today and routes to the same Bedrock-backed deployments DIAL already brokers. From the developer’s side, the change collapses to one configuration line in their Claude Code environment:
   </p>
@@ -1247,12 +1214,12 @@ ANTHROPIC_BASE_URL=https://ai-proxy.lab.epam.com</pre>
     No new credentials (DIAL project key already in their enterprise subscription). No local processes. No new auth model. The same EPAM data-governance, audit, and rate-limit posture that already applies to every DIAL call applies to Claude Code calls.
   </p>
 
-  <h3>The actual request · what changes for the developer</h3>
+  <p><strong>The actual request · what changes for the developer</strong></p>
   <p>
     Engineers continue to install and run Claude Code the same way. The picker still shows Default / Sonnet / Haiku. The difference is administrative: a per-project DIAL configuration decides which upstream each picker slot resolves to, exactly the way DIAL today decides which OpenAI deployment id a project key sees. Some projects might keep all three slots on Anthropic Bedrock; others might map the Sonnet slot to Qwen 480B based on the cost/quality evidence in Part II.
   </p>
 
-  <h3>Pilot rollout proposal</h3>
+  <p><strong>Pilot rollout proposal</strong></p>
   <ol style="max-width: 80ch;">
     <li><strong>Build the in-DIAL adapter.</strong> Port the translation core (<code>anthropic_to_openai</code> / <code>openai_to_anthropic_response</code> / SSE bridge in <code>app.py</code>) into DIAL’s ingress codepath, behind a feature flag.</li>
     <li><strong>Select 2-3 friendly pilot projects.</strong> Delivery teams already using Claude Code informally, ideally with diverse stacks (one with heavy Python, one with TypeScript, one with mixed). Centrally update their DIAL project configuration to enable the Anthropic-compatible ingress.</li>
