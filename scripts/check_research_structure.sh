@@ -41,10 +41,17 @@ check_count() {
   fi
 }
 
+count_matches() {
+  local pattern="$1" file="$2"
+  local count
+  count=$(grep -ciE "$pattern" "$file" 2>/dev/null) || count=0
+  echo "${count:-0}"
+}
+
 check_zero() {
   local label="$1" pattern="$2" file="$3"
   local count
-  count=$(grep -c "$pattern" "$file" 2>/dev/null) || count=0
+  count=$(grep -ciE "$pattern" "$file" 2>/dev/null) || count=0
   if [[ $count -ne 0 ]]; then
     echo "FAIL: $file: $label found $count occurrences of $pattern (must be 0)" >&2
     fail=$((fail + 1))
@@ -60,10 +67,10 @@ for report in "${REPORTS[@]}"; do
     continue
   fi
   echo "=== $(basename "$(dirname "$report")") ==="
-  sections=$(grep -c '^<section ' "$report")
-  callouts=$(grep -c 'class="rs-callout' "$report")
-  h1=$(grep -cE '<h1\b' "$report")
-  h3=$(grep -c '<h3>' "$report")
+  sections=$(count_matches '<section\b' "$report")
+  callouts=$(count_matches 'class=["'\''][^"'\'']*\brs-callout\b' "$report")
+  h1=$(count_matches '<h1\b' "$report")
+  h3=$(count_matches '<h3\b' "$report")
   ems_in_h1=$(python3 - "$report" <<'PY'
 import re, sys
 text = open(sys.argv[1], encoding="utf-8").read()
@@ -78,19 +85,19 @@ PY
   check_count "em in h1" "$ems_in_h1" 1 1 "$report"
   check_count "h3"       "$h3"       0 8  "$report"
   check_zero  "rs-container divs" 'class="rs-container"' "$report"
-  check_zero  "inline <style>"    '<style>'              "$report"
+  check_zero  "inline <style>"    '<style\b'             "$report"
   check_zero  "research-overrides link" 'research-overrides' "$report"
 done
 
 if [[ -f "$LANDING" ]]; then
   echo "=== landing ==="
-  hero=$(grep -c 'class="rs-index-hero"' "$LANDING")
-  posts=$(grep -c 'class="rs-post"' "$LANDING")
-  h1=$(grep -cE '<h1\b' "$LANDING")
+  hero=$(count_matches 'class=["'\''][^"'\'']*\brs-index-hero\b' "$LANDING")
+  posts=$(count_matches 'class=["'\''][^"'\'']*\brs-post\b' "$LANDING")
+  h1=$(count_matches '<h1\b' "$LANDING")
   check_count "rs-index-hero" "$hero" 1 1 "$LANDING"
   check_count "rs-post articles" "$posts" "${#REPORTS[@]}" 9999 "$LANDING"
   check_count "h1"            "$h1"  1 1 "$LANDING"
-  check_zero  "inline <style>" '<style>' "$LANDING"
+  check_zero  "inline <style>" '<style\b' "$LANDING"
   check_zero  "research-overrides link" 'research-overrides' "$LANDING"
 fi
 
