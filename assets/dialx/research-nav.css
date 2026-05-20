@@ -1,12 +1,19 @@
 /* ============================================================
-   dialx · research-nav (extension)
+   dialx · research-nav (extensions)
    ------------------------------------------------------------
-   Single deviation from `research.css`: a hover-dropdown
-   "Reports" menu in the topbar `<nav>`. The reference paper
-   uses static Index/Latest/About text links, which don't scale
-   to N reports. The dropdown component is the operator's
-   answer; everything else in this file is empty.
+   Operator-authorised deviations from the canonical dialx CSS:
+
+   1. Reports ▾ hover-dropdown menu in the topbar (the reference
+      uses static Index/Latest/About; we need a scalable pattern).
+
+   2. Hero h1 italic phrase carries the dx-gradient on report
+      pages, mirroring .rs-index-hero h1 em on the landing. The
+      reference uses 3-line solid-colour rainbow ("papers / demos
+      / systems"); the operator chose a single-italic-phrase
+      pattern that's coherent across landing + reports.
    ============================================================ */
+
+/* ---- 1. Reports ▾ dropdown ---- */
 
 .rs-nav-reports { position: relative; }
 
@@ -86,3 +93,12 @@
   margin-bottom: 4px;
 }
 .rs-nav-reports__title { display: block; font-size: 13px; line-height: 1.35; }
+
+/* ---- 2. Hero gradient unification (report pages) ---- */
+.rs-section.rs-hero h1 em {
+  font-style: italic;
+  background: var(--dx-gradient);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
