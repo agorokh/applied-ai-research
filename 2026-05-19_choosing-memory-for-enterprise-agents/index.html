@@ -327,7 +327,7 @@
     <div class="dx-station">
       <span class="dx-station__n">Now · Q3 26</span>
       <div class="dx-station__t">Adopt LightRAG × Sonnet for production</div>
-      <div class="dx-station__b">All multi-day repository workflows route to chunk-text on the frontier executor. Roll-forward by team, not by feature.</div>
+      <div class="dx-station__b">All multi-day repository workflows route to chunk-text on the frontier executor, on the <a href="../2026-05-15_claude-code-via-dial-poc/#s08">DIAL gateway path</a>. Roll-forward by team, not by feature.</div>
     </div>
     <div class="dx-station">
       <span class="dx-station__n">Pilot · Q4 26</span>
@@ -368,7 +368,7 @@
 
   <div class="rs-callout rs-callout--blue">
     <h4>The DIAL ask</h4>
-    <p>EPAM's substrate already exposes a translation adapter, a project-keyed gateway, and request-level telemetry. The four properties above are the next contract increment — memory state as a first-class side-channel, surfaced memory in the audit record, refusal as a terminal outcome, and decoupled cost accounting per memory operation.</p>
+    <p>EPAM's substrate already exposes <a href="../2026-05-15_claude-code-via-dial-poc/#s02">a translation adapter, a project-keyed gateway, and request-level telemetry</a>. The four properties above are the next contract increment — memory state as a first-class side-channel, surfaced memory in the audit record, refusal as a terminal outcome, and decoupled cost accounting per memory operation.</p>
   </div>
 </section>
 
@@ -393,6 +393,7 @@
     <li><strong>Multi-agent coordination.</strong> One executor, one memory, one session. Multi-agent setups introduce inter-agent memory which is its own pressure shape.</li>
     <li><strong>Adversarial input.</strong> The matrix is benign. Prompt-injection resilience of either architecture is the next report.</li>
   </ul>
+  <p><strong>Methodology and raw artefacts.</strong> Adoption-bar weights, task families, retrieval traces, and evaluator prompts live alongside the report source on GitHub: <a href="https://github.com/agorokh/applied-ai-research">agorokh/applied-ai-research</a>. Re-running the matrix against either substrate is a clone-and-pytest exercise.</p>
 </section>
 
 <section class="rs-section" id="s12">

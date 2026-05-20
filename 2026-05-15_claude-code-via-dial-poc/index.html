@@ -224,10 +224,8 @@
       <h3>Haiku · Sonnet · Opus · Qwen 480B</h3>
       <p>Pass all eight tasks consistently. Qwen 480B is the cost leader inside the cluster at $0.101 per success — 38% cheaper than Haiku 4.5.</p>
       <div class="rs-tier__specs">
-        <div><span class="k">Qwen 480B</span><span class="v">24/24 · $0.101</span></div>
-        <div><span class="k">Haiku 4.5</span><span class="v">24/24 · $0.162</span></div>
-        <div><span class="k">Sonnet 4.6</span><span class="v">22/24 · $0.474</span></div>
-        <div><span class="k">Opus 4.7</span><span class="v">24/24 · $0.691</span></div>
+        <div><span class="k">Discriminator</span><span class="v">full agentic loop</span></div>
+        <div><span class="k">Cost leader</span><span class="v">Qwen 480B · $0.101</span></div>
       </div>
     </div>
     <div class="rs-tier" style="--accent: var(--dx-blue);">
@@ -236,8 +234,6 @@
       <h3>Kimi K2.5 · MiniMax M2.5</h3>
       <p>Both sustain multi-turn loops; both fail T8 (refactor → test → document). Useful on scoped task surfaces; not general substitutes for tier A.</p>
       <div class="rs-tier__specs">
-        <div><span class="k">MiniMax M2.5</span><span class="v">17/24 · $0.036</span></div>
-        <div><span class="k">Kimi K2.5</span><span class="v">15/24 · $0.058</span></div>
         <div><span class="k">Discriminator</span><span class="v">T8 state retention</span></div>
         <div><span class="k">Pilot scope</span><span class="v">refactor / rename only</span></div>
       </div>
@@ -248,15 +244,13 @@
       <h3>Qwen 30B · DeepSeek v3.2</h3>
       <p>Fail at the loop level, not the task level. Same signature across vendors: the harness loop cannot sustain the agentic protocol. Scale is the determining variable, not vendor.</p>
       <div class="rs-tier__specs">
-        <div><span class="k">Qwen 30B</span><span class="v">9/24 · one-call stall</span></div>
-        <div><span class="k">DeepSeek v3.2</span><span class="v">0/24 · prose-only</span></div>
         <div><span class="k">Discriminator</span><span class="v">loop-protocol fit</span></div>
         <div><span class="k">Verdict</span><span class="v">not deployable</span></div>
       </div>
     </div>
   </div>
 
-  <p>The headline number — Qwen 480B at $0.101 per success — is the weighted-cost minimum inside the cluster that clears 100% pass. Below the Sonnet tier, the two tier-C OSS upstreams fail with a vendor-independent signature: the loop, not the task, is the limit.</p>
+  <p>The headline number — Qwen 480B at $0.101 per success — is the weighted-cost minimum inside the cluster that clears 100% pass. The per-model pass and cost numbers are tabulated in §07; the tier framing here is about <em>why</em> three of eight upstreams fall out.</p>
 </section>
 
 <section class="rs-section" id="s06">
@@ -424,6 +418,7 @@
     <li><strong>Long-running sessions.</strong> The longest session in this matrix is one engineering day. Multi-day session behaviour belongs to the sibling memory-substrate report, not this one.</li>
     <li><strong>EPAM contract pricing.</strong> All cost figures use AWS Bedrock list pricing. EPAM's negotiated rates are out of scope for this document.</li>
   </ul>
+  <p><strong>Methodology and raw artefacts.</strong> Eight-task fixture, adapter routing table, per-trial telemetry, and Bedrock pricing methodology live alongside the report source on GitHub: <a href="https://github.com/agorokh/applied-ai-research">agorokh/applied-ai-research</a>. The translation adapter itself is published as <a href="https://github.com/agorokh/sdlc-dial-adapter">agorokh/sdlc-dial-adapter</a>.</p>
 </section>
 
 <section class="rs-section" id="s12">

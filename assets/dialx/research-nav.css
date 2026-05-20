@@ -70,7 +70,8 @@
   z-index: 50;
 }
 .rs-nav-reports:hover .rs-nav-reports__panel,
-.rs-nav-reports:focus-within .rs-nav-reports__panel {
+.rs-nav-reports:focus-within .rs-nav-reports__panel,
+.rs-nav-reports.is-open .rs-nav-reports__panel {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(-50%) translateY(-4px);
@@ -115,11 +116,19 @@
 }
 .rs-nav-reports__title { display: block; font-size: 13px; line-height: 1.35; }
 
-/* ---- 2. Hero gradient unification (report pages) ---- */
-.rs-section.rs-hero h1 em {
+/* ---- 2. Hero gradient unification (report pages) ----
+   :first-of-type defensive — if a future hero h1 ever gains a
+   second <em>, only the first one gets the gradient instead of
+   silently double-gradienting (council A polish item, v12.5). */
+.rs-section.rs-hero h1 em:first-of-type {
   font-style: italic;
   background: var(--dx-gradient);
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;
 }
+
+/* ---- 3. Landing in-progress card (drafting state) ---- */
+.rs-post--in-progress { opacity: 0.55; pointer-events: none; }
+.rs-post--in-progress .rs-post__date,
+.rs-post--in-progress .rs-post__meta .tag { color: var(--dx-fg-3); }
