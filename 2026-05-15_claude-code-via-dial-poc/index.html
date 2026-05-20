@@ -126,7 +126,7 @@
     <h2>Three viability tiers, <em>Bedrock-verified economics.</em></h2>
     <p class="rs-lede">Two evaluation waves, 192 trials total. 120 against Anthropic + Qwen (2026-05-14, 18:19 UTC); 72 against the additional contenders Kimi K2.5 / MiniMax M2.5 / DeepSeek v3.2 (2026-05-14, 20:15 UTC). Same harness (Claude Code 2.1), same 8-task portfolio, same hidden <code>pytest</code> validators, same DIAL gateway. All cost numbers come from the AWS Bedrock pricing console (US East Ohio, captured 2026-05-14).</p>
 
-    <div class="rs-tiers rs-tiers--2">
+    <div class="rs-tiers">
       <div class="rs-tier" style="--accent: var(--dx-teal);">
         <span class="rs-tier__num">A</span>
         <div class="rs-tier__name">Full viability · 92–100% pass</div>
@@ -151,13 +151,10 @@
           <div><span class="k">Pilot scope</span><span class="v">refactor / rename only</span></div>
         </div>
       </div>
-    </div>
-
-    <div class="rs-tiers rs-tiers--2">
       <div class="rs-tier" style="--accent: var(--dx-magenta);">
         <span class="rs-tier__num">C</span>
         <div class="rs-tier__name">Toy · loop-level failure</div>
-        <h3>Qwen 30B · DeepSeek v3.2 · Devstral 123B · Gemma 27B IT</h3>
+        <h3>Qwen 30B · DeepSeek v3.2 · Devstral · Gemma</h3>
         <p>Five OSS upstreams across four vendor families fail at the loop level with the same scale-driven signature. Scale, not vendor, is the determining variable.</p>
         <div class="rs-tier__specs">
           <div><span class="k">Qwen 30B</span><span class="v">9/24 · one-call stall</span></div>
