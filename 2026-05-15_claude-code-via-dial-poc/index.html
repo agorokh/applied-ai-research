@@ -24,6 +24,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 .rs-tier:last-child { border-right: 1px solid var(--dx-border); }
 /* Legacy figure / SVG diagram styling preserved. */
 .diagram-frame { margin: 24px 0; max-width: 70ch; }
+.rs-footer__inner a { color: inherit; border-bottom: 1px dotted var(--dx-fg-4); }
 .svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
 .svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
 .svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
@@ -365,9 +366,9 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     Per-task heatmap, three-failure-mode taxonomy, frontier scatter, and matrix-run methodology detail are kept alongside the raw transcripts as aggregated summaries.
   </p>
 <div class="rs-callout rs-callout--magenta" style="margin-top: 32px;">
-<h4>What I got wrong before this measurement</h4>
+<h4>The pre-measurement prior was wrong</h4>
 <p>
-      Going into the matrix run I expected the Sonnet-tier OSS swap to be <em>viable at higher cost</em>, the implicit posture in most Q1 2026 industry write-ups. The verified Bedrock-list-pricing pass turned that around within the same evaluation window: Qwen3-Coder 480B is the economic optimum on this matrix at identical 100% pass on the eight tasks, not a fallback for cost-sensitive teams. The retraction is itself a finding: a benchmark that updates a prior belief is worth more than one that confirms the received wisdom.
+      The pre-measurement prior expected the Sonnet-tier OSS swap to be <em>viable at higher cost</em>, the implicit posture in most Q1 2026 industry write-ups. The verified Bedrock-list-pricing pass reversed that call within the same evaluation window: Qwen3-Coder 480B is the economic optimum on this matrix at identical 100% pass on the eight tasks, not a fallback for cost-sensitive teams. The retraction is itself a finding: a benchmark that updates a prior belief is worth more than one that confirms the received wisdom.
     </p>
 </div>
 <p><strong>Where this sits in the public landscape</strong></p>
@@ -377,7 +378,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     Aider polyglot benchmark, BigCodeBench, the published vendor numbers
     for Claude Code on internal Anthropic benchmarks). It is sparse on
     the <em>harness-routed-through-an-enterprise-gateway</em> side. To
-    the best of my public-source review, this is the first non-vendor
+    the best of public-source review, this is the first non-vendor
     evaluation that runs Claude Code 2.1 specifically as the harness
     against the OSS-coder cohort (Qwen, Kimi, MiniMax, DeepSeek) on
     AWS Bedrock list pricing under one shared fixture. The published
@@ -1133,7 +1134,7 @@ ANTHROPIC_BASE_URL=https://ai-proxy.lab.epam.com</pre>
     only, not on the whole agent.
   </p>
 <p>
-    I now run the adapter with three model slots wired separately,
+    The adapter runs with three model slots wired separately,
     not one:
   </p>
 <pre class="rs-code"><span class="rs-code__lbl">CLIENT ENV · MULTI-MODEL DECOUPLING</span><span class="c"># Main loop · capable Sonnet-tier OSS</span>
@@ -1337,8 +1338,8 @@ ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
 <footer class="rs-footer">
 <div class="rs-footer__inner">
 <span>Applied AI Research · EPAM · 2026</span>
-<span><a href="../2026-05-19_choosing-memory-for-enterprise-agents/" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">Choosing memory for enterprise agents →</a></span>
-<span><a href="../" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">Index</a></span>
+<span><a href="../2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for enterprise agents →</a></span>
+<span><a href="../">Index</a></span>
 </div>
 </footer>
 </main>

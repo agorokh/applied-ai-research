@@ -24,6 +24,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 .rs-tier:last-child { border-right: 1px solid var(--dx-border); }
 /* Legacy figure / SVG diagram styling preserved. */
 .diagram-frame { margin: 24px 0; max-width: 70ch; }
+.rs-footer__inner a { color: inherit; border-bottom: 1px dotted var(--dx-fg-4); }
 .svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
 .svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
 .svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
@@ -286,7 +287,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
   </p>
 <table class="rs-table">
 <thead>
-<tr><th>Criterion</th><th>What I required</th></tr>
+<tr><th>Criterion</th><th>Required bar</th></tr>
 </thead>
 <tbody>
 <tr>
@@ -377,11 +378,10 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     Mem0 is structurally the same approach as
     Graphiti: an extraction-mediated semantic store with episodic
     memory and an LLM-rewrite step at ingest. Running Mem0 as a
-    separate head-to-head against Graphiti would have given me a
-    second sample of the same approach, not a comparison of different
-    approaches. <em>Where Graphiti landed in this report's
-    findings is roughly where I would expect Mem0 to land given the
-    same retrieval mechanism.</em>
+    separate head-to-head against Graphiti would yield a second sample
+    of the same approach, not a comparison of different approaches.
+    <em>Where Graphiti landed in this report's findings is roughly
+    where Mem0 would land given the same retrieval mechanism.</em>
 </p>
 <p>
     For a delivery team currently running on Mem0, the findings about
@@ -401,15 +401,15 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     controls motivated parts of the judging design below), and Cognee's
     <a href="https://www.cognee.ai/blog/deep-dives/ai-memory-evals-0825">AI
     Memory Benchmarking</a> blog post (the only prior public
-    artefact I located that puts Cognee, LightRAG, Graphiti, and
+    prior public artefact that puts Cognee, LightRAG, Graphiti, and
     Mem0 head-to-head on a shared corpus - with the caveat that
     Cognee re-used Graphiti's numbers from a smaller study rather
     than re-running Graphiti).
   </p>
 <p>
-    To the best of my public-source review, this is the first <em>non-vendor</em>
+    To the best of public-source review, this is the first <em>non-vendor</em>
     head-to-head comparison of LightRAG and Graphiti on a single
-    corpus under a substrate-fair fixture. I do not arbitrate the
+    corpus under a substrate-fair fixture. This report does not arbitrate the
     Mem0 vs Graphiti / Zep cross-fire; the two vendors' published
     numbers are irreconcilable from public artefacts, and a third
     fair-fixture re-run on LoCoMo is out of scope here. If
@@ -706,12 +706,12 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 <div class="rs-section-label"><span class="num">08</span> Adoption decision · Tencent DB Agent-Memory against the bar</div>
 <h2>Four-of-five fails. Decision reproducible against the bar.</h2>
 <p class="rs-lede">
-    The fourth candidate I considered was <a href="#sA">Tencent
+    The fourth candidate evaluated was <a href="#sA">Tencent
     DB Agent-Memory</a>, the most architecturally-distinct option in
     the set - a four-layer local-memory pipeline with a Mermaid-based
     task-state working memory, published as an open-source project
-    from the Tencent team. I name it here because the public state
-    of the project is auditable and my rejection is grounded in
+    from the Tencent team. It is named here because the public state
+    of the project is auditable and the rejection below is grounded in
     properties another reviewer can check against the same bar.
   </p>
 <p><strong>For delivery teams</strong>: name the bar before naming the candidate. A rejection that walks the criteria reads as decision discipline; a rejection that says "we did not like it" reads as taste.</p>
@@ -721,8 +721,8 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     for an SDLC-history workload at first glance. As of evaluation
     (mid-May 2026), no public third-party benchmark of the project
     exists - it is publicly unevaluated outside its own README. The
-    evaluation below is the first published external bar-check I am
-    aware of. Against the five-criterion bar in Section 03:
+    evaluation below is, to public-source review, the first published
+    external bar-check. Against the five-criterion bar in Section 03:
   </p>
 <table class="rs-table">
 <thead>
@@ -888,9 +888,8 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
       frontier-or-consumer capability, choosing an adoption bar,
       running a canary on the actual production workload, and
       writing the result up so the next team can re-instantiate it.
-      I wrote the substrate decision below as one specific instance
-      of that work, on long-term memory for coding-orchestration
-      agents.
+      The substrate decision below is one specific instance of that
+      work, on long-term memory for coding-orchestration agents.
       The pattern is portable across other capabilities the same
       enterprises will keep encountering: agent autonomy,
       cost-per-decision observability, multi-tenant inference, and
@@ -1003,8 +1002,8 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 <footer class="rs-footer">
 <div class="rs-footer__inner">
 <span>Applied AI Research · EPAM · 2026</span>
-<span><a href="../2026-05-15_claude-code-via-dial-poc/" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">← Claude Code via EPAM DIAL · POC</a></span>
-<span><a href="../" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">Index</a></span>
+<span><a href="../2026-05-15_claude-code-via-dial-poc/">← Claude Code via EPAM DIAL · POC</a></span>
+<span><a href="../">Index</a></span>
 </div>
 </footer>
 <script>
