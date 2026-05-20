@@ -77,7 +77,7 @@
 
     <div class="rs-callout">
       <h4>Finding 1. Production-weighted retrieval separates the substrates by 36 points</h4>
-      <p>The chunk-text retrieval approach (LightRAG) outperformed the entity-graph approach (Graphiti) by 36 percentage points when the test was weighted to match real production query frequency. Under naïve uniform weighting the two looked tied; the weighting decided the outcome. The bar is stated, the weights are stated, and the dispersion across executors is small enough to attribute the win to substrate architecture, not lucky pairings.</p>
+      <p>The chunk-text retrieval approach (LightRAG) outperformed the entity-graph approach (Graphiti) by 36 percentage points when the test was weighted to match real production query frequency. Under naïve uniform weighting Graphiti edged LightRAG slightly (36% vs 32%); production weighting inverted that spread. The bar is stated, the weights are stated, and the dispersion across executors is small enough to attribute the win to substrate architecture, not lucky pairings.</p>
     </div>
 
     <div class="rs-callout">
@@ -154,7 +154,7 @@
       <div class="rs-tier" style="--accent: var(--dx-magenta);">
         <span class="rs-tier__num">B</span>
         <div class="rs-tier__name">Graphiti · entity-graph</div>
-        <h3>Statistically tied under uniform · below under realistic</h3>
+        <h3>Ahead on uniform · below under realistic</h3>
         <p>Runs an extraction step over ingested documents. Bi-temporal metadata helps where supersession matters; hurts where the executor over-trusts the graph.</p>
         <div class="rs-tier__specs">
           <div><span class="k">Win rate (weighted)</span><span class="v">32%</span></div>
