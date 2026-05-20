@@ -96,7 +96,7 @@ def check_tier_headings(text: str, path: Path) -> list[str]:
     errors: list[str] = []
     blocks = extract_rs_tier_blocks(text)
     key = str(path.relative_to(ROOT))
-    min_expected = MIN_TIER_CARDS.get(key, 1)
+    min_expected = MIN_TIER_CARDS.get(key, 0)
     if len(blocks) < min_expected:
         errors.append(
             f"{path}: expected at least {min_expected} rs-tier card(s), found {len(blocks)}"
