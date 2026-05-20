@@ -11,19 +11,44 @@
 <style>
 /* dialx retrofit compat shim: width-constrain inner wrappers from legacy markup */
 main .rs-container { max-width: none; margin: 0; padding: 0; }
-/* v4: single 70ch column for everything readable. Kills the narrow/wide yo-yo. */
+
+/* v5 — sticky topbar offset. Topbar is ~72px; give hero breathing room. */
+:root { --rs-topbar-h: 72px; }
+html { scroll-padding-top: var(--rs-topbar-h); }
+main { padding-top: var(--rs-topbar-h); }
+.rs-section { scroll-margin-top: var(--rs-topbar-h); }
+
+/* Single reading column: prose, callouts, tables, tier-grids, diagrams all
+   constrained to 70ch within the main column (canonical scientific-paper
+   layout per Josh Comeau / Kilian Valkhof; kills the narrow/wide yo-yo). */
 .rs-section > .rs-callout,
-.rs-section > .rs-container > .rs-callout,
+.rs-section > .rs-container > .rs-callout { max-width: 70ch; }
+.rs-callout p { max-width: none; }
 .rs-section > .rs-table,
 .rs-section > .rs-container > .rs-table,
-.rs-section .rs-table { max-width: 70ch; }
-.rs-callout p { max-width: none; }
-/* v4: tier cards as actual cards — gap, individual borders, no shared box. */
+.rs-section > .rs-tiers,
+.rs-section > .rs-container > .rs-tiers,
+.rs-section > .diagram-frame,
+.rs-section > .rs-container > .diagram-frame { max-width: 70ch; }
+
+/* Tier cards as actual cards (gap + individual borders + tinted bg). */
 .rs-tiers { border: none; gap: 20px; }
-.rs-tier { border: 1px solid var(--dx-border); border-right: 1px solid var(--dx-border); border-radius: 4px; background: color-mix(in srgb, var(--dx-surface) 50%, transparent); }
+.rs-tier { border: 1px solid var(--dx-border); border-radius: 4px; background: color-mix(in srgb, var(--dx-surface) 50%, transparent); padding: 28px 26px; }
 .rs-tier:last-child { border-right: 1px solid var(--dx-border); }
-/* Legacy figure / SVG diagram styling preserved. */
-.diagram-frame { margin: 24px 0; max-width: 70ch; }
+.rs-tier__num { margin-bottom: 12px; }
+.rs-tier__name { margin-bottom: 14px; }
+.rs-tier h3 { margin: 0 0 14px; font-size: 20px; line-height: 1.25; }
+.rs-tier p { font-size: 14px; line-height: 1.55; max-width: none; }
+.rs-tier__specs { margin-top: 20px; padding-top: 18px; }
+
+/* Vertical rhythm: section padding is the only inter-section spacer. */
+.rs-section > .rs-container > p:first-child,
+.rs-section > p:first-child { margin-top: 0; }
+.rs-section h2 + p,
+.rs-section h2 + .rs-container > p:first-child { margin-top: 12px; }
+
+/* Legacy figure / SVG diagram + cleaned footer link styles preserved. */
+.diagram-frame { margin: 24px 0; }
 .rs-footer__inner a { color: inherit; border-bottom: 1px dotted var(--dx-fg-4); }
 .svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
 .svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
@@ -41,7 +66,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 </a>
 <nav class="rs-nav">
 <a href="../">Index</a>
-<a class="is-current" href="./">This report</a>
+<a href="../2026-05-15_claude-code-via-dial-poc/">DIAL POC</a>
 <a href="https://github.com/agorokh/applied-ai-research">GitHub</a>
 </nav>
 <div class="rs-nav-meta">
