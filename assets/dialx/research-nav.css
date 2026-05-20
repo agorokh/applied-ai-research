@@ -1,0 +1,88 @@
+/* ============================================================
+   dialx · research-nav (extension)
+   ------------------------------------------------------------
+   Single deviation from `research.css`: a hover-dropdown
+   "Reports" menu in the topbar `<nav>`. The reference paper
+   uses static Index/Latest/About text links, which don't scale
+   to N reports. The dropdown component is the operator's
+   answer; everything else in this file is empty.
+   ============================================================ */
+
+.rs-nav-reports { position: relative; }
+
+.rs-nav-reports > .rs-nav-reports__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--dx-fg-3);
+  text-decoration: none;
+  font-family: var(--dx-font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 4px 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+          appearance: none;
+  transition: color 200ms;
+}
+.rs-nav-reports > .rs-nav-reports__trigger:hover,
+.rs-nav-reports:focus-within > .rs-nav-reports__trigger {
+  color: var(--dx-fg-1);
+}
+.rs-nav-reports > .rs-nav-reports__trigger::after {
+  content: "▾";
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.rs-nav-reports__panel {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 340px;
+  background: var(--dx-surface-2);
+  border: 1px solid var(--dx-border-strong);
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 18px 56px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms, transform 180ms;
+  z-index: 50;
+}
+.rs-nav-reports:hover .rs-nav-reports__panel,
+.rs-nav-reports:focus-within .rs-nav-reports__panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.rs-nav-reports__list { list-style: none; margin: 0; padding: 0; }
+.rs-nav-reports__item { margin: 0; }
+.rs-nav-reports__link {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 4px;
+  color: var(--dx-fg-1);
+  text-decoration: none;
+  transition: background 150ms, color 150ms;
+}
+.rs-nav-reports__link:hover {
+  background: color-mix(in srgb, var(--dx-fg-1) 8%, transparent);
+}
+.rs-nav-reports__link.is-current {
+  background: color-mix(in srgb, var(--dx-violet) 14%, transparent);
+}
+.rs-nav-reports__date {
+  display: block;
+  font-family: var(--dx-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--dx-fg-3);
+  margin-bottom: 4px;
+}
+.rs-nav-reports__title { display: block; font-size: 13px; line-height: 1.35; }
