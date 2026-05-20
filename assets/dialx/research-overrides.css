@@ -23,6 +23,20 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 .rs-section { scroll-margin-top: var(--rs-topbar-h); }
 .rs-hero { padding-top: 180px; }
 
+/* v11 — Tighter fluid type for the report hero so h1 doesn't scale
+   dramatically while the body stays fixed. dialx canonical is
+   clamp(48px, 7.5vw, 96px); v11 calms it to clamp(40px, 5vw, 72px)
+   and constrains h1 width to the reading column so it doesn't run
+   the whole page. */
+.rs-section.rs-hero h1 {
+  font-size: clamp(40px, 5vw, 72px);
+  max-width: 22ch;
+}
+.rs-index-hero h1 {
+  font-size: clamp(44px, 5.5vw, 84px);
+  max-width: 22ch;
+}
+
 /* v10 — Horizontal nav with hover-dropdown. "Reports" is the visible
    topbar link; hover reveals the publication index in a dropdown
    panel. Scales beyond 2 reports without adding more topbar links. */
