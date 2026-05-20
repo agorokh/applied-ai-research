@@ -344,30 +344,30 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     The five-criterion adoption bar used throughout this report:
   </p>
 
-  <table>
+  <table class="rs-table">
     <thead>
       <tr><th>Criterion</th><th>What I required</th></tr>
     </thead>
     <tbody>
       <tr>
         <td><strong>Integration surface</strong></td>
-        <td>The candidate ships the integration the consuming stack needs: a Python-callable read path, an MCP-compatible interface for agent tools, and a multi-tenant per-workspace mode. Same-language parity with the consumer code.</td>
+        <td>Python-callable read path, MCP-compatible agent interface, multi-tenant per-workspace mode.</td>
       </tr>
       <tr>
         <td><strong>Install hygiene</strong></td>
-        <td>Installing the candidate leaves third-party software in the host environment unchanged. Post-install scripts that patch sibling packages, modify the host environment, or silently fall through on error are out of scope.</td>
+        <td>Installing leaves third-party software unchanged. No host-environment patches, no silent fall-through.</td>
       </tr>
       <tr>
-        <td><strong>Test coverage in the public surface</strong></td>
-        <td>The candidate ships a non-trivial test suite that exercises the API the consuming stack would call. A wired-but-empty test harness fails this.</td>
+        <td><strong>Test coverage</strong></td>
+        <td>Non-trivial test suite exercising the consuming-stack API. A wired-but-empty harness fails this.</td>
       </tr>
       <tr>
         <td><strong>Maintenance posture</strong></td>
-        <td>More than one active contributor; release cadence sustainable; project age sufficient to have surfaced common bugs and stabilised the API. New projects can be promising; "evaluated for adoption" is a different bar.</td>
+        <td>More than one active contributor, sustainable release cadence, API stabilised over time.</td>
       </tr>
       <tr>
         <td><strong>Operational fit</strong></td>
-        <td>The candidate fits the EPAM-canonical deployment surface: model calls routed through the EPAM DIAL gateway, telemetry through the existing observability stack, secrets through a managed secret store, no bespoke infrastructure that the platform team would need to support indefinitely.</td>
+        <td>Routes through EPAM DIAL, telemetry to existing observability stack, secrets via managed store.</td>
       </tr>
     </tbody>
   </table>
@@ -495,14 +495,14 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     have a dominant query type; the test families intersect both:
   </p>
 
-  <table>
+  <table class="rs-table">
     <thead>
-      <tr><th>Task family</th><th>What the agent is trying to do</th><th>Frequency in production</th></tr>
+      <tr><th>Task family</th><th>What the agent is trying to do</th><th>Frequency</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Current canonical text</strong></td><td>"What is the current rule / invariant / decision for X?" Read the literal source so the agent can quote it back.</td><td><span class="rs-pill rs-pill--teal">~50%</span></td></tr>
-      <tr><td><strong>Handoff continuity</strong></td><td>"Where did the previous session leave off, and what is the next action?" Read the current handoff state.</td><td><span class="rs-pill rs-pill--blue">~20%</span></td></tr>
-      <tr><td><strong>Entity disambiguation</strong></td><td>"Which of several entities sharing a name is meant in this context?" Resolve a noun across multiple sources.</td><td><span class="rs-pill rs-pill--violet">~10%</span></td></tr>
+      <tr><td><strong>Current canonical text</strong></td><td>"What is the current rule for X?" Read the literal source so the agent can quote it back.</td><td><span class="rs-pill rs-pill--teal">~50%</span></td></tr>
+      <tr><td><strong>Handoff continuity</strong></td><td>"Where did the previous session leave off?" Read the current handoff state.</td><td><span class="rs-pill rs-pill--blue">~20%</span></td></tr>
+      <tr><td><strong>Entity disambiguation</strong></td><td>"Which entity sharing a name is meant?" Resolve a noun across multiple sources.</td><td><span class="rs-pill rs-pill--violet">~10%</span></td></tr>
       <tr><td>Temporal supersession</td><td>"What changed between two points in time? What deprecated what?"</td><td><span class="rs-pill rs-pill--dim">~4%</span></td></tr>
       <tr><td>Multi-hop traversal</td><td>"Which investigations led to this decision? What chain of evidence supports this rule?"</td><td><span class="rs-pill rs-pill--dim">~4%</span></td></tr>
       <tr><td>Knowledge updates</td><td>"What did the new doctrine just impose that the old one did not?"</td><td><span class="rs-pill rs-pill--dim">~4%</span></td></tr>
@@ -852,34 +852,34 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     aware of. Against the five-criterion bar in Section 03:
   </p>
 
-  <table>
+  <table class="rs-table">
     <thead>
-      <tr><th>Criterion (from §03)</th><th>Status on the candidate</th><th>Verdict</th></tr>
+      <tr><th>Criterion</th><th>Status on the candidate</th><th>Verdict</th></tr>
     </thead>
     <tbody>
       <tr>
         <td><strong>Integration surface</strong></td>
-        <td>Distributed primarily as a TypeScript / Node package targeted at a single coding-agent framework. The consuming stack is Python-first; no Python integration surface.</td>
+        <td>TypeScript / Node package targeted at one coding-agent framework. Consuming stack is Python-first.</td>
         <td><span class="rs-pill rs-pill--magenta">fail</span></td>
       </tr>
       <tr>
         <td><strong>Install hygiene</strong></td>
-        <td>The package's post-install step rewrites a sibling package's runtime files on install, silently falling through on error. This is the canonical supply-chain pattern I treat as a fail.</td>
+        <td>Post-install step rewrites a sibling package's runtime files, silently falling through on error.</td>
         <td><span class="rs-pill rs-pill--magenta">fail</span></td>
       </tr>
       <tr>
-        <td><strong>Test coverage in the public surface</strong></td>
-        <td>Test harness is wired (test runner configured, test commands present in the build manifest), but a search for test files in the published source surface returns zero. The harness exists; the suites do not.</td>
+        <td><strong>Test coverage</strong></td>
+        <td>Harness wired (runner + manifest commands), zero test files in the published source surface.</td>
         <td><span class="rs-pill rs-pill--magenta">fail</span></td>
       </tr>
       <tr>
         <td><strong>Maintenance posture</strong></td>
-        <td>Project age at evaluation: roughly six weeks at the most recent release. Two contributors visible in the public history, with one author responsible for the majority of commits.</td>
+        <td>~6 weeks old at the most recent release; two contributors, one carrying the majority of commits.</td>
         <td><span class="rs-pill rs-pill--dim">partial</span></td>
       </tr>
       <tr>
         <td><strong>Operational fit</strong></td>
-        <td>No MCP server surface for agent integration; no graph database (depends on a local vector store and a third-party vector-DB SDK); no fit with the per-workspace HTTP server pattern or with DIAL-gateway-routed model calls.</td>
+        <td>No MCP surface, no graph store, no fit with per-workspace HTTP or DIAL-routed model calls.</td>
         <td><span class="rs-pill rs-pill--magenta">fail</span></td>
       </tr>
     </tbody>
@@ -1019,7 +1019,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 
   <div class="rs-callout rs-callout--teal" style="margin-top: 56px;">
     <h4>The closing thesis</h4>
-    <p style="font-family: var(--dx-font-serif); font-size: 22px; line-height: 1.35; color: var(--dx-fg-1); margin-bottom: 12px;">
+    <p>
       Applied AI is the discipline that converts frontier research and consumer-grade features into enterprise systems with measured properties, named failure modes, and a stated adoption bar.
     </p>
     <p>
@@ -1060,17 +1060,17 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
   </p>
 
   <h3>Models and routing</h3>
-  <table>
+  <table class="rs-table">
     <thead>
       <tr><th>Role</th><th>Capability tier</th><th>Checkpoint</th><th>Routed via</th></tr>
     </thead>
     <tbody>
-      <tr><td>Executor A (closed-loop)</td><td>more-capable / expensive</td><td>Claude Sonnet 4.5</td><td>EPAM DIAL (canonical); interim fallback path during this evaluation window</td></tr>
-      <tr><td>Executor B (closed-loop)</td><td>smaller / cheaper</td><td>Gemini 2.5 Flash</td><td>EPAM DIAL (canonical); interim fallback during this window</td></tr>
-      <tr><td>Judge A (retrieval scoring)</td><td>independent, vendor X</td><td>GPT-4o</td><td>EPAM DIAL (canonical); interim fallback</td></tr>
-      <tr><td>Judge B (retrieval scoring)</td><td>independent, vendor Y</td><td>Claude Sonnet 4.6</td><td>EPAM DIAL (canonical); interim fallback</td></tr>
-      <tr><td>Embedder (both substrates)</td><td>local, 1024-dim</td><td>mxbai-embed-large-v1</td><td>local inference host</td></tr>
-      <tr><td>Extractor (entity-graph ingest)</td><td>smaller / cheaper</td><td>Gemini 2.5 Flash</td><td>EPAM DIAL (canonical); interim fallback</td></tr>
+      <tr><td>Executor A</td><td>more-capable</td><td>Claude Sonnet 4.5</td><td>EPAM DIAL</td></tr>
+      <tr><td>Executor B</td><td>smaller / cheaper</td><td>Gemini 2.5 Flash</td><td>EPAM DIAL</td></tr>
+      <tr><td>Judge A</td><td>vendor X</td><td>GPT-4o</td><td>EPAM DIAL</td></tr>
+      <tr><td>Judge B</td><td>vendor Y</td><td>Claude Sonnet 4.6</td><td>EPAM DIAL</td></tr>
+      <tr><td>Embedder</td><td>local, 1024-dim</td><td>mxbai-embed-large-v1</td><td>local host</td></tr>
+      <tr><td>Extractor</td><td>smaller / cheaper</td><td>Gemini 2.5 Flash</td><td>EPAM DIAL</td></tr>
     </tbody>
   </table>
 

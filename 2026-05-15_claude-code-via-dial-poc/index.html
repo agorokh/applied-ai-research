@@ -411,8 +411,8 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </div>
   </div>
 
-  <h3 style="margin-top: 56px;">Eight-model ranked table · Bedrock-verified $/success</h3>
-  <table>
+  <p><strong>Eight-model ranked table · Bedrock-verified $/success</strong></p>
+  <table class="rs-table">
     <thead>
       <tr><th>Model</th><th>Vendor</th><th style="text-align:right">Pass</th><th style="text-align:right">Avg turns</th><th style="text-align:right">$/M in · out</th><th style="text-align:right">Bedrock spend</th><th style="text-align:right">$ / success</th><th>Tier</th></tr>
     </thead>
@@ -430,7 +430,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 
   <div class="rs-callout rs-callout--teal" style="margin-top: 32px;">
     <h4>Ranking inside the 100%-pass cluster</h4>
-    <p style="font-family: var(--dx-font-serif); font-size: 20px; line-height: 1.4; color: var(--dx-fg-1);">
+    <p>
       <strong>Qwen 480B &lt; Haiku 4.5 &lt; Sonnet 4.6 &lt; Opus 4.7</strong> on $/success. The Sonnet-tier OSS swap is no longer “viable at higher cost”: at the verified Bedrock rates it is the economic optimum on this matrix, with identical quality on the same 8 tasks. Below that tier, no OSS upstream in this evaluation can replace Anthropic.
     </p>
   </div>
@@ -446,7 +446,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </p>
   </div>
 
-  <h3 style="margin-top: 40px;">Where this sits in the public landscape</h3>
+  <p><strong>Where this sits in the public landscape</strong></p>
   <p>
     Prior public work on coding-agent benchmarking is rich on the
     <em>model</em> side (the SWE-bench-Verified leaderboard, the
@@ -701,12 +701,12 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </svg>
   </div>
 
-  <h3 style="margin-top: 40px;">Layer A · what already reaches InfluxDB today</h3>
+  <p><strong>Layer A · what already reaches InfluxDB today</strong></p>
   <p>
     Three Influx measurements are populated continuously by the existing sidecar exporters and queried by the Grafana dashboard at <code>config/grafana/dashboards/dial-bridge-overview.json</code>. Each row below is a real field landing in InfluxDB in this POC.
   </p>
 
-  <table>
+  <table class="rs-table">
     <thead>
       <tr><th>Measurement</th><th>Tags (queryable dimensions)</th><th>Selected fields</th></tr>
     </thead>
@@ -733,12 +733,12 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     Plus the raw NDJSON log file on disk (<code>/var/log/anthropic-dial-adapter/adapter.log</code>, one JSON line per <code>request_in</code> / <code>response_out</code> / <code>error</code> event) is retained at file level. That file is the superset; the three Influx measurements are derived views.
   </p>
 
-  <h3 style="margin-top: 40px;">Layer B · in the log but not yet tagged in Influx</h3>
+  <p><strong>Layer B · in the log but not yet tagged in Influx</strong></p>
   <p>
     The following identifiers are emitted on every request by the adapter and / or the Claude Code SDK’s OTel output and reach the on-disk log, but are not currently surfaced as tags on the Influx measurements. Promotion is mechanical, an exporter-side change only; no client cooperation required.
   </p>
 
-  <table>
+  <table class="rs-table">
     <thead>
       <tr><th>Field</th><th>Source today</th><th>What it identifies</th></tr>
     </thead>
@@ -751,12 +751,12 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </tbody>
   </table>
 
-  <h3 style="margin-top: 40px;">Layer C · hypothetical business-context tags (not in the wire today)</h3>
+  <p><strong>Layer C · hypothetical business-context tags (not in the wire today)</strong></p>
   <p>
     The downstream analyses sketched in Sections 06-08 (per-project cost reports, per-team model fitness profiles, adaptive routing rules) depend on joining the layer-A telemetry to business identifiers that <em>this POC does not capture</em>. The table below names the kind of identifier each analysis would need and is explicit about the POC’s state.
   </p>
 
-  <table>
+  <table class="rs-table">
     <thead>
       <tr><th>Hypothetical field</th><th>Likely production source</th><th>Status in this POC</th></tr>
     </thead>
@@ -1047,7 +1047,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <div>
       <h4>Tier 1 · Wire-level · <em>what runs?</em></h4>
       <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available today from adapter GFLog directly. No enrichment.</p>
-      <table>
+      <table class="rs-table">
         <tbody>
           <tr><td>Request volume by model family</td><td class="mono" style="text-align: right;">4,200 req/day</td></tr>
           <tr><td>Cache hit rate</td><td class="mono" style="text-align: right;">38%</td></tr>
@@ -1060,7 +1060,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <div>
       <h4>Tier 2 · Outcome · <em>does it work?</em></h4>
       <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Requires test-harness or accept-signal join.</p>
-      <table>
+      <table class="rs-table">
         <tbody>
           <tr><td>Task completion rate by model</td><td class="mono" style="text-align: right;">100% / 87% / 0%</td></tr>
           <tr><td>Retry rate per session</td><td class="mono" style="text-align: right;">12% on DeepSeek</td></tr>
@@ -1073,7 +1073,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <div>
       <h4>Tier 3 · Economic · <em>what does it cost / save?</em></h4>
       <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available today via Bedrock-verified <code>cost_usd_estimate</code>.</p>
-      <table>
+      <table class="rs-table">
         <tbody>
           <tr><td>Cost per completed task</td><td class="mono" style="text-align: right;">$0.101 / $0.19</td></tr>
           <tr><td>Cache savings realised</td><td class="mono" style="text-align: right;">$1,240 / trial</td></tr>
@@ -1086,7 +1086,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     <div>
       <h4>Tier 4 · Strategic · <em>what does it enable?</em></h4>
       <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available only after business-metadata enrichment.</p>
-      <table>
+      <table class="rs-table">
         <tbody>
           <tr><td>AI productivity index by team</td><td class="mono" style="text-align: right;">platform 4.1×</td></tr>
           <tr><td>Use-case archetype cost curve</td><td class="mono" style="text-align: right;">$0.008-$0.034</td></tr>
@@ -1115,7 +1115,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     Each row below pairs a real management-level question with the data join it would require. Each join is “layer-A telemetry already in InfluxDB + one layer-C business-metadata source.” None require new collection from the wire, only the connection to business metadata that EPAM’s production environment is positioned to supply (subject to data-governance policy).
   </p>
 
-  <table style="margin-top: 24px;">
+  <table class="rs-table" style="margin-top: 24px;">
     <thead>
       <tr><th style="width:5%">#</th><th style="width:35%">The question</th><th>The data join</th></tr>
     </thead>
@@ -1178,7 +1178,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 
   <div class="rs-callout rs-callout--teal" style="margin-top: 40px;">
     <h4>What ties Applications A-C together</h4>
-    <p style="font-family: var(--dx-font-serif); font-size: 19px; line-height: 1.45; color: var(--dx-fg-1);">
+    <p>
       All three depend on the same enabling work in Section 12: business-identity header forwarding and three tag promotions in the exporter. None require new collection, retraining, or SDK changes. Each yields a reporting or routing capability whose evidence base is the transcripts already on disk.
     </p>
   </div>
@@ -1238,12 +1238,12 @@ ANTHROPIC_BASE_URL=https://ai-proxy.lab.epam.com</pre>
     </ul>
   </div>
 
-  <h3 style="margin-top: 40px;">Engineering scope estimate</h3>
+  <p><strong>Engineering scope estimate</strong></p>
   <p>
     The translation core is around 1500 lines of Python concentrated in two functions plus the SSE streaming bridge. Porting into DIAL’s ingress codepath is a translation rewrite, not a new design; the wire-shape conversions are stable. The engineering effort is, to first order, the time to integrate the existing translation logic with DIAL’s existing authentication, project routing, and observability paths, not the time to design from scratch. The adapter’s test suite (52 tests) carries forward as the conformance bar.
   </p>
 
-  <h3 style="margin-top: 40px;">The sanitised public adapter</h3>
+  <p><strong>The sanitised public adapter</strong></p>
   <p>
     Iteration 2 of this report ships alongside a sanitised public
     export of the adapter at
@@ -1278,7 +1278,7 @@ ANTHROPIC_BASE_URL=https://ai-proxy.lab.epam.com</pre>
     that this report’s §05-§07 are condensed from.
   </p>
 
-  <h3 style="margin-top: 40px;">Iteration-2 substrate update · Kimi K2.5 as the second small model alongside Qwen</h3>
+  <p><strong>Iteration-2 substrate update · Kimi K2.5 as the second small model alongside Qwen</strong></p>
   <p>
     Iteration 1 of this report (2026-05-15) treated each OSS upstream
     as a single substitution candidate for the main loop. Subsequent
@@ -1407,7 +1407,7 @@ ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
 
   <div class="rs-callout rs-callout--teal" style="margin-top: 56px;">
     <h4>The closing thesis</h4>
-    <p style="font-family: var(--dx-font-serif); font-size: 22px; line-height: 1.35; color: var(--dx-fg-1); margin-bottom: 12px;">
+    <p>
       The gateway is the right boundary at which to enforce tenancy, audit, routing, and observability. A coding harness that runs through it gets all four for free.
     </p>
     <p>
@@ -1459,7 +1459,7 @@ ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
   </p>
 
   <h3>Adapter routing table</h3>
-  <table>
+  <table class="rs-table">
     <thead>
       <tr><th>Slot</th><th>Env var</th><th>Model used in iteration 2</th><th>Notes</th></tr>
     </thead>
