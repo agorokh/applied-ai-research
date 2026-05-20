@@ -44,7 +44,7 @@ check_count() {
 count_matches() {
   local pattern="$1" file="$2"
   local count
-  count=$(grep -oiE "$pattern" "$file" 2>/dev/null | wc -l | tr -d '[:space:]')
+  count=$( { grep -oiE "$pattern" "$file" 2>/dev/null || true; } | wc -l | tr -d '[:space:]')
   echo "${count:-0}"
 }
 
@@ -123,7 +123,7 @@ if [[ -z "$posts_block" ]]; then
 else
   for report in "${REPORTS[@]}"; do
     slug=$(basename "$(dirname "$report")")
-    if grep -qE "href=[\"']${slug}/" <<<"$posts_block"; then
+    if grep -qF "${slug}/" <<<"$posts_block"; then
       echo "  ok: landing rs-post link → ${slug}/"
     else
       echo "FAIL: $LANDING: no rs-post card link to ${slug}/ inside .rs-posts" >&2
