@@ -104,15 +104,33 @@ check_count "h1"            "$h1"  1 1 "$LANDING"
 check_zero  "inline <style>" '<style\b' "$LANDING"
 check_zero  "research-overrides link" 'research-overrides' "$LANDING"
 
-for report in "${REPORTS[@]}"; do
-  slug=$(basename "$(dirname "$report")")
-  if grep -qE "href=[\"']${slug}/" "$LANDING"; then
-    echo "  ok: landing link → ${slug}/"
-  else
-    echo "FAIL: $LANDING: no rs-post link to ${slug}/" >&2
-    fail=$((fail + 1))
-  fi
-done
+posts_block=$(python3 - "$LANDING" <<'PY'
+import re
+import sys
+
+text = open(sys.argv[1], encoding="utf-8").read()
+match = re.search(
+    r'<section\b[^>]*\brs-posts\b[^>]*>.*?</section>',
+    text,
+    flags=re.IGNORECASE | re.DOTALL,
+)
+print(match.group(0) if match else "")
+PY
+)
+if [[ -z "$posts_block" ]]; then
+  echo "FAIL: $LANDING: rs-posts section not found" >&2
+  fail=$((fail + 1))
+else
+  for report in "${REPORTS[@]}"; do
+    slug=$(basename "$(dirname "$report")")
+    if grep -qE "href=[\"']${slug}/" <<<"$posts_block"; then
+      echo "  ok: landing rs-post link → ${slug}/"
+    else
+      echo "FAIL: $LANDING: no rs-post card link to ${slug}/ inside .rs-posts" >&2
+      fail=$((fail + 1))
+    fi
+  done
+fi
 
 if [[ $fail -gt 0 ]]; then
   echo
