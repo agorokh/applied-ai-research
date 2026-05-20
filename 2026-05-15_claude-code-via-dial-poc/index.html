@@ -346,7 +346,7 @@
     </tbody>
   </table>
 
-  <p>The tier-A cluster includes three Anthropic models and one Alibaba model. The fact that Qwen 480B wins on cost-per-success while matching Anthropic on quality is the reason the gateway pattern matters: it lets a procurement-driven model swap happen at the gateway, not at the IDE.</p>
+  <p>The tier-A cluster includes three Anthropic models and one Alibaba model. Qwen 480B is the cost leader inside that cluster — 24/24 pass alongside Haiku and Opus, cheaper per success than every Anthropic row (Sonnet lands at 22/24). That spread is the reason the gateway pattern matters: procurement can swap the default upstream at the gateway, not at the IDE.</p>
 </section>
 
 <section class="rs-section" id="s08">
@@ -385,7 +385,7 @@
     </div>
     <div>
       <h3>Business-context tags joinable to the wire</h3>
-      <p>Project, team, industry, use-case dimensions joined at the gateway, supplied by the existing project metadata and authentication. The POC writes two of those; the production version writes all four.</p>
+      <p>Project, team, industry, use-case dimensions joined at the gateway, supplied by the existing project metadata and authentication. The POC writes client and model-family tags today; production joins all four business-context dimensions on the same path.</p>
     </div>
     <div>
       <h3>Per-project routing rules at the gateway</h3>
