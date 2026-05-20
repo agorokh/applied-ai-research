@@ -62,7 +62,7 @@ for report in "${REPORTS[@]}"; do
   echo "=== $(basename "$(dirname "$report")") ==="
   sections=$(grep -c '^<section ' "$report")
   callouts=$(grep -c 'class="rs-callout' "$report")
-  h1=$(grep -c '<h1>' "$report")
+  h1=$(grep -cE '<h1\b' "$report")
   h3=$(grep -c '<h3>' "$report")
   ems_in_h1=$(python3 - "$report" <<'PY'
 import re, sys
@@ -86,7 +86,7 @@ if [[ -f "$LANDING" ]]; then
   echo "=== landing ==="
   hero=$(grep -c 'class="rs-index-hero"' "$LANDING")
   posts=$(grep -c 'class="rs-post"' "$LANDING")
-  h1=$(grep -c '<h1>' "$LANDING")
+  h1=$(grep -cE '<h1\b' "$LANDING")
   check_count "rs-index-hero" "$hero" 1 1 "$LANDING"
   check_count "rs-post articles" "$posts" "${#REPORTS[@]}" 9999 "$LANDING"
   check_count "h1"            "$h1"  1 1 "$LANDING"
