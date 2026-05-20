@@ -17,72 +17,84 @@
    defence-in-depth for any caller that still emits them. */
 main .rs-container { max-width: none; margin: 0; padding: 0; }
 
-/* v9 — Sidebar-as-navigation layout. The site has a persistent left
-   rail listing all publications (the canonical answer to "how do I
-   switch between pages"). On desktop the rail is fixed; main content
-   gets padding-left to clear it. On narrow viewports the rail moves
-   to a horizontal top strip. */
-:root {
-  --rs-topbar-h: 60px;        /* slimmer — nav lives in sidebar now */
-  --rs-sidebar-w: 240px;
-}
+/* Sticky topbar offset. Hero owns its breathing room. */
+:root { --rs-topbar-h: 72px; }
 html { scroll-padding-top: var(--rs-topbar-h); }
 .rs-section { scroll-margin-top: var(--rs-topbar-h); }
-/* Hero padding makes room for the slim topbar above. */
-.rs-hero { padding-top: 120px; }
+.rs-hero { padding-top: 180px; }
 
-/* Topbar shrinks: no nav list (sidebar has it). Just brand + live. */
-.rs-topbar__inner { padding: 12px 32px; }
-.rs-nav { display: none; }
-
-/* Sidebar — fixed on the left, persistent across all pages.
-   box-sizing: border-box so width INCLUDES padding; main padding-left
-   then matches the sidebar's full footprint exactly. */
-.rs-sidebar {
-  position: fixed;
-  top: var(--rs-topbar-h);
-  left: 0;
-  bottom: 0;
-  width: var(--rs-sidebar-w);
-  box-sizing: border-box;
-  padding: 32px 24px;
-  background: var(--dx-bg);
-  border-right: 1px solid var(--dx-border);
-  overflow-y: auto;
-  z-index: 40;
-  font-family: var(--dx-font-sans);
+/* v10 — Horizontal nav with hover-dropdown. "Reports" is the visible
+   topbar link; hover reveals the publication index in a dropdown
+   panel. Scales beyond 2 reports without adding more topbar links. */
+.rs-nav-reports {
+  position: relative;
 }
-.rs-sidebar__eyebrow {
-  font-family: var(--dx-font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+.rs-nav-reports > .rs-nav-reports__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--dx-fg-3);
-  margin: 0 0 14px;
-}
-.rs-sidebar__list { list-style: none; margin: 0 0 28px; padding: 0; }
-.rs-sidebar__item { margin: 0 0 4px; }
-.rs-sidebar__link {
-  display: block;
-  padding: 10px 12px;
-  color: var(--dx-fg-2);
   text-decoration: none;
-  border-left: 2px solid transparent;
-  border-radius: 0 4px 4px 0;
+  font-family: var(--dx-font-sans);
   font-size: 13px;
-  line-height: 1.4;
-  transition: background 150ms, color 150ms, border-color 150ms;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 4px 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+          appearance: none;
+  transition: color 200ms;
 }
-.rs-sidebar__link:hover {
+.rs-nav-reports > .rs-nav-reports__trigger:hover,
+.rs-nav-reports:focus-within > .rs-nav-reports__trigger {
   color: var(--dx-fg-1);
-  background: color-mix(in srgb, var(--dx-fg-1) 4%, transparent);
 }
-.rs-sidebar__link.is-current {
+.rs-nav-reports > .rs-nav-reports__trigger::after {
+  content: "▾";
+  font-size: 10px;
+  opacity: 0.6;
+}
+.rs-nav-reports__panel {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 340px;
+  background: var(--dx-surface-2);
+  border: 1px solid var(--dx-border-strong);
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 18px 56px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms, transform 180ms;
+  z-index: 50;
+}
+.rs-nav-reports:hover .rs-nav-reports__panel,
+.rs-nav-reports:focus-within .rs-nav-reports__panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-4px);
+}
+.rs-nav-reports__list { list-style: none; margin: 0; padding: 0; }
+.rs-nav-reports__item { margin: 0; }
+.rs-nav-reports__link {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 4px;
   color: var(--dx-fg-1);
-  border-left-color: var(--dx-violet);
-  background: color-mix(in srgb, var(--dx-violet) 8%, transparent);
+  text-decoration: none;
+  transition: background 150ms, color 150ms;
 }
-.rs-sidebar__date {
+.rs-nav-reports__link:hover {
+  background: color-mix(in srgb, var(--dx-fg-1) 8%, transparent);
+}
+.rs-nav-reports__link.is-current {
+  background: color-mix(in srgb, var(--dx-violet) 14%, transparent);
+}
+.rs-nav-reports__date {
   display: block;
   font-family: var(--dx-font-mono);
   font-size: 10.5px;
@@ -90,40 +102,10 @@ html { scroll-padding-top: var(--rs-topbar-h); }
   color: var(--dx-fg-3);
   margin-bottom: 4px;
 }
-.rs-sidebar__title { display: block; }
-.rs-sidebar__footer {
-  border-top: 1px solid var(--dx-border);
-  padding-top: 18px;
-  margin-top: 18px;
-  font-family: var(--dx-font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.rs-sidebar__footer a { color: var(--dx-fg-3); text-decoration: none; }
-.rs-sidebar__footer a:hover { color: var(--dx-fg-1); }
-
-/* Push main + topbar content right of the sidebar on desktop. */
-@media (min-width: 1100px) {
-  .rs-topbar__inner { padding-left: calc(var(--rs-sidebar-w) + 32px); }
-  main { padding-left: var(--rs-sidebar-w); }
-  .rs-toc { right: 24px; }   /* TOC stays right of main */
-}
-
-/* On narrow viewports the sidebar collapses to a horizontal strip
-   just below the topbar so navigation is still discoverable. */
-@media (max-width: 1099px) {
-  .rs-sidebar {
-    position: static;
-    width: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--dx-border);
-    padding: 18px 24px;
-  }
-  .rs-sidebar__list { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 0; }
-  .rs-sidebar__item { flex: 0 0 auto; }
-  .rs-sidebar__eyebrow { display: none; }
-  .rs-sidebar__footer { display: none; }
+.rs-nav-reports__title {
+  display: block;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 /* v8 — Hero gradient unification.
