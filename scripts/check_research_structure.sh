@@ -64,7 +64,13 @@ for report in "${REPORTS[@]}"; do
   callouts=$(grep -c 'class="rs-callout' "$report")
   h1=$(grep -c '<h1>' "$report")
   h3=$(grep -c '<h3>' "$report")
-  ems_in_h1=$(grep -oE '<h1>[^<]*<em>' "$report" | wc -l | awk '{print $1}')
+  ems_in_h1=$(python3 - "$report" <<'PY'
+import re, sys
+text = open(sys.argv[1], encoding="utf-8").read()
+blocks = re.findall(r"<h1\b[^>]*>.*?</h1>", text, flags=re.IGNORECASE | re.DOTALL)
+print(sum(1 for block in blocks if len(re.findall(r"<em\b", block, flags=re.IGNORECASE)) == 1))
+PY
+)
 
   check_count "sections" "$sections" 13 13 "$report"
   check_count "callouts" "$callouts" 3 5 "$report"
