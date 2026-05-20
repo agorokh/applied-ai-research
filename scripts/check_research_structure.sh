@@ -89,17 +89,28 @@ PY
   check_zero  "research-overrides link" 'research-overrides' "$report"
 done
 
-if [[ -f "$LANDING" ]]; then
-  echo "=== landing ==="
-  hero=$(count_matches 'class=["'\''][^"'\'']*\brs-index-hero\b' "$LANDING")
-  posts=$(count_matches 'class=["'\''][^"'\'']*\brs-post\b' "$LANDING")
-  h1=$(count_matches '<h1\b' "$LANDING")
-  check_count "rs-index-hero" "$hero" 1 1 "$LANDING"
-  check_count "rs-post articles" "$posts" "${#REPORTS[@]}" 9999 "$LANDING"
-  check_count "h1"            "$h1"  1 1 "$LANDING"
-  check_zero  "inline <style>" '<style\b' "$LANDING"
-  check_zero  "research-overrides link" 'research-overrides' "$LANDING"
+if [[ ! -f "$LANDING" ]]; then
+  echo "FAIL: landing page missing at $LANDING" >&2
+  exit 1
 fi
+
+echo "=== landing ==="
+hero=$(count_matches 'class=["'\''][^"'\'']*\brs-index-hero\b' "$LANDING")
+h1=$(count_matches '<h1\b' "$LANDING")
+check_count "rs-index-hero" "$hero" 1 1 "$LANDING"
+check_count "h1"            "$h1"  1 1 "$LANDING"
+check_zero  "inline <style>" '<style\b' "$LANDING"
+check_zero  "research-overrides link" 'research-overrides' "$LANDING"
+
+for report in "${REPORTS[@]}"; do
+  slug=$(basename "$(dirname "$report")")
+  if grep -qE "href=[\"']${slug}/" "$LANDING"; then
+    echo "  ok: landing link → ${slug}/"
+  else
+    echo "FAIL: $LANDING: no rs-post link to ${slug}/" >&2
+    fail=$((fail + 1))
+  fi
+done
 
 if [[ $fail -gt 0 ]]; then
   echo

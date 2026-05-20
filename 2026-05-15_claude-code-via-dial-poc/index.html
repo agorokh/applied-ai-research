@@ -170,7 +170,7 @@
         </div>
       </div>
     </div>
-    <p>The headline number, Qwen 480B at $0.101 per success, is the weighted-cost minimum inside the cluster that clears 100% pass. The per-model pass and cost numbers are tabulated in §07; the tier framing here is about <em>why</em> three of eight upstreams fall out.</p>
+    <p>The headline number, Qwen 480B at $0.101 per success, is the weighted-cost minimum inside the cluster that clears 100% pass. The per-model pass and cost numbers are tabulated in §07; the tier framing here is about <em>why</em> four of eight upstreams fall out.</p>
   </section>
 
   <section class="rs-section" id="s06">
@@ -180,7 +180,7 @@
 
     <div class="rs-callout">
       <h4>What gets retained today</h4>
-      <p>~30 fields per request: input/output token counts, tool inventory hash, cache-read/cache-write tokens, latency, Bedrock-priced cost, client name, target model family. Three more in-flight identifiers (session id, tool inventory hash, MCP servers seen) can be promoted to tags with no client-side change. Business-context tags (project, team, industry, use-case) remain a follow-up subject to data-governance policy.</p>
+      <p>~30 fields per request: input/output token counts, tool inventory hash, cache-read/cache-write tokens, latency, Bedrock-priced cost, client name, target model family. Two more in-flight identifiers (session id, MCP servers seen) can be promoted to tags with no client-side change. Business-context tags (project, team, industry, use-case) remain a follow-up subject to data-governance policy.</p>
     </div>
 
     <p>The reliability claim here is not "the adapter never drops a request" (the POC sample is too small for that). It is that a centralised version of the same adapter inside DIAL would expose, per request, what every other LLM call inside the perimeter already exposes, and add the coding-agent dimensions on top.</p>
