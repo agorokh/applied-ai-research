@@ -163,11 +163,7 @@ main {
 }
 .rs-section:first-of-type { border-top: none; padding-top: 64px; }
 
-/* .rs-section-label: doubled-class (0,2,0) beats body .rs-section p (0,1,2)
-   and the .rs-page (0,1,0) inheritance on landing-page labels that sit
-   outside .rs-section. Renders at 10px in every context. */
-.rs-section-label.rs-section-label,
-p.rs-section-label.rs-section-label {
+.rs-section-label.rs-section-label {
   font-family: var(--dx-font-mono);
   font-size: 10px;
   letter-spacing: 0.04em;
