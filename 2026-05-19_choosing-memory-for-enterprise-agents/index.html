@@ -28,7 +28,15 @@
 <span>2026 · 05 · 19</span>
 </div>
 </div>
-</header>
+</header><aside aria-label="Publication index" class="rs-sidebar">
+<p class="rs-sidebar__eyebrow">Publications</p>
+<ul class="rs-sidebar__list">
+<li class="rs-sidebar__item"><a class="rs-sidebar__link" href="../"><span class="rs-sidebar__title">All reports</span></a></li>
+<li class="rs-sidebar__item"><a class="rs-sidebar__link is-current" href="../2026-05-19_choosing-memory-for-enterprise-agents/"><span class="rs-sidebar__date">2026-05-19</span><span class="rs-sidebar__title">Choosing memory for enterprise agents</span></a></li>
+<li class="rs-sidebar__item"><a class="rs-sidebar__link" href="../2026-05-15_claude-code-via-dial-poc/"><span class="rs-sidebar__date">2026-05-15</span><span class="rs-sidebar__title">Claude Code via EPAM DIAL · POC</span></a></li>
+</ul>
+<div class="rs-sidebar__footer"><a href="https://github.com/agorokh/applied-ai-research">GitHub</a></div>
+</aside>
 <nav class="rs-toc">
 <a href="#hero"><span class="num">00</span>Cover</a>
 <a href="#s01"><span class="num">01</span>Summary</a>
@@ -60,7 +68,6 @@
       </p>
 </div>
 </div>
-
 <div class="rs-hero-meta">
 <div class="rs-meta-stat">
 <span class="v">36<span class="unit">pp gap</span></span>
@@ -79,13 +86,11 @@
 <span class="l">Stated adoption bar, applied uniformly</span>
 </div>
 </div>
-
 </section>
 <!-- ============================================================ -->
 <!-- 01 EXECUTIVE SUMMARY -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s01">
-
 <p class="rs-section-label"><span class="num">01</span> Executive summary</p>
 <h2>Three findings, one decision.</h2>
 <p class="rs-lede">
@@ -106,13 +111,11 @@
 <p><strong>For delivery teams</strong>: default to chunk-text retrieval for SDLC-shaped corpora, reserve graph-summary substrates for narrow entity-disambiguation, gate any bi-temporal context on the executor's capability tier, and reject adoption candidates against named criteria rather than taste. Sections 09 and 10 carry the platform and delivery implications.</p>
 <p><strong>Scope</strong>: not exhaustive vendor coverage. The agent-memory / RAG-substrate space in 2026 includes <a href="https://github.com/letta-ai/letta">Letta</a>, <a href="https://memgpt.ai/">MemGPT</a>, <a href="https://www.cognee.ai/">Cognee</a>, <a href="https://www.getzep.com/">Zep</a>, <a href="https://www.pinecone.io/blog/pinecone-assistant/">Pinecone Assistants</a>, <a href="https://langchain-ai.github.io/langmem/">LangMem</a>, <a href="https://mastra.ai/">Mastra</a>, and others. The evaluation covers four candidates on one delivery stack: <a href="https://github.com/HKUDS/LightRAG">LightRAG</a>, <a href="https://github.com/getzep/graphiti">Graphiti</a>, <a href="https://github.com/mem0ai/mem0">Mem0</a>, and <a href="#sA">Tencent DB Agent-Memory</a>. The retrieval canary measured LightRAG, Graphiti, and a filesystem baseline. Mem0 was screened as redundant with Graphiti (see §04). Tencent DB Agent-Memory did not clear the adoption bar (see §08).</p>
 <p>One data point in a broader landscape — your canary on your corpus is still the deciding test. The pattern transfers across vendors and classes; the specific magnitudes here do not transfer without re-measurement on your stack.</p>
-
 </section>
 <!-- ============================================================ -->
 <!-- 02 WHY MEMORY MATTERS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s02">
-
 <p class="rs-section-label"><span class="num">02</span> Why memory matters · Two enterprise classes</p>
 <h2>Two corpora, one retrieval problem.</h2>
 <p class="rs-lede">
@@ -242,13 +245,11 @@
       slice of that work: long-term semantic memory for SDLC
       coding-orchestration agents.
     </p>
-
 </section>
 <!-- ============================================================ -->
 <!-- 03 THE ADOPTION BAR -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s03">
-
 <p class="rs-section-label"><span class="num">03</span> The adoption bar · What "good" looks like in production</p>
 <h2>Five criteria, stated before any candidate was scored.</h2>
 <p class="rs-lede">
@@ -292,13 +293,11 @@
 <h4>The honest framing</h4>
 <p>The five criteria above are not universal. They are calibrated to one specific delivery context (Python-first stack, EPAM DIAL gateway, MCP-compatible agent surface). A team with a TypeScript-only stack would have a different "integration surface" criterion; a team with a different gateway would have a different "operational fit" criterion. The discipline is to state the bar; the contents of the bar are domain-specific.</p>
 </div>
-
 </section>
 <!-- ============================================================ -->
 <!-- 04 WHAT WE TESTED -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s04">
-
 <p class="rs-section-label"><span class="num">04</span> Test design · Substrates, tasks, judging</p>
 <h2>Three substrates, eight task families, two judges in opposite orderings.</h2>
 <p class="rs-lede">
@@ -447,13 +446,11 @@
     fabrication rate, or a confidence interval that excludes zero.
   </p>
 <p><strong>For delivery teams</strong>: when you run your own canary, do not skip the position-swap. The over-counting of ties is a feature; it forces the headline result to survive judge order, which is the only headline worth carrying into a deployment decision.</p>
-
 </section>
 <!-- ============================================================ -->
 <!-- 05 HEADLINE RESULT -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s05">
-
 <p class="rs-section-label"><span class="num">05</span> Headline result · The weighting is the finding</p>
 <h2>Naïve weighting said tie. Production weighting said 36 points.</h2>
 <p class="rs-lede">
@@ -507,13 +504,11 @@
 <h4>The pre-measurement prior was wrong</h4>
 <p>The pre-measurement prior favoured Graphiti as the canonical substrate, citing its bi-temporal differentiation and the published vendor numbers in §04. The frequency-weighted measurement above reversed the call. <em>An adoption bar that catches errors before they ship is worth more than an adoption decision that was right on the first try.</em> A delivery team that read the same vendor numbers and skipped the canary would have shipped the slower substrate by default.</p>
 </div>
-
 </section>
 <!-- ============================================================ -->
 <!-- 06 RELIABILITY -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s06">
-
 <p class="rs-section-label"><span class="num">06</span> Reliability · The shape of the failure mode matters</p>
 <h2>Zero versus four out of 128. Small in absolute, structural in shape.</h2>
 <p class="rs-lede">
@@ -559,13 +554,11 @@
 <h4>What this finding does not say</h4>
 <p>It does not say the entity-graph substrate is unsafe at scale. Four out of 128 cannot be generalised that strongly. It says: under autonomous-writeback paths where a single fabricated relation gets acted on, the substrate whose failure mode is "the wrong chunk" has a safer profile than the substrate whose failure mode is "an invented relation". For review-gated assist paths (with explicit approval before any write), the gap is much smaller.</p>
 </div>
-
 </section>
 <!-- ============================================================ -->
 <!-- 07 TIER INTERACTION -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s07">
-
 <p class="rs-section-label"><span class="num">07</span> Tier interaction · Context design must match executor capability</p>
 <h2>The same extra context helps a smaller executor and hurts a more-capable one.</h2>
 <p class="rs-lede">
@@ -671,13 +664,11 @@
 <p>It does not say more-capable executors are worse at memory. It does not say bi-temporal context is bad. It says: structural metadata interacts with executor capability in a way that vendor benchmarks do not surface, because vendor benchmarks rarely cross-multiply executor tier with substrate variant. Two checkpoints is not enough to rule out family bias; the conservative reading is "capability tier matters, family may also matter, the interaction is worth measuring per pair".</p>
 </div>
 <p><strong>For platform teams setting defaults</strong>: ship bi-temporal context as a configurable behavior gated on capability tier, not as a global default. Default ON for smaller / cheaper executors; default OFF for more-capable executors; expose the toggle to the delivery team so they can re-evaluate per workload.</p>
-
 </section>
 <!-- ============================================================ -->
 <!-- 08 ADOPTION DECISION -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s08">
-
 <p class="rs-section-label"><span class="num">08</span> Adoption decision · Tencent DB Agent-Memory against the bar</p>
 <h2>Four-of-five fails. Decision reproducible against the bar.</h2>
 <p class="rs-lede">
@@ -743,13 +734,11 @@
 <p>The four-of-five failure does not say the project is poorly designed. The four-layer pipeline idea is reasonable; the lack of an MCP surface is a deliberate choice given the framework it targets; the post-install patch is solving a real integration problem in its host framework. "Did not fit this adoption bar" is not the same as "is a bad project". The bar is calibrated to one specific delivery context; in another context the same project might clear the bar straightforwardly.</p>
 </div>
 <p><strong>For delivery teams</strong>: revisit a rejected candidate when the bar changes (your stack adopts a new language, your platform team adopts a new gateway, the project ships a major release that addresses one of the failing criteria). The rejection is not permanent; the bar is the durable artefact.</p>
-
 </section>
 <!-- ============================================================ -->
 <!-- 09 PLATFORM IMPLICATIONS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s09">
-
 <p class="rs-section-label"><span class="num">09</span> Platform implications · DIAL-based delivery</p>
 <h2>What the findings imply for how memory is provisioned and routed.</h2>
 <p class="rs-lede">
@@ -765,13 +754,11 @@
 <li><strong>Model calls should route through the EPAM DIAL gateway in production.</strong> This evaluation's judging and substrate stack used an interim provider path while DIAL provisioning completed; re-run retrieval and judging on DIAL before citing the numbers as deployment-transferable for DIAL-routed agents.</li>
 </ol>
 <p><strong>For platform teams</strong>: encode these four as defaults in the per-workspace memory-substrate configuration. The configuration surface should make the right choice the easy choice, and the wrong choice an explicit opt-out.</p>
-
 </section>
 <!-- ============================================================ -->
 <!-- 10 RECOMMENDATIONS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s10">
-
 <p class="rs-section-label"><span class="num">10</span> Recommendations · For EPAM delivery teams</p>
 <h2>What to do this quarter, what to do this year, what to leave alone.</h2>
 <p class="rs-lede">
@@ -796,13 +783,11 @@
 <li><strong>The vendor's published benchmark numbers, as a deployment input.</strong> They are useful for vendor comparison; they are not the deployment decision. The deployment decision is your canary on your corpus.</li>
 <li><strong>The single-substrate-as-universal-default reflex.</strong> Pair the substrate to the dominant query family, not to a vendor preference. Most production workloads benefit from two substrate paths (chunk-text default, entity-graph side path) rather than one.</li>
 </ul>
-
 </section>
 <!-- ============================================================ -->
 <!-- 11 SCOPE LIMITS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s11">
-
 <p class="rs-section-label"><span class="num">11</span> Scope limits · What this report does not claim</p>
 <h2>The contract between the report and the next reader who acts on it.</h2>
 <p class="rs-lede">
@@ -821,13 +806,11 @@
 <li><strong>Cost per decision is not in this report.</strong> Substrate ingest costs (per-document embedding, per-extraction LLM calls) and substrate read costs (per-query model calls) differ by roughly an order of magnitude between the two approaches. The end-to-end cost-per-decision calculation belongs in a separate study tied to a deployed workload.</li>
 <li><strong>Closed-loop counts are pilot-level.</strong> The stale-fact inversion per-cell numbers in Section 07 are from a closed-loop pilot (eight tasks per cell), not the formal 8-task closed-loop suite, which remains deferred. Citing those counts as measured benchmark results is out of scope until the formal suite ships.</li>
 </ol>
-
 </section>
 <!-- ============================================================ -->
 <!-- 12 CLOSING -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s12">
-
 <p class="rs-section-label"><span class="num">12</span> Closing · The take-away</p>
 <h2>The substrate decision is downstream of the measurement.</h2>
 <p class="rs-lede">
@@ -872,13 +855,11 @@
       deployment story attached.
     </p>
 </div>
-
 </section>
 <!-- ============================================================ -->
 <!-- A METHODS APPENDIX -->
 <!-- ============================================================ -->
 <section class="rs-section" id="sA">
-
 <p class="rs-section-label"><span class="num">A</span> Methods appendix · For staff who would re-run this</p>
 <h2>The apparatus, the routing, the model table.</h2>
 <p class="rs-lede">
@@ -971,7 +952,6 @@
     model family). Promotion to v1.0 follows a review pass that
     declares the report stable for external publication.
   </p>
-
 </section>
 </main>
 <footer class="rs-footer">
