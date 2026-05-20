@@ -26,6 +26,11 @@ LANDING="$ROOT/index.html"
 
 fail=0
 
+if [[ ${#REPORTS[@]} -eq 0 ]]; then
+  echo "FAIL: no report index.html files discovered under $ROOT" >&2
+  exit 1
+fi
+
 check_count() {
   local label="$1" actual="$2" min="$3" max="$4" file="$5"
   if [[ $actual -lt $min || $actual -gt $max ]]; then
@@ -77,7 +82,7 @@ if [[ -f "$LANDING" ]]; then
   posts=$(grep -c 'class="rs-post"' "$LANDING")
   h1=$(grep -c '<h1>' "$LANDING")
   check_count "rs-index-hero" "$hero" 1 1 "$LANDING"
-  check_count "rs-post articles" "$posts" 1 10 "$LANDING"
+  check_count "rs-post articles" "$posts" "${#REPORTS[@]}" 9999 "$LANDING"
   check_count "h1"            "$h1"  1 1 "$LANDING"
   check_zero  "inline <style>" '<style>' "$LANDING"
   check_zero  "research-overrides link" 'research-overrides' "$LANDING"
