@@ -11,8 +11,19 @@
 <style>
 /* dialx retrofit compat shim: width-constrain inner wrappers from legacy markup */
 main .rs-container { max-width: none; margin: 0; padding: 0; }
-/* Some legacy reports had figure / diagram frames not yet in dialx; preserve. */
-.diagram-frame { margin: 24px 0; }
+/* v4: single 70ch column for everything readable. Kills the narrow/wide yo-yo. */
+.rs-section > .rs-callout,
+.rs-section > .rs-container > .rs-callout,
+.rs-section > .rs-table,
+.rs-section > .rs-container > .rs-table,
+.rs-section .rs-table { max-width: 70ch; }
+.rs-callout p { max-width: none; }
+/* v4: tier cards as actual cards — gap, individual borders, no shared box. */
+.rs-tiers { border: none; gap: 20px; }
+.rs-tier { border: 1px solid var(--dx-border); border-right: 1px solid var(--dx-border); border-radius: 4px; background: color-mix(in srgb, var(--dx-surface) 50%, transparent); }
+.rs-tier:last-child { border-right: 1px solid var(--dx-border); }
+/* Legacy figure / SVG diagram styling preserved. */
+.diagram-frame { margin: 24px 0; max-width: 70ch; }
 .svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
 .svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
 .svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
@@ -66,12 +77,6 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 <!-- ============================================================ -->
 <section class="rs-section rs-hero" id="hero">
   <div class="rs-grid-bg"></div>
-  <div class="rs-series-nav" aria-label="Series navigation">
-    <span class="rs-series-nav__label">Series ·</span>
-    <span class="this"><span class="date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</span>
-    <a href="../2026-05-19_choosing-memory-for-enterprise-agents/"><span class="date">2026-05-19 ·</span>Choosing memory for enterprise agents</a>
-  </div>
-
   <div class="rs-hero-inner">
     <div>
       <div class="rs-section-label"><span class="num">00</span> Cover · Applied AI · The middle band</div>
@@ -115,25 +120,14 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 <!-- ============================================================ -->
 <section class="rs-section" id="s01">
 <div class="rs-container">
-  <div class="rs-section-label"><span class="num">01</span> Findings · The middle band, one instance</div>
-  <h2>Three findings.</h2>
+  <div class="rs-section-label"><span class="num">01</span> Executive summary</div>
+  <h2>Three findings, one strategic angle.</h2>
 
   <p class="rs-lede">
-    The work below is one instance of the Applied AI discipline named
-    in the cover. Frontier labs ship coding harnesses (Claude Code,
-    Codex CLI, Cursor) that point at the vendor's own endpoint by
-    default; consumer products lock the same harness to a single
-    upstream. Neither layer answers the enterprise question: can the
-    harness run on the gateway every other LLM call already goes
-    through, on whichever upstream the cost-quality curve actually
-    favours, with the per-request telemetry an enterprise needs to
-    operate it? I wrote this report to test that question on one
-    specific setup, and to surface the strategic angle - the wire is
-    a structured observation point - that a per-laptop adapter
-    hints at but a centralised version would deliver.
+    Frontier labs ship coding harnesses (Claude Code, Codex CLI, Cursor) that point at the vendor's own endpoint by default. Consumer products lock the same harness to a single upstream. Neither layer answers the enterprise question: can the harness run on the gateway every LLM call already goes through, on whichever upstream the cost-quality curve actually favours, with the telemetry an enterprise needs to operate it? The three findings below answer yes — and surface the strategic angle: the wire is already a structured observation point.
   </p>
 
-  <p><strong>What this report is not</strong>: a vendor benchmark, or a recommendation that EPAM adopt any specific upstream. I measured eight upstreams I had operational access to via DIAL on one harness; Cursor, Aider, Codex CLI, OpenHands, and the various Continue / Cline stacks sit outside this evaluation. The pattern transfers; the magnitudes do not transfer without re-measurement on another stack. The sibling report (<a href="../2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for enterprise agents</a>) covers the substrate question on top of the same DIAL routing.</p>
+  <p><strong>Scope</strong>: eight upstreams measured through DIAL on one harness; Cursor, Aider, Codex CLI, OpenHands, and the various Continue / Cline stacks sit outside. The pattern transfers; the magnitudes do not transfer without re-measurement on another stack.</p>
 
   <div class="rs-callout rs-callout--teal">
     <h4>Finding 1 — The bridge works on the EPAM-compliant inference path</h4>
@@ -417,9 +411,9 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
       <tr><th>Model</th><th>Vendor</th><th style="text-align:right">Pass</th><th style="text-align:right">Avg turns</th><th style="text-align:right">$/M in · out</th><th style="text-align:right">Bedrock spend</th><th style="text-align:right">$ / success</th><th>Tier</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>MiniMax M2.5</strong></td><td>MiniMax</td><td align="right">17/24</td><td align="right">5.5</td><td align="right" class="mono">$0.30 · $1.20</td><td align="right">$0.61</td><td align="right" style="color: var(--dx-teal); font-weight: 600;">$0.036</td><td><span class="rs-pill rs-pill--teal">B partial</span></td></tr>
-      <tr><td><strong>Kimi K2.5</strong></td><td>Moonshot AI</td><td align="right">15/24</td><td align="right">4.8</td><td align="right" class="mono">$0.60 · $3.00</td><td align="right">$0.86</td><td align="right" style="color: var(--dx-teal); font-weight: 600;">$0.058</td><td><span class="rs-pill rs-pill--teal">B partial</span></td></tr>
-      <tr style="background: rgba(0,244,171,0.04);"><td><strong>Qwen3-Coder 480B</strong></td><td>Alibaba</td><td align="right">24/24</td><td align="right">8.3</td><td align="right" class="mono">$0.45 · $1.80</td><td align="right">$2.43</td><td align="right" style="color: var(--dx-teal); font-weight: 700;">$0.101</td><td><span class="rs-pill rs-pill--teal">A cost leader</span></td></tr>
+      <tr><td><strong>MiniMax M2.5</strong></td><td>MiniMax</td><td align="right">17/24</td><td align="right">5.5</td><td align="right" class="mono">$0.30 · $1.20</td><td align="right">$0.61</td><td align="right" style="color: var(--dx-teal);">$0.036</td><td><span class="rs-pill rs-pill--teal">B partial</span></td></tr>
+      <tr><td><strong>Kimi K2.5</strong></td><td>Moonshot AI</td><td align="right">15/24</td><td align="right">4.8</td><td align="right" class="mono">$0.60 · $3.00</td><td align="right">$0.86</td><td align="right" style="color: var(--dx-teal);">$0.058</td><td><span class="rs-pill rs-pill--teal">B partial</span></td></tr>
+      <tr style="background: rgba(0,244,171,0.04);"><td><strong>Qwen3-Coder 480B</strong></td><td>Alibaba</td><td align="right">24/24</td><td align="right">8.3</td><td align="right" class="mono">$0.45 · $1.80</td><td align="right">$2.43</td><td align="right" style="color: var(--dx-teal);">$0.101</td><td><span class="rs-pill rs-pill--teal">A cost leader</span></td></tr>
       <tr><td>Claude Haiku 4.5</td><td>Anthropic</td><td align="right">24/24</td><td align="right">10.4</td><td align="right" class="mono">$1.00 · $5.00</td><td align="right">$3.88</td><td align="right">$0.162</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
       <tr><td>Claude Sonnet 4.6</td><td>Anthropic</td><td align="right">22/24</td><td align="right">9.5</td><td align="right" class="mono">$3.00 · $15.00</td><td align="right">$10.44</td><td align="right">$0.474</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
       <tr><td>Claude Opus 4.7</td><td>Anthropic</td><td align="right">24/24</td><td align="right">7.1</td><td align="right" class="mono">$5.00 · $25.00</td><td align="right">$16.44</td><td align="right">$0.685</td><td><span class="rs-pill rs-pill--teal">A</span></td></tr>
@@ -435,7 +429,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </p>
   </div>
 
-  <p style="margin-top: 16px; color: var(--dx-fg-3); font-size: 13.5px;">
+  <p>
     Per-task heatmap, three-failure-mode taxonomy, frontier scatter, and matrix-run methodology detail are kept alongside the raw transcripts as aggregated summaries.
   </p>
 
@@ -1046,7 +1040,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
   <div class="rs-2col">
     <div>
       <h4>Tier 1 · Wire-level · <em>what runs?</em></h4>
-      <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available today from adapter GFLog directly. No enrichment.</p>
+      <p>Available today from adapter GFLog directly. No enrichment.</p>
       <table class="rs-table">
         <tbody>
           <tr><td>Request volume by model family</td><td class="mono" style="text-align: right;">4,200 req/day</td></tr>
@@ -1059,7 +1053,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </div>
     <div>
       <h4>Tier 2 · Outcome · <em>does it work?</em></h4>
-      <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Requires test-harness or accept-signal join.</p>
+      <p>Requires test-harness or accept-signal join.</p>
       <table class="rs-table">
         <tbody>
           <tr><td>Task completion rate by model</td><td class="mono" style="text-align: right;">100% / 87% / 0%</td></tr>
@@ -1072,7 +1066,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </div>
     <div>
       <h4>Tier 3 · Economic · <em>what does it cost / save?</em></h4>
-      <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available today via Bedrock-verified <code>cost_usd_estimate</code>.</p>
+      <p>Available today via Bedrock-verified <code>cost_usd_estimate</code>.</p>
       <table class="rs-table">
         <tbody>
           <tr><td>Cost per completed task</td><td class="mono" style="text-align: right;">$0.101 / $0.19</td></tr>
@@ -1085,7 +1079,7 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
     </div>
     <div>
       <h4>Tier 4 · Strategic · <em>what does it enable?</em></h4>
-      <p style="color: var(--dx-fg-3); font-size: 13.5px; margin-bottom: 16px;">Available only after business-metadata enrichment.</p>
+      <p>Available only after business-metadata enrichment.</p>
       <table class="rs-table">
         <tbody>
           <tr><td>AI productivity index by team</td><td class="mono" style="text-align: right;">platform 4.1×</td></tr>
@@ -1515,10 +1509,11 @@ ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
 </section>
 
 
-<footer>
-  <div class="rs-container">
-    <div>Claude Code via EPAM DIAL · Applied AI Research · EPAM · Iteration 2 · 2026-05-15</div>
-    <div>Arseny Gorokh · published draft</div>
+<footer class="rs-footer">
+  <div class="rs-footer__inner">
+    <span>Applied AI Research · EPAM · 2026</span>
+    <span><a href="../2026-05-19_choosing-memory-for-enterprise-agents/" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">Choosing memory for enterprise agents →</a></span>
+    <span><a href="../" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">Index</a></span>
   </div>
 </footer>
 

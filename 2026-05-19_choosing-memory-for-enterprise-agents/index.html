@@ -11,8 +11,19 @@
 <style>
 /* dialx retrofit compat shim: width-constrain inner wrappers from legacy markup */
 main .rs-container { max-width: none; margin: 0; padding: 0; }
-/* Some legacy reports had figure / diagram frames not yet in dialx; preserve. */
-.diagram-frame { margin: 24px 0; }
+/* v4: single 70ch column for everything readable. Kills the narrow/wide yo-yo. */
+.rs-section > .rs-callout,
+.rs-section > .rs-container > .rs-callout,
+.rs-section > .rs-table,
+.rs-section > .rs-container > .rs-table,
+.rs-section .rs-table { max-width: 70ch; }
+.rs-callout p { max-width: none; }
+/* v4: tier cards as actual cards — gap, individual borders, no shared box. */
+.rs-tiers { border: none; gap: 20px; }
+.rs-tier { border: 1px solid var(--dx-border); border-right: 1px solid var(--dx-border); border-radius: 4px; background: color-mix(in srgb, var(--dx-surface) 50%, transparent); }
+.rs-tier:last-child { border-right: 1px solid var(--dx-border); }
+/* Legacy figure / SVG diagram styling preserved. */
+.diagram-frame { margin: 24px 0; max-width: 70ch; }
 .svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
 .svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
 .svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
@@ -66,11 +77,6 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 <!-- ============================================================ -->
 <section class="rs-section rs-hero" id="hero">
   <div class="rs-grid-bg"></div>
-  <div class="rs-series-nav" aria-label="Series navigation">
-    <span class="rs-series-nav__label">Series ·</span>
-    <a href="../2026-05-15_claude-code-via-dial-poc/"><span class="date">2026-05-15 ·</span>Claude Code via EPAM DIAL · POC</a>
-    <span class="this"><span class="date">2026-05-19 ·</span>Choosing memory for enterprise agents</span>
-  </div>
 
   <div class="rs-hero-inner">
     <div>
@@ -123,34 +129,10 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 <!-- ============================================================ -->
 <section class="rs-section" id="s01">
 <div class="rs-container">
-  <div class="rs-section-label"><span class="num">01</span> Executive summary · The middle band, one instance</div>
-  <h2>What this report decides, in one page.</h2>
+  <div class="rs-section-label"><span class="num">01</span> Executive summary</div>
+  <h2>Three findings, one decision.</h2>
   <p class="rs-lede">
-    Structured as a deployment-decision memo, not a benchmark recap.
-    The bullets below are the headline; the body sections that follow
-    are the supporting argument; the methods appendix carries the
-    apparatus.
-  </p>
-
-  <p>
-    The work below is one instance of the Applied AI discipline named
-    in the cover. Frontier labs publish capability jumps -Google
-    Research's <a href="https://research.google/blog/turboquant-redefining-ai-efficiency-with-extreme-compression/">TurboQuant</a>
-    (ICLR 2026, 3-bit KV-cache quantization, ~8× H100 throughput on
-    benchmark) is a recent example with no managed-inference SLA from
-    any major vendor as of this writing; new agent patterns and new
-    graph-memory architectures land at similar cadence. Consumer
-    products convert a subset of those ideas
-    into compelling features: agents that browse, chat surfaces that
-    "remember" you across sessions, code assistants that scaffold
-    repositories from a sentence. Neither layer solves the enterprise
-    problem. Research rarely ships with tenancy, observability,
-    schema stability, or operating guarantees. Consumer features
-    optimise for personalisation at a single-user boundary, not for
-    reliability under organisational load. Applied AI is the work
-    that closes that gap on one capability at a time. The report
-    below closes it on one: <em>long-term memory for coding-
-    orchestration agents</em>.
+    Frontier labs publish capability jumps. Consumer products convert a subset into compelling features. Neither layer solves the enterprise problem: research rarely ships with tenancy, observability, or operating guarantees; consumer features optimise for one user, not for organisational load. Applied AI is the work between them. This entry closes the gap on one capability — long-term memory for coding-orchestration agents.
   </p>
 
   <div class="rs-callout rs-callout--teal">
@@ -1154,10 +1136,11 @@ main .rs-container { max-width: none; margin: 0; padding: 0; }
 
 </main>
 
-<footer>
-  <div class="rs-container">
-    <div>Choosing memory for enterprise agents · Applied AI Research · EPAM · Iteration 3 · working draft · 2026-05-19</div>
-    <div>Arseny Gorokh · published draft</div>
+<footer class="rs-footer">
+  <div class="rs-footer__inner">
+    <span>Applied AI Research · EPAM · 2026</span>
+    <span><a href="../2026-05-15_claude-code-via-dial-poc/" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">← Claude Code via EPAM DIAL · POC</a></span>
+    <span><a href="../" style="color: inherit; border-bottom: 1px dotted var(--dx-fg-4);">Index</a></span>
   </div>
 </footer>
 
