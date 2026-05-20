@@ -18,10 +18,10 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REPORTS=(
-  "$ROOT/2026-05-15_claude-code-via-dial-poc/index.html"
-  "$ROOT/2026-05-19_choosing-memory-for-enterprise-agents/index.html"
-)
+REPORTS=()
+while IFS= read -r report; do
+  REPORTS+=("$report")
+done < <(find "$ROOT" -maxdepth 2 -type f -path '*/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]_*/index.html' | sort)
 LANDING="$ROOT/index.html"
 
 fail=0

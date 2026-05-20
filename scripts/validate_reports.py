@@ -7,10 +7,18 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORTS = [
-    ROOT / "2026-05-15_claude-code-via-dial-poc/index.html",
-    ROOT / "2026-05-19_choosing-memory-for-enterprise-agents/index.html",
-]
+REPORT_DIR_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}_")
+
+
+def discover_reports() -> list[Path]:
+    reports: list[Path] = []
+    for entry in sorted(ROOT.iterdir()):
+        if not entry.is_dir() or not REPORT_DIR_PATTERN.match(entry.name):
+            continue
+        index = entry / "index.html"
+        if index.is_file():
+            reports.append(index)
+    return reports
 
 MIN_TIER_CARDS: dict[str, int] = {
     "2026-05-15_claude-code-via-dial-poc/index.html": 3,
@@ -19,7 +27,7 @@ MIN_TIER_CARDS: dict[str, int] = {
 
 FORBIDDEN = [
     (r"rs-hero-bar", "v4 removes rs-hero-bar from report heroes"),
-    (r'<nav[^>]*class="[^"]*rs-series-nav', "v4 removes rs-series-nav from heroes"),
+    (r"\brs-series-nav\b", "v4 removes rs-series-nav from heroes"),
     (r"What I got wrong before this measurement", "autobiographical callout heading"),
     (r"I wrote the substrate decision below", "first-person appendix framing"),
     (r"What I required", "first-person adoption-bar table header"),
@@ -72,12 +80,14 @@ def check_structure(text: str, path: Path) -> list[str]:
 
     open_pos = {t: lower.find(f"<{t}") for t in ("html", "body", "main")}
     close_pos = {t: lower.rfind(f"</{t}>") for t in ("html", "body", "main")}
-    if all(v != -1 for v in open_pos.values()):
-        if not (open_pos["html"] < open_pos["body"] < open_pos["main"]):
-            errors.append(f"{path}: invalid opening order (expected html < body < main)")
-    if all(v != -1 for v in close_pos.values()):
-        if not (close_pos["main"] < close_pos["body"] < close_pos["html"]):
-            errors.append(f"{path}: invalid closing order (expected </main> < </body> < </html>)")
+    if all(v != -1 for v in open_pos.values()) and not (
+        open_pos["html"] < open_pos["body"] < open_pos["main"]
+    ):
+        errors.append(f"{path}: invalid opening order (expected html < body < main)")
+    if all(v != -1 for v in close_pos.values()) and not (
+        close_pos["main"] < close_pos["body"] < close_pos["html"]
+    ):
+        errors.append(f"{path}: invalid closing order (expected </main> < </body> < </html>)")
 
     return errors
 
@@ -99,7 +109,11 @@ def check_tier_headings(text: str, path: Path) -> list[str]:
 
 def main() -> int:
     failures: list[str] = []
-    for report in REPORTS:
+    reports = discover_reports()
+    if not reports:
+        print("validate_reports: FAIL (no report index.html files found)", file=sys.stderr)
+        return 1
+    for report in reports:
         if not report.is_file():
             failures.append(f"missing report: {report}")
             continue
@@ -114,7 +128,7 @@ def main() -> int:
         for item in failures:
             print(f"  - {item}", file=sys.stderr)
         return 1
-    print("validate_reports: OK (2 reports)")
+    print(f"validate_reports: OK ({len(reports)} reports)")
     return 0
 
 

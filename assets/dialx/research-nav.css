@@ -39,6 +39,11 @@
 .rs-nav-reports:focus-within > .rs-nav-reports__trigger {
   color: var(--dx-fg-1);
 }
+.rs-nav-reports > .rs-nav-reports__trigger:focus-visible {
+  color: var(--dx-fg-1);
+  outline: 2px solid var(--dx-violet);
+  outline-offset: 3px;
+}
 .rs-nav-reports > .rs-nav-reports__trigger::after {
   content: "▾";
   font-size: 10px;
@@ -50,7 +55,8 @@
   top: calc(100% + 18px);
   left: 50%;
   transform: translateX(-50%);
-  min-width: 340px;
+  min-width: min(340px, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
   background: var(--dx-surface-2);
   border: 1px solid var(--dx-border-strong);
   border-radius: 6px;
@@ -80,6 +86,11 @@
 }
 .rs-nav-reports__link:hover {
   background: color-mix(in srgb, var(--dx-fg-1) 8%, transparent);
+}
+.rs-nav-reports__link:focus-visible {
+  background: color-mix(in srgb, var(--dx-fg-1) 8%, transparent);
+  outline: 2px solid var(--dx-violet);
+  outline-offset: 2px;
 }
 .rs-nav-reports__link.is-current {
   background: color-mix(in srgb, var(--dx-violet) 14%, transparent);
