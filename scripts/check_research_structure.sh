@@ -44,7 +44,7 @@ check_count() {
 count_matches() {
   local pattern="$1" file="$2"
   local count
-  count=$(grep -ciE "$pattern" "$file" 2>/dev/null) || count=0
+  count=$(grep -oiE "$pattern" "$file" 2>/dev/null | wc -l | tr -d '[:space:]')
   echo "${count:-0}"
 }
 
