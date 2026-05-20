@@ -8,58 +8,7 @@
 <link href="../assets/dialx/type.css" rel="stylesheet"/>
 <link href="../assets/dialx/research.css" rel="stylesheet"/>
 <link href="../assets/dialx/diagrams.css" rel="stylesheet"/>
-<style>
-/* dialx retrofit compat shim: width-constrain inner wrappers from legacy markup */
-main .rs-container { max-width: none; margin: 0; padding: 0; }
-
-/* v6 — sticky topbar offset. Hero owns its own breathing room via its own
-   padding-top; main has zero padding so section-padding does the work. */
-:root { --rs-topbar-h: 72px; }
-html { scroll-padding-top: var(--rs-topbar-h); }
-.rs-section { scroll-margin-top: var(--rs-topbar-h); }
-.rs-hero { padding-top: 120px; }
-
-/* v6 — Single reading column for prose + callouts. Wider for data/figures. */
-.rs-section > .rs-callout,
-.rs-section > .rs-container > .rs-callout { max-width: 70ch; }
-/* tier-grids: wider — 3 cards at 70ch read as slivers (Council D) */
-.rs-section > .rs-tiers,
-.rs-section > .rs-container > .rs-tiers { max-width: 96ch; }
-/* tables and diagrams: full reading width with a humane cap (Council E F1/F2) */
-.rs-section > .rs-table,
-.rs-section > .rs-container > .rs-table { max-width: min(100%, 1080px); display: block; overflow-x: auto; }
-.rs-section > .diagram-frame,
-.rs-section > .rs-container > .diagram-frame { max-width: min(100%, 1080px); }
-/* .rs-2col was escaping any constraint — Council E F3 (your "narrow text
-   then it goes all white" complaint, POC KPI quadrant). Match prose column. */
-.rs-section > .rs-2col,
-.rs-section > .rs-container > .rs-2col { max-width: 70ch; }
-
-/* v6 — Tier cards: collapse double border, make name a block, harmonise. */
-.rs-tiers { border: none; gap: 20px; }
-.rs-tier { border: 1px solid var(--dx-border); border-radius: 4px; background: color-mix(in srgb, var(--dx-surface) 50%, transparent); padding: 28px 26px; }
-.rs-tier::before { display: none; }  /* kill the legacy 3px stripe; the border + numeral colour carry the accent */
-.rs-tier__num { display: block; margin-bottom: 12px; }
-.rs-tier__name { display: block; margin-bottom: 14px; }
-.rs-tier h3 { margin: 0 0 14px; font-size: 22px; line-height: 1.25; }  /* canonical 22, not 20 */
-.rs-tier p { font-size: 14px; line-height: 1.55; max-width: none; }
-.rs-tier__specs { margin-top: 20px; padding-top: 18px; }
-
-/* v6 — Vertical rhythm: section padding is the only inter-section spacer. */
-.rs-section > .rs-container > p:first-child,
-.rs-section > p:first-child { margin-top: 0; }
-.rs-section h2 + p,
-.rs-section h2 + .rs-container > p:first-child { margin-top: 12px; }
-/* all callouts get the same top gap regardless of inline overrides (which v6 strips) */
-.rs-callout { margin: 32px 0; }
-
-/* Legacy figure / SVG diagram + cleaned footer link styles preserved. */
-.diagram-frame { margin: 24px 0; }
-.rs-footer__inner a { color: inherit; border-bottom: 1px dotted var(--dx-fg-4); }
-.svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
-.svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
-.svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
-</style>
+<link href="../assets/dialx/research-overrides.css" rel="stylesheet"/>
 </head>
 <body class="rs-page">
 <div class="rs-progress"><div class="rs-progress__bar" id="rs-progress" style="width: 0%;"></div></div>
@@ -115,20 +64,20 @@ html { scroll-padding-top: var(--rs-topbar-h); }
       </p>
 </div>
 </div>
-<div class="rs-container">
+
 <div class="rs-hero-meta">
 <div class="rs-meta-stat"><span class="v">8<span class="unit">models</span></span><span class="l">Anthropic + Qwen + Kimi + MiniMax + DeepSeek</span></div>
 <div class="rs-meta-stat"><span class="v">$0.101<span class="unit">/ succ</span></span><span class="l">Qwen 480B · cheapest 100%-pass</span></div>
 <div class="rs-meta-stat"><span class="v">~30<span class="unit">fields</span></span><span class="l">retained per request in InfluxDB</span></div>
 <div class="rs-meta-stat"><span class="v">POC<span class="unit">stage</span></span><span class="l">centralizing into DIAL is Part III ask</span></div>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 01 · THREE FINDINGS AT A GLANCE -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s01">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">01</span> Executive summary</p>
 <h2>Three findings, one strategic angle.</h2>
 <p class="rs-lede">
@@ -147,13 +96,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <h4>Finding 3 — Per-request telemetry, wired today plus a clean follow-up</h4>
 <p>Each request writes a structured record with tokens, tool inventory, cache behaviour, latency, and Bedrock-priced cost. Two business dimensions (client, model family) are wired today. Three more identifiers already in the wire can become tags with no client change. Business-context tags — project, team, industry, use-case — remain a follow-up, not a current capability.</p>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 01b · THE ARCHITECTURE IN ONE PICTURE -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s01b">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">01b</span> The architecture in one picture</p>
 <h2>One harness, three model paths, one gateway boundary.</h2>
 <p class="rs-lede">
@@ -251,13 +200,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
     enforced once and once only; the harness in front and the
     upstreams behind both inherit from it for free.
   </p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 02 · PART I · BRIDGE PROVEN -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s02">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">02</span> Part I · The bridge and the EPAM-compliant path</p>
 <h2>One translation adapter; eight upstreams; the same EPAM gateway every other LLM call already goes through.</h2>
 <p class="rs-lede">
@@ -324,13 +273,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <p>
     Two technical realities to flag here for Part III. First, the adapter strips <code>cache_control</code> on every non-Anthropic upstream (else DIAL returns <code>502 No route</code>), a known gateway gap. Second, on every <code>response_out</code> the adapter emits a structured GFLog record with token counts, tool inventory hash, MCP servers seen, cache strategy, elapsed milliseconds, and a Bedrock-verified <code>cost_usd_estimate</code> field. Today that record lands in Influx <code>adapter_metrics</code> as a tag-and-field rollup, and Grafana shows it as KPIs. Tomorrow, with one extra header, the same record carries project, team, and industry. That is what Part III addresses.
   </p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 03 · PART II · 192-RUN MATRIX VERDICT -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s03">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">03</span> Part II · 192-trial evaluation across eight upstreams</p>
 <h2>Three viability tiers, Bedrock-verified economics.</h2>
 <p class="rs-lede">
@@ -418,13 +367,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
     the gateway-routed economics. If counter-examples exist, the
     report is happy to be the second.
   </p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 04 · PART III · THE DATA-PLANE REFRAME -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s04">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">04</span> Part III · The adapter as a telemetry plane</p>
 <h2>What the adapter records on every request.</h2>
 <p class="rs-lede">
@@ -579,13 +528,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <text class="svg-mono" fill="#8A8A8A" text-anchor="middle" x="600" y="488">Mint edges = data carries business metadata. Grey edges = raw wire telemetry.</text>
 </svg>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 05 · WHAT'S CAPTURED TODAY -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s05">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">05</span> Part III · Telemetry inventory · three layers</p>
 <h2>What’s retained today, what’s in the wire but not yet tagged, and what would require client cooperation.</h2>
 <p class="rs-lede">
@@ -702,13 +651,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <p>
     The wire-level mechanism that would carry layer C is the same one DIAL already uses for forwarded headers (the adapter already passes through <code>Traceparent</code>, <code>X-Conversation-Id</code>, <code>X-DIAL-CHAT-ID</code>). <strong>Whether EPAM’s production environment exposes these identifiers to a Claude Code session today is a question for the platform team and is not answered by this POC.</strong> Sections 06-08 below should be read with that explicit caveat: their downstream analyses are <em>contingent on layer C being wired</em>, in whatever form EPAM’s data-governance policy permits.
   </p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 06 · ENRICHMENT HIERARCHY -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s06">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">06</span> Part III · Enrichment hierarchy · illustrative</p>
 <h2>What layer-A telemetry looks like operationally vs after the (hypothetical) layer-C join.</h2>
 <p class="rs-lede">
@@ -817,13 +766,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <p>
     The cells in Layer 3 use illustrative numbers, not measurements from the current data. Their structural form is what matters: each cell expresses a falsifiable claim about <code>(industry × team × use-case × model)</code>, and each Layer-4 routing rule is annotated with the evidence base (sample size, observed success delta, cost delta) that produced it.
   </p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 07 · BEFORE / AFTER FOR ONE SESSION -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s07">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">07</span> Part III · Before / after · one session, two views · illustrative</p>
 <h2>The same per-request bytes, two interpretive surfaces.</h2>
 <p class="rs-lede">
@@ -889,13 +838,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <text class="svg-mono" fill="#8A8A8A" x="760" y="450">Same wire bytes. Different question answered.</text>
 </svg>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 08 · THREE USE CASES -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s08">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">08</span> Part III · Three illustrative use cases</p>
 <h2>What the layer-C join enables, sketched, not measured.</h2>
 <p class="rs-lede">
@@ -919,13 +868,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
       The three scenarios share a single enabling step: business-identity headers on each Claude Code request (Layer C in Section 05), reaching the existing Influx measurements as tags. The downstream queries (per-industry path-level acceptance, per-team cost curves, per-task-class routing rule) are Flux against measurements the adapter already populates. <strong>None of the queries are runnable on POC data today</strong>; their structural form is what Sections 06-08 illustrate.
     </p>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 09 · KPI FRAMEWORK -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s09">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">09</span> Part IV · The 4-tier KPI framework</p>
 <h2>Organise the KPIs by what they answer. <em>Four layers of question.</em></h2>
 <p class="rs-lede">
@@ -988,13 +937,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <p>
     The numbers in each cell above are illustrative for the type of insight, not measurements from today’s data. The point is the <em>frame</em>: Tiers 1-3 are operational truth. Tier 4 is the strategic surface that unlocks when wire telemetry meets business metadata.
   </p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 10 · DECISION-SUPPORT QUESTIONS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s10">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">10</span> Part IV · Decision-support questions unlocked</p>
 <h2>Five questions EPAM delivery and executive stakeholders can ask once the joins land.</h2>
 <p class="rs-lede">
@@ -1032,13 +981,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 </tr>
 </tbody>
 </table>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 11 · APPLICATIONS ENABLED BY THE ENRICHED PLANE -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s11">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">11</span> Part IV · Applications enabled by the enriched plane</p>
 <h2>What becomes possible once the joins are wired.</h2>
 <p class="rs-lede">
@@ -1062,13 +1011,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
       All three depend on the same enabling work in Section 12: business-identity header forwarding and three tag promotions in the exporter. None require new collection, retraining, or SDK changes. Each yields a reporting or routing capability whose evidence base is the transcripts already on disk.
     </p>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 12 · PRODUCTIONISATION PROPOSAL -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s12">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">12</span> Part IV · Productionisation proposal</p>
 <h2>From a per-laptop POC adapter to a centralised feature inside DIAL.</h2>
 <p class="rs-lede">
@@ -1224,13 +1173,13 @@ ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
     on EPAM DIAL. The <a href="https://github.com/agorokh/sdlc-dial-adapter/blob/main/docs/findings/2026-05-16-bedrock-context-and-tokens-hardening.md">2026-05-16 hardening finding</a>
     walks each class with the per-layer test.
   </p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 13 · RISK + CLOSING -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s13">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">13</span> Scope limits · What this report does not claim</p>
 <h2>The contract between the report and the next reader who acts on it.</h2>
 <p class="rs-lede">
@@ -1247,13 +1196,13 @@ ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
 <li><strong>Iteration-2 substrate update is single-config.</strong> The Kimi K2.5 + Qwen 480B + MiniMax decoupling described in §12 was verified against one client config (Claude Code 2.1.142) over one representative session. Whether the namer / summariser cost lever holds at scale, and whether classifier-path hardcoding changes in subsequent Claude Code releases, are open questions.</li>
 <li><strong>The sanitised public adapter is a subset, not the whole.</strong> The repo at <code>github.com/agorokh/sdlc-dial-adapter</code> carries the translation core, the public log schema, the Grafana dashboard, and the 52-test suite. It does not carry the price-table calibration, the Influx tenant presets, or the launcher tooling that ties everything to one machine. The reader who clones it gets a working adapter; they do not get the local sandbox.</li>
 </ol>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 14 · CLOSING -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s14">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">14</span> Closing · The take-away</p>
 <h2>One gateway, one harness, two cost levers, one observation point.</h2>
 <p class="rs-lede">
@@ -1281,13 +1230,13 @@ ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
       long-term memory for the agents the same harness runs.
     </p>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- A · METHODS APPENDIX -->
 <!-- ============================================================ -->
 <section class="rs-section" id="sA">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">A</span> Methods appendix · For staff who would re-run this</p>
 <h2>The apparatus, the routing, the artefacts.</h2>
 <p class="rs-lede">
@@ -1364,7 +1313,7 @@ ANTHROPIC_SMALL_FAST_MODEL="moonshotai.kimi-k2.5"</pre>
 <li>EPAM DIAL contract pricing - sensitive, out of scope.</li>
 <li>The price-table calibration, the Influx tenant presets, and the launcher tooling that tie the local sandbox to one machine.</li>
 </ul>
-</div>
+
 </section>
 <footer class="rs-footer">
 <div class="rs-footer__inner">

@@ -8,58 +8,7 @@
 <link href="../assets/dialx/type.css" rel="stylesheet"/>
 <link href="../assets/dialx/research.css" rel="stylesheet"/>
 <link href="../assets/dialx/diagrams.css" rel="stylesheet"/>
-<style>
-/* dialx retrofit compat shim: width-constrain inner wrappers from legacy markup */
-main .rs-container { max-width: none; margin: 0; padding: 0; }
-
-/* v6 — sticky topbar offset. Hero owns its own breathing room via its own
-   padding-top; main has zero padding so section-padding does the work. */
-:root { --rs-topbar-h: 72px; }
-html { scroll-padding-top: var(--rs-topbar-h); }
-.rs-section { scroll-margin-top: var(--rs-topbar-h); }
-.rs-hero { padding-top: 120px; }
-
-/* v6 — Single reading column for prose + callouts. Wider for data/figures. */
-.rs-section > .rs-callout,
-.rs-section > .rs-container > .rs-callout { max-width: 70ch; }
-/* tier-grids: wider — 3 cards at 70ch read as slivers (Council D) */
-.rs-section > .rs-tiers,
-.rs-section > .rs-container > .rs-tiers { max-width: 96ch; }
-/* tables and diagrams: full reading width with a humane cap (Council E F1/F2) */
-.rs-section > .rs-table,
-.rs-section > .rs-container > .rs-table { max-width: min(100%, 1080px); display: block; overflow-x: auto; }
-.rs-section > .diagram-frame,
-.rs-section > .rs-container > .diagram-frame { max-width: min(100%, 1080px); }
-/* .rs-2col was escaping any constraint — Council E F3 (your "narrow text
-   then it goes all white" complaint, POC KPI quadrant). Match prose column. */
-.rs-section > .rs-2col,
-.rs-section > .rs-container > .rs-2col { max-width: 70ch; }
-
-/* v6 — Tier cards: collapse double border, make name a block, harmonise. */
-.rs-tiers { border: none; gap: 20px; }
-.rs-tier { border: 1px solid var(--dx-border); border-radius: 4px; background: color-mix(in srgb, var(--dx-surface) 50%, transparent); padding: 28px 26px; }
-.rs-tier::before { display: none; }  /* kill the legacy 3px stripe; the border + numeral colour carry the accent */
-.rs-tier__num { display: block; margin-bottom: 12px; }
-.rs-tier__name { display: block; margin-bottom: 14px; }
-.rs-tier h3 { margin: 0 0 14px; font-size: 22px; line-height: 1.25; }  /* canonical 22, not 20 */
-.rs-tier p { font-size: 14px; line-height: 1.55; max-width: none; }
-.rs-tier__specs { margin-top: 20px; padding-top: 18px; }
-
-/* v6 — Vertical rhythm: section padding is the only inter-section spacer. */
-.rs-section > .rs-container > p:first-child,
-.rs-section > p:first-child { margin-top: 0; }
-.rs-section h2 + p,
-.rs-section h2 + .rs-container > p:first-child { margin-top: 12px; }
-/* all callouts get the same top gap regardless of inline overrides (which v6 strips) */
-.rs-callout { margin: 32px 0; }
-
-/* Legacy figure / SVG diagram + cleaned footer link styles preserved. */
-.diagram-frame { margin: 24px 0; }
-.rs-footer__inner a { color: inherit; border-bottom: 1px dotted var(--dx-fg-4); }
-.svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
-.svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
-.svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
-</style>
+<link href="../assets/dialx/research-overrides.css" rel="stylesheet"/>
 </head>
 <body class="rs-page">
 <div class="rs-progress"><div class="rs-progress__bar" id="rs-progress"></div></div>
@@ -116,7 +65,7 @@ html { scroll-padding-top: var(--rs-topbar-h); }
       </p>
 </div>
 </div>
-<div class="rs-container">
+
 <div class="rs-hero-meta">
 <div class="rs-meta-stat">
 <span class="v">36<span class="unit">pp gap</span></span>
@@ -135,13 +84,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <span class="l">Stated adoption bar, applied uniformly</span>
 </div>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 01 EXECUTIVE SUMMARY -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s01">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">01</span> Executive summary</p>
 <h2>Three findings, one decision.</h2>
 <p class="rs-lede">
@@ -162,13 +111,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <p><strong>For delivery teams</strong>: default to chunk-text retrieval for SDLC-shaped corpora, reserve graph-summary substrates for narrow entity-disambiguation, gate any bi-temporal context on the executor's capability tier, and reject adoption candidates against named criteria rather than taste. Sections 09 and 10 carry the platform and delivery implications.</p>
 <p><strong>Scope</strong>: not exhaustive vendor coverage. The agent-memory / RAG-substrate space in 2026 includes <a href="https://github.com/letta-ai/letta">Letta</a>, <a href="https://memgpt.ai/">MemGPT</a>, <a href="https://www.cognee.ai/">Cognee</a>, <a href="https://www.getzep.com/">Zep</a>, <a href="https://www.pinecone.io/blog/pinecone-assistant/">Pinecone Assistants</a>, <a href="https://langchain-ai.github.io/langmem/">LangMem</a>, <a href="https://mastra.ai/">Mastra</a>, and others. The evaluation covers four candidates on one delivery stack: <a href="https://github.com/HKUDS/LightRAG">LightRAG</a>, <a href="https://github.com/getzep/graphiti">Graphiti</a>, <a href="https://github.com/mem0ai/mem0">Mem0</a>, and <a href="#sA">Tencent DB Agent-Memory</a>. The retrieval canary measured LightRAG, Graphiti, and a filesystem baseline. Mem0 was screened as redundant with Graphiti (see §04). Tencent DB Agent-Memory did not clear the adoption bar (see §08).</p>
 <p>One data point in a broader landscape — your canary on your corpus is still the deciding test. The pattern transfers across vendors and classes; the specific magnitudes here do not transfer without re-measurement on your stack.</p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 02 WHY MEMORY MATTERS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s02">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">02</span> Why memory matters · Two enterprise classes</p>
 <h2>Two corpora, one retrieval problem.</h2>
 <p class="rs-lede">
@@ -298,13 +247,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
       slice of that work: long-term semantic memory for SDLC
       coding-orchestration agents.
     </p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 03 THE ADOPTION BAR -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s03">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">03</span> The adoption bar · What "good" looks like in production</p>
 <h2>Five criteria, stated before any candidate was scored.</h2>
 <p class="rs-lede">
@@ -348,13 +297,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <h4>The honest framing</h4>
 <p>The five criteria above are not universal. They are calibrated to one specific delivery context (Python-first stack, EPAM DIAL gateway, MCP-compatible agent surface). A team with a TypeScript-only stack would have a different "integration surface" criterion; a team with a different gateway would have a different "operational fit" criterion. The discipline is to state the bar; the contents of the bar are domain-specific.</p>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 04 WHAT WE TESTED -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s04">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">04</span> Test design · Substrates, tasks, judging</p>
 <h2>Three substrates, eight task families, two judges in opposite orderings.</h2>
 <p class="rs-lede">
@@ -503,13 +452,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
     fabrication rate, or a confidence interval that excludes zero.
   </p>
 <p><strong>For delivery teams</strong>: when you run your own canary, do not skip the position-swap. The over-counting of ties is a feature; it forces the headline result to survive judge order, which is the only headline worth carrying into a deployment decision.</p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 05 HEADLINE RESULT -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s05">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">05</span> Headline result · The weighting is the finding</p>
 <h2>Naïve weighting said tie. Production weighting said 36 points.</h2>
 <p class="rs-lede">
@@ -563,13 +512,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <h4>The pre-measurement prior was wrong</h4>
 <p>The pre-measurement prior favoured Graphiti as the canonical substrate, citing its bi-temporal differentiation and the published vendor numbers in §04. The frequency-weighted measurement above reversed the call. <em>An adoption bar that catches errors before they ship is worth more than an adoption decision that was right on the first try.</em> A delivery team that read the same vendor numbers and skipped the canary would have shipped the slower substrate by default.</p>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 06 RELIABILITY -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s06">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">06</span> Reliability · The shape of the failure mode matters</p>
 <h2>Zero versus four out of 128. Small in absolute, structural in shape.</h2>
 <p class="rs-lede">
@@ -615,13 +564,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <h4>What this finding does not say</h4>
 <p>It does not say the entity-graph substrate is unsafe at scale. Four out of 128 cannot be generalised that strongly. It says: under autonomous-writeback paths where a single fabricated relation gets acted on, the substrate whose failure mode is "the wrong chunk" has a safer profile than the substrate whose failure mode is "an invented relation". For review-gated assist paths (with explicit approval before any write), the gap is much smaller.</p>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 07 TIER INTERACTION -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s07">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">07</span> Tier interaction · Context design must match executor capability</p>
 <h2>The same extra context helps a smaller executor and hurts a more-capable one.</h2>
 <p class="rs-lede">
@@ -727,13 +676,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <p>It does not say more-capable executors are worse at memory. It does not say bi-temporal context is bad. It says: structural metadata interacts with executor capability in a way that vendor benchmarks do not surface, because vendor benchmarks rarely cross-multiply executor tier with substrate variant. Two checkpoints is not enough to rule out family bias; the conservative reading is "capability tier matters, family may also matter, the interaction is worth measuring per pair".</p>
 </div>
 <p><strong>For platform teams setting defaults</strong>: ship bi-temporal context as a configurable behavior gated on capability tier, not as a global default. Default ON for smaller / cheaper executors; default OFF for more-capable executors; expose the toggle to the delivery team so they can re-evaluate per workload.</p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 08 ADOPTION DECISION -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s08">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">08</span> Adoption decision · Tencent DB Agent-Memory against the bar</p>
 <h2>Four-of-five fails. Decision reproducible against the bar.</h2>
 <p class="rs-lede">
@@ -799,13 +748,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <p>The four-of-five failure does not say the project is poorly designed. The four-layer pipeline idea is reasonable; the lack of an MCP surface is a deliberate choice given the framework it targets; the post-install patch is solving a real integration problem in its host framework. "Did not fit this adoption bar" is not the same as "is a bad project". The bar is calibrated to one specific delivery context; in another context the same project might clear the bar straightforwardly.</p>
 </div>
 <p><strong>For delivery teams</strong>: revisit a rejected candidate when the bar changes (your stack adopts a new language, your platform team adopts a new gateway, the project ships a major release that addresses one of the failing criteria). The rejection is not permanent; the bar is the durable artefact.</p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 09 PLATFORM IMPLICATIONS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s09">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">09</span> Platform implications · DIAL-based delivery</p>
 <h2>What the findings imply for how memory is provisioned and routed.</h2>
 <p class="rs-lede">
@@ -821,13 +770,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <li><strong>Model calls should route through the EPAM DIAL gateway in production.</strong> This evaluation's judging and substrate stack used an interim provider path while DIAL provisioning completed; re-run retrieval and judging on DIAL before citing the numbers as deployment-transferable for DIAL-routed agents.</li>
 </ol>
 <p><strong>For platform teams</strong>: encode these four as defaults in the per-workspace memory-substrate configuration. The configuration surface should make the right choice the easy choice, and the wrong choice an explicit opt-out.</p>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 10 RECOMMENDATIONS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s10">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">10</span> Recommendations · For EPAM delivery teams</p>
 <h2>What to do this quarter, what to do this year, what to leave alone.</h2>
 <p class="rs-lede">
@@ -852,13 +801,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <li><strong>The vendor's published benchmark numbers, as a deployment input.</strong> They are useful for vendor comparison; they are not the deployment decision. The deployment decision is your canary on your corpus.</li>
 <li><strong>The single-substrate-as-universal-default reflex.</strong> Pair the substrate to the dominant query family, not to a vendor preference. Most production workloads benefit from two substrate paths (chunk-text default, entity-graph side path) rather than one.</li>
 </ul>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 11 SCOPE LIMITS -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s11">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">11</span> Scope limits · What this report does not claim</p>
 <h2>The contract between the report and the next reader who acts on it.</h2>
 <p class="rs-lede">
@@ -877,13 +826,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
 <li><strong>Cost per decision is not in this report.</strong> Substrate ingest costs (per-document embedding, per-extraction LLM calls) and substrate read costs (per-query model calls) differ by roughly an order of magnitude between the two approaches. The end-to-end cost-per-decision calculation belongs in a separate study tied to a deployed workload.</li>
 <li><strong>Closed-loop counts are pilot-level.</strong> The stale-fact inversion per-cell numbers in Section 07 are from a closed-loop pilot (eight tasks per cell), not the formal 8-task closed-loop suite, which remains deferred. Citing those counts as measured benchmark results is out of scope until the formal suite ships.</li>
 </ol>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- 12 CLOSING -->
 <!-- ============================================================ -->
 <section class="rs-section" id="s12">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">12</span> Closing · The take-away</p>
 <h2>The substrate decision is downstream of the measurement.</h2>
 <p class="rs-lede">
@@ -928,13 +877,13 @@ html { scroll-padding-top: var(--rs-topbar-h); }
       deployment story attached.
     </p>
 </div>
-</div>
+
 </section>
 <!-- ============================================================ -->
 <!-- A METHODS APPENDIX -->
 <!-- ============================================================ -->
 <section class="rs-section" id="sA">
-<div class="rs-container">
+
 <p class="rs-section-label"><span class="num">A</span> Methods appendix · For staff who would re-run this</p>
 <h2>The apparatus, the routing, the model table.</h2>
 <p class="rs-lede">
@@ -1027,7 +976,7 @@ html { scroll-padding-top: var(--rs-topbar-h); }
     model family). Promotion to v1.0 follows a review pass that
     declares the report stable for external publication.
   </p>
-</div>
+
 </section>
 </main>
 <footer class="rs-footer">

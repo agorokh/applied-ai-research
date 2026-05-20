@@ -1,0 +1,95 @@
+/* ============================================================
+   dialx · research-overrides
+   ------------------------------------------------------------
+   Long-form retrofit deltas on top of `research.css`. Loaded
+   AFTER research.css so these rules win in source order.
+
+   Originated as a per-file <style> shim in the report HTMLs
+   (council A flagged it as "load-bearing per-file shim is not
+    design system"). Promoted to this canonical file in v7.
+
+   Council references baked in below (D = typography rhythm,
+   E = pixel alignment, F = side-by-side ref comparison).
+   ============================================================ */
+
+/* Retired legacy `.rs-container` wrappers neutralised. v7 drops the
+   wrappers themselves from the report HTMLs, but the rule stays as
+   defence-in-depth for any caller that still emits them. */
+main .rs-container { max-width: none; margin: 0; padding: 0; }
+
+/* Sticky topbar offset. Hero owns its own breathing room; main has
+   zero padding so section-padding does the inter-section work. */
+:root { --rs-topbar-h: 72px; }
+html { scroll-padding-top: var(--rs-topbar-h); }
+.rs-section { scroll-margin-top: var(--rs-topbar-h); }
+.rs-hero { padding-top: 120px; }
+
+/* ---- Width discipline -------------------------------------------
+   The reference paper uses canonical `.rs-section p { max-width:
+   70ch }` (research.css:243). Long-form reports have heavier
+   data structures; we keep the prose column at 70ch and let
+   data/figures own a wider but bounded measure. */
+
+.rs-section > .rs-callout,
+.rs-section > .rs-container > .rs-callout { max-width: 70ch; }
+
+/* tier-grids: 3 cards at 70ch = ~180px slivers (council D #1) */
+.rs-section > .rs-tiers,
+.rs-section > .rs-container > .rs-tiers { max-width: 96ch; }
+
+/* tables: 70ch makes 8-column tables unreadable (council E F2) */
+.rs-section > .rs-table,
+.rs-section > .rs-container > .rs-table {
+  max-width: min(100%, 1080px);
+  display: block;
+  overflow-x: auto;
+}
+
+/* diagrams: 70ch crushed 1200px viewBox SVGs (council E F1) */
+.rs-section > .diagram-frame,
+.rs-section > .rs-container > .diagram-frame { max-width: min(100%, 1080px); }
+
+/* .rs-2col was escaping every constraint, going full-bleed white
+   (council E F3 — exact match for the user's
+   "narrow text then it goes all white" complaint) */
+.rs-section > .rs-2col,
+.rs-section > .rs-container > .rs-2col { max-width: 70ch; }
+
+/* ---- Tier card harmonisation ----------------------------------- */
+
+.rs-tiers { border: none; gap: 20px; }
+.rs-tier {
+  border: 1px solid var(--dx-border);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--dx-surface) 50%, transparent);
+  padding: 28px 26px;
+}
+/* Collapse the canonical 3px ::before stripe so it doesn't double
+   with our new border (council D #2) */
+.rs-tier::before { display: none; }
+/* Council E F4: numerals/names were inline spans; margin-bottom was
+   ignored, so they collapsed onto the same line as h3 */
+.rs-tier__num { display: block; margin-bottom: 12px; }
+.rs-tier__name { display: block; margin-bottom: 14px; }
+.rs-tier h3 { margin: 0 0 14px; font-size: 22px; line-height: 1.25; }
+.rs-tier p { font-size: 14px; line-height: 1.55; max-width: none; }
+.rs-tier__specs { margin-top: 20px; padding-top: 18px; }
+
+/* ---- Vertical rhythm ------------------------------------------- */
+.rs-section > .rs-container > p:first-child,
+.rs-section > p:first-child { margin-top: 0; }
+.rs-section h2 + p,
+.rs-section h2 + .rs-container > p:first-child { margin-top: 12px; }
+/* Uniform 32px callout gap — council D #4 / E F9 (four inline values
+   for the same component, deleted in v6) */
+.rs-callout { margin: 32px 0; }
+
+/* ---- Footer link styling (your e5cfde6 commit) ----------------- */
+.rs-footer__inner a { color: inherit; border-bottom: 1px dotted var(--dx-fg-4); }
+
+/* ---- SVG diagram label types (page-local until promoted to
+   diagrams.css) -------------------------------------------------- */
+.diagram-frame { margin: 24px 0; }
+.svg-label { font-family: var(--dx-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; fill: var(--dx-fg-3); }
+.svg-mono  { font-family: var(--dx-font-mono); font-size: 11.5px; fill: var(--dx-fg-2); }
+.svg-title { font-family: var(--dx-font-serif); font-size: 18px; fill: var(--dx-fg-1); }
