@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Choosing memory for enterprise agents · Applied AI Research · EPAM · 2026-05-19</title>
+<title>Choosing memory for enterprise agents — Applied AI Research — 2026-05-19</title>
 <meta name="description" content="A non-vendor LightRAG vs Graphiti head-to-head on an SDLC corpus, with a five-criterion adoption bar, Tencent DB Agent-Memory's bar-check rejection, and substrate defaults for any team running coding-agent memory." />
 <link rel="stylesheet" href="../assets/dialx/tokens.css" />
 <link rel="stylesheet" href="../assets/dialx/type.css" />
@@ -19,7 +19,7 @@
     <a class="rs-mark" href="../">
       <span>Applied AI Research</span>
       <span class="sep">·</span>
-      <span class="meta">EPAM · Arseny Gorokh</span>
+      <span class="meta">Independent · Arseny Gorokh</span>
     </a>
     <nav class="rs-nav">
       <a href="../">Index</a>
@@ -50,7 +50,7 @@
 
   <section class="rs-section rs-hero" id="hero">
     <div class="rs-hero-eyebrow">
-      <span class="tag">Substrate study</span>
+      <span class="tag">Applied research note</span>
       <span class="dot">·</span>
       <span>2026 · 05 · 19</span>
       <span class="dot">·</span>
@@ -60,7 +60,7 @@
     <h1>Choosing memory for <em>enterprise agents.</em></h1>
 
     <p class="rs-lede">
-      Across EPAM accounts the same memory-substrate question recurs, once on SDLC-shaped corpora where coding-orchestration agents need their own project past, and again on business and domain corpora where the cost of a hallucinated answer is a wrong action taken on a client's behalf. Both classes share one retrieval problem and one adoption bar. This report runs that bar on one corpus class with two purpose-built substrates against a filesystem baseline, and publishes the canary harness so the next account team can re-instantiate it on their corpus in a day.
+      Across enterprise-agent engagements I've worked on, the same memory-substrate question recurs, once on SDLC-shaped corpora where coding-orchestration agents need their own project past, and again on business and domain corpora where the cost of a hallucinated answer is a wrong action taken on a client's behalf. Both classes share one retrieval problem and one adoption bar. This report runs that bar on one corpus class with two purpose-built substrates against a filesystem baseline, and publishes the canary harness so the next account team can re-instantiate it on their corpus in a day.
     </p>
 
     <div class="rs-hero-meta">
@@ -107,7 +107,7 @@
   <section class="rs-section" id="s02">
     <p class="rs-section-label"><span class="num">02</span> Why memory matters</p>
     <h2>Two corpora, <em>one retrieval problem.</em></h2>
-    <p class="rs-lede">Across EPAM engagements the memory-substrate question recurs because agents are useful only when they retrieve the right knowledge at the right moment. The corpus shape varies; the underlying problem does not. Two classes cover the majority of the work.</p>
+    <p class="rs-lede">Across enterprise-agent engagements the memory-substrate question recurs because agents are useful only when they retrieve the right knowledge at the right moment. The corpus shape varies; the underlying problem does not. Two classes cover the majority of the work.</p>
 
     <div class="rs-tiers rs-tiers--2">
       <div class="rs-tier" style="--accent: var(--dx-violet);">
@@ -388,7 +388,7 @@
   <section class="rs-section" id="s10">
     <p class="rs-section-label"><span class="num">10</span> Recommendations</p>
     <h2>This quarter, this year, <em>what to leave alone.</em></h2>
-    <p class="rs-lede">Three time-horizons of action for EPAM delivery teams choosing memory for the next enterprise-agent engagement.</p>
+    <p class="rs-lede">Three time-horizons for delivery teams running comparable enterprise-agent stacks, on the next memory-substrate engagement.</p>
 
     <h3>This quarter (immediate)</h3>
     <ul>
@@ -454,6 +454,11 @@
     </table>
 
     <p>Judging rubric: each retrieval was labelled <code>correct</code> (complete and accurate), <code>partial</code> (relevant but incomplete), <code>incorrect</code> (a real source, but the wrong one), <code>abstained</code> (substrate returned nothing usable), or <code>hallucinated</code> (content not in any source document). Both judges saw both orderings of each pair; a pair "won" only when the same candidate was preferred in both orderings by both judges. Position-swap disagreement collapsed to <code>tie</code>. The rule-change threshold was pre-registered before any retrieval ran (≥20-percentage-point absolute gap, ≥2× fabrication-rate ratio, or confidence interval excluding zero).</p>
+  
+    <div class="rs-callout">
+      <h4>About this report</h4>
+      <p>Independent applied-AI engineering notes by Arseny Gorokh, a practitioner at EPAM Applied AI. <strong>Not an official EPAM publication.</strong> Findings are based on one stack measured under stated conditions; magnitudes do not generalise. Where "EPAM DIAL" appears, it refers to the gateway product as a technical reference, not as institutional sponsorship. See the repository <a href="https://github.com/agorokh/applied-ai-research/blob/main/ABOUT.md">ABOUT</a> for the full disclaimer. CC BY 4.0.</p>
+    </div>
   </section>
 
   <nav class="rs-article-end" aria-label="More research">
@@ -469,7 +474,7 @@
 
 <footer class="rs-footer">
   <div class="rs-footer__inner">
-    <span>Applied AI Research · EPAM · 2026</span>
+    <span>Applied AI Research · independent practitioner notes · 2026</span>
     <span><a href="https://github.com/agorokh/applied-ai-research">github.com/agorokh/applied-ai-research</a></span>
   </div>
 </footer>
