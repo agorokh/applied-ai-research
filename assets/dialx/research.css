@@ -291,6 +291,26 @@ main {
 }
 .rs-section a:hover { border-bottom-color: var(--dx-violet); }
 
+/* Inline artefact-chip link style: a code-styled link to a sub-artefact
+   file. Reuses .rs-mono but suppresses the violet underline so the chip
+   reads as a code-token-shaped link. */
+.rs-section a.rs-mono {
+  color: var(--dx-teal);
+  border-bottom: none;
+  text-decoration: none;
+  background: color-mix(in srgb, var(--dx-teal) 8%, transparent);
+  padding: 1px 5px;
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--dx-teal) 18%, transparent);
+  transition: background 200ms;
+}
+.rs-section a.rs-mono:hover {
+  color: var(--dx-teal);
+  background: color-mix(in srgb, var(--dx-teal) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--dx-teal) 28%, transparent);
+}
+
+
 .rs-section code, .rs-mono {
   font-family: var(--dx-font-mono);
   font-size: 12.5px;
@@ -325,7 +345,7 @@ main {
 
 .rs-hero-meta {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 36px;
   margin-top: 56px;
   padding-top: 32px;
@@ -804,7 +824,7 @@ main {
   main { padding: 0 24px; }
   .rs-topbar__inner { flex-wrap: wrap; gap: 14px; padding: 14px 24px; }
   .rs-nav-meta { display: none; }
-  .rs-hero-meta { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .rs-hero-meta { grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .rs-tiers { grid-template-columns: 1fr; }
   .rs-tier  { border-right: none; border-bottom: 1px solid var(--dx-border); }
   .rs-2col  { grid-template-columns: 1fr; gap: 24px; }
