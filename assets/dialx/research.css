@@ -14,6 +14,13 @@
                ./type.css     (semantic type roles)
    ============================================================ */
 
+/* Global box-sizing reset: without this, `main` with content-box +
+   right padding 252 (TOC reservation) shrinks below max-width so
+   `margin: 0 auto` resolves to 0 and main left-anchors, while the
+   topbar centers — producing a ~64px misalignment between the
+   topbar mark and the body section labels. */
+*, *::before, *::after { box-sizing: border-box; }
+
 .rs-page {
   background: var(--dx-bg);
   color: var(--dx-fg-1);
