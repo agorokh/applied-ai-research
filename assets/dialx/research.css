@@ -71,6 +71,8 @@
   text-decoration: none;
   background: none;
 }
+.rs-mark:visited,
+.rs-mark:link { color: var(--dx-fg-1); }
 .rs-mark .sep { color: var(--dx-fg-4); font-weight: 400; }
 .rs-mark .meta {
   font-family: var(--dx-font-sans);
@@ -94,6 +96,10 @@
   position: relative;
   padding: 4px 0;
 }
+.rs-nav a:visited,
+.rs-nav a:link { color: var(--dx-fg-3); }
+.rs-nav a.is-current:visited,
+.rs-nav a.is-current:link { color: var(--dx-fg-1); }
 .rs-nav a:hover { color: var(--dx-fg-1); }
 .rs-nav a:focus-visible {
   color: var(--dx-fg-1);
@@ -657,7 +663,7 @@ main {
   justify-content: space-between;
   align-items: baseline;
 }
-/* Visited-link override: footer + nav links keep their unvisited color
+/* Visited-link override: footer links keep their unvisited color
    (else browser default purple-blue leaks through after first click). */
 .rs-footer a,
 .rs-footer a:visited,
@@ -668,12 +674,6 @@ main {
   transition: color 200ms;
 }
 .rs-footer a:hover { color: var(--dx-fg-2); }
-.rs-nav a:visited,
-.rs-nav a:link { color: var(--dx-fg-3); }
-.rs-nav a.is-current:visited,
-.rs-nav a.is-current:link { color: var(--dx-fg-1); }
-.rs-mark:visited,
-.rs-mark:link { color: var(--dx-fg-1); }
 
 /* ---------- Index page primitives -------------------- */
 
