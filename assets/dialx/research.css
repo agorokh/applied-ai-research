@@ -295,11 +295,18 @@ main {
    file. Reuses .rs-mono but suppresses the violet underline so the chip
    reads as a code-token-shaped link. */
 .rs-section a.rs-mono {
+  color: var(--dx-teal);
   border-bottom: none;
   text-decoration: none;
+  background: color-mix(in srgb, var(--dx-teal) 8%, transparent);
+  padding: 1px 5px;
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--dx-teal) 18%, transparent);
   transition: background 200ms;
 }
 .rs-section a.rs-mono:hover {
+  color: var(--dx-teal);
+  border-bottom: none;
   background: color-mix(in srgb, var(--dx-teal) 18%, transparent);
 }
 
