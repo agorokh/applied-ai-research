@@ -26,7 +26,7 @@ Every headline claim in the report, tagged by epistemic status.
 | Tag | Claim | Source |
 |---|---|---|
 | measured | LightRAG default chunking: 1200 tokens, 100 overlap. | Upstream LightRAG paper §4 and default config. |
-| inferred | LightRAG ingest runs ~2.5 LLM calls per chunk on average (entity extraction + relation extraction + occasional merge-summary). | Derived from upstream pipeline structure plus observed extraction shape; not directly measured per-call. The divorce-corpus closeout reports 1,692 chunks / 482 docs = ~3.5 chunks/doc as a real-corpus data point. |
+| inferred | LightRAG ingest runs ~2.5 LLM calls per chunk on average (entity extraction + relation extraction + occasional merge-summary). | Derived from upstream pipeline structure plus observed extraction shape; not directly measured per-call. The 482-document legal corpus closeout reports 1,692 chunks / 482 docs = ~3.5 chunks/doc as a real-corpus data point. |
 | inferred | Per chunk on this corpus: ~8K input + ~2K output tokens per LLM call. | Estimated from chunk size plus typical extraction-prompt overhead; not directly measured against the LLM-cache JSON. Label as estimate in cost-model.md. |
 
 ## Mechanism (§05)
@@ -77,7 +77,7 @@ Every headline claim in the report, tagged by epistemic status.
 |---|---|---|
 | measured | Live config: `max_parallel_insert=2`, `max_async=2`, `embedding_func_max_async=8`, `embedding_batch_num=10`, `force_llm_summary_on_merge=8`. | Live `/health` on M2 Pro at time of writing. |
 | measured | Per-document wall-clock on a recent run (Gemini 2.5 Flash, 17 short docs avg 2.6 KB, 1.4 chunks/doc mean): min 82s, p50 185s, mean 218s, p95 762s. | M2 Pro doc-status JSON, partial re-ingest in flight. |
-| measured | Live agent_factory_steward graph (Gemini 2.5 Flash, 17 docs processed): 1,019 entities, 1,127 relations, 59.9 ent/doc, 66.3 rel/doc, 1.11 rel/ent. | `vdb_entities.json` / `vdb_relationships.json` on M2 Pro. |
+| measured | Live 17-document working corpus graph (Gemini 2.5 Flash, 17 docs processed): 1,019 entities, 1,127 relations, 59.9 ent/doc, 66.3 rel/doc, 1.11 rel/ent. | `vdb_entities.json` / `vdb_relationships.json` on M2 Pro. |
 | measured | The fleet registry enforces `require_dedicated_api_per_workspace = true`, one process per workspace. | `tools/hermes_adapter/fleet_registry.toml`. |
 | measured | A current Gemini Flash daily quota of 2,000,000 tokens was exhausted today during a re-ingest, leaving the remaining documents queued. | Live 429 response from the gateway during the run. |
 | recommendation | For full re-ingest workloads, plan for higher-tier pricing or stagger ingest across days. | Operational lesson from the daily-cap incident. |

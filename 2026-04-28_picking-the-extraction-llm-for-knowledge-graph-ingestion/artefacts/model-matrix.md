@@ -56,4 +56,4 @@ The April matrix above was run with all commercial rows ingested via OpenRouter.
 
 ## Sources
 
-All commercial rows ingested via OpenRouter at run time (April 2026). All local rows ingested via Ollama or LM Studio on operator-owned hardware (M1 Max and a consumer GPU). Raw smoke transcripts and ingest logs are in the operator's vault under `docs/01_Vault/AgentFactory/02_Investigations/tier3-extraction-llm-benchmark-paper-2026-04-28.md` and adjacent companion notes. The 17-document live data point comes from the running LightRAG instance on the operator's M2 Pro at the time of writing.
+All commercial rows ingested via OpenRouter at run time (April 2026). All local rows ingested via Ollama or LM Studio on operator-owned hardware (M1 Max and a consumer GPU). Raw smoke transcripts and ingest logs are in the operator's private vault (not published). The 17-document live data point comes from the running LightRAG instance on the operator's M2 Pro at the time of writing.

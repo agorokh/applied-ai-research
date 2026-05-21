@@ -31,10 +31,10 @@ This is what makes the report's §10 "render deployed extractor config from a te
 When the deployed config changes for any reason (operator edit, recovery action, gateway swap), the previous version is saved alongside the live file with a model-and-date suffix:
 
 ```text
-ai.lightrag.agent-factory.plist
-ai.lightrag.agent-factory.plist.bak.gemini-2026-05-20
-ai.lightrag.agent-factory.plist.bak.sonnet-2026-05-20
-ai.lightrag.agent-factory.plist.bak.openrouter-2026-05-20
+ai.lightrag.my-workspace.plist
+ai.lightrag.my-workspace.plist.bak.gemini-2026-05-20
+ai.lightrag.my-workspace.plist.bak.sonnet-2026-05-20
+ai.lightrag.my-workspace.plist.bak.openrouter-2026-05-20
 ```
 
 This is the auditable trail the §09 drift incident required and did not have at the time. The deployed state is always one diff away from any prior intent, with the model name encoded in the filename so a glance at the directory tells the story.
