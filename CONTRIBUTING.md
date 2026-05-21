@@ -82,5 +82,4 @@ Be excellent to each other. Disagreements about methodology are good; bring them
 
 ## Companion projects
 
-- [agorokh/sdlc-dial-adapter](https://github.com/agorokh/sdlc-dial-adapter) — Anthropic Messages API ↔ OpenAI chat-completions translator (Apache-2.0)
-- [agorokh/agentic-memory-mcp](https://github.com/agorokh/agentic-memory-mcp) — Read-path MCP server bridging MCP clients to LightRAG backends (Apache-2.0)
+See [COMPANION-REPOS.md](COMPANION-REPOS.md).

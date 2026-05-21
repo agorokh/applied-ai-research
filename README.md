@@ -6,9 +6,7 @@ Independent applied-AI engineering notes by [Arseny Gorokh](https://github.com/a
 
 Working drafts. Published independently. See [ABOUT.md](ABOUT.md) for the full disclaimer.
 
-**Companion repositories** (referenced by the methodology of these reports):
-- [agorokh/sdlc-dial-adapter](https://github.com/agorokh/sdlc-dial-adapter) — Anthropic Messages API ↔ OpenAI chat-completions translator (Apache-2.0)
-- [agorokh/agentic-memory-mcp](https://github.com/agorokh/agentic-memory-mcp) — Read-path MCP server bridging MCP clients to LightRAG backends (Apache-2.0)
+**Companion repositories:** [COMPANION-REPOS.md](COMPANION-REPOS.md)
 
 ## The series
 
