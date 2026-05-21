@@ -345,7 +345,7 @@ main {
 
 .rs-hero-meta {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 36px;
   margin-top: 56px;
   padding-top: 32px;
@@ -355,6 +355,7 @@ main {
   display: flex;
   gap: 14px;
   align-items: baseline;
+  flex-wrap: wrap;
   font-family: var(--dx-font-mono);
   font-size: 11px;
   letter-spacing: 0.14em;
@@ -365,6 +366,22 @@ main {
   border-top: 1px solid var(--dx-border);
 }
 .rs-hero-footnote .dot { color: var(--dx-fg-4); }
+.rs-hero-footnote a {
+  color: var(--dx-fg-2);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.rs-hero-footnote a:hover {
+  color: var(--dx-violet);
+  border-bottom-color: var(--dx-violet);
+}
+.rs-hero-footnote a:focus-visible {
+  color: var(--dx-violet);
+  border-bottom-color: var(--dx-violet);
+  outline: 2px solid var(--dx-violet);
+  outline-offset: 2px;
+}
 
 /* ---------- Article-bar (breadcrumb under topbar) ----- */
 /* Removed. The topbar's Index link handles back-navigation; */
@@ -824,7 +841,8 @@ main {
   main { padding: 0 24px; }
   .rs-topbar__inner { flex-wrap: wrap; gap: 14px; padding: 14px 24px; }
   .rs-nav-meta { display: none; }
-  .rs-hero-meta { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .rs-hero-meta { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .rs-hero-footnote { flex-wrap: wrap; gap: 10px; }
   .rs-tiers { grid-template-columns: 1fr; }
   .rs-tier  { border-right: none; border-bottom: 1px solid var(--dx-border); }
   .rs-2col  { grid-template-columns: 1fr; gap: 24px; }
