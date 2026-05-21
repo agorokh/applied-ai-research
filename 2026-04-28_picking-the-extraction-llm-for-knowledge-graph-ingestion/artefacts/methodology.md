@@ -53,7 +53,7 @@ The per-100-document derivation in [`cost-model.md`](cost-model.md) multiplies e
 - **End-to-end retrieval quality on the full production corpus.** The smoke rubric is a fast acceptance gate. The 482-document validation corpus tested the winner only; eleven full validations were not run.
 - **Latency or throughput at scale.** Suitable for batch ingest, not streaming workloads. A streaming ingest study would have different binding constraints (steady-state TPS, per-call p99 latency, queue backpressure).
 - **Sensitivity to chunk size or embedder choice.** Both held constant on purpose; varying them would warrant separate studies.
-- **Long-tail commercial models.** Several frontier models were projected in the cost model but never run (Claude Haiku 4.5, Gemini 2.5 Pro, GPT-4.1, DeepSeek V3, Mistral Large 2). Projections are not measurements.
+- **Long-tail commercial models.** Several frontier models were scoped as candidates but never run (Claude Haiku 4.5, Gemini 2.5 Pro, GPT-4.1, DeepSeek V3, Mistral Large 2). They are listed in the pending-rows table in [`model-matrix.md`](model-matrix.md), not costed in [`cost-model.md`](cost-model.md).
 - **Cross-corpus generalisation.** The smoke corpus is mixed Markdown notes with implicit entity types. Different corpus shapes may produce different model rankings; the scope section in the main report names which axes likely shift the ranking.
 
 ## Provenance
