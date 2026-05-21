@@ -657,6 +657,23 @@ main {
   justify-content: space-between;
   align-items: baseline;
 }
+/* Visited-link override: footer + nav links keep their unvisited color
+   (else browser default purple-blue leaks through after first click). */
+.rs-footer a,
+.rs-footer a:visited,
+.rs-footer a:link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  transition: color 200ms;
+}
+.rs-footer a:hover { color: var(--dx-fg-2); }
+.rs-nav a:visited,
+.rs-nav a:link { color: var(--dx-fg-3); }
+.rs-nav a.is-current:visited,
+.rs-nav a.is-current:link { color: var(--dx-fg-1); }
+.rs-mark:visited,
+.rs-mark:link { color: var(--dx-fg-1); }
 
 /* ---------- Index page primitives -------------------- */
 
