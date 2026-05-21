@@ -11,7 +11,7 @@ It deliberately does **not** publish the held-out T1–T8 prompts or the hidden 
 | Parameter | Value | Notes |
 |---|---|---|
 | Harness | Claude Code 2.1 (unmodified) | The CLI shipped by Anthropic. Same binary used in all 192 trials. |
-| Routing | Anthropic-shape ingress translated to OpenAI-shape outbound, forwarded to EPAM DIAL | The ~600-line translation adapter is not published; its conformance shape is described in [adapter-conformance section below](#5-adapter-conformance) but not in code. |
+| Routing | Anthropic-shape ingress translated to OpenAI-shape outbound, forwarded to EPAM DIAL | The ~600-line translation adapter is open-source at [https://github.com/agorokh/sdlc-dial-adapter](https://github.com/agorokh/sdlc-dial-adapter); its conformance shape is also described in §5 below. |
 | Upstreams measured | 8 | Claude Haiku 4.5, Sonnet 4.6, Opus 4.7 (Anthropic Bedrock); Qwen3-Coder 480B-A35B, Qwen3-Coder 30B-A3B (Alibaba); Kimi K2.5 (Moonshot); MiniMax M2.5; DeepSeek v3.2. Two additional candidates (Mistral Devstral 123B, Gemma 27B IT) were retired pre-matrix on smoke. |
 | Trials per cell | 3 | Each (model × task) cell run three times, results aggregated. |
 | Tasks per model | 8 | The held-out T1–T8 portfolio. |
@@ -73,7 +73,7 @@ Two-wave structure means inter-wave variance is possible but small at this sampl
 
 ## 5. Adapter conformance
 
-The adapter is not published. Its conformance shape, however, is:
+The adapter is open-source at **[https://github.com/agorokh/sdlc-dial-adapter](https://github.com/agorokh/sdlc-dial-adapter)** — the reference implementation of the wire contract described below. The conformance shape, for reproducing it from scratch:
 
 - **Ingress contract**: `POST /v1/messages` with the Anthropic Messages API shape (system + messages + max_tokens + temperature + stop_sequences + tools).
 - **Egress contract**: OpenAI Chat Completions API shape, forwarded to the DIAL gateway via the engineer's project key.
@@ -81,7 +81,7 @@ The adapter is not published. Its conformance shape, however, is:
 - **SSE handling**: The adapter consumes the upstream's chat-completions SSE stream and re-emits it in the Anthropic streaming shape (`message_start` → `content_block_start` → `content_block_delta` → `content_block_stop` → `message_delta` → `message_stop`).
 - **Per-request telemetry**: On every `response_out`, the adapter writes a structured JSON record into InfluxDB measurements `adapter_metrics`, `claude_code_events`, `claude_code_traces`. The field set is in [`telemetry-schema.md`](telemetry-schema.md).
 
-A new adapter (re-implementing the above shape) should be wire-compatible with the harness.
+A new adapter (re-implementing the above shape, or forking [https://github.com/agorokh/sdlc-dial-adapter](https://github.com/agorokh/sdlc-dial-adapter)) should be wire-compatible with the harness. The next iteration of the adapter — including the productionisation patches the report's §10 proposes — will ship in the same repository alongside follow-on research.
 
 ## 6. What the methodology is NOT
 

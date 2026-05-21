@@ -60,7 +60,7 @@
     <h1>Claude Code via EPAM DIAL · <em>POC report.</em></h1>
 
     <p class="rs-lede">
-      192 trials across eight upstreams behind one coding-agent harness, costed at AWS Bedrock list pricing verified 2026-05-14. Qwen3-Coder 480B is the cheapest 100%-pass model at $0.101 per success, 4.7× below Claude Sonnet 4.6. The bridge that routes Claude Code 2.1 through an enterprise gateway is one ~600-line Anthropic-to-OpenAI translation adapter; the same adapter becomes a structured observation point for coding-agent telemetry, which §04–§10 turn into a data plane for any organisation running a sanctioned-inference gateway.
+      192 trials across eight upstreams behind one coding-agent harness, costed at AWS Bedrock list pricing verified 2026-05-14. Qwen3-Coder 480B is the cheapest 100%-pass model at $0.101 per success, 4.7× below Claude Sonnet 4.6. The bridge that routes Claude Code 2.1 through an enterprise gateway is one ~600-line Anthropic-to-OpenAI translation adapter (open-source at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>); the same adapter becomes a structured observation point for coding-agent telemetry, which §04–§10 turn into a data plane for any organisation running a sanctioned-inference gateway.
     </p>
 
     <div class="rs-hero-meta">
@@ -407,7 +407,7 @@ ANTHROPIC_BASE_URL=https://&lt;dial-gateway-host&gt;</pre>
 
     <h3>Pilot rollout proposal</h3>
     <ol>
-      <li><strong>Build the in-DIAL adapter.</strong> Port the translation core (<code>anthropic_to_openai</code> / <code>openai_to_anthropic_response</code> / SSE bridge) into the gateway's ingress codepath, behind a feature flag. <a class="rs-mono" href="artefacts/methodology.md">adapter-conformance →</a></li>
+      <li><strong>Build the in-DIAL adapter.</strong> Port the translation core (<code>anthropic_to_openai</code> / <code>openai_to_anthropic_response</code> / SSE bridge — reference implementation at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>) into the gateway's ingress codepath, behind a feature flag. <a class="rs-mono" href="artefacts/methodology.md">adapter-conformance →</a></li>
       <li><strong>Select 2–3 friendly pilot projects.</strong> Delivery teams already using Claude Code informally, ideally with diverse stacks (one heavy-Python, one TypeScript, one mixed). Centrally update their DIAL project configuration to enable the Anthropic-compatible ingress.</li>
       <li><strong>Observe for 2–4 weeks.</strong> Existing DIAL telemetry surfaces per-project token / cost / latency; Claude Code-specific signals continue to land in the Layer-A measurements described in §05.</li>
       <li><strong>If telemetry holds and cost-per-success matches the Part II numbers, expand.</strong> Add cohorts of additional projects in waves, each wave with a brief feedback loop to capture friction before the next cohort.</li>

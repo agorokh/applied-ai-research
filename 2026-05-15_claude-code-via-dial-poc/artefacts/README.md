@@ -15,11 +15,14 @@ Supporting MD artefacts for the [POC report](../). Each file is linked inline fr
 ## What is intentionally NOT here
 
 - The actual T1–T8 task prompts and hidden `pytest` validators. Publishing them contaminates any future re-run against the same harness; the held-out set is the fair-fixture property.
-- The adapter source. Publishing the ~600-line Anthropic↔OpenAI translator goes beyond what one engineer can release independently.
 - Per-trial cost log records. Tied to a specific engineer / project key / InfluxDB instance; would also expose DIAL contract pricing if cross-referenced with the public Bedrock rates.
 - Per-task raw judge transcripts. Provider ToS + bloat.
 
-What the report claims and what these artefacts back up is everything that does not require the held-out fixture or the proprietary adapter to verify.
+What the report claims and what these artefacts back up is everything that does not require the held-out fixture to verify — the adapter is openly published (see Companion repository below).
+
+## Companion repository
+
+The Anthropic↔OpenAI translation adapter referenced throughout the report is open-source at **[https://github.com/agorokh/sdlc-dial-adapter](https://github.com/agorokh/sdlc-dial-adapter)**. The methodology document's §5 ("Adapter conformance") describes the wire contract; the linked repository is the reference implementation. The next iteration of the adapter will ship in the same repository alongside the follow-on research.
 
 ## License
 
