@@ -74,7 +74,7 @@
       <span class="dot">·</span>
       <a href="artefacts/methodology.md">methodology</a>
       <span class="dot">·</span>
-      <a href="artefacts/smoke-rubric/">smoke rubric</a>
+      <a href="artefacts/smoke-rubric/README.md">smoke rubric</a>
       <span class="dot">·</span>
       <a href="artefacts/claims.md">claims ledger</a>
       <span class="dot">·</span>
@@ -143,7 +143,7 @@
 
     <p><strong>Embedder.</strong> <code>text-embedding-mxbai-embed-large-v1</code> served by LM Studio on M1 Max, 1024-dimensional, local. Held constant across all model rows so that the variable under study is the extractor only.</p>
 
-    <p><strong>Smoke rubric.</strong> Six canary queries times four retrieval modes (naive, local, global, hybrid) equals 24 cells per model. Each cell is scored pass / marginal / fail by the same evaluator looking at the returned chunks against the documented expected references. The cells and the expected references were written before any model ran. The rubric protocol, schema, and an example fixture on a neutral domain are published as <a href="artefacts/smoke-rubric/">the smoke-rubric artefact</a> so a reader can re-instantiate the matrix on their own corpus.</p>
+    <p><strong>Smoke rubric.</strong> Six canary queries times four retrieval modes (naive, local, global, hybrid) equals 24 cells per model. Each cell is scored pass / marginal / fail by the same evaluator looking at the returned chunks against the documented expected references. The cells and the expected references were written before any model ran. The rubric protocol, schema, and an example fixture on a neutral domain are published as <a href="artefacts/smoke-rubric/README.md">the smoke-rubric artefact</a> so a reader can re-instantiate the matrix on their own corpus.</p>
 
     <p><strong>Reporting.</strong> Each row records entities per document, relations per document, relation-to-entity ratio, smoke score as pass/marginal/fail, and measured cost on the 20-document subset. Cost is measured at the model provider's invoice level (OpenRouter or local zero-cost), not estimated.</p>
 

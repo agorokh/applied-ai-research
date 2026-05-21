@@ -44,13 +44,13 @@ Range reflects gleaning vs no-gleaning. Operators on a fresh corpus typically se
 
 ## Why the report says "~33x" for Sonnet vs Gemini Flash
 
-The benchmark paper that locked in Gemini 2.5 Flash measured the cost ratio empirically on the 20-document smoke corpus, where Sonnet's invoice came in roughly 33 times Gemini Flash's invoice. The ~7x to ~10x figure in the table above is the list-price derivation; the gap between list-derived and invoice-measured ratios reflects three things:
+The benchmark paper that locked in Gemini 2.5 Flash measured the cost ratio empirically on the 20-document smoke corpus, where Sonnet's invoice came in roughly 33 times Gemini Flash's invoice. The ~6x to ~9x figure in the table above is the list-price derivation; the gap between list-derived and invoice-measured ratios reflects three things:
 
 1. Sonnet's output cost dominates its bill on this workload (extraction generates more output per chunk than the schema implies because of explanatory text the model adds).
 2. Gemini Flash's actual usage came in below the per-1M estimate because the model emits more compact extractions per call.
 3. Gleaning ran differently on the two models; Sonnet triggered more gleaning passes.
 
-Both numbers are correct. The ~33x is the measured invoice ratio on this specific corpus. The ~7x to ~10x is the calculator-grade list-price derivation. Use the larger one when projecting cost-of-mistake (e.g. "if I accidentally re-ingest on Sonnet for a week"); use the smaller one when negotiating contract pricing.
+Both numbers are correct. The ~33x is the measured invoice ratio on this specific corpus. The ~6x to ~9x is the calculator-grade list-price derivation. Use the larger one when projecting cost-of-mistake (e.g. "if I accidentally re-ingest on Sonnet for a week"); use the smaller one when negotiating contract pricing.
 
 ## What this model does NOT include
 
