@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Choosing memory for enterprise agents · Applied AI Research · EPAM · 2026-05-19</title>
-<meta name="description" content="A non-vendor LightRAG vs Graphiti head-to-head on an SDLC corpus, with a five-criterion adoption bar, Tencent DB Agent-Memory's bar-check rejection, and DIAL-platform defaults for EPAM delivery teams." />
+<meta name="description" content="A non-vendor LightRAG vs Graphiti head-to-head on an SDLC corpus, with a five-criterion adoption bar, Tencent DB Agent-Memory's bar-check rejection, and substrate defaults for any team running coding-agent memory." />
 <link rel="stylesheet" href="../assets/dialx/tokens.css" />
 <link rel="stylesheet" href="../assets/dialx/type.css" />
 <link rel="stylesheet" href="../assets/dialx/research.css" />
@@ -101,7 +101,7 @@
       <p>Not exhaustive vendor coverage. The 2026 agent-memory / RAG-substrate space includes <a href="https://github.com/letta-ai/letta">Letta</a>, <a href="https://memgpt.ai/">MemGPT</a>, <a href="https://www.cognee.ai/">Cognee</a>, <a href="https://www.getzep.com/">Zep</a> (beyond its Graphiti core), <a href="https://www.pinecone.io/blog/pinecone-assistant/">Pinecone Assistants</a>, <a href="https://langchain-ai.github.io/langmem/">LangMem</a>, <a href="https://mastra.ai/">Mastra</a>, and others. Four candidates were evaluated on one delivery stack: LightRAG, Graphiti, <a href="https://github.com/mem0ai/mem0">Mem0</a>, Tencent DB Agent-Memory. The retrieval canary measured LightRAG, Graphiti, and a filesystem baseline. Mem0 was screened out as the same architectural class as Graphiti (extraction-mediated semantic store with episodic memory and an LLM-rewrite step at ingest); a second sample of the same approach was not informative. Tencent did not clear the adoption bar before any measurement run. The pattern transfers across vendors; the magnitudes here do not transfer without re-measurement on your stack.</p>
     </div>
 
-    <p><strong>For EPAM delivery teams</strong>: default to chunk-text retrieval for SDLC-shaped corpora, reserve graph-summary substrates for the narrow entity-disambiguation side path, gate bi-temporal context on the executor's capability tier, and reject adoption candidates against named criteria rather than against taste. §09 and §10 carry the platform and delivery implications.</p>
+    <p><strong>For delivery teams</strong>: default to chunk-text retrieval for SDLC-shaped corpora, reserve graph-summary substrates for the narrow entity-disambiguation side path, gate bi-temporal context on the executor's capability tier, and reject adoption candidates against named criteria rather than against taste. §09 and §10 carry the platform and delivery implications.</p>
   </section>
 
   <section class="rs-section" id="s02">
@@ -110,7 +110,7 @@
     <p class="rs-lede">Across EPAM engagements the memory-substrate question recurs because agents are useful only when they retrieve the right knowledge at the right moment. The corpus shape varies; the underlying problem does not. Two classes cover the majority of the work.</p>
 
     <div class="rs-tiers rs-tiers--2">
-      <div class="rs-tier" style="--accent: var(--dx-teal);">
+      <div class="rs-tier" style="--accent: var(--dx-violet);">
         <span class="rs-tier__num">A</span>
         <div class="rs-tier__name">SDLC corpus</div>
         <h3>The project's own past, queried by its present.</h3>
@@ -122,7 +122,7 @@
           <div><span class="k">Hallucination cost</span><span class="v">Reversed architectural decisions</span></div>
         </div>
       </div>
-      <div class="rs-tier" style="--accent: var(--dx-violet);">
+      <div class="rs-tier" style="--accent: var(--dx-magenta);">
         <span class="rs-tier__num">B</span>
         <div class="rs-tier__name">Business / domain corpus</div>
         <h3>Customer knowledge under high retention pressure.</h3>
@@ -236,7 +236,7 @@
     <p>Re-weighted to the production query distribution from §04 (current canonical text at ~50%, handoff continuity at ~20%, entity disambiguation at ~10%, the remaining five families at ~4% each), LightRAG beat Graphiti by roughly 36 percentage points. The two task families that carry 70% of production weight (current canonical text and handoff continuity) are the two where chunk-text wins decisively. The family where entity-graph wins (entity disambiguation) carries 10% of the weight.</p>
 
     <div class="rs-tiers rs-tiers--2">
-      <div class="rs-tier" style="--accent: var(--dx-teal);">
+      <div class="rs-tier" style="--accent: var(--dx-violet);">
         <span class="rs-tier__num">A</span>
         <div class="rs-tier__name">LightRAG · chunk-text</div>
         <h3>Production-weighted win · clears the bar</h3>
@@ -271,8 +271,8 @@
     </div>
 
     <div class="rs-callout">
-      <h4>Assumption overturned by this measurement</h4>
-      <p>The initial substrate choice favoured Graphiti for this workload, citing its bi-temporal differentiation and the published vendor numbers in §04. The frequency-weighted measurement above changed that ranking within 48 hours of arriving. The retraction is itself one of the report's findings: <em>an adoption bar that catches errors before they ship is worth more than an adoption decision that was right on the first try.</em> A delivery team that read the same vendor numbers and skipped the canary would have shipped the slower substrate by default.</p>
+      <h4>What the bar caught before deployment</h4>
+      <p>The pre-measurement reading of the published vendor numbers (Graphiti as the canonical substrate, on its bi-temporal differentiation) was inverted by the frequency-weighted canary in the first measurement pass. The retraction is itself one of the report's findings: <em>an adoption bar that catches errors before they ship is worth more than an adoption decision that was right on the first try.</em> A delivery team that read the same vendor numbers and skipped the canary would have shipped the slower substrate by default.</p>
     </div>
 
     <p><strong>For delivery teams</strong>: when a vendor reports a single aggregate across multiple task families, ask which weighting they used. A vendor's aggregate that gives every family equal weight is not the aggregate that maps to your production. The discrepancy between the two weightings is often larger than the difference between the substrates themselves.</p>
@@ -436,7 +436,7 @@
 
     <p>The artefact worth taking from this report is the canary harness shape (paired questions, position-swap judging, two judges from different model families, on the gateway you will deploy through), the adoption bar (five named criteria applied uniformly), and the section arc of a deployment-decision memo (pattern first, findings as evidence, apparatus folded into closing). Re-instantiate each against the corpus and the executor you are about to deploy on, and the substrate decision falls out.</p>
 
-    <p>Applied AI at EPAM is the work of building those re-instantiable canaries, not the work of picking a vendor. Frontier research ships papers; consumer AI ships demos; enterprise systems ship the tenancy, audit, schema-stability, cost-bound, and recovery contract neither layer carries. The discipline that closes that gap on one capability at a time is what makes the substrate decision portable across the next account, the next corpus, and the next frontier result that lands without an enterprise deployment story attached.</p>
+    <p>Applied AI as a practice is the work of building those re-instantiable canaries, not the work of picking a vendor. Frontier research ships papers; consumer AI ships demos; enterprise systems ship the tenancy, audit, schema-stability, cost-bound, and recovery contract neither layer carries. The discipline that closes that gap on one capability at a time is what makes the substrate decision portable across the next account, the next corpus, and the next frontier result that lands without an enterprise deployment story attached.</p>
 
     <h3>Apparatus, for the next reader who would re-run this</h3>
     <table class="rs-table">
