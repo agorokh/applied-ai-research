@@ -66,7 +66,7 @@
     <div class="rs-hero-meta">
       <div class="rs-meta-stat"><span class="v">24<span class="unit">/ 24 cells</span></span><span class="l">Gemini 2.5 Flash smoke pass; only model in the matrix at this score</span></div>
       <div class="rs-meta-stat"><span class="v">11<span class="unit">models</span></span><span class="l">Frontier commercial, mid-tier commercial, local open-source</span></div>
-      <div class="rs-meta-stat"><span class="v">10–33<span class="unit">×</span></span><span class="l">Sonnet 4.6 ingest cost vs Gemini 2.5 Flash; low end is list-price calculator, high end is measured invoice on this corpus</span></div>
+      <div class="rs-meta-stat"><span class="v">6–33<span class="unit">×</span></span><span class="l">Sonnet 4.6 ingest cost vs Gemini 2.5 Flash; low end is list-price calculator (~6× to ~9×), high end is measured invoice on this corpus</span></div>
       <div class="rs-meta-stat"><span class="v">2<span class="unit">×</span></span><span class="l">Gemini Flash entity-extraction breadth over Sonnet 4.6 per document</span></div>
     </div>
     <div class="rs-hero-footnote">
@@ -402,21 +402,23 @@
 </footer>
 
 <script>
-  // Reading-progress bar.
-  (function () {
-    var bar = document.getElementById('rs-progress');
-    if (!bar) return;
-    function update() {
-      var h = document.documentElement;
-      var b = document.body;
-      var st = h.scrollTop || b.scrollTop;
-      var sh = (h.scrollHeight || b.scrollHeight) - h.clientHeight;
-      bar.style.width = (sh > 0 ? (st / sh) * 100 : 0) + '%';
-    }
-    document.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
-  })();
+(function () {
+  var bar = document.getElementById('rs-progress');
+  var links = [].slice.call(document.querySelectorAll('.rs-toc a'));
+  var targets = links.map(function (a) {
+    return { a: a, t: document.querySelector(a.getAttribute('href')) };
+  }).filter(function (o) { return o.t; });
+  function onScroll() {
+    var sd = document.documentElement.scrollTop || document.body.scrollTop;
+    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (bar) bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    var y = sd + 120, active = targets[0];
+    for (var i = 0; i < targets.length; i++) if (targets[i].t.offsetTop <= y) active = targets[i];
+    for (var j = 0; j < targets.length; j++) targets[j].a.classList.toggle('is-active', targets[j] === active);
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
 </script>
 
 </body>
