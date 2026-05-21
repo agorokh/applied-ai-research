@@ -56,7 +56,7 @@ The foundation gate's canary check passes a query through the substrate and asse
 1. The response does not start with the LLM's empty-retrieval phrase ("no relevant context found" or equivalent, with leading-whitespace tolerance).
 2. The response cites at least one expected reference by name.
 
-Both checks are necessary. An empty graph trivially passes the first check by returning the empty-retrieval phrase, so the second check is the substantive one. A healthy graph trivially passes the second check by citing real references, so the first check is the speed-of-failure shortcut for the common case. The week's foundation-gate merge that caught the drift incident in §09 was exactly the addition of the second check; before it landed, an empty substrate had been passing canaries that only looked for "did the substrate respond without error."
+Both checks are necessary. An empty graph fails the first check because the response begins with the empty-retrieval phrase; it also fails the second check because no real references appear. A healthy graph passes the second check by citing real references; the first check is a fast shortcut when the graph is completely empty. The week's foundation-gate merge that caught the drift incident in §09 was exactly the addition of the second check; before it landed, an empty substrate had been passing canaries that only looked for "did the substrate respond without error."
 
 ---
 
