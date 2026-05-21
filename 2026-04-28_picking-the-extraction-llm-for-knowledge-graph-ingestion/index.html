@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Picking the extraction LLM for knowledge-graph ingestion · Applied AI Research · 2026-05-20</title>
+<title>Picking the extraction LLM for knowledge-graph ingestion · Applied AI Research · 2026-04-28</title>
 <meta name="description" content="Knowledge-graph RAG systems (Microsoft GraphRAG, LightRAG, and the ecosystem around them) extract entities and relations from source text at ingest time using an LLM. Eleven candidate models measured on the same corpus and rubric. Why breadth of extraction beats density of relations for graph-traversal retrieval, and why the cheapest model that clears every retrieval cell costs roughly 3 percent of the strongest commercial alternative. Independent practitioner notes, not an official EPAM publication." />
 <link rel="stylesheet" href="../assets/dialx/tokens.css" />
 <link rel="stylesheet" href="../assets/dialx/type.css" />
@@ -52,7 +52,7 @@
     <div class="rs-hero-eyebrow">
       <span class="tag">Applied research note</span>
       <span class="dot">·</span>
-      <span>2026 · 05 · 20</span>
+      <span>2026 · 04 · 28</span>
       <span class="dot">·</span>
       <span>13 min read</span>
     </div>
@@ -268,10 +268,10 @@
   </section>
 
   <section class="rs-section" id="s09">
-    <p class="rs-section-label"><span class="num">09</span> The drift incident</p>
+    <p class="rs-section-label"><span class="num">09</span> The drift incident <span class="rs-dim" style="font-weight:normal">· postscript, 2026-05-20</span></p>
     <h2>One wrong line in <em>one workstation file.</em></h2>
 
-    <p class="rs-lede">The benchmark above was run in late April 2026 and locked in Gemini 2.5 Flash as the production extractor. Three weeks later, ingestion on the operator's primary workspace had silently drifted back to Claude Sonnet 4.6, and a re-ingest run at roughly thirty times the expected cost was flagged red by the canary. The incident is worth describing because the failure pattern is structural, not a one-off mistake.</p>
+    <p class="rs-lede"><em>Postscript added 2026-05-20.</em> The benchmark above was finalised on 2026-04-28 and Gemini 2.5 Flash was locked in as the production extractor. Three weeks later, ingestion on my primary workspace had silently drifted back to Claude Sonnet 4.6, and a re-ingest at roughly thirty times the expected cost was flagged red by the canary. I am adding this section to the original report rather than publishing it separately because the failure pattern is structural to the decision the report describes, not a one-off mistake, and a reader acting on the recommendations deserves the full story.</p>
 
     <p>The chain of events:</p>
 
