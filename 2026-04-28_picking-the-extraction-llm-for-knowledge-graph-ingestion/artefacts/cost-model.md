@@ -68,7 +68,7 @@ Re-derive the table for your own list prices and your own measured per-chunk tok
 
 ## Enterprise-scale worked examples
 
-Two corpus shapes that a delivery lead at a mid-size enterprise actually has to size. Numbers below use the smoke-corpus per-document averages and the list-price calculator. Real enterprise corpora vary; use these as a budget conversation starter, not a forecast.
+Two corpus shapes that a delivery lead at a mid-size enterprise actually has to size. **Example A** uses the smoke-corpus per-document token shape (~4 chunks per document, ~100K tokens per document). **Example B** uses a separate, shorter-document shape (~1 to 2 chunks per document); its dollar rows are illustrative on that reduced token basis and are not directly comparable to Example A without re-deriving. Real enterprise corpora vary; use these as a budget conversation starter, not a forecast.
 
 ### Example A: a 50,000-document Confluence export
 
@@ -81,11 +81,11 @@ Average document length similar to the smoke corpus (mixed prose, ~5 pages). Ann
 | Re-ingest under model swap (full, ~once / 18 months) | ~$3,500 to ~$5,000 | ~$27,000 to ~$34,500 |
 | Total year-1 cost at list (backfill + delta) | ~$4,500 to ~$6,500 | ~$35,000 to ~$45,000 |
 
-Peak token rate during backfill: at the operator's measured 2.5 calls per chunk and 4 chunks per document, full-parallel ingest of 50,000 documents at `max_async = 4` is roughly 500,000 LLM calls. On a 2M-token-per-day Gemini developer key, this takes weeks. On a paid tier with millions of tokens per day, this takes hours to a day. **Budget the tier upgrade before you budget the run.**
+Peak ingest load for Example A: 50,000 documents at the smoke-corpus shape (~80K input + ~20K output tokens per document) is on the order of **5 billion tokens** total. At a hard **2M-token-per-day** developer-tier cap, that is roughly **2,500 days** (~7 years) of calendar time if the cap binds before any parallelization win — not weeks. Raising the daily cap (paid tier, enterprise gateway) shrinks wall-clock dramatically; the main report documents a separate 180-document re-ingest that exhausted a 2M/day cap in a single day. **Budget tier throughput before you budget dollars.**
 
 ### Example B: a 200,000-document ticket archive
 
-Average document much shorter than the smoke corpus (~10 lines per ticket on average). Lower per-document chunk count (1 to 2 chunks per document). Annual change rate 60 percent (assumes ticket creation and closure churn).
+Average document much shorter than the smoke corpus (~10 lines per ticket on average). **Token basis:** ~1 to 2 chunks per document (~25K to 50K tokens per document at the same per-chunk rates), not the smoke-corpus ~100K. Annual change rate 60 percent (assumes ticket creation and closure churn). Dollar figures below are illustrative on this reduced shape; re-derive from your own measured chunk count before budgeting.
 
 | Cost line | Gemini 2.5 Flash | Sonnet 4.6 |
 |---|---:|---:|
