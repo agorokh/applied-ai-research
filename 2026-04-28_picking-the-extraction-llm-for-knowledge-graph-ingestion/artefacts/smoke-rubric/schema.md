@@ -53,13 +53,13 @@ The `expected_refs` block is what makes scoring deterministic. A `pass` is "retu
 ```csv
 model,provider,runtime,docs_ingested,chunks_total,ent_per_doc,rel_per_doc,rel_per_ent,pass,marginal,fail,measured_cost_usd
 gemini-2.5-flash,google,openrouter,20,82,82.5,95.0,1.15,24,0,0,4.10
-claude-sonnet-4.6,anthropic,openrouter,20,82,40.8,58.4,1.43,22,0,2,6.40
-openai-gpt-4o-mini,openai,openrouter,20,82,,,,19,3,2,0.30
+claude-sonnet-4.6,anthropic,openrouter,20,82,40.8,58.4,1.43,22,0,2,135.30
+openai-gpt-4o-mini,openai,openrouter,20,82,,,,19,3,2,1.23
 # ent/rel/doc omitted for this row: density was measured on a separate 150-doc baseline, not the pinned 20-doc smoke subset
 # ... one row per model row in the matrix
 ```
 
-The `measured_cost_usd` column is the provider's invoiced charge for the 20-document subset ingest, recorded at run time. Empty for local rows.
+The `measured_cost_usd` column is the provider's invoiced charge for the 20-document subset ingest, recorded at run time. Empty for local rows. Example values above are illustrative placeholders shaped like real invoices: Sonnet is ~33× Gemini on this corpus (135.30 / 4.10), matching the measured-invoice ratio cited in the report; replace with your run's actual charges when you tabulate.
 
 ## Inter-rater honesty (optional but recommended)
 
