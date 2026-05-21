@@ -2,7 +2,11 @@
 
 Per-100-document ingest cost derivation. Normalised so a reader can multiply by their own corpus size.
 
-## Per-document token accounting
+## A note on what is measured vs estimated
+
+The per-call token counts in this artefact are derivations from the chunk size and observed extraction shape, not direct measurements from the LLM's token-usage records. They are within an order of magnitude of what an audit pass over the on-disk LLM-cache JSON would report; they are not invoice-level numbers. Where the report cites "~$20 per 100 documents" for Gemini 2.5 Flash, that number is the invoice-extrapolation from the smoke run ("~$4 for 20 documents" became "~$20 for 100"), not the list-price calculator below. Where the calculator and the invoice disagree, the invoice is the truthier number for projecting future spend on a similar corpus; the calculator is the truthier number for negotiating per-token contract pricing.
+
+## Per-document token accounting (estimated)
 
 LightRAG ingest does roughly three LLM operations per chunk:
 

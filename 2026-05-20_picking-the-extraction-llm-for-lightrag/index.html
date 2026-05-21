@@ -82,6 +82,8 @@
       <span class="dot">·</span>
       <a href="artefacts/cost-model.md">cost model</a>
       <span class="dot">·</span>
+      <a href="artefacts/production-config.md">production config</a>
+      <span class="dot">·</span>
       <a href="artefacts/README.md">index →</a>
     </div>
   </section>
@@ -93,7 +95,7 @@
 
     <div class="rs-callout">
       <h4>Finding 1. Breadth beats density for graph-traversal retrieval</h4>
-      <p>Gemini 2.5 Flash extracts roughly 2x more entities and 1.6x more relations per document than Claude Sonnet 4.6 on the same chunks. Its relation-to-entity ratio is actually slightly lower (1.15 vs 1.43). The mechanism: graph-traversal retrieval (the shape every system in this class uses) fetches chunks anchored by the entity index, so additional entities anchor additional chunks at retrieval time. Density of relations matters less than the surface area the entity index covers. Sonnet 4.6 ran the rubric to an effective 24/24 by margin recovery; Gemini 2.5 Flash ran it to a clean 24/24 with no marginals. <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
+      <p>Gemini 2.5 Flash extracts roughly 2x more entities and 1.6x more relations per document than Claude Sonnet 4.6 on the same chunks. Its relation-to-entity ratio is actually slightly lower (1.15 vs 1.43 on the smoke corpus). The mechanism: graph-traversal retrieval (the shape every system in this class uses) fetches chunks anchored by the entity index, so additional entities anchor additional chunks at retrieval time. Density of relations matters less than the surface area the entity index covers. Sonnet 4.6 ran the smoke rubric to an effective 24/24 by margin recovery; Gemini 2.5 Flash ran it to a clean 24/24 with no marginals. The breadth ranking holds across every corpus I have measured; the absolute entity-per-document numbers vary by roughly 2x across them (see §05). <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
     </div>
 
     <div class="rs-callout">
@@ -133,7 +135,7 @@
 
     <p>Stating the rubric a priori is what makes a benchmark reproducible. Stating it post hoc reduces to a justification of whatever happened. Five things held constant across all eleven model rows:</p>
 
-    <p><strong>Corpus.</strong> 20 documents from a personal knowledge-base corpus, fixed by file list in <code>scripts/tier3_smoke_benchmark.curated_files.yml</code>. Average ~5 pages each, mixed prose and structured notes. The same 20 files were ingested for every model. A separate 482-document legal corpus was used for production-class validation of the winning model.</p>
+    <p><strong>Corpus.</strong> 20 documents from a personal knowledge-base corpus, pinned by explicit file list (not by directory glob) so the same files are ingested for every model row. Average ~5 pages each, mixed prose and structured notes. The pinning discipline matters: a benchmark that uses "the first 20 files alphabetically" silently drifts as new files land. A separate 482-document legal corpus was used for production-class validation of the winning model; that corpus produced different absolute entity counts on the same model and chunking, which is reported honestly in §05.</p>
 
     <p><strong>Chunking.</strong> LightRAG defaults: 1200 tokens per chunk, 100 token overlap. Approximately 4 chunks per document on this corpus. Per chunk, the ingest pipeline runs entity extraction plus relation extraction plus an occasional merge-summary call, totalling roughly 2.5 LLM calls per chunk on average.</p>
 
@@ -194,6 +196,11 @@
     <p>Relation density matters too, but only on a smaller class of queries: those that require multi-hop traversal across the graph (e.g. "what links concept A to concept B in this corpus"). Most production queries do not look like that. They look like "what does this corpus say about X." For those, breadth of the entity index dominates density of the relation index.</p>
 
     <p>This pattern generalises across knowledge-graph RAG systems with traversal-then-fetch retrieval: optimise the extractor for entity coverage first, and only optimise for relation density when the query distribution actually rewards it. It does not generalise to systems that score retrieval purely on relation paths (which is a smaller class than the literature implies), or to pure vector RAG without an entity index.</p>
+
+    <div class="rs-callout">
+      <h4>Honest scope: the breadth ratio holds; the absolute counts do not</h4>
+      <p>The 82.5 entities per document for Gemini 2.5 Flash is the number from the 20-document smoke corpus. Same model, same chunking, on two other production-shaped corpora I run: a 482-document legal corpus produced 39.8 entities per document (and a higher rel/ent ratio of 1.43), and a recent partial re-ingest of a 17-document working corpus produced 59.9 entities per document. The model's breadth advantage over Sonnet 4.6 holds on all three; the absolute breadth varies by roughly a factor of two depending on what is in the chunks. The recommendation in §10 (default to Gemini 2.5 Flash, re-validate the smoke rubric on your own corpus) is what falls out of this: the ranking transfers, the magnitudes do not.</p>
+    </div>
   </section>
 
   <section class="rs-section" id="s06">
@@ -220,6 +227,10 @@
     <p>Three things this table is not. It is not a forecast for your corpus (your chunks may not average 1200 tokens; your gleaning may run hotter or colder). It is not a contract-pricing table (an enterprise gateway discount changes the absolute numbers but rarely changes the ratios inside the cluster). It is not a long-tail study (it covers models I actually ran, not the much larger set of frontier models that are projected on cost but never measured).</p>
 
     <p>The ranking conclusion is robust to multiplicative pricing factors below roughly 10x. Gemini 2.5 Flash is cheaper than Sonnet 4.6 on every published rate card I have seen and scores the same on the smoke rubric. The cheapest model that hits 24/24 is the production answer; nothing in the cost table flips that.</p>
+
+    <p>One reconciliation note: the ~$20 per 100 documents above is what the provider's invoice actually showed on the smoke corpus (extrapolated from ~$4 across 20 documents). A purely list-price calculation against the per-token rates and the chunk-token budget lands closer to ~$7 to $10 per 100 documents. Both are honest derivations; the gap comes from gleaning passes that fire more aggressively in real ingest runs than the chunk-token math predicts, and from the model adding explanatory text the cost-calculator does not anticipate. The cost-model artefact walks through both methods. Use the invoice-based number when projecting cost-of-mistake (the drift case in §09), the calculator number when negotiating contract pricing.</p>
+
+    <p>One operational reality from a recent run: even Gemini 2.5 Flash at its low per-token rate trips daily token caps on a single full vault re-ingest. A 180-document re-ingest in flight today hit the 2,000,000 token daily cap and parked the remaining documents until tomorrow. Production-tier accounts raise this cap; the point worth making in advance is that "cheap to run" does not mean "fast to re-ingest at scale" when soft caps are in play. Budget for higher tiers or stagger the re-ingest across days.</p>
   </section>
 
   <section class="rs-section" id="s07">
@@ -230,10 +241,11 @@
 
     <p>I ran six local trials across two hardware tiers. Consumer GPU (a GTX 1070 with 6 GB VRAM serving Ollama) handled Llama 3.2 3B Q4 and Qwen 3.5 4B but timed out on Gemma 4 26B and 502-cascaded on Qwen 2.5 32B. M1 Max with 32 GB unified memory ran Qwen 2.5 14B in two flavours: MLX 4-bit cascaded on the embed call, GGUF Q4_K_M finished the corpus over ~4 hours and earned 5/4/15 on the smoke rubric.</p>
 
-    <p>Three transferable observations:</p>
+    <p>Four transferable observations:</p>
 
     <ul>
-      <li><strong>Schema noise dominates small-model output.</strong> The 3B Llama row produced 518 schema-violation warnings on 20 documents. LightRAG's parser dropped most of the model's extraction output. The model "succeeded" in the sense that ingest completed; the graph it produced was sparse because most of its work was rejected. This is invisible without explicit schema-violation counting and easy to miss in a quick local trial.</li>
+      <li><strong>Schema noise dominates small-model output.</strong> The 3B Llama row produced hundreds of schema-violation warnings on the 20-document corpus. LightRAG's parser dropped most of the model's extraction output. The model "succeeded" in the sense that ingest completed; the graph it produced was sparse because most of its work was rejected. This is invisible without explicit schema-violation counting and easy to miss in a quick local trial.</li>
+      <li><strong>Concurrency mismatch between LightRAG and the local inference server is its own failure mode.</strong> The MLX runs of Qwen 2.5 14B aborted on what looked like extraction failures and was actually a cascade: LightRAG's <code>EMBEDDING_FUNC_MAX_ASYNC</code> defaults to 8, LM Studio's <code>Parallel</code> setting defaults to 4, and the eight in-flight embedding requests overran the four worker slots and timed out, which the LightRAG side then retried and amplified. The fix is to either align the two (cap LightRAG at 4) or run the embedder on a separate host with its own concurrency budget. This is the kind of diagnostic that does not show up in any one component's logs because the failure is in the seam between them.</li>
       <li><strong>Thinking-mode models burn the worker timeout.</strong> Reasoning-style models (Gemma 4 26B with default thinking enabled, Qwen 3 series with default thinking) emit a long internal monologue before the structured output. On a per-chunk LightRAG call this consistently pushes wall-clock past the worker timeout. Where a no-think variant exists, default to it for structured extraction; thinking-mode is a chat-quality feature that costs you ingest viability.</li>
       <li><strong>Mid-size on M1 is the local sweet spot.</strong> Qwen 2.5 14B GGUF Q4_K_M was the best local result and is the model I would deploy if a corpus had to stay local. It still loses two-thirds of the smoke rubric to Gemini Flash. Local is a viability choice driven by data residency, not a quality choice.</li>
     </ul>
@@ -246,8 +258,8 @@
     <p>The thinking-mode failure pattern from §07 is general enough to deserve its own principle. Reasoning-style models that emit a chain-of-thought before the structured output produce two undesirable effects during LightRAG ingest:</p>
 
     <ol>
-      <li><strong>Per-call latency goes up by the length of the thought.</strong> A model that takes 8 seconds to extract entities from a chunk in non-thinking mode takes 40+ seconds with reasoning enabled. The pipeline does not get more accurate output; it gets the same structured record with a long preamble the parser ignores.</li>
-      <li><strong>The thought tokens are billable.</strong> On commercial providers, reasoning tokens count toward output cost. A reasoning-mode extraction call can cost 3x to 5x what a non-reasoning call costs for the same final output.</li>
+      <li><strong>Per-call latency goes up by the length of the thought.</strong> A non-thinking extraction call takes seconds; the same call with reasoning enabled routinely takes several times longer because the model emits a chain-of-thought the parser then discards. Exact multipliers depend on the model family; the consistent observation across the families I tested was "long enough to blow out the worker timeout on a default LightRAG config." The pipeline does not get more accurate output; it gets the same structured record with a long preamble.</li>
+      <li><strong>The thought tokens are billable.</strong> On commercial providers, reasoning tokens count toward output cost. A reasoning-mode extraction call can cost several times what a non-reasoning call costs for the same final output, again depending on the model.</li>
     </ol>
 
     <p>The recommendation: when a model family offers a no-think variant or a flag to disable reasoning, default to it for structured-extraction workloads. Verify the flag actually disables reasoning end-to-end. Some Ollama versions silently ignore <code>think: false</code> on the OpenAI-compatible <code>/v1/chat/completions</code> endpoint and honour it only on the native <code>/api/chat</code> endpoint. That kind of plumbing detail is the difference between a model that ingests in two hours and a model that ingests in twelve.</p>
@@ -264,19 +276,19 @@
     <p>The chain of events:</p>
 
     <ol>
-      <li>A separate ingest job had run out of personal-tier Gemini API quota mid-corpus, leaving 159 documents in failed state.</li>
+      <li>A separate ingest job had run out of a personal-tier daily token quota mid-corpus, leaving most of a vault's worth of documents in failed state.</li>
       <li>A recovery attempt edited the workstation's launchd plist to use Sonnet 4.6, citing it as "the proven config" because that was the config for a different production workspace.</li>
       <li>The wrong model name persisted through subsequent infrastructure work; later edits preserved it implicitly by not re-checking the per-workspace correct answer.</li>
       <li>A re-ingest at Sonnet 4.6 rates ran to substantial completion before the canary detected that retrieval was failing.</li>
       <li>The canary instrumentation that caught the drift had itself been merged that week. Before it existed, an empty substrate had been showing green.</li>
     </ol>
 
-    <p>Three lessons:</p>
+    <p>Three lessons, each with a concrete instrumentation answer:</p>
 
     <ul>
-      <li><strong>Per-workspace extractor choice does not generalise.</strong> "The proven config" is not a fact about the company or the gateway; it is a fact about one specific workspace. Copying it to another workspace without re-validating against that workspace's corpus is the same class of error as copying a database index from one table to another because it worked on the first.</li>
-      <li><strong>An empty substrate looks the same as a healthy one to the wrong canary.</strong> The canary that catches drift has to assert what a working result looks like (specific references returned, specific entity types present), not just that the substrate responded without error. A "no relevant context found" response is a valid response from an empty graph and from a healthy graph that the query missed; without anchored assertions the gate cannot distinguish.</li>
-      <li><strong>Configuration drift between repo and host is invisible until it produces a bill.</strong> The plist on the workstation had a hand-edited <code>LLM_MODEL</code> value that was not in the repo template. Subsequent edits saw "this file is already configured" and preserved the wrong value. A check that diffs deployed plists against repo templates would have caught this in seconds.</li>
+      <li><strong>Per-workspace extractor choice does not generalise.</strong> "The proven config" is not a fact about the company or the gateway; it is a fact about one specific workspace. Copying it to another workspace without re-validating against that workspace's corpus is the same class of error as copying a database index from one table to another because it worked on the first. The instrumentation answer: render the per-workspace plist from a template that takes the workspace name and the chosen extractor as parameters, so a copy-paste cannot omit the per-workspace step.</li>
+      <li><strong>An empty substrate looks the same as a healthy one to the wrong canary.</strong> The canary that catches drift has to assert what a working result looks like (specific references returned, specific entity types present), not just that the substrate responded without error. A "no relevant context found" response is a valid response from an empty graph and from a healthy graph that the query missed; without anchored assertions the gate cannot distinguish. The instrumentation answer: anchor the canary to specific expected references and fail the gate when the response does not name them. The week's foundation-gate change that caught the drift did exactly this.</li>
+      <li><strong>Configuration drift between repo and host is invisible until it produces a bill.</strong> The plist on the workstation had a hand-edited <code>LLM_MODEL</code> value that was not in the repo template. Subsequent edits saw "this file is already configured" and preserved the wrong value. The instrumentation answer: save every plist edit alongside a model-tagged backup (the workstation now has files like <code>ai.lightrag.&lt;workspace&gt;.plist.bak.&lt;model&gt;-&lt;date&gt;</code>) so the deployed state is always one diff away from any prior intent, and run a check that fails when the deployed plist diverges from the rendered template.</li>
     </ul>
   </section>
 
@@ -292,13 +304,16 @@
       <li><strong>Treat the relation-to-entity ratio as diagnostic, not optimisation target.</strong> A ratio above ~1.4 with entity count below ~30 per document indicates a dense small graph that will underperform retrieval at scale. A ratio near 1.0 with entity count above ~60 indicates a wide sparse graph that traverses well.</li>
       <li><strong>For local-only corpora: Qwen 2.5 14B GGUF Q4_K_M in LM Studio on Apple Silicon (32 GB or more).</strong> Pair it with a separate query-time model for synthesis. Accept that you are trading retrieval breadth for data residency.</li>
       <li><strong>Disable reasoning mode on any extractor that supports it.</strong> Verify the flag actually reaches the model.</li>
+      <li><strong>Budget for daily token caps before they bite.</strong> Even cheap extractors hit soft daily caps during a full vault re-ingest. Plan for the higher pricing tier or stagger the re-ingest across days; the cost difference is small versus losing a working substrate for a day.</li>
+      <li><strong>Run one extractor process per workspace.</strong> Multi-tenant LightRAG sounds tidy until two workspaces want different extractors. Per-workspace processes (one binary per workspace, the registry enforces it) keep the LLM cache from cross-contaminating extractions and make per-workspace model swaps a one-line config change instead of a full multi-tenant migration.</li>
     </ul>
 
-    <p>And two operational instrumentation recommendations forced by the drift incident:</p>
+    <p>And three operational instrumentation recommendations forced by the drift incident:</p>
 
     <ul>
-      <li><strong>Anchor the ingest-health canary to expected entities.</strong> "Does this query return at least one chunk that mentions Y" not "does the substrate respond."</li>
-      <li><strong>Diff deployed extractor config against repo template on every cron tick.</strong> A two-line shell script catches drift between editing the plist on the laptop and committing the change to the repo. The cost of not having that check is one full re-ingest at the wrong model's rate.</li>
+      <li><strong>Anchor the ingest-health canary to expected entities.</strong> "Does this query return at least one chunk that mentions Y" not "does the substrate respond." Implement it as a gate that fails on the substring-anywhere variant of the model's empty-response phrase, and on the absence of the expected reference, both.</li>
+      <li><strong>Render deployed extractor config from a templated source.</strong> A small renderer that takes (workspace name, extractor, embedder) and emits the plist or systemd unit makes the per-workspace step structural, not a copy-paste. Diff the deployed file against the rendered output on every cron tick; alarm on divergence.</li>
+      <li><strong>Keep model-tagged backups of every config edit.</strong> When the deployed config changes, save the previous version with a model-and-date suffix. The cost is bytes; the value is that the next operator can see what was tried and what it cost.</li>
     </ul>
   </section>
 
@@ -310,6 +325,7 @@
 
     <ul>
       <li><strong>Corpus shape.</strong> The 20-document smoke corpus and 482-document validation corpus are both mixed-prose Markdown notes with implicit entity types (people, projects, decisions, dates). A corpus dominated by structured data (database schemas, code), pure narrative (novels, transcripts), or specialist vocabularies (medical, legal) may produce a different model ranking. The smoke rubric is reproducible on your corpus; rerun it before generalising.</li>
+      <li><strong>Absolute breadth varies by corpus.</strong> Gemini 2.5 Flash extracted 82.5 entities per document on the 20-doc smoke corpus, 39.8 on a 482-document legal corpus, and 59.9 on a 17-document working corpus today. The ranking against other models held in every case; the absolute counts varied by roughly a factor of two. Do not project specific magnitudes from this report onto your corpus; re-measure on the corpus that matters to you.</li>
       <li><strong>Chunking.</strong> All rows used LightRAG defaults (1200 tokens, 100 overlap). A different chunk size changes per-chunk LLM cost and the entity-to-chunk anchoring shape. Re-derive the cost table if you change chunking.</li>
       <li><strong>Embedder.</strong> All rows used the same local embedder. Changing the embedder changes retrieval behaviour independently of the extractor and would warrant a separate study.</li>
       <li><strong>Provider pricing.</strong> List prices used here are public rate cards. Contract pricing through an enterprise gateway will shift absolute magnitudes; the cost ratios inside the matrix are more stable than the absolutes.</li>

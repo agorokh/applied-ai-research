@@ -7,8 +7,9 @@ Companion material to [`../index.html`](../index.html). Each artefact stands on 
 | [`methodology.md`](methodology.md) | Test design: corpus, chunking, smoke rubric, embedder, what the method does not measure. |
 | [`claims.md`](claims.md) | Every headline claim in the report, tagged measured / inferred / hypothetical / recommendation / scope, with the supporting evidence. |
 | [`invalidation.md`](invalidation.md) | Falsification conditions: what re-measurement would invalidate each finding. |
-| [`model-matrix.md`](model-matrix.md) | The full eleven-row table with provider, runtime, raw counts, smoke score, and per-row notes. |
-| [`cost-model.md`](cost-model.md) | Per-100-document cost derivation. Token accounting, list-price multiplication, the ratios that survive contract pricing. |
+| [`model-matrix.md`](model-matrix.md) | The full eleven-row table with provider, runtime, raw counts, smoke score, per-row notes, and a cross-corpus comparison for the production answer. |
+| [`cost-model.md`](cost-model.md) | Per-100-document cost derivation. Token accounting (estimated, not invoice-measured), list-price multiplication, the ratios that survive contract pricing. |
+| [`production-config.md`](production-config.md) | Operational discipline: one process per workspace, plist rendered from template, backup-on-edit, embedder on separate host, smoke-corpus pinned by file list, canary anchored to expected references, parallel-ingest settings used in practice. |
 
 ## Scope of measurement
 
