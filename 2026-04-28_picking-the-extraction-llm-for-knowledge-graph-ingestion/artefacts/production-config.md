@@ -12,7 +12,7 @@ The file is split into two parts. **Part A** describes the transferable patterns
 
 Most operators run a single multi-tenant LightRAG with all workspaces sharing one process. The operator runs one process per workspace, six total at the time of writing, enforced by a fleet-registry flag:
 
-```
+```toml
 [lightrag]
 require_dedicated_api_per_workspace = true
 max_parallel_per_api = 1
@@ -30,7 +30,7 @@ This is what makes the report's §10 "render deployed extractor config from a te
 
 When the deployed config changes for any reason (operator edit, recovery action, gateway swap), the previous version is saved alongside the live file with a model-and-date suffix:
 
-```
+```text
 ai.lightrag.agent-factory.plist
 ai.lightrag.agent-factory.plist.bak.gemini-2026-05-20
 ai.lightrag.agent-factory.plist.bak.sonnet-2026-05-20
@@ -70,7 +70,7 @@ What is worth taking is the shape: small `max_async` (not large), embedder concu
 
 For reference, the live production config at the time of writing:
 
-```
+```ini
 max_parallel_insert         = 2     # whole-document concurrency in the LightRAG pipeline
 max_async                   = 2     # in-flight LLM extraction calls per workspace
 embedding_func_max_async    = 8     # in-flight embedding calls (safe because embedder is on a separate host)

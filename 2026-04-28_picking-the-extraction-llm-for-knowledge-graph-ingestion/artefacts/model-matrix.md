@@ -18,17 +18,17 @@ The eleven model rows measured against the 20-document smoke corpus and 24-cell 
 | 10 | Qwen 2.5 32B Q4 | Ollama, consumer GPU | partial | partial | partial | HTTP 502 cascade | Out of VRAM, repeated load/unload cascade. |
 | 11 | Qwen 2.5 14B 4-bit MLX | LM Studio MLX, M1 Max | partial | partial | partial | embed cascade abort | MLX backend interacted poorly with concurrent embedder calls. |
 
-## Pending rows (projected, not measured)
+## Pending rows (not measured in this report)
 
-The following models were costed in the cost-model artefact but never run. Their absence is not evidence about their quality.
+The following models were scoped as candidates for a future matrix extension but were never run. They are not costed in the current [`cost-model.md`](cost-model.md) artefact (which covers only the five rows in its table). Their absence is not evidence about their quality.
 
-| Model | Why not run | Where projected |
-|---|---|---|
-| Claude Haiku 4.5 | Released after the matrix locked. Projected cheaper than Sonnet 4.6 but more expensive than Gemini Flash. | Cost model. |
-| Gemini 2.5 Pro | Projected more expensive than Gemini Flash with uncertain quality delta on this task. | Cost model. |
-| GPT-4.1, GPT-4.1 mini | Projected on cost basis only. | Cost model. |
-| DeepSeek V3 | Projected on cost basis only. | Cost model. |
-| Mistral Large 2 | Projected on cost basis only. | Cost model. |
+| Model | Why not run |
+|---|---|
+| Claude Haiku 4.5 | Released after the matrix locked. |
+| Gemini 2.5 Pro | Deferred; uncertain quality delta on this task versus Gemini 2.5 Flash. |
+| GPT-4.1, GPT-4.1 mini | Deferred. |
+| DeepSeek V3 | Deferred. |
+| Mistral Large 2 | Deferred. |
 
 ## Reading the columns
 

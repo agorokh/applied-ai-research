@@ -19,7 +19,7 @@ Every headline claim in the report, tagged by epistemic status.
 | inferred | gpt-4o-mini ingests at roughly 20% to 40% of Gemini Flash's list-priced cost (calculator, not invoice) but loses smoke cells (19/3/2). | Smoke rubric tabulation; cost-model.md list-price derivation per 100 docs. |
 | measured | Sonnet 4.6's 20-document smoke ingest invoice was ~30× to ~33× Gemini Flash's invoice (smoke score 22/0/2 in row above). | Smoke run invoices recorded at run time. |
 | measured | Gemini 3-flash-preview and 3.1-flash-lite-preview both scored below Gemini 2.5 Flash on the smoke rubric. | Smoke rubric rows for Gemini 3 variants (21/3/0 and 22/1/1). |
-| measured | Six local open-source trials at two hardware tiers all scored below Gemini 2.5 Flash; highest local smoke pass count (Qwen 3.5 4B no-think) scored 8/4/12; best M1 Max completion (Qwen 2.5 14B GGUF Q4) scored 5/4/15. | Local trial logs; smoke rubric scoring. |
+| measured | Six local open-source trials at two hardware tiers all scored below Gemini 2.5 Flash; highest smoke pass count among structurally usable local graphs (Qwen 3.5 4B no-think) scored 8/4/12 (Llama 3.2 3B Q4 logged 11/13/0 but parser-dropped most relation output); best M1 Max completion (Qwen 2.5 14B GGUF Q4) scored 5/4/15. | Local trial logs; smoke rubric scoring; model-matrix.md. |
 
 ## Method (§03)
 
