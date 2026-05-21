@@ -14,6 +14,15 @@
                ./type.css     (semantic type roles)
    ============================================================ */
 
+/* Research-layout box-sizing: without border-box, `main` with
+   content-box + right padding 252 (TOC reservation) shrinks below
+   max-width so `margin: 0 auto` resolves to 0 and main left-anchors,
+   while the topbar centers — ~64px misalignment vs section labels. */
+.rs-page,
+.rs-page *,
+.rs-page *::before,
+.rs-page *::after { box-sizing: border-box; }
+
 .rs-page {
   background: var(--dx-bg);
   color: var(--dx-fg-1);
