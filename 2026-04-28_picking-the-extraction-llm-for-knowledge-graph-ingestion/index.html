@@ -107,7 +107,7 @@
 
     <div class="rs-callout">
       <h4>Finding 3. Local open-source ingestion is hardware-bound, not capability-bound</h4>
-      <p>Six open-source local trials (Llama 3.2 3B, Qwen 3.5 4B, Gemma 4 26B, Qwen 2.5 14B in two quantizations, Qwen 2.5 32B) showed a single recurring failure pattern: small models cannot reliably emit LightRAG's pipe-delimited entity schema (Llama 3.2 3B logged 11/13/0 nominal passes but parser-dropped most relation output), mid-size models thrash on consumer-class GPUs, and 14B-class Qwen models on M1-Max hardware finish the corpus but lose cells to schema noise. Qwen 3.5 4B (no-think) scored highest among the structurally usable local graphs (8/4/12); Qwen 2.5 14B GGUF Q4 on M1 Max was the best among Apple Silicon completions (5/4/15). Neither approaches Gemini Flash's 24/0/0. Local makes sense for sensitivity reasons, not for cost or quality reasons.</p>
+      <p>Six open-source local trials (Llama 3.2 3B, Qwen 3.5 4B, Gemma 4 26B, Qwen 2.5 14B in two quantizations, Qwen 2.5 32B) showed a single recurring failure pattern: small models cannot reliably emit LightRAG's pipe-delimited entity schema (Llama 3.2 3B logged 11/13/0 nominal passes but parser-dropped most relation output), mid-size models thrash on consumer-class GPUs, and 14B-class Qwen models on M1-Max hardware can ingest most of the corpus but lose cells to schema noise. Qwen 3.5 4B (no-think) scored highest among the structurally usable local graphs (8/4/12); Qwen 2.5 14B GGUF Q4 on M1 Max was the best among Apple Silicon completions (5/4/15 on 19/20 documents, not cross-comparable to full-corpus rows). Neither approaches Gemini Flash's 24/0/0. Local makes sense for sensitivity reasons, not for cost or quality reasons.</p>
     </div>
   </section>
 
@@ -270,7 +270,7 @@
 
     <p>The local-extractor question matters separately from cost. Some corpora cannot leave the operator's machine for sensitivity reasons. For those, the question is not "is local cheaper" (cloud is so cheap on this workload that the cost argument barely survives) but "is local viable at all."</p>
 
-    <p>I ran six local trials across two hardware tiers. Consumer GPU (a GTX 1070 with 6 GB VRAM serving Ollama) handled Llama 3.2 3B Q4 and Qwen 3.5 4B (8/4/12 on the smoke rubric) but timed out on Gemma 4 26B and 502-cascaded on Qwen 2.5 32B. M1 Max with 32 GB unified memory ran Qwen 2.5 14B in two flavours: MLX 4-bit cascaded on the embed call, GGUF Q4_K_M finished the corpus over ~4 hours and earned 5/4/15 on the smoke rubric.</p>
+    <p>I ran six local trials across two hardware tiers. Consumer GPU (a GTX 1070 with 6 GB VRAM serving Ollama) handled Llama 3.2 3B Q4 and Qwen 3.5 4B (8/4/12 on the smoke rubric) but timed out on Gemma 4 26B and 502-cascaded on Qwen 2.5 32B. M1 Max with 32 GB unified memory ran Qwen 2.5 14B in two flavours: MLX 4-bit cascaded on the embed call; GGUF Q4_K_M completed 19/20 documents over ~4 hours and earned 5/4/15 on the smoke rubric (partial ingest, not cross-comparable to full-corpus rows).</p>
 
     <p>Four transferable observations:</p>
 
