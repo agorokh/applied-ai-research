@@ -16,7 +16,7 @@ Every headline claim in the report, tagged by epistemic status.
 | measured | Gemini 2.5 Flash relation-to-entity ratio (1.15) is lower than Sonnet 4.6's (1.43). | Same rows. |
 | measured | Gemini 2.5 Flash scored 24/0/0 on the smoke rubric; Sonnet 4.6 scored 22/0/2 (two fail cells, zero marginals). | Smoke rubric tabulation. |
 | inferred | Breadth of entity index dominates density of relation index for LightRAG's traversal-then-fetch retrieval shape. | Mechanism derivation in §05; consistent with the smoke results but not independently A/B tested by restricting traversal mode. |
-| measured | gpt-4o-mini ingests at roughly 20% to 30% of Gemini Flash's list-priced cost but loses smoke cells (19/3/2). | Smoke matrix gpt-4o-mini row; cost model derivation per 100 docs. |
+| measured | gpt-4o-mini ingests at roughly 20% to 40% of Gemini Flash's list-priced cost but loses smoke cells (19/3/2). | Smoke matrix gpt-4o-mini row; cost model derivation per 100 docs. |
 | measured | Sonnet 4.6 ingests at roughly 30x to 33x Gemini Flash's measured invoice cost while scoring 22/24 on the smoke rubric. | Cost model derivation; published list rates verified at run time. |
 | measured | Gemini 3-flash-preview and 3.1-flash-lite-preview both scored below Gemini 2.5 Flash on the smoke rubric. | Smoke rubric rows for Gemini 3 variants (21/3/0 and 22/1/1). |
 | measured | Six local open-source trials at two hardware tiers all scored below Gemini 2.5 Flash; best local result (Qwen 2.5 14B GGUF Q4) scored 5/4/15. | Local trial logs; smoke rubric scoring. |
