@@ -35,7 +35,7 @@ Using public list prices verified at run time. Per-million-token rates are quote
 | Model | Per-1M input | Per-1M output | Input cost per 100 docs | Output cost per 100 docs | Total per 100 docs | Ratio (vs Gemini Flash) |
 |---|---:|---:|---:|---:|---:|---:|
 | **Gemini 2.5 Flash** | $0.30 | $2.50 | $2.40 | $5.00 | **~$7 to $10** | 1.0× |
-| gpt-4o-mini | $0.15 | $0.60 | $1.20 | $1.20 | **~$2 to $3** | 0.2× to 0.3× |
+| gpt-4o-mini | $0.15 | $0.60 | $1.20 | $1.20 | **~$2 to $3** | ~0.2× to ~0.4× |
 | Claude Sonnet 4.6 | $3.00 | $15.00 | $24.00 | $30.00 | **~$54 to $69** | ~6× to ~9× (at list) |
 | Llama 3.2 3B (local Ollama) | $0 | $0 | $0 | $0 | **$0** (electricity) | 0× |
 | Qwen 2.5 14B GGUF Q4 (local M1 Max) | $0 | $0 | $0 | $0 | **$0** (electricity + wall-clock) | 0× |

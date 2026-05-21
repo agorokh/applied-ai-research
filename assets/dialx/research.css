@@ -368,7 +368,9 @@ main {
   border-top: 1px solid var(--dx-border);
 }
 .rs-hero-footnote .dot { color: var(--dx-fg-4); }
-.rs-hero-footnote a {
+.rs-hero-footnote a,
+.rs-hero-footnote a:link,
+.rs-hero-footnote a:visited {
   color: var(--dx-fg-2);
   text-decoration: none;
   border-bottom: 1px solid transparent;
