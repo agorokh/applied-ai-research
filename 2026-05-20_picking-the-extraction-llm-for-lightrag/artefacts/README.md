@@ -1,0 +1,29 @@
+# Artefacts
+
+Companion material to [`../index.html`](../index.html). Each artefact stands on its own; the report cites them inline.
+
+| File | Purpose |
+|---|---|
+| [`methodology.md`](methodology.md) | Test design: corpus, chunking, smoke rubric, embedder, what the method does not measure. |
+| [`claims.md`](claims.md) | Every headline claim in the report, tagged measured / inferred / hypothetical / recommendation / scope, with the supporting evidence. |
+| [`invalidation.md`](invalidation.md) | Falsification conditions: what re-measurement would invalidate each finding. |
+| [`model-matrix.md`](model-matrix.md) | The full eleven-row table with provider, runtime, raw counts, smoke score, and per-row notes. |
+| [`cost-model.md`](cost-model.md) | Per-100-document cost derivation. Token accounting, list-price multiplication, the ratios that survive contract pricing. |
+
+## How to reproduce
+
+The smoke rubric is the reusable apparatus. Re-instantiate it on your own corpus before committing to a default extractor:
+
+1. Pick 20 documents that match the shape of your production corpus (mixed prose plus structured notes worked here; pick what is representative of yours).
+2. Pin them in a list file so the same files are ingested for every model row.
+3. Write six canary queries that match real questions your retrieval would receive. For each query, name the document or section that should appear in the returned chunks.
+4. For every model you evaluate, ingest the same 20 documents with the same chunking and embedder, then run each canary query in each of LightRAG's four retrieval modes (24 cells total per model).
+5. Score each cell pass / marginal / fail against the expected reference.
+6. Tabulate entities per document, relations per document, smoke score, and measured cost on the 20-document subset.
+
+The rubric is small enough to live in a repo alongside the model matrix. Re-run it whenever a new model lands or your corpus shape changes.
+
+## Companion reports
+
+- [Choosing memory for enterprise agents](../../2026-05-19_choosing-memory-for-enterprise-agents/) (the substrate question; this report answers the immediately downstream extractor question).
+- [Claude Code via EPAM DIAL POC](../../2026-05-15_claude-code-via-dial-poc/) (the inference-routing question; orthogonal to extractor choice but the same operator-tier discipline).
