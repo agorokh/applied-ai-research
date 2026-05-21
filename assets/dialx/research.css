@@ -283,7 +283,9 @@ main {
 .rs-section strong { color: var(--dx-fg-1); font-weight: 600; }
 .rs-section em { font-style: italic; }
 
-.rs-section a {
+.rs-section a,
+.rs-section a:link,
+.rs-section a:visited {
   color: var(--dx-violet);
   text-decoration: none;
   border-bottom: 1px solid color-mix(in srgb, var(--dx-violet) 30%, transparent);
@@ -366,7 +368,9 @@ main {
   border-top: 1px solid var(--dx-border);
 }
 .rs-hero-footnote .dot { color: var(--dx-fg-4); }
-.rs-hero-footnote a {
+.rs-hero-footnote a,
+.rs-hero-footnote a:link,
+.rs-hero-footnote a:visited {
   color: var(--dx-fg-2);
   text-decoration: none;
   border-bottom: 1px solid transparent;
@@ -721,6 +725,36 @@ main {
   transition: color 200ms;
 }
 .rs-footer a:hover { color: var(--dx-fg-2); }
+
+/* ---------- Landing footer-byline block ---------------- */
+/* The independent-publication disclaimer and companion-repos pointers
+   sit in this quiet block above the all-caps mono footer, so the hero
+   stays focused on the publication subject rather than positioning. */
+
+.rs-footer__byline {
+  margin: 56px 0 0;
+  padding: 28px 0 0;
+  border-top: 1px solid var(--dx-border);
+  color: var(--dx-fg-3);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.rs-footer__byline p { margin: 0 0 12px; }
+.rs-footer__byline p:last-child { margin-bottom: 0; }
+.rs-footer__byline em { color: var(--dx-fg-2); font-style: italic; }
+.rs-footer__byline .label { color: var(--dx-fg-4); }
+.rs-footer__byline a,
+.rs-footer__byline a:link,
+.rs-footer__byline a:visited {
+  color: var(--dx-violet);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 160ms ease;
+}
+.rs-footer__byline a:hover,
+.rs-footer__byline a:focus {
+  border-bottom-color: var(--dx-violet);
+}
 
 /* ---------- Index page primitives -------------------- */
 
