@@ -476,7 +476,7 @@ ANTHROPIC_BASE_URL=https://&lt;dial-gateway-host&gt;</pre>
   function onScroll() {
     var sd = document.documentElement.scrollTop || document.body.scrollTop;
     var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    if (bar) bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
     var y = sd + 120, active = targets[0];
     for (var i = 0; i < targets.length; i++) if (targets[i].t.offsetTop <= y) active = targets[i];
     for (var j = 0; j < targets.length; j++) targets[j].a.classList.toggle('is-active', targets[j] === active);

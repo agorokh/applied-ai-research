@@ -664,13 +664,14 @@ main {
   align-items: baseline;
 }
 /* Visited-link override: footer links keep their unvisited color
-   (else browser default purple-blue leaks through after first click). */
+   (nav and mark overrides live with .rs-nav / .rs-mark above;
+   else browser default purple-blue leaks through after first click). */
 .rs-footer a,
 .rs-footer a:visited,
 .rs-footer a:link {
   color: inherit;
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, currentcolor 30%, transparent);
   transition: color 200ms;
 }
 .rs-footer a:hover { color: var(--dx-fg-2); }
