@@ -6,17 +6,17 @@ Falsification conditions per finding. Each row names the specific re-measurement
 
 **Stated claim:** On LightRAG's traversal-then-fetch retrieval shape, an extractor that produces more entities per document (Gemini 2.5 Flash) outperforms an extractor that produces a denser relation graph per entity (Sonnet 4.6), despite the latter's higher rel/ent ratio.
 
-**Would be invalidated by:** Running the same 24-cell smoke rubric on a corpus where the canary queries are deliberately multi-hop ("what links A to B through C") and observing Sonnet 4.6 winning by a margin larger than the marginal-recovery slack. If the query distribution rewards density, the ranking flips and the breadth-over-density claim is corpus-conditional, not general.
+**Would be invalidated by:** Running the same 24-cell smoke rubric on a corpus where the canary queries are deliberately multi-hop ("what links A to B through C") and observing Sonnet 4.6 winning by a margin larger than its two-cell slack vs Gemini Flash. If the query distribution rewards density, the ranking flips and the breadth-over-density claim is corpus-conditional, not general.
 
 **Would be reinforced by:** Re-running on a structurally different corpus (e.g. code documentation, scientific papers) and observing the same Gemini 2.5 Flash entity-count advantage and the same smoke ranking.
 
 ## Finding 2: the cost-quality Pareto has one sweet spot
 
-**Stated claim:** Gemini 2.5 Flash hits the smoke ceiling at the lowest measured cost; gpt-4o-mini is much cheaper but loses cells; Sonnet 4.6 is much more expensive at the same quality ceiling.
+**Stated claim:** Gemini 2.5 Flash hits the smoke ceiling at the lowest measured cost; gpt-4o-mini is much cheaper but loses cells; Sonnet 4.6 is much more expensive and scores 22/24 (two fail cells).
 
 **Would be invalidated by:** Measuring a not-yet-tested commercial model (e.g. Claude Haiku 4.5, GPT-4.1 mini, DeepSeek V3) that scores 24/24 on the smoke rubric at lower cost than Gemini 2.5 Flash. That would shift the Pareto point, not refute the Pareto-point pattern.
 
-**Would be reinforced by:** Re-running on a different provider gateway with different list prices and observing the same ranking (Gemini Flash cheapest at 24/24, gpt-4o-mini cheapest with cells lost, Sonnet most expensive at parity).
+**Would be reinforced by:** Re-running on a different provider gateway with different list prices and observing the same ranking (Gemini Flash cheapest at 24/24, gpt-4o-mini cheapest with cells lost, Sonnet most expensive at 22/24).
 
 ## Finding 3: local open-source is hardware-bound, not capability-bound
 

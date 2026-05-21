@@ -66,7 +66,7 @@
     <div class="rs-hero-meta">
       <div class="rs-meta-stat"><span class="v">24<span class="unit">/ 24 cells</span></span><span class="l">Gemini 2.5 Flash smoke pass; only model in the matrix at this score</span></div>
       <div class="rs-meta-stat"><span class="v">11<span class="unit">models</span></span><span class="l">Frontier commercial, mid-tier commercial, local open-source</span></div>
-      <div class="rs-meta-stat"><span class="v">~33<span class="unit">×</span></span><span class="l">Sonnet 4.6 ingest cost over Gemini 2.5 Flash at parity quality</span></div>
+      <div class="rs-meta-stat"><span class="v">~33<span class="unit">×</span></span><span class="l">Sonnet 4.6 measured ingest cost over Gemini 2.5 Flash (22/24 vs 24/24 smoke)</span></div>
       <div class="rs-meta-stat"><span class="v">2<span class="unit">×</span></span><span class="l">Gemini Flash entity-extraction breadth over Sonnet 4.6 per document</span></div>
     </div>
     <div class="rs-hero-footnote">
@@ -95,12 +95,12 @@
 
     <div class="rs-callout">
       <h4>Finding 1. Breadth beats density for graph-traversal retrieval</h4>
-      <p>Gemini 2.5 Flash extracts roughly 2x more entities and 1.6x more relations per document than Claude Sonnet 4.6 on the same chunks. Its relation-to-entity ratio is actually slightly lower (1.15 vs 1.43 on the smoke corpus). The mechanism: graph-traversal retrieval (the shape every system in this class uses) fetches chunks anchored by the entity index, so additional entities anchor additional chunks at retrieval time. Density of relations matters less than the surface area the entity index covers. Sonnet 4.6 ran the smoke rubric to an effective 24/24 by margin recovery; Gemini 2.5 Flash ran it to a clean 24/24 with no marginals. The breadth ranking holds across every corpus I have measured; the absolute entity-per-document numbers vary by roughly 2x across them (see §05). <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
+      <p>Gemini 2.5 Flash extracts roughly 2x more entities and 1.6x more relations per document than Claude Sonnet 4.6 on the same chunks. Its relation-to-entity ratio is actually slightly lower (1.15 vs 1.43 on the smoke corpus). The mechanism: graph-traversal retrieval (the shape every system in this class uses) fetches chunks anchored by the entity index, so additional entities anchor additional chunks at retrieval time. Density of relations matters less than the surface area the entity index covers. Sonnet 4.6 scored 22/0/2 on the smoke rubric (two fail cells, zero marginals); Gemini 2.5 Flash scored a clean 24/0/0. The breadth ranking holds across every corpus I have measured; the absolute entity-per-document numbers vary by roughly 2x across them (see §05). <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
     </div>
 
     <div class="rs-callout">
       <h4>Finding 2. The cost-quality Pareto has one sweet spot, not a curve</h4>
-      <p>OpenAI gpt-4o-mini ingests at roughly one-fifth to one-third of Gemini 2.5 Flash's list-priced cost but loses smoke cells on cross-file synthesis (19 pass, 3 marginal, 2 fail). Sonnet 4.6 ingests at roughly thirty-three times Gemini Flash's cost and lands at the same retrieval ceiling. There is no smooth cost-quality frontier in the measured matrix; there is one model that pays for itself by clearing all 24 cells at the lowest cost that clears all 24. Two later Gemini variants (3-flash-preview, 3.1-flash-lite-preview) extracted more conservatively and lost cells; "newer" is not "better" for this task. <a class="rs-mono" href="artefacts/cost-model.md">cost-model →</a></p>
+      <p>OpenAI gpt-4o-mini ingests at roughly one-fifth to one-third of Gemini 2.5 Flash's list-priced cost but loses smoke cells on cross-file synthesis (19 pass, 3 marginal, 2 fail). Sonnet 4.6 ingests at roughly thirty-three times Gemini Flash's measured cost and scores 22/24 (two fail cells). There is no smooth cost-quality frontier in the measured matrix; there is one model that pays for itself by clearing all 24 cells at the lowest cost that clears all 24. Two later Gemini variants (3-flash-preview, 3.1-flash-lite-preview) extracted more conservatively and lost cells; "newer" is not "better" for this task. <a class="rs-mono" href="artefacts/cost-model.md">cost-model →</a></p>
     </div>
 
     <div class="rs-callout">
@@ -164,7 +164,7 @@
       <tbody>
         <tr><td><strong>Gemini 2.5 Flash</strong></td><td>Google via OpenRouter</td><td>82.5</td><td>95.0</td><td>1.15</td><td><strong>24 / 0 / 0</strong></td></tr>
         <tr><td>Gemini 3.1 flash-lite preview</td><td>Google via OpenRouter</td><td>19.6</td><td>23.3</td><td>1.19</td><td>22 / 1 / 1</td></tr>
-        <tr><td>Claude Sonnet 4.6</td><td>Anthropic via OpenRouter</td><td>40.8</td><td>58.4</td><td>1.43</td><td>22 / 0 / 2 (eff 24 / 0 / 0)</td></tr>
+        <tr><td>Claude Sonnet 4.6</td><td>Anthropic via OpenRouter</td><td>40.8</td><td>58.4</td><td>1.43</td><td>22 / 0 / 2</td></tr>
         <tr><td>Gemini 3 flash preview</td><td>Google via OpenRouter</td><td>34.0</td><td>40.0</td><td>1.18</td><td>21 / 3 / 0</td></tr>
         <tr><td>OpenAI gpt-4o-mini</td><td>OpenAI via OpenRouter</td><td>17.1</td><td>17.8</td><td>1.04</td><td>19 / 3 / 2</td></tr>
         <tr><td>Llama 3.2 3B Q4</td><td>Ollama, consumer GPU</td><td>17.4</td><td>6.0</td><td>0.34</td><td>11 / 13 / 0</td></tr>
@@ -218,7 +218,7 @@
       <tbody>
         <tr><td><strong>Gemini 2.5 Flash</strong></td><td>$0.30 / $2.50</td><td>~$7 to $10</td><td>1.0×</td><td>24 / 24</td></tr>
         <tr><td>gpt-4o-mini</td><td>$0.15 / $0.60</td><td>~$2 to $3</td><td>0.2× to 0.3×</td><td>19 / 24</td></tr>
-        <tr><td>Claude Sonnet 4.6</td><td>$3.00 / $15.00</td><td>~$54 to $80 (list-derived)</td><td>~7× to ~10× at list; ~30–33× measured on 20-doc invoice</td><td>22 / 24 (eff 24)</td></tr>
+        <tr><td>Claude Sonnet 4.6</td><td>$3.00 / $15.00</td><td>~$54 to $80 (list-derived)</td><td>~7× to ~10× at list; ~30–33× measured on 20-doc invoice</td><td>22 / 24</td></tr>
         <tr><td>Llama 3.2 3B (local Ollama)</td><td>$0 (electricity)</td><td>$0</td><td>0×</td><td>11 / 24</td></tr>
         <tr><td>Qwen 2.5 14B GGUF Q4 (local M1 Max)</td><td>$0 (electricity)</td><td>$0</td><td>0×</td><td>5 / 24</td></tr>
       </tbody>
@@ -226,9 +226,9 @@
 
     <p>Three things this table is not. It is not a forecast for your corpus (your chunks may not average 1200 tokens; your gleaning may run hotter or colder). It is not a contract-pricing table (an enterprise gateway discount changes the absolute numbers but rarely changes the ratios inside the cluster). It is not a long-tail study (it covers models I actually ran, not the much larger set of frontier models that are projected on cost but never measured).</p>
 
-    <p>The ranking conclusion is robust to multiplicative pricing factors below roughly 10x. Gemini 2.5 Flash is cheaper than Sonnet 4.6 on every published rate card I have seen and scores the same on the smoke rubric. The cheapest model that hits 24/24 is the production answer; nothing in the cost table flips that.</p>
+    <p>The ranking conclusion is robust to multiplicative pricing factors below roughly 10x. Gemini 2.5 Flash is cheaper than Sonnet 4.6 on every published rate card I have seen and is the only model in the matrix with a strict 24/24 smoke score. The cheapest model that hits 24/24 is the production answer; nothing in the cost table flips that.</p>
 
-    <p>One reconciliation note: the ~$20 per 100 documents above is what the provider's invoice actually showed on the smoke corpus (extrapolated from ~$4 across 20 documents). A purely list-price calculation against the per-token rates and the chunk-token budget lands closer to ~$7 to $10 per 100 documents. Both are honest derivations; the gap comes from gleaning passes that fire more aggressively in real ingest runs than the chunk-token math predicts, and from the model adding explanatory text the cost-calculator does not anticipate. The cost-model artefact walks through both methods. Use the invoice-based number when projecting cost-of-mistake (the drift case in §09), the calculator number when negotiating contract pricing.</p>
+    <p>One reconciliation note: measured invoices on the smoke corpus can run above the list-price calculator (~$7 to $10 per 100 documents at the rates above) because gleaning passes fire more aggressively in real ingest runs than the chunk-token math predicts, and because the model adds explanatory text the cost-calculator does not anticipate. The cost-model artefact walks through both methods. Use the invoice-based number when projecting cost-of-mistake (the drift case in §09), the calculator number when negotiating contract pricing.</p>
 
     <p>One operational reality from a recent run: even Gemini 2.5 Flash at its low per-token rate trips daily token caps on a single full vault re-ingest. A 180-document re-ingest in flight today hit the 2,000,000 token daily cap and parked the remaining documents until tomorrow. Production-tier accounts raise this cap; the point worth making in advance is that "cheap to run" does not mean "fast to re-ingest at scale" when soft caps are in play. Budget for higher tiers or stagger the re-ingest across days.</p>
   </section>
