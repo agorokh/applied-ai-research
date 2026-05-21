@@ -10,6 +10,9 @@ Every headline claim in [the report](../) tagged by category and pointed at the 
 | **inferred** | Conclusion drawn from the measured data, conditioned on a stated mechanism. |
 | **hypothetical** | Scenario described to illustrate the form of an analysis. Not on this stack. |
 | **recommendation** | Proposed deployment default or process step. Grounded in measured + inferred. |
+| **scope** | Boundary on where a finding applies (corpus class, sample size, pilot vs formal suite). | Qualifier on applicability, not a substrate score. |
+| **process** | Claim about the evaluation methodology itself (e.g. the canary caught a wrong prior). | Meta; not a retrieval or substrate measurement. |
+| **measured / process**, **inferred / recommendation**, etc. | Compound `primary / modifier`: left token is the claim type; right token is a secondary qualifier. | Same notation as the POC claims ledger. |
 
 ## Ledger
 

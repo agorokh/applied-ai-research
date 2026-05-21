@@ -1,0 +1,323 @@
+{
+  "watermark": "1f5614c3186a23955dec19b32471dcf94f982daa",
+  "threads": [
+    {
+      "id": "PRRT_kwDOSiUzTc6DrGee",
+      "isResolved": true,
+      "path": "2026-05-19_choosing-memory-for-enterprise-agents/index.html",
+      "line": null,
+      "comments": {
+        "nodes": [
+          {
+            "id": "PRRC_kwDOSiUzTc7DZ8l5",
+            "author": {
+              "login": "chatgpt-codex-connector"
+            },
+            "body": "**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  Point artefact links to resolvable pages**\n\nThe new hero links use directory URLs (`artefacts/` and `artefacts/canary-harness/`), but this commit only adds Markdown files inside those directories (`README.md`, etc.) and no `index.html` pages. On static hosting (including typical GitHub Pages setups), directory URLs without an index file return 404, so readers cannot open the promised artefact bundle from the report. Please link directly to concrete files like `artefacts/README.md` (and `artefacts/canary-harness/README.md`) or add index pages for those directories.\n\nUseful? React with \ud83d\udc4d\u00a0/ \ud83d\udc4e.",
+            "createdAt": "2026-05-21T02:51:09Z",
+            "updatedAt": "2026-05-21T02:51:09Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRRT_kwDOSiUzTc6DrIpH",
+      "isResolved": true,
+      "path": "2026-05-15_claude-code-via-dial-poc/index.html",
+      "line": null,
+      "comments": {
+        "nodes": [
+          {
+            "id": "PRRC_kwDOSiUzTc7DZ_eP",
+            "author": {
+              "login": "chatgpt-codex-connector"
+            },
+            "body": "**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  Link artefact chips to concrete files**\n\nThe new hero chip uses a directory URL (`href=\"artefacts/\"`), but this commit only adds `README.md` inside that directory and no `index.html`/`index.md`, so static hosting will not resolve this path as a page and readers will hit a dead link instead of the artefact bundle. This re-raises the earlier 404 concern with fresh evidence: the same unresolved pattern is now present in the POC report as well (not just the memory report), so the regression affects multiple published pages.\n\nUseful? React with \ud83d\udc4d\u00a0/ \ud83d\udc4e.",
+            "createdAt": "2026-05-21T02:55:19Z",
+            "updatedAt": "2026-05-21T02:55:19Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRRT_kwDOSiUzTc6DrNk4",
+      "isResolved": true,
+      "path": "assets/dialx/research.css",
+      "line": 306,
+      "comments": {
+        "nodes": [
+          {
+            "id": "PRRC_kwDOSiUzTc7DaGId",
+            "author": {
+              "login": "cursor"
+            },
+            "body": "### CSS specificity causes violet text instead of teal on artefact chips\n\n**Medium Severity**\n\n<!-- DESCRIPTION START -->\nThe new `.rs-section a.rs-mono` rule (specificity 0,2,1) omits a `color` declaration. For the `color` property, `.rs-section a` (specificity 0,1,1, setting `var(--dx-violet)`) beats `.rs-mono` (specificity 0,1,0, setting `var(--dx-teal)`). All `a.rs-mono` artefact-chip links inside `.rs-section` render with violet text on a teal-tinted background/border \u2014 visually inconsistent with regular `.rs-mono` code tokens. The PR verification claims \"\u00a704 `methodology \u2192` rendered as teal mono chip\" but the cascade produces violet text instead.\n<!-- DESCRIPTION END -->\n\n<!-- BUGBOT_BUG_ID: fb1c51e4-e1b4-4191-972c-5761801ea3d7 -->\n\n<!-- LOCATIONS START\nassets/dialx/research.css#L296-L301\nLOCATIONS END -->\n<div><a href=\"https://cursor.com/open?link=eyJ2ZXJzaW9uIjoxLCJ0eXBlIjoiQlVHQk9UX0ZJWF9JTl9DVVJTT1IiLCJkYXRhIjp7InJlZGlzS2V5IjoiYnVnYm90OjE1ZjdkZDg2LWE4MTQtNGQ3NC05NTM0LWQyMTMxOGIzYzViZiIsImVuY3J5cHRpb25LZXkiOiJENUUzRENWS1M5bm55cFg1RHM5NWNYYTJna0swRkc4MWFzRXpEQTZPM0drIiwiYnJhbmNoIjoidjIyLXBvc2l0aW9uaW5nLWFuZC1hcnRlZmFjdHMiLCJyZXBvT3duZXIiOiJhZ29yb2toIiwicmVwb05hbWUiOiJhcHBsaWVkLWFpLXJlc2VhcmNoIn19\" target=\"_blank\" rel=\"noopener noreferrer\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cursor.com/assets/images/fix-in-cursor-dark.png\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://cursor.com/assets/images/fix-in-cursor-light.png\"><img alt=\"Fix in Cursor\" width=\"115\" height=\"28\" src=\"https://cursor.com/assets/images/fix-in-cursor-dark.png\"></picture></a>&nbsp;<a href=\"https://cursor.com/agents?link=eyJ2ZXJzaW9uIjoxLCJ0eXBlIjoiQlVHQk9UX0ZJWF9JTl9XRUIiLCJkYXRhIjp7InJlZGlzS2V5IjoiYnVnYm90OjE1ZjdkZDg2LWE4MTQtNGQ3NC05NTM0LWQyMTMxOGIzYzViZiIsImVuY3J5cHRpb25LZXkiOiJENUUzRENWS1M5bm55cFg1RHM5NWNYYTJna0swRkc4MWFzRXpEQTZPM0drIiwiYnJhbmNoIjoidjIyLXBvc2l0aW9uaW5nLWFuZC1hcnRlZmFjdHMiLCJyZXBvT3duZXIiOiJhZ29yb2toIiwicmVwb05hbWUiOiJhcHBsaWVkLWFpLXJlc2VhcmNoIiwicHJOdW1iZXIiOjEyLCJjb21taXRTaGEiOiIxZDg2YWJlYTFhMzVjYzMxNGJkMDgzNTFjOWEwMzgxNmMwYWFiYmQ3IiwicHJvdmlkZXIiOiJnaXRodWIifX0\" target=\"_blank\" rel=\"noopener noreferrer\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cursor.com/assets/images/fix-in-web-dark.png\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://cursor.com/assets/images/fix-in-web-light.png\"><img alt=\"Fix in Web\" width=\"99\" height=\"28\" src=\"https://cursor.com/assets/images/fix-in-web-dark.png\"></picture></a></div>\n\n\n<sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 1d86abea1a35cc314bd08351c9a03816c0aabbd7. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n",
+            "createdAt": "2026-05-21T03:04:32Z",
+            "updatedAt": "2026-05-21T03:04:32Z"
+          }
+        ]
+      }
+    }
+  ],
+  "issue_comments": [
+    {
+      "id": "IC_kwDOSiUzTc8AAAABDHp2KQ",
+      "author": {
+        "login": "gemini-code-assist"
+      },
+      "body": "> [!WARNING]\n> You have reached your daily quota limit. Please wait up to 24 hours and I will start processing your requests again!",
+      "createdAt": "2026-05-21T02:45:31Z",
+      "updatedAt": "2026-05-21T02:45:31Z",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/12#issuecomment-4504319529"
+    },
+    {
+      "id": "IC_kwDOSiUzTc8AAAABDHp27Q",
+      "author": {
+        "login": "coderabbitai"
+      },
+      "body": "<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- This is an auto-generated comment: rate limited by coderabbit.ai -->\n\n> [!WARNING]\n> ## Rate limit exceeded\n> \n> `@agorokh` has exceeded the limit for the number of commits that can be reviewed per hour. Please wait **12 minutes and 15 seconds** before requesting another review.\n> \n> You\u2019ve run out of usage credits. Purchase more in the [billing tab](https://app.coderabbit.ai/settings/subscription?tab=usage&tenantId=99f97717-a8eb-4ccd-a5ab-e3903c7d9f94).\n> \n> <details>\n> <summary>\u231b How to resolve this issue?</summary>\n> \n> After the wait time has elapsed, a review can be triggered using the `@coderabbitai review` command as a PR comment. Alternatively, push new commits to this PR.\n> \n> We recommend that you space out your commits to avoid hitting the rate limit.\n> \n> </details>\n> \n> \n> <details>\n> <summary>\ud83d\udea6 How do rate limits work?</summary>\n> \n> CodeRabbit enforces hourly rate limits for each developer per organization.\n> \n> Our paid plans have higher rate limits than the trial, open-source and free plans. In all cases, we re-allow further reviews after a brief timeout.\n> \n> Please see our [FAQ](https://docs.coderabbit.ai/faq) for further information.\n> \n> </details>\n> \n> <details>\n> <summary>\u2139\ufe0f Review info</summary>\n> \n> <details>\n> <summary>\u2699\ufe0f Run configuration</summary>\n> \n> **Configuration used**: Organization UI\n> \n> **Review profile**: ASSERTIVE\n> \n> **Plan**: Pro\n> \n> **Run ID**: `658c9d4b-4a2f-4e24-9de2-fae79463d622`\n> \n> </details>\n> \n> <details>\n> <summary>\ud83d\udce5 Commits</summary>\n> \n> Reviewing files that changed from the base of the PR and between c0c0ad27641a165e3470ef32ebc4aa02c83c0fb7 and 1f5614c3186a23955dec19b32471dcf94f982daa.\n> \n> </details>\n> \n> <details>\n> <summary>\ud83d\udcd2 Files selected for processing (21)</summary>\n> \n> * `2026-05-15_claude-code-via-dial-poc/artefacts/README.md`\n> * `2026-05-15_claude-code-via-dial-poc/artefacts/claims.md`\n> * `2026-05-15_claude-code-via-dial-poc/artefacts/invalidation.md`\n> * `2026-05-15_claude-code-via-dial-poc/artefacts/methodology.md`\n> * `2026-05-15_claude-code-via-dial-poc/artefacts/pricing-snapshot/bedrock-us-east-ohio-2026-05-14.md`\n> * `2026-05-15_claude-code-via-dial-poc/artefacts/telemetry-schema.md`\n> * `2026-05-15_claude-code-via-dial-poc/index.html`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/README.md`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/adoption-bar.md`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/README.md`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/example-fixture.jsonl`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/schema.md`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/claims.md`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/invalidation.md`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/methodology.md`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/artefacts/task-families.md`\n> * `2026-05-19_choosing-memory-for-enterprise-agents/index.html`\n> * `ABOUT.md`\n> * `README.md`\n> * `assets/dialx/research.css`\n> * `index.html`\n> \n> </details>\n> \n> </details>\n\n<!-- end of auto-generated comment: rate limited by coderabbit.ai -->\n\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary>\u2728 Finishing Touches</summary>\n\n<details>\n<summary>\ud83e\uddea Generate unit tests (beta)</summary>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} -->   Create PR with unit tests\n- [ ] <!-- {\"checkboxId\": \"6ba7b810-9dad-11d1-80b4-00c04fd430c8\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} -->   Commit unit tests in branch `v22-positioning-and-artefacts`\n\n</details>\n\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n<!-- tips_start -->\n\n---\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=agorokh/applied-ai-research&utm_content=12)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary>\u2764\ufe0f Share</summary>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</details>\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands and usage tips.</sub>\n\n<!-- tips_end -->",
+      "createdAt": "2026-05-21T02:45:33Z",
+      "updatedAt": "2026-05-21T03:06:26Z",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/12#issuecomment-4504319725"
+    },
+    {
+      "id": "IC_kwDOSiUzTc8AAAABDHqD0w",
+      "author": {
+        "login": "qodo-code-review"
+      },
+      "body": "<h3>Review Summary by Qodo</h3>\n\nv22 \u2014 Reposition to independent practitioner framing + publish sub-artefact bundle\n\n<code>\ud83d\udcdd Documentation</code> <code>\u2728 Enhancement</code> <code>\ud83d\udc1e Bug fix</code>\n\n<img src=\"https://www.qodo.ai/wp-content/uploads/2025/11/light-grey-line.svg\" height=\"10%\" alt=\"Grey Divider\">\n\n<h3>Walkthroughs</h3>\n\n<details open>\n<summary>Description</summary>\n\n<br/>\n\n<pre>\n  **Positioning reframe from institutional to independent practitioner framing:**\n\u2022 Removed EPAM institutional attribution from all bylines, page titles, and meta descriptions across\n  landing page and both reports\n\u2022 Updated eyebrow tags: &quot;Substrate study&quot; \u2192 &quot;Applied research note&quot;, &quot;POC report&quot; \u2192 &quot;Engineering\n  brief&quot;\n\u2022 Softened institutional language throughout prose (e.g., &quot;EPAM accounts&quot; \u2192 &quot;enterprise-agent\n  engagements&quot;, &quot;EPAM delivery teams&quot; \u2192 &quot;delivery teams&quot;)\n\u2022 Added explicit &quot;not an official EPAM publication&quot; disclaimers on landing page and in new\n  <b><i>ABOUT.md</i></b>\n\u2022 Rewritten <b><i>README.md</i></b> with H1 &quot;Applied AI Research \u2014 practitioner notes&quot; and clarified\n  Contributing section for practitioners\n  **Sub-artefact bundle with 14 new documentation files:**\n\u2022 **POC report** (<b><i>2026-05-15_claude-code-via-dial-poc/artefacts/</i></b>): <b><i>README.md</i></b>, <b><i>methodology.md</i></b>,\n  <b><i>claims.md</i></b>, <b><i>invalidation.md</i></b>, <b><i>telemetry-schema.md</i></b>,\n  <b><i>pricing-snapshot/bedrock-us-east-ohio-2026-05-14.md</i></b>\n\u2022 **Memory report** (<b><i>2026-05-19_choosing-memory-for-enterprise-agents/artefacts/</i></b>): <b><i>README.md</i></b>,\n  <b><i>methodology.md</i></b>, <b><i>claims.md</i></b>, <b><i>invalidation.md</i></b>, <b><i>adoption-bar.md</i></b>, <b><i>task-families.md</i></b>,\n  <b><i>canary-harness/README.md</i></b>, <b><i>canary-harness/schema.md</i></b>, <b><i>canary-harness/example-fixture.jsonl</i></b>\n\u2022 Each artefact documents methodology, claims ledger, falsification conditions, and intentional\n  exclusions (held-out fixtures, proprietary code, deployment-specific data)\n\u2022 Closes the \u00a711 &quot;publishes the canary harness&quot; promise with reproducible protocol and example\n  fixtures\n  **Inline linking and styling:**\n\u2022 Added 18 inline links from report prose to sub-artefact files with <b><i>.rs-mono</i></b> chip styling\n\u2022 Added hero-meta artefacts chips linking to <b><i>artefacts/</i></b> directories\n\u2022 New CSS rule <b><i>.rs-section a.rs-mono</i></b> for chip-style link appearance with hover effects\n  **Bug fixes (cherry-picked from PR #11):**\n\u2022 Global <b><i>box-sizing: border-box</i></b> reset fixing 63.5px topbar misalignment caused by <b><i>main</i></b>\n  content-box + right padding interaction\n\u2022 Topbar and pill styling corrections\n  **Intentional exclusions:** runnable harness code, results CSV bundles, real task\n  prompts/validators, adapter source code, per-trial transcripts (all documented in artefact README\n  files with rationale)\n</pre>\n</details>\n\n<details>\n<summary>Diagram</summary>\n\n<br/>\n\n```mermaid\nflowchart LR\n  A[\"Institutional byline<br/>EPAM attribution\"] -->|\"Remove EPAM<br/>from surfaces\"| B[\"Independent practitioner<br/>framing\"]\n  C[\"Report prose<br/>without artefacts\"] -->|\"Link to 14 new<br/>supporting files\"| D[\"Artefact bundle<br/>methodology + claims<br/>+ invalidation\"]\n  E[\"Topbar misalignment<br/>box-sizing issue\"] -->|\"Global border-box<br/>reset\"| F[\"Aligned layout<br/>+ chip styling\"]\n  B --> G[\"Landing + 2 reports<br/>repositioned\"]\n  D --> G\n  F --> G\n\n```\n\n</details>\n\n\n\n\n<h3>File Changes</h3>\n\n<details>\n<summary>1. 2026-05-15_claude-code-via-dial-poc/index.html\n <code>\ud83d\udcdd Documentation</code> <code> +29/-21 </code>  </summary>  \n\n<br/>\n\n>Reposition POC report from institutional to independent practitioner framing\n><pre>\n>\u2022 Repositioned report from institutional byline (&quot;EPAM \u00b7 Arseny Gorokh&quot;) to independent practitioner\n>  framing (&quot;Independent \u00b7 Arseny Gorokh&quot;)\n>\u2022 Updated page title and meta description to emphasize independent status and remove institutional\n>  attribution\n>\u2022 Changed eyebrow tag from &quot;POC report&quot; to &quot;Engineering brief&quot; across all references\n>\u2022 Added 9 inline links to sub-artefact files (<b><i>claims.md</i></b>, <b><i>methodology.md</i></b>, <b><i>pricing-snapshot/</i></b>,\n>  <b><i>telemetry-schema.md</i></b>, <b><i>invalidation.md</i></b>) with <b><i>.rs-mono</i></b> chip styling\n>\u2022 Added hero-meta artefacts chip linking to <b><i>artefacts/</i></b> directory\n>\u2022 Softened institutional language: replaced &quot;EPAM-compliant inference path&quot; with\n>  &quot;sanctioned-inference gateway&quot; and &quot;EPAM&#x27;s existing project metadata&quot; with &quot;the operating\n>  organisation&#x27;s existing project metadata&quot;\n>\u2022 Added &quot;About this report&quot; disclaimer callout at end of \u00a712 with CC BY 4.0 license attribution\n>\u2022 Updated footer from &quot;Applied AI Research \u00b7 EPAM \u00b7 2026&quot; to &quot;Applied AI Research \u00b7 independent\n>  practitioner notes \u00b7 2026&quot;\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-72563f0368d9a56fd95072d36ffc425cdbfa84e50e9e164a32f3bc6ddeaa4126\"> 2026-05-15_claude-code-via-dial-poc/index.html\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>2. 2026-05-19_choosing-memory-for-enterprise-agents/index.html\n <code>\ud83d\udcdd Documentation</code> <code> +21/-14 </code>  </summary>  \n\n<br/>\n\n>Reposition memory report from institutional to independent practitioner framing\n><pre>\n>\u2022 Repositioned report from institutional byline to independent practitioner framing (&quot;Independent \u00b7\n>  Arseny Gorokh&quot;)\n>\u2022 Updated page title to remove &quot;EPAM&quot; attribution; changed meta description to emphasize independent\n>  status\n>\u2022 Changed eyebrow tag from &quot;Substrate study&quot; to &quot;Applied research note&quot;\n>\u2022 Added 7 inline links to sub-artefact files (<b><i>methodology.md</i></b>, <b><i>adoption-bar.md</i></b>,\n>  <b><i>task-families.md</i></b>, <b><i>claims.md</i></b>, <b><i>invalidation.md</i></b>, <b><i>canary-harness/</i></b>) with <b><i>.rs-mono</i></b> chip styling\n>\u2022 Added hero-meta artefacts chip linking to <b><i>artefacts/</i></b> directory and canary harness\n>\u2022 Softened institutional language: replaced &quot;Across EPAM accounts&quot; with &quot;Across enterprise-agent\n>  engagements I&#x27;ve worked on&quot; and &quot;EPAM delivery teams&quot; with &quot;delivery teams&quot;\n>\u2022 Added &quot;About this report&quot; disclaimer callout at end of \u00a712 with CC BY 4.0 license attribution\n>\u2022 Updated footer from &quot;Applied AI Research \u00b7 EPAM \u00b7 2026&quot; to &quot;Applied AI Research \u00b7 independent\n>  practitioner notes \u00b7 2026&quot;\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-a40395d11069d6d51cf2d989fe62d0dfdb24c1f988546619e1db895df79991ea\"> 2026-05-19_choosing-memory-for-enterprise-agents/index.html\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>3. index.html\n <code>\ud83d\udcdd Documentation</code> <code> +7/-6 </code>  </summary>  \n\n<br/>\n\n>Reposition landing page to independent practitioner framing\n><pre>\n>\u2022 Updated page title and meta description to remove &quot;EPAM&quot; institutional attribution and emphasize\n>  independent status\n>\u2022 Changed topbar byline from &quot;EPAM \u00b7 Arseny Gorokh&quot; to &quot;Independent \u00b7 Arseny Gorokh&quot;\n>\u2022 Added subtitle under hero: &quot;Practitioner field reports \u2014 independent, not an official EPAM\n>  publication. Working drafts.&quot;\n>\u2022 Updated both post-card tags: &quot;Substrate study&quot; \u2192 &quot;Applied research note&quot; and &quot;POC report&quot; \u2192\n>  &quot;Engineering brief&quot;\n>\u2022 Updated footer from &quot;Applied AI Research \u00b7 EPAM \u00b7 2026&quot; to &quot;Applied AI Research \u00b7 independent\n>  practitioner notes \u00b7 2026&quot;\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-0eb547304658805aad788d320f10bf1f292797b5e6d745a3bf617584da017051\"> index.html\n </a>\n<hr/>\n\n</details>\n\n<details><summary><ins><strong>View more (18)</strong></ins></summary><br/>\n<details>\n<summary>4. assets/dialx/research.css\n <code>\ud83d\udc1e Bug fix</code> <code> +20/-0 </code>  </summary>  \n\n<br/>\n\n>Add box-sizing reset and artefact-chip link styles\n><pre>\n>\u2022 Added global <b><i>box-sizing: border-box</i></b> reset to fix 63.5px topbar misalignment caused by <b><i>main</i></b>\n>  content-box + right padding interaction\n>\u2022 Added new CSS rule <b><i>.rs-section a.rs-mono</i></b> for inline artefact-chip link styling with hover\n>  background effect\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-b6fd77a5854fcfde345c92b01a811de238163f2404e765b09f4da19672663d55\"> assets/dialx/research.css\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>5. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/methodology.md\n <code>\ud83d\udcdd Documentation</code> <code> +130/-0 </code>  </summary>  \n\n<br/>\n\n>Document memory-substrate evaluation methodology and re-instantiation pattern\n><pre>\n>\u2022 New file documenting the paired-question protocol, two-judge position-swap fixture, pre-registered\n>  rule-change threshold, and frequency-weighting derivation\n>\u2022 Specifies 8 task families with production weights, 64 paired questions, 128 paired trial\n>  appearances per substrate\n>\u2022 Details the 5-label scoring rubric (<b><i>correct</i></b>, <b><i>partial</i></b>, <b><i>incorrect</i></b>, <b><i>abstained</i></b>,\n>  <b><i>hallucinated</i></b>) and position-swap collapse rule\n>\u2022 Includes re-instantiation checklist for practitioners to reproduce the canary on their own corpus\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-7be4dabaeca3f7f33f683eb87aaafe763493724ea0f58baa7eb8e65bfcf25f22\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/methodology.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>6. 2026-05-15_claude-code-via-dial-poc/artefacts/methodology.md\n <code>\ud83d\udcdd Documentation</code> <code> +104/-0 </code>  </summary>  \n\n<br/>\n\n>Document POC evaluation methodology and adapter conformance shape\n><pre>\n>\u2022 New file specifying the 8-task portfolio shape, two-wave evaluation structure (120 + 72 trials),\n>  adapter conformance contract, and cost formula\n>\u2022 Documents the pass criterion (zero validator failures within 15-turn loop), aggregation formula\n>  for <b><i>$/success</i></b>, and pricing source (AWS Bedrock list rates, 2026-05-14)\n>\u2022 Includes adapter conformance shape (Anthropic ingress \u2192 OpenAI egress, SSE handling, per-request\n>  telemetry)\n>\u2022 Provides re-instantiation guidance for practitioners to reproduce the evaluation on their own\n>  gateway\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-73adda2d006c0cdffd9978efa34f2e9fbc2c0e855ba5d633a80ddae18628a046\"> 2026-05-15_claude-code-via-dial-poc/artefacts/methodology.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>7. 2026-05-15_claude-code-via-dial-poc/artefacts/claims.md\n <code>\ud83d\udcdd Documentation</code> <code> +39/-0 </code>  </summary>  \n\n<br/>\n\n>Publish claims ledger mapping findings to evidence and scope\n><pre>\n>\u2022 New file tagging every headline claim by category: <b><i>measured</i></b>, <b><i>inferred</i></b>, <b><i>hypothetical</i></b>,\n>  <b><i>recommendation</i></b>\n>\u2022 Maps 18 claims to evidence rows, scope qualifiers, and strength of claim\n>\u2022 Distinguishes direct observations from the 192 trials vs inferred conclusions vs illustrative\n>  scenarios vs deployment recommendations\n>\u2022 Provides guidance for external citation: quote measured rows with scope, inferred rows as\n>  interpretations, hypothetical rows only as scenarios\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-98bf94fbfc58175d9fe92fcd77fd90484ec6a1ff94f54a490985da8977e255af\"> 2026-05-15_claude-code-via-dial-poc/artefacts/claims.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>8. 2026-05-15_claude-code-via-dial-poc/artefacts/telemetry-schema.md\n <code>\ud83d\udcdd Documentation</code> <code> +108/-0 </code>  </summary>  \n\n<br/>\n\n>Document adapter telemetry schema and three-layer field taxonomy\n><pre>\n>\u2022 New file documenting the ~30 fields the adapter writes on every <b><i>response_out</i></b>, separated into\n>  three layers (A: deployed today, B: mechanical to wire, C: requires headers)\n>\u2022 Specifies Layer A fields (model_id, target_model_family, client_name, tokens, cost, latency,\n>  stop_reason) reaching InfluxDB and Grafana today\n>\u2022 Documents Layer B fields (session.id, tool_inventory_hash, mcp_servers_seen) that exist in JSON\n>  log but need tag promotion\n>\u2022 Details Layer C fields (project_code, team_id, industry_vertical, use_case_label) requiring\n>  business-identity headers and data-governance policy\n>\u2022 Includes wire format (JSONL), sidecar exporter architecture, and cardinality concerns\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-726765e2b6fd89e10832d1616ecda7bf5f137de0eb2e4f6f88c96f2220ccd561\"> 2026-05-15_claude-code-via-dial-poc/artefacts/telemetry-schema.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>9. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/claims.md\n <code>\ud83d\udcdd Documentation</code> <code> +36/-0 </code>  </summary>  \n\n<br/>\n\n>Publish claims ledger for memory-substrate findings and scope limits\n><pre>\n>\u2022 New file tagging 15 headline claims by category: <b><i>measured</i></b>, <b><i>inferred</i></b>, <b><i>hypothetical</i></b>,\n>  <b><i>recommendation</i></b>, <b><i>process</i></b>, <b><i>scope</i></b>\n>\u2022 Maps claims to evidence pointers (128 paired trials, closed-loop pilot, public-source review) with\n>  scope qualifiers\n>\u2022 Distinguishes the 36-point LightRAG-vs-Graphiti gap as driven by production-weighting, not\n>  substrate superiority\n>\u2022 Flags the 0-vs-4 hallucination count as structural-class indicator, not statistical claim\n>\u2022 Provides external citation guidance and emphasizes that the durable artefact is the canary harness\n>  shape, not the magnitudes\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-3e79faa0e7887e7ff32bafa6887ba71ec8ca1e3010ec72843b9a1d522d00d1fe\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/claims.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>10. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/README.md\n <code>\ud83d\udcdd Documentation</code> <code> +100/-0 </code>  </summary>  \n\n<br/>\n\n>Publish canary harness protocol as re-instantiable durable artefact\n><pre>\n>\u2022 New file documenting the durable artefact: the paired-question protocol, position-swap judging\n>  fixture, 5-label scoring rubric, and pre-registered threshold\n>\u2022 Specifies the run sequence: retrieve from both substrates, judge in both orderings, collapse ties,\n>  aggregate per family\n>\u2022 Provides re-instantiation checklist for practitioners to reproduce on their own corpus in a day\n>\u2022 Explains why runnable code is not shipped (validators are held-out fixture; deployment wiring is\n>  specific)\n>\u2022 Emphasizes that the protocol shape transfers; the specific magnitudes do not\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-2cfbc790da3aa12853a21b3046e049ba327b005bdb56a442cdbaeb71db8bd7b7\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/README.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>11. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/schema.md\n <code>\ud83d\udcdd Documentation</code> <code> +89/-0 </code>  </summary>  \n\n<br/>\n\n>Define canary harness JSONL input/output schema for paired questions\n><pre>\n>\u2022 New file specifying JSONL input/output schemas for paired-question fixture and judged-record\n>  output\n>\u2022 Documents input fields: <b><i>id</i></b>, <b><i>family</i></b>, <b><i>query</i></b>, <b><i>expected_label</i></b>, <b><i>expected_doc_id</i></b>, <b><i>notes</i></b>\n>\u2022 Documents output fields: <b><i>question_id</i></b>, <b><i>family</i></b>, <b><i>judge</i></b>, <b><i>ordering</i></b>, <b><i>substrate_a_id</i></b>,\n>  <b><i>substrate_b_id</i></b>, <b><i>retrieval_a</i></b>, <b><i>retrieval_b</i></b>, <b><i>winner</i></b>, <b><i>label_a</i></b>, <b><i>label_b</i></b>, <b><i>judge_rationale</i></b>,\n>  <b><i>elapsed_ms</i></b>, <b><i>cost_usd_estimate</i></b>\n>\u2022 Includes position-swap collapse rule, aggregation reference, hallucination counting formula, and\n>  schema versioning note\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-215565f48d967f47bb93db557f28d1b4e7637232c93260c8ddc273a8b025df29\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/schema.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>12. 2026-05-15_claude-code-via-dial-poc/artefacts/pricing-snapshot/bedrock-us-east-ohio-2026-05-14.md\n <code>\ud83d\udcdd Documentation</code> <code> +81/-0 </code>  </summary>  \n\n<br/>\n\n>Publish AWS Bedrock pricing snapshot for cost-per-success derivation\n><pre>\n>\u2022 New file capturing AWS Bedrock list pricing snapshot (US East Ohio, 2026-05-14) for all 8 models\n>  in the POC matrix\n>\u2022 Transcribes $/M input and output rates for Claude Haiku/Sonnet/Opus, Qwen3-Coder 480B/30B, Kimi\n>  K2.5, MiniMax M2.5, DeepSeek v3.2\n>\u2022 Documents the cost formula: <b><i>total_bedrock_spend / N_pass = $/success</i></b>\n>\u2022 Includes markup-stability sensitivity analysis: ranking stable under ~6.7\u00d7 markup on Qwen input\n>  rates\n>\u2022 Provides Wayback Machine URL for cross-checking against future pricing changes\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-ff29f2d025f4c05eb75b74449925cf87da959c886816d071df36b5f1c3ff5a55\"> 2026-05-15_claude-code-via-dial-poc/artefacts/pricing-snapshot/bedrock-us-east-ohio-2026-05-14.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>13. README.md\n <code>\ud83d\udcdd Documentation</code> <code> +13/-14 </code>  </summary>  \n\n<br/>\n\n>Reframe repository README to independent practitioner positioning\n><pre>\n>\u2022 Rewritten H1 from &quot;Applied AI Research \u00b7 EPAM&quot; to &quot;Applied AI Research \u2014 practitioner notes&quot;\n>\u2022 Updated description to emphasize independent status and real-stack measurement discipline\n>\u2022 Added &quot;What &#x27;applied AI research&#x27; means here&quot; section explaining engineering decision memos vs\n>  academic research\n>\u2022 Updated Contributing section to invite practitioners working on similar problems, removed\n>  EPAM-specific framing\n>\u2022 Updated License section to clarify CC BY 4.0 for reports/artefacts, MIT for code, and EPAM\n>  trademark ownership\n>\u2022 Added reference to ABOUT.md for full disclaimer\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5\"> README.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>14. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/task-families.md\n <code>\ud83d\udcdd Documentation</code> <code> +58/-0 </code>  </summary>  \n\n<br/>\n\n>Production-weighted task families and canary methodology\n><pre>\n>\u2022 Introduces the 8 task families used in the retrieval canary with production-frequency weighting\n>  (50% current-canonical-text, 20% handoff-continuity, 10% entity-disambiguation, 4% each for\n>  temporal-supersession, multi-hop-traversal, knowledge-updates, abstention-on-false-premise,\n>  link-graph-traversal)\n>\u2022 Documents the production-weighting derivation methodology based on 6 weeks of actual agent traffic\n>  (~2,400 queries) to avoid circular reasoning\n>\u2022 Explains why production weighting drives the 36-point gap finding and how uniform weighting would\n>  show statistical tie between substrates\n>\u2022 Provides guidance for re-deriving weights on different corpus classes (customer-support, legal,\n>  medical) with a 5-step methodology\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-34743727ab51f5360f2f0dd719238f953fe5e6c6a3687a22225040844ea8d6bb\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/task-families.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>15. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/invalidation.md\n <code>\ud83d\udcdd Documentation</code> <code> +45/-0 </code>  </summary>  \n\n<br/>\n\n>Falsification conditions and invalidation ledger for findings\n><pre>\n>\u2022 Specifies Popperian falsification conditions for each headline finding with concrete\n>  re-measurement criteria\n>\u2022 Documents invalidation thresholds for retrieval-gap finding (20pp threshold), reliability finding\n>  (hallucination counts), pilot stale-fact inversion, and Tencent DB Agent-Memory adoption criteria\n>\u2022 Establishes that bar and methodology are durable artefacts while specific magnitudes expire with\n>  model/corpus/implementation changes\n>\u2022 Encourages structured push-back via GitHub issues with new measurements rather than debate\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-97ac1d230b239f7bf192994e9edc3351c20c2769e3e903f0e5537254bcd1d022\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/invalidation.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>16. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/adoption-bar.md\n <code>\ud83d\udcdd Documentation</code> <code> +46/-0 </code>  </summary>  \n\n<br/>\n\n>Reproducible adoption criteria and substrate evaluation rubric\n><pre>\n>\u2022 Defines five-criterion rubric for evaluating memory-substrate candidates: integration-surface\n>  (0.25 weight), install-hygiene (0.20), test-coverage (0.20), maintenance-posture (0.15),\n>  operational-fit (0.20)\n>\u2022 Renders Tencent DB Agent-Memory scorecard showing 4 fails and 1 partial against the stated bar\n>\u2022 Explains that weights are calibrated to specific delivery context (Python-first stack, EPAM DIAL\n>  gateway, MCP-compatible agents) and should be restated for different contexts\n>\u2022 Provides reusable methodology for applying the bar to different candidates with version tracking\n>  and evidence documentation\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-e1302c32d173eea1b513277f388a34d6629546c76a4a8f0e2d4cccc8a6284ac6\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/adoption-bar.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>17. 2026-05-15_claude-code-via-dial-poc/artefacts/invalidation.md\n <code>\ud83d\udcdd Documentation</code> <code> +42/-0 </code>  </summary>  \n\n<br/>\n\n>POC report falsification conditions and methodology commitments\n><pre>\n>\u2022 Specifies falsification conditions for POC headline findings: Qwen3-Coder 480B cost-leader claim\n>  (re-run at same pricing, different harness), sub-Sonnet OSS replacement claim (20+ pass threshold,\n>  criterion relaxation), scale-vs-vendor failure signature (fifth vendor family success, architectural\n>  variable identification)\n>\u2022 Documents invalidation for adapter telemetry plane claim (DIAL ingress constraints) and Layer C\n>  per-tenant analysis ask (data-governance policy, cardinality explosion)\n>\u2022 Establishes methodology principle that bar and criteria are durable while magnitudes expire with\n>  model/price/gateway changes\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-2d5510f3d2513c8106049f1b650d6b768001d4c085f45cccb7b9304a393819c9\"> 2026-05-15_claude-code-via-dial-poc/artefacts/invalidation.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>18. ABOUT.md\n <code>\ud83d\udcdd Documentation</code> <code> +45/-0 </code>  </summary>  \n\n<br/>\n\n>Series editorial independence and research methodology statement\n><pre>\n>\u2022 Establishes authorship by Arseny Gorokh as independent practitioner at EPAM Applied AI with\n>  explicit disclaimer that this is not official EPAM publication\n>\u2022 Clarifies EPAM DIAL as product reference (not sponsorship) and defines intended category as\n>  applied AI engineering research notes (postmortem/decision-memo style, not academic papers)\n>\u2022 States reproducibility discipline: publish adoption bar before scoring, publish weighting before\n>  aggregate, name scope limits, cite prior work, ship supporting artefacts in paper folders\n>\u2022 Specifies audience (enterprise AI practitioners, not vendors/academics/customers), citation format\n>  (CC BY 4.0), invalidation process (open issues with re-measurements), and contact channel (GitHub\n>  issues only)\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-092bae64c0ee5bef22d8d240cd691a8eb5e8c0ce3d5adfa62717d22abc47291c\"> ABOUT.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>19. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/README.md\n <code>\ud83d\udcdd Documentation</code> <code> +29/-0 </code>  </summary>  \n\n<br/>\n\n>Memory report artefact index and scope boundaries\n><pre>\n>\u2022 Indexes 8 supporting artefact files with their report sections and purposes: methodology, claims\n>  ledger, invalidation conditions, adoption bar, task families, canary harness shape/schema/examples\n>\u2022 Documents intentional exclusions: 64 real paired questions (encode internal project nouns), pytest\n>  validators (held-out fixture), judge transcripts (provider ToS), per-trial cost records\n>  (deployment-specific)\n>\u2022 Clarifies that everything not requiring held-out fixture or per-deployment IDs is published\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-0d6eee39f8c2cfccd8cd47ec104007ad1a3be5d5a545c6d898100d96d63a485e\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/README.md\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>20. 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/example-fixture.jsonl\n <code>\ud83d\udcdd Documentation</code> <code> +4/-0 </code>  </summary>  \n\n<br/>\n\n>Example paired-question fixture for canary harness schema\n><pre>\n>\u2022 Provides 4 neutral-domain example paired questions in JSONL format demonstrating the canary\n>  harness schema\n>\u2022 Examples cover current-canonical-text (Linux sched_ext scheduler), entity-disambiguation (flag\n>  references), temporal-supersession (flag chronology), and abstention-on-false-premise (non-existent\n>  flag) families\n>\u2022 Each example includes id, family, query, expected_label, expected_doc_id, and notes explaining\n>  what the question tests\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-125c2172b688f88daf2330ef68ddf9212daa8cfb5bf471f17bfddabee4655a84\"> 2026-05-19_choosing-memory-for-enterprise-agents/artefacts/canary-harness/example-fixture.jsonl\n </a>\n<hr/>\n\n</details>\n\n<details>\n<summary>21. 2026-05-15_claude-code-via-dial-poc/artefacts/README.md\n <code>\ud83d\udcdd Documentation</code> <code> +26/-0 </code>  </summary>  \n\n<br/>\n\n>POC report artefact index and exclusion rationale\n><pre>\n>\u2022 Indexes 5 supporting artefact files for POC report: methodology, claims ledger, invalidation\n>  conditions, Bedrock pricing snapshot, telemetry schema\n>\u2022 Documents intentional exclusions: T1\u2013T8 task prompts and validators (held-out fixture), adapter\n>  source code (~600 lines), per-trial cost logs (deployment-specific, contract-sensitive), judge\n>  transcripts (provider ToS)\n>\u2022 Clarifies that published artefacts back up all claims not requiring held-out fixture or\n>  proprietary adapter\n></pre>\n>\n><a href=\"https://github.com/agorokh/applied-ai-research/pull/12/files#diff-3a77ba2a8c3d1ab38cb09120c835861477d4d59e508b2db4e3cc83fe0a98f849\"> 2026-05-15_claude-code-via-dial-poc/artefacts/README.md\n </a>\n<hr/>\n\n</details>\n\n</details>\n\n<img src=\"https://www.qodo.ai/wp-content/uploads/2025/11/light-grey-line.svg\" height=\"10%\" alt=\"Grey Divider\">\n\n\n<a href=\"https://www.qodo.ai\"><img src=\"https://www.qodo.ai/wp-content/uploads/2025/03/qodo-logo.svg\" width=\"80\" alt=\"Qodo Logo\"></a>",
+      "createdAt": "2026-05-21T02:46:12Z",
+      "updatedAt": "2026-05-21T02:46:12Z",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/12#issuecomment-4504323027"
+    },
+    {
+      "id": "IC_kwDOSiUzTc8AAAABDHrYXw",
+      "author": {
+        "login": "agorokh"
+      },
+      "body": "@copilot resolve the merge conflicts in this pull request",
+      "createdAt": "2026-05-21T02:50:59Z",
+      "updatedAt": "2026-05-21T02:50:59Z",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/12#issuecomment-4504344671"
+    },
+    {
+      "id": "IC_kwDOSiUzTc8AAAABDHsVxQ",
+      "author": {
+        "login": "copilot-swe-agent"
+      },
+      "body": "\n> @copilot resolve the merge conflicts in this pull request\n\nConflicts with `main` are already resolved in commit `db3b959` (merge commit on this branch), and the branch is currently up to date with `origin/main` with no remaining merge conflicts.",
+      "createdAt": "2026-05-21T02:54:35Z",
+      "updatedAt": "2026-05-21T02:54:35Z",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/12#issuecomment-4504360389"
+    }
+  ],
+  "rest_inline": [
+    {
+      "url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278358905",
+      "pull_request_review_id": 4333590211,
+      "id": 3278358905,
+      "node_id": "PRRC_kwDOSiUzTc7DZ8l5",
+      "diff_hunk": "@@ -60,14 +60,15 @@\n     <h1>Choosing memory for <em>enterprise agents.</em></h1>\n \n     <p class=\"rs-lede\">\n-      Across EPAM accounts the same memory-substrate question recurs, once on SDLC-shaped corpora where coding-orchestration agents need their own project past, and again on business and domain corpora where the cost of a hallucinated answer is a wrong action taken on a client's behalf. Both classes share one retrieval problem and one adoption bar. This report runs that bar on one corpus class with two purpose-built substrates against a filesystem baseline, and publishes the canary harness so the next account team can re-instantiate it on their corpus in a day.\n+      Across enterprise-agent engagements I've worked on, the same memory-substrate question recurs, once on SDLC-shaped corpora where coding-orchestration agents need their own project past, and again on business and domain corpora where the cost of a hallucinated answer is a wrong action taken on a client's behalf. Both classes share one retrieval problem and one adoption bar. This report runs that bar on one corpus class with two purpose-built substrates against a filesystem baseline, and publishes <a href=\"artefacts/canary-harness/\">the canary harness</a> so the next account team can re-instantiate it on their corpus in a day.\n     </p>\n \n     <div class=\"rs-hero-meta\">\n       <div class=\"rs-meta-stat\"><span class=\"v\">36<span class=\"unit\">pp gap</span></span><span class=\"l\">LightRAG vs Graphiti under production weighting</span></div>\n       <div class=\"rs-meta-stat\"><span class=\"v\">0<span class=\"unit\">vs 4</span></span><span class=\"l\">Fabricated retrievals across 128 paired trials</span></div>\n       <div class=\"rs-meta-stat\"><span class=\"v\">2<span class=\"unit\">tiers</span></span><span class=\"l\">Executor capability tiers; stale-fact sign flips</span></div>\n       <div class=\"rs-meta-stat\"><span class=\"v\">5<span class=\"unit\">criteria</span></span><span class=\"l\">Adoption bar stated before any candidate ran</span></div>\n+      <div class=\"rs-meta-stat\"><a class=\"rs-mono\" href=\"artefacts/\" style=\"text-decoration:none;border-bottom:none\">artefacts/ \u2192</a><span class=\"l\" style=\"display:block;margin-top:6px\">Methodology, claims ledger, invalidation, canary harness</span></div>",
+      "path": "2026-05-19_choosing-memory-for-enterprise-agents/index.html",
+      "commit_id": "78b63f186417253f66ca5f001f4175a0ee75eec2",
+      "original_commit_id": "10d2c55e3f35e8d4940229ebed9cc86efeee443e",
+      "user": {
+        "login": "chatgpt-codex-connector[bot]",
+        "id": 199175422,
+        "node_id": "BOT_kgDOC98s_g",
+        "avatar_url": "https://avatars.githubusercontent.com/in/1144995?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D",
+        "html_url": "https://github.com/apps/chatgpt-codex-connector",
+        "followers_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "body": "**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  Point artefact links to resolvable pages**\n\nThe new hero links use directory URLs (`artefacts/` and `artefacts/canary-harness/`), but this commit only adds Markdown files inside those directories (`README.md`, etc.) and no `index.html` pages. On static hosting (including typical GitHub Pages setups), directory URLs without an index file return 404, so readers cannot open the promised artefact bundle from the report. Please link directly to concrete files like `artefacts/README.md` (and `artefacts/canary-harness/README.md`) or add index pages for those directories.\n\nUseful? React with \ud83d\udc4d\u00a0/ \ud83d\udc4e.",
+      "created_at": "2026-05-21T02:51:09Z",
+      "updated_at": "2026-05-21T02:51:09Z",
+      "html_url": "https://github.com/agorokh/applied-ai-research/pull/12#discussion_r3278358905",
+      "pull_request_url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/12",
+      "_links": {
+        "self": {
+          "href": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278358905"
+        },
+        "html": {
+          "href": "https://github.com/agorokh/applied-ai-research/pull/12#discussion_r3278358905"
+        },
+        "pull_request": {
+          "href": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/12"
+        }
+      },
+      "reactions": {
+        "url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278358905/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "start_line": null,
+      "original_start_line": null,
+      "start_side": null,
+      "line": null,
+      "original_line": 71,
+      "side": "RIGHT",
+      "author_association": "NONE",
+      "original_position": 40,
+      "position": 1,
+      "subject_type": "line"
+    },
+    {
+      "url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278370703",
+      "pull_request_review_id": 4333608352,
+      "id": 3278370703,
+      "node_id": "PRRC_kwDOSiUzTc7DZ_eP",
+      "diff_hunk": "@@ -68,6 +68,7 @@ <h1>Claude Code via EPAM DIAL \u00b7 <em>POC report.</em></h1>\n       <div class=\"rs-meta-stat\"><span class=\"v\">8<span class=\"unit\">upstreams</span></span><span class=\"l\">Three tiers of viability across one harness</span></div>\n       <div class=\"rs-meta-stat\"><span class=\"v\">192<span class=\"unit\">trials</span></span><span class=\"l\">Eight task families, three runs per cell</span></div>\n       <div class=\"rs-meta-stat\"><span class=\"v\">~30<span class=\"unit\">fields</span></span><span class=\"l\">Per-request telemetry retained at the adapter</span></div>\n+      <div class=\"rs-meta-stat\"><a class=\"rs-mono\" href=\"artefacts/\" style=\"text-decoration:none;border-bottom:none\">artefacts/ \u2192</a><span class=\"l\" style=\"display:block;margin-top:6px\">Methodology, claims ledger, pricing snapshot, telemetry schema</span></div>",
+      "path": "2026-05-15_claude-code-via-dial-poc/index.html",
+      "commit_id": "78b63f186417253f66ca5f001f4175a0ee75eec2",
+      "original_commit_id": "db3b959be61f80bf26b1098ca19b412daa3387cf",
+      "user": {
+        "login": "chatgpt-codex-connector[bot]",
+        "id": 199175422,
+        "node_id": "BOT_kgDOC98s_g",
+        "avatar_url": "https://avatars.githubusercontent.com/in/1144995?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D",
+        "html_url": "https://github.com/apps/chatgpt-codex-connector",
+        "followers_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/chatgpt-codex-connector%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "body": "**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  Link artefact chips to concrete files**\n\nThe new hero chip uses a directory URL (`href=\"artefacts/\"`), but this commit only adds `README.md` inside that directory and no `index.html`/`index.md`, so static hosting will not resolve this path as a page and readers will hit a dead link instead of the artefact bundle. This re-raises the earlier 404 concern with fresh evidence: the same unresolved pattern is now present in the POC report as well (not just the memory report), so the regression affects multiple published pages.\n\nUseful? React with \ud83d\udc4d\u00a0/ \ud83d\udc4e.",
+      "created_at": "2026-05-21T02:55:19Z",
+      "updated_at": "2026-05-21T02:55:19Z",
+      "html_url": "https://github.com/agorokh/applied-ai-research/pull/12#discussion_r3278370703",
+      "pull_request_url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/12",
+      "_links": {
+        "self": {
+          "href": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278370703"
+        },
+        "html": {
+          "href": "https://github.com/agorokh/applied-ai-research/pull/12#discussion_r3278370703"
+        },
+        "pull_request": {
+          "href": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/12"
+        }
+      },
+      "reactions": {
+        "url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278370703/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "start_line": null,
+      "original_start_line": null,
+      "start_side": null,
+      "line": null,
+      "original_line": 71,
+      "side": "RIGHT",
+      "author_association": "NONE",
+      "original_position": 33,
+      "position": 1,
+      "subject_type": "line"
+    },
+    {
+      "url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278397981",
+      "pull_request_review_id": 4333643755,
+      "id": 3278397981,
+      "node_id": "PRRC_kwDOSiUzTc7DaGId",
+      "diff_hunk": "@@ -291,6 +291,19 @@ main {\n }\n .rs-section a:hover { border-bottom-color: var(--dx-violet); }\n \n+/* Inline artefact-chip link style: a code-styled link to a sub-artefact\n+   file. Reuses .rs-mono but suppresses the violet underline so the chip\n+   reads as a code-token-shaped link. */\n+.rs-section a.rs-mono {\n+  border-bottom: none;\n+  text-decoration: none;\n+  transition: background 200ms;\n+}",
+      "path": "assets/dialx/research.css",
+      "commit_id": "1f5614c3186a23955dec19b32471dcf94f982daa",
+      "original_commit_id": "1d86abea1a35cc314bd08351c9a03816c0aabbd7",
+      "user": {
+        "login": "cursor[bot]",
+        "id": 206951365,
+        "node_id": "BOT_kgDODFXTxQ",
+        "avatar_url": "https://avatars.githubusercontent.com/in/1210556?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/cursor%5Bbot%5D",
+        "html_url": "https://github.com/apps/cursor",
+        "followers_url": "https://api.github.com/users/cursor%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/cursor%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/cursor%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/cursor%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/cursor%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/cursor%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/cursor%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/cursor%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/cursor%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "body": "### CSS specificity causes violet text instead of teal on artefact chips\n\n**Medium Severity**\n\n<!-- DESCRIPTION START -->\nThe new `.rs-section a.rs-mono` rule (specificity 0,2,1) omits a `color` declaration. For the `color` property, `.rs-section a` (specificity 0,1,1, setting `var(--dx-violet)`) beats `.rs-mono` (specificity 0,1,0, setting `var(--dx-teal)`). All `a.rs-mono` artefact-chip links inside `.rs-section` render with violet text on a teal-tinted background/border \u2014 visually inconsistent with regular `.rs-mono` code tokens. The PR verification claims \"\u00a704 `methodology \u2192` rendered as teal mono chip\" but the cascade produces violet text instead.\n<!-- DESCRIPTION END -->\n\n<!-- BUGBOT_BUG_ID: fb1c51e4-e1b4-4191-972c-5761801ea3d7 -->\n\n<!-- LOCATIONS START\nassets/dialx/research.css#L296-L301\nLOCATIONS END -->\n<div><a href=\"https://cursor.com/open?link=eyJ2ZXJzaW9uIjoxLCJ0eXBlIjoiQlVHQk9UX0ZJWF9JTl9DVVJTT1IiLCJkYXRhIjp7InJlZGlzS2V5IjoiYnVnYm90OjE1ZjdkZDg2LWE4MTQtNGQ3NC05NTM0LWQyMTMxOGIzYzViZiIsImVuY3J5cHRpb25LZXkiOiJENUUzRENWS1M5bm55cFg1RHM5NWNYYTJna0swRkc4MWFzRXpEQTZPM0drIiwiYnJhbmNoIjoidjIyLXBvc2l0aW9uaW5nLWFuZC1hcnRlZmFjdHMiLCJyZXBvT3duZXIiOiJhZ29yb2toIiwicmVwb05hbWUiOiJhcHBsaWVkLWFpLXJlc2VhcmNoIn19\" target=\"_blank\" rel=\"noopener noreferrer\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cursor.com/assets/images/fix-in-cursor-dark.png\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://cursor.com/assets/images/fix-in-cursor-light.png\"><img alt=\"Fix in Cursor\" width=\"115\" height=\"28\" src=\"https://cursor.com/assets/images/fix-in-cursor-dark.png\"></picture></a>&nbsp;<a href=\"https://cursor.com/agents?link=eyJ2ZXJzaW9uIjoxLCJ0eXBlIjoiQlVHQk9UX0ZJWF9JTl9XRUIiLCJkYXRhIjp7InJlZGlzS2V5IjoiYnVnYm90OjE1ZjdkZDg2LWE4MTQtNGQ3NC05NTM0LWQyMTMxOGIzYzViZiIsImVuY3J5cHRpb25LZXkiOiJENUUzRENWS1M5bm55cFg1RHM5NWNYYTJna0swRkc4MWFzRXpEQTZPM0drIiwiYnJhbmNoIjoidjIyLXBvc2l0aW9uaW5nLWFuZC1hcnRlZmFjdHMiLCJyZXBvT3duZXIiOiJhZ29yb2toIiwicmVwb05hbWUiOiJhcHBsaWVkLWFpLXJlc2VhcmNoIiwicHJOdW1iZXIiOjEyLCJjb21taXRTaGEiOiIxZDg2YWJlYTFhMzVjYzMxNGJkMDgzNTFjOWEwMzgxNmMwYWFiYmQ3IiwicHJvdmlkZXIiOiJnaXRodWIifX0\" target=\"_blank\" rel=\"noopener noreferrer\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cursor.com/assets/images/fix-in-web-dark.png\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://cursor.com/assets/images/fix-in-web-light.png\"><img alt=\"Fix in Web\" width=\"99\" height=\"28\" src=\"https://cursor.com/assets/images/fix-in-web-dark.png\"></picture></a></div>\n\n\n<sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 1d86abea1a35cc314bd08351c9a03816c0aabbd7. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n",
+      "created_at": "2026-05-21T03:04:32Z",
+      "updated_at": "2026-05-21T03:04:32Z",
+      "html_url": "https://github.com/agorokh/applied-ai-research/pull/12#discussion_r3278397981",
+      "pull_request_url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/12",
+      "_links": {
+        "self": {
+          "href": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278397981"
+        },
+        "html": {
+          "href": "https://github.com/agorokh/applied-ai-research/pull/12#discussion_r3278397981"
+        },
+        "pull_request": {
+          "href": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/12"
+        }
+      },
+      "reactions": {
+        "url": "https://api.github.com/repos/agorokh/applied-ai-research/pulls/comments/3278397981/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "start_line": null,
+      "original_start_line": null,
+      "start_side": null,
+      "line": 306,
+      "original_line": 301,
+      "side": "RIGHT",
+      "author_association": "NONE",
+      "original_position": 11,
+      "position": 16,
+      "subject_type": "line"
+    }
+  ]
+}

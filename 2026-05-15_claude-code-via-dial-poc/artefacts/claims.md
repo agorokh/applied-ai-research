@@ -10,6 +10,8 @@ Every headline claim in [the report](../) tagged by category and pointed at the 
 | **inferred** | Conclusion drawn from the measured data, not directly observed. | Weaker. Holds under stated mechanism; new data could invert. |
 | **hypothetical** | Scenario described to illustrate the form of an analysis. Numbers are illustrative, not measured. | Not a claim. Sets up an architectural ask. |
 | **recommendation** | Proposed deployment default or productionisation step. Grounded in measured + inferred rows above. | Action item, not a finding. |
+| **scope** | Boundary on where a finding applies (corpus, deployment, pricing basis). Used as a primary category when the row is only about applicability limits. | Qualifier, not a measured number. |
+| **hypothetical / recommendation** etc. | Compound form `primary / modifier` in the Category column: read left token as the claim type, right token as a secondary qualifier. | Keeps the ledger machine-readable without inventing new top-level categories. |
 
 ## Ledger
 

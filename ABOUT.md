@@ -28,7 +28,7 @@ Other practitioners running enterprise AI deployments — platform engineers, ap
 
 ## How to cite or reference
 
-> Gorokh, A. (2026). *<Report title>*. Applied AI Research — practitioner notes. <URL>. CC BY 4.0.
+> Gorokh, A. (2026). *[Report title]*. Applied AI Research — practitioner notes. [URL]. CC BY 4.0.
 
 Or just link the report URL directly. The series exists to be discussed and re-measured against on your own stack.
 

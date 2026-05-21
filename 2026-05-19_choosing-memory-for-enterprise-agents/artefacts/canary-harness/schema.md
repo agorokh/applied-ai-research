@@ -56,7 +56,7 @@ For each input paired-question and each (judge × ordering), the harness emits o
 
 The harness consumes the output JSONL and applies the collapse rule:
 
-```
+```text
 For each (question_id, judge):
   ordering_a = the record with ordering == "a_first"
   ordering_b = the record with ordering == "b_first"
@@ -77,9 +77,13 @@ See [`README.md`](README.md) §3 for the per-family + per-substrate aggregation 
 
 ## Hallucination counting
 
-```
-fabricated_retrievals(substrate) = count of records where (substrate_a_id == substrate AND label_a == "hallucinated")
-                                 + count of records where (substrate_b_id == substrate AND label_b == "hallucinated")
+Retrieval-level semantics (aligned with [`README.md`](README.md) §3): a fabrication is one distinct `question_id` whose retrieval for a substrate was labelled `hallucinated` by any judge in any ordering.
+
+```text
+fabricated_retrievals(substrate) = count of distinct question_id where
+  ∃ judged record with
+    (substrate_a_id == substrate AND label_a == "hallucinated") OR
+    (substrate_b_id == substrate AND label_b == "hallucinated")
 ```
 
 Apply per-substrate, then take the ratio across substrates for the rule-change threshold check.

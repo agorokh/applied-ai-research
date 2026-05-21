@@ -60,7 +60,7 @@ Every `response_out` emits a single JSON line into `/var/log/adapter/gflog.jsonl
 {
   "ts": "2026-05-14T18:19:42.103Z",
   "request_id": "req-7f2c...",
-  "session_id": "sess-bf91...",
+  "session.id": "sess-bf91...",
   "model_id": "claude-sonnet-4.6",
   "target_model_family": "anthropic",
   "upstream_provider": "bedrock-us-east-2",
@@ -86,9 +86,10 @@ Two sidecars tail this JSONL and write to InfluxDB:
 | Sidecar | Measurement | Cadence | Tags vs fields |
 |---|---|---|---|
 | `gflog-to-influx-metrics` | `adapter_metrics` | per request | tag set = Layer A tag-marked; field set = Layer A fields + Layer B (until promoted). |
-| `gflog-to-influx-events` | `claude_code_events` | per request | tag set = same as above; field set = expanded with `request_id`, `session_id`. |
+| `gflog-to-influx-events` | `claude_code_events` | per request | tag set = same as above; field set = expanded with `request_id`, `session.id`. |
+| `gflog-to-influx-traces` | `claude_code_traces` | per request | tag set = same as `adapter_metrics`; field set = trace-oriented payload (tool-inventory deltas, MCP transitions) for drill-down dashboards. |
 
-Grafana queries these measurements to populate the operational dashboard the report describes in §06 (KPI framework).
+All three measurements are written today; Grafana queries them to populate the operational dashboard the report describes in §06 (KPI framework). `claude_code_traces` is the trace drill-down companion to the aggregate counters in `adapter_metrics` and the event stream in `claude_code_events`.
 
 ## Field cardinality concerns
 

@@ -44,14 +44,14 @@ Pass = the validator reports zero failures within a 15-turn agentic loop budget.
 
 For each model, the published pass rate is:
 
-```
+```text
 pass_rate = (number of (task, run) cells where validator passed) / (8 tasks × 3 runs)
           = N_pass / 24
 ```
 
 The published $/success is:
 
-```
+```text
 total_bedrock_spend = Σ (tokens_in_i × $/M_in + tokens_out_i × $/M_out)  over all 24 cells
 cost_per_success    = total_bedrock_spend / N_pass
 ```

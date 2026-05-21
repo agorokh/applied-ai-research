@@ -34,7 +34,7 @@ The Wayback URL pattern resolves to the closest snapshot to the capture date. If
 
 For each model, the report's `$ / success` column is:
 
-```
+```text
 total_bedrock_spend = Σ (tokens_in_i × $/M_in + tokens_out_i × $/M_out)  over all 24 (task × run) cells
 $ / success         = total_bedrock_spend / N_pass
 ```
@@ -55,7 +55,7 @@ Worked example for **Claude Sonnet 4.6** (for the markup-stability arithmetic):
 
 The cluster ranking inside 100%-pass is:
 
-```
+```text
 Qwen 480B   $0.101  (cost leader)
 Haiku 4.5   $0.162  (1.6× Qwen)
 Sonnet 4.6  $0.474  (4.7× Qwen)
@@ -68,7 +68,7 @@ The §11 caveat states: *"the qualitative ranking inside the 100%-pass cluster i
 
 The order flips between Qwen 480B and Haiku 4.5 when the Qwen-tier total spend exceeds Haiku's at scale. At $0.45/M Qwen input vs $1.00/M Haiku input, the relative cost ratio is 2.22×. With Qwen 480B at 8.3 avg turns vs Haiku's 10.4 (Haiku's longer loop is what makes its total spend higher despite the lower per-M rate), the break-even markup on Qwen input is:
 
-```
+```text
 break_even_markup ≈ ($1.00 × 10.4_turns) / ($0.45 × 8.3_turns) ≈ 2.78
 ```
 

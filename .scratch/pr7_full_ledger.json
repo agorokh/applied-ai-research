@@ -1,0 +1,140 @@
+{
+  "watermark_sha": "dce84e7edc3e16faa7e61fd6777c3bf21ee746bd",
+  "pr_state": "MERGED",
+  "counts": {
+    "threads": 2,
+    "threads_unresolved_logic": 0,
+    "threads_open_github": 0,
+    "issue_comments": 5,
+    "review_comments": 2,
+    "reviews": 4,
+    "ledger_total": 13
+  },
+  "unresolved": [],
+  "open_github_threads": [],
+  "ledger": [
+    {
+      "kind": "thread",
+      "seq": 1,
+      "id": "PRRT_kwDOSiUzTc6DpPsn",
+      "path": "2026-05-15_claude-code-via-dial-poc/index.html",
+      "line": null,
+      "author": "cursor",
+      "status": "RESOLVED",
+      "resolved_github": true,
+      "body": "### Removed null guard causes scroll handler runtime errors **Medium Severity** The protective `if (bar)` null check on the `bar` variable (obtained from `document.getElementById('rs-progress')`) was removed. If `getElementById` ever returns `null`, accessing `bar.style.width` throws a `TypeError` on every scroll event and on initial load (via the `onScroll()` call at the bottom). This also prevents the subsequent TOC active-section highlighting from executing, since it runs after the failing line in the same function. Both report pages have this same regression. Additional Locations (1) - [`2026-05-19_choosing-memory-for-enterprise-agents/index.html#L486-L487`](https://github.com/agorokh/applied-ai-research/blob/a7d83660ac3410da46da192e611c1b57b10398ed/2026-05-19_choosing-memory-for-enter",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#discussion_r3277703592"
+    },
+    {
+      "kind": "thread",
+      "seq": 2,
+      "id": "PRRT_kwDOSiUzTc6DpWmg",
+      "path": "2026-05-15_claude-code-via-dial-poc/index.html",
+      "line": 482,
+      "author": "coderabbitai",
+      "status": "RESOLVED",
+      "resolved_github": true,
+      "body": "_\ud83e\uddf9 Nitpick_ | _\ud83d\udd35 Trivial_ | _\ud83d\udca4 Low value_ **Verify the element always exists in the DOM.** The null check on `bar` was removed. While the element `#rs-progress` is present in the static HTML at line 15, removing the guard means a future template change that conditionally renders or removes that element would cause a runtime TypeError. If the element is guaranteed structural and never conditional, this simplification is safe. \ud83d\udee1\ufe0f Optional: restore defensive guard ```diff - bar.style.width = (sh ? sd / sh * 100 : 0) + '%'; + if (bar) bar.style.width = (sh ? sd / sh * 100 : 0) + '%'; ``` \ud83d\udcdd Committable suggestion > \u203c\ufe0f **IMPORTANT** > Carefully review the code before committing. Ensure that it accurately replaces the highlighted code, contains no missing lines, and has no issues with indentation",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#discussion_r3277742438"
+    },
+    {
+      "kind": "issue_comment",
+      "seq": 1,
+      "id": 4503365066,
+      "author": "gemini-code-assist[bot]",
+      "status": "INFO",
+      "body": "> [!WARNING] > You have reached your daily quota limit. Please wait up to 24 hours and I will start processing your requests again!",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#issuecomment-4503365066"
+    },
+    {
+      "kind": "issue_comment",
+      "seq": 2,
+      "id": 4503365290,
+      "author": "coderabbitai[bot]",
+      "status": "INFO",
+      "body": "> [!WARNING] > ## Rate limit exceeded > > `@agorokh` has exceeded the limit for the number of commits that can be reviewed per hour. Please wait **56 minutes and 50 seconds** before requesting another review. > > You\u2019ve run out of usage credits. Purchase more in the [billing tab](https://app.coderabbit.ai/settings/subscription?tab=usage&tenantId=99f97717-a8eb-4ccd-a5ab-e3903c7d9f94). > > > \u231b How t",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#issuecomment-4503365290"
+    },
+    {
+      "kind": "issue_comment",
+      "seq": 3,
+      "id": 4503430732,
+      "author": "gemini-code-assist[bot]",
+      "status": "INFO",
+      "body": "> [!WARNING] > You have reached your daily quota limit. Please wait up to 24 hours and I will start processing your requests again!",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#issuecomment-4503430732"
+    },
+    {
+      "kind": "issue_comment",
+      "seq": 4,
+      "id": 4503432384,
+      "author": "qodo-code-review[bot]",
+      "status": "INFO",
+      "body": "Review Summary by Qodo Restore diligent content to enterprise reports with three-council editorial filter \u2728 Enhancement Walkthroughs Description \u2022 Restored substantial content to two enterprise research reports (Memory and POC) that had been stripped to ~325 lines each in v16, expanding to 497 and 492 lines respectively (+50-53%) \u2022 Applied three-council editorial filter: editorial discipline (remo",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#issuecomment-4503432384"
+    },
+    {
+      "kind": "issue_comment",
+      "seq": 5,
+      "id": 4503441762,
+      "author": "qodo-code-review[bot]",
+      "status": "INFO",
+      "body": "## CI Feedback \ud83e\uddd0 A test triggered by this PR failed. Here is an AI-generated analysis of the failure: **Action:** copilot-pull-request-reviewer **Failed stage:** [Processing Request (Linux)](https://github.com/agorokh/applied-ai-research/actions/runs/26195714020/job/77074490253) [\u274c] **Failed test name:** \"\" **Failure summary:** The action failed during the Copilot PR review request step because th",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#issuecomment-4503441762"
+    },
+    {
+      "kind": "review_comment",
+      "seq": 1,
+      "id": 3277703592,
+      "path": "2026-05-15_claude-code-via-dial-poc/index.html",
+      "author": "cursor[bot]",
+      "body": "### Removed null guard causes scroll handler runtime errors **Medium Severity** The protective `if (bar)` null check on the `bar` variable (obtained from `document.getElementById('rs-progress')`) was removed. If `getElementById` ever returns `null`, accessing `bar.style.width` throws a `TypeError` o",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#discussion_r3277703592"
+    },
+    {
+      "kind": "review_comment",
+      "seq": 2,
+      "id": 3277742438,
+      "path": "2026-05-15_claude-code-via-dial-poc/index.html",
+      "author": "coderabbitai[bot]",
+      "body": "_\ud83e\uddf9 Nitpick_ | _\ud83d\udd35 Trivial_ | _\ud83d\udca4 Low value_ **Verify the element always exists in the DOM.** The null check on `bar` was removed. While the element `#rs-progress` is present in the static HTML at line 15, removing the guard means a future template change that conditionally renders or removes that elem",
+      "url": "https://github.com/agorokh/applied-ai-research/pull/7#discussion_r3277742438"
+    },
+    {
+      "kind": "review",
+      "seq": 1,
+      "id": 4332825710,
+      "author": "sourcery-ai[bot]",
+      "commit_id": "a7d83660ac3410da46da192e611c1b57b10398ed",
+      "actionable": false,
+      "body": "Sorry @agorokh, you have reached your weekly rate limit of 1500000 diff characters. Please try again later or [upgrade](https://app.sourcery.ai/login?connection=github&git_namespace_id=23216638&utm_source=github&utm_medium=bot&utm_campaign=rate_limited) to continue using Sourcery"
+    },
+    {
+      "kind": "review",
+      "seq": 2,
+      "id": 4332843571,
+      "author": "cursor[bot]",
+      "commit_id": "a7d83660ac3410da46da192e611c1b57b10398ed",
+      "actionable": false,
+      "body": "Cursor Bugbot has reviewed your changes and found 1 potential issue. \u274c Bugbot Autofix is OFF. To automatically fix reported issues with cloud agents, enable autofix in the [Cursor dashboard](https://www.cursor.com/dashboard/bugbot). Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit a7d83660ac3410da46da192e611c1b57b10398ed. Configure [here](https://www.cursor.com/dashboard/bugbot)."
+    },
+    {
+      "kind": "review",
+      "seq": 3,
+      "id": 4332881446,
+      "author": "copilot-pull-request-reviewer[bot]",
+      "commit_id": "dce84e7edc3e16faa7e61fd6777c3bf21ee746bd",
+      "actionable": false,
+      "body": "Copilot encountered an error and was unable to review this pull request. You can try again by re-requesting a review."
+    },
+    {
+      "kind": "review",
+      "seq": 4,
+      "id": 4332884221,
+      "author": "coderabbitai[bot]",
+      "commit_id": "a7d83660ac3410da46da192e611c1b57b10398ed",
+      "actionable": true,
+      "body": "**Actionable comments posted: 1** > [!CAUTION] > Some comments are outside the diff and can\u2019t be posted inline due to platform limitations. > > > > > \u26a0\ufe0f Outside diff range comments (1) > > > scripts/check_research_structure.sh (1) > > `8-8`: _\u26a0\ufe0f Potential issue_ | _\ud83d\udfe1 Minor_ | _\u26a1 Quick win_ > > **Update stale comments to reflect relaxed thresholds.** > > The comments at lines 8 and 13 still reference the old limits (callouts `[3, 5]` and h3 ` > > > > > \ud83d\udcdd Proposed fix > > ```diff > -# - .rs-callou"
+    }
+  ]
+}

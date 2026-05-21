@@ -12,7 +12,7 @@ A practitioner with comparable LLM-call tooling, a corpus to evaluate against, a
 |------|---------|
 | [`README.md`](README.md) | This file. The protocol description + the re-instantiation checklist. |
 | [`schema.md`](schema.md) | JSONL input/output schema for the paired-question fixture and the judged-record output. |
-| [`example-fixture.jsonl`](example-fixture.jsonl) | 2–3 paired questions on a neutral domain (the Linux kernel's documented `sched_ext` scheduler interface). Concrete enough to validate a harness implementation; specific enough to NOT leak the SDLC corpus. |
+| [`example-fixture.jsonl`](example-fixture.jsonl) | 4 paired questions (4 JSONL records) on a neutral domain (the Linux kernel's documented `sched_ext` scheduler interface). Concrete enough to validate a harness implementation; specific enough to NOT leak the SDLC corpus. |
 
 ## The protocol
 
@@ -42,14 +42,14 @@ Total LLM-judge calls per fixture: `N × 2 orderings × 2 judges = 4N`. For N=64
 
 Per task-family (see [`../task-families.md`](../task-families.md) for the family taxonomy):
 
-```
+```text
 family_win_rate(A, family) = count(pair wins where pair.family == family AND winner == A)
                            / count(pair.family == family)
 ```
 
 Per substrate aggregate, both ways:
 
-```
+```text
 uniform_score(A)    = mean over families of family_win_rate(A, family)
 weighted_score(A)   = Σ over families of family_weight × family_win_rate(A, family)
 ```
@@ -58,8 +58,8 @@ weighted_score(A)   = Σ over families of family_weight × family_win_rate(A, fa
 
 Fabrication counts:
 
-```
-fab_count(substrate) = count(retrievals where any judge labelled it `hallucinated`)
+```text
+fab_count(substrate) = count of distinct question_id where any judged record marks that substrate's retrieval `hallucinated` (any judge, any ordering)
 ```
 
 Apply the pre-registered threshold against `weighted_score`, against `fab_count` ratio, against the CI on `weighted_score(A) - weighted_score(B)`.
