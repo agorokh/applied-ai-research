@@ -160,7 +160,7 @@
 
     <p>The full table lives in <a href="artefacts/model-matrix.md">the model-matrix artefact</a>. The headline rows, sorted by smoke score:</p>
 
-    <table>
+    <table class="rs-table">
       <thead>
         <tr><th>Model</th><th>Provider / runtime</th><th>Ent / doc</th><th>Rel / doc</th><th>Rel / ent</th><th>Smoke (pass / marginal / fail)</th></tr>
       </thead>
@@ -214,7 +214,7 @@
 
     <p>The full derivation is in <a href="artefacts/cost-model.md">the cost-model artefact</a>. Each document on this corpus produced approximately 4 chunks of 1200 tokens each, and LightRAG made approximately 2.5 LLM calls per chunk on average (entity extraction + relation extraction + occasional merge-summary), with each call consuming roughly 8K input tokens and producing roughly 2K output tokens. That comes to approximately 80K input + 20K output tokens per document, or 8M input + 2M output tokens per 100 documents, before any gleaning overhead.</p>
 
-    <table>
+    <table class="rs-table">
       <thead>
         <tr><th>Model</th><th>List price (per 1M input / output, USD)</th><th>Ingest cost per 100 docs (USD)</th><th>Cost ratio (vs Gemini Flash)</th><th>Smoke pass</th></tr>
       </thead>
@@ -237,7 +237,7 @@
       <h4>Why list-price math hides the real bottleneck</h4>
       <p>The per-token rate is not the binding constraint on a full re-ingest at scale. The binding constraint is the daily token quota of the account tier you are on. A 180-document re-ingest in flight on a developer-tier Gemini key tripped a 2,000,000-token daily cap and parked the remaining documents until the quota reset. The list-price column says ingest is cheap. The capacity column says ingest is slow on the wrong tier.</p>
       <p>Indicative daily caps (verify against your own contract or the provider console; these shift):</p>
-      <table>
+      <table class="rs-table">
         <thead>
           <tr><th>Provider tier</th><th>Indicative daily token cap</th><th>Documents per day (this corpus shape)</th></tr>
         </thead>

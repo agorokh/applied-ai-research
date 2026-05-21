@@ -76,10 +76,10 @@ Average document length similar to the smoke corpus (mixed prose, ~5 pages). Ann
 
 | Cost line | Gemini 2.5 Flash | Sonnet 4.6 |
 |---|---:|---:|
-| One-time backfill (50,000 docs, list) | ~$3,500 to ~$5,000 | ~$27,000 to ~$40,000 |
-| Annual delta-ingest (15,000 docs / year) | ~$1,050 to ~$1,500 / year | ~$8,100 to ~$12,000 / year |
-| Re-ingest under model swap (full, ~once / 18 months) | ~$3,500 to ~$5,000 | ~$27,000 to ~$40,000 |
-| Total year-1 cost at list (backfill + delta) | ~$4,500 to ~$6,500 | ~$35,000 to ~$52,000 |
+| One-time backfill (50,000 docs, list) | ~$3,500 to ~$5,000 | ~$27,000 to ~$34,500 |
+| Annual delta-ingest (15,000 docs / year) | ~$1,050 to ~$1,500 / year | ~$8,100 to ~$10,350 / year |
+| Re-ingest under model swap (full, ~once / 18 months) | ~$3,500 to ~$5,000 | ~$27,000 to ~$34,500 |
+| Total year-1 cost at list (backfill + delta) | ~$4,500 to ~$6,500 | ~$35,000 to ~$45,000 |
 
 Peak token rate during backfill: at the operator's measured 2.5 calls per chunk and 4 chunks per document, full-parallel ingest of 50,000 documents at `max_async = 4` is roughly 500,000 LLM calls. On a 2M-token-per-day Gemini developer key, this takes weeks. On a paid tier with millions of tokens per day, this takes hours to a day. **Budget the tier upgrade before you budget the run.**
 
