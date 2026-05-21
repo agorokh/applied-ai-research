@@ -38,7 +38,8 @@ Using public list prices verified at run time. Per-million-token rates are quote
 | gpt-4o-mini | $0.15 | $0.60 | $1.20 | $1.20 | **~$2 to $3** | ~0.2× to ~0.4× |
 | Claude Sonnet 4.6 | $3.00 | $15.00 | $24.00 | $30.00 | **~$54 to $69** | ~6× to ~9× (at list) |
 | Llama 3.2 3B (local Ollama) | $0 | $0 | $0 | $0 | **$0** (electricity) | 0× |
-| Qwen 2.5 14B GGUF Q4 (local M1 Max) | $0 | $0 | $0 | $0 | **$0** (electricity + wall-clock) | 0× |
+
+**Partial local run (not in table above):** Qwen 2.5 14B GGUF Q4 on M1 Max completed **19/20** smoke documents at $0 list (electricity + wall-clock only), scoring **5 / 24**. Not cross-comparable to full-corpus rows; see [`model-matrix.md`](model-matrix.md) partial-runs section.
 
 Range reflects gleaning vs no-gleaning. Operators on a fresh corpus typically see the gleaning-active numbers.
 
