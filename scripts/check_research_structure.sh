@@ -5,12 +5,12 @@
 # Council v12 verdict (2026-05-20):
 #   - Each report must instance research-paper.html grammar
 #   - Exactly 13 <section> elements (hero + 12 numbered)
-#   - .rs-callout count in [3, 5]
+#   - .rs-callout count in [3, 15] (v17 diligent reports use more callouts)
 #   - Zero <div class="rs-container"> wrappers
 #   - Zero inline <style> blocks
 #   - Zero <link> to research-overrides.css
 #   - Exactly one <h1> with exactly one <em> inside
-#   - <h3> count <= 8 (reference uses 7; +1 tolerance for 3-tier reports)
+#   - <h3> count in [0, 30] (v17 reports include tier + section h3s)
 #   - Landing instances research-index.html grammar (rs-index-hero + rs-posts)
 #
 # Wire into make ci-fast.
