@@ -20,7 +20,7 @@ The extractor LLM only. Five things were held constant across all eleven model r
 
 Two corpora.
 
-- **Smoke corpus.** 20 documents drawn from a personal knowledge-base vault. Mixed prose plus structured notes, average roughly 5 pages each. Implicit entity types: people, projects, decisions, dates, concepts. Pinned by file list so every model ingests the same 20 files in the same order.
+- **Smoke corpus.** 20 documents drawn from a curated knowledge-base corpus. Mixed prose plus structured notes, average roughly 5 pages each. Implicit entity types: people, projects, decisions, dates, concepts. Pinned by file list so every model ingests the same 20 files in the same order.
 - **Production-class validation corpus.** 482 documents from a legal-domain corpus (specific identity withheld for sensitivity reasons). Used only to validate the smoke-rubric winner before locking it as production default. Not used to score every model; running 11 ingest runs on a 482-doc corpus would have cost roughly 25 times what the smoke corpus cost.
 
 ## Smoke rubric
@@ -60,4 +60,4 @@ The per-100-document derivation in [`cost-model.md`](cost-model.md) multiplies e
 
 The eleven model runs were executed late April 2026 with extensions in early May 2026 (the Gemini 3.x variants). The drift incident described in §09 happened mid-May 2026 and is documented separately in the operator's internal investigation log; it is referenced here as the operational lesson, not as a data point in the matrix.
 
-Original ingest logs, per-cell smoke transcripts, and the estimated token counts that feed the cost model are in the operator's vault. They are not published verbatim because they contain corpus content from non-public workspaces. Re-running the rubric on your own corpus is the reproducibility path; the rubric itself is the reusable artefact.
+Original ingest logs, per-cell smoke transcripts, and the estimated token counts that feed the cost model are held in an internal investigation log. They are not published verbatim because they contain corpus content from non-public workspaces. Re-running the rubric on your own corpus is the reproducibility path; the rubric itself is the reusable artefact.
