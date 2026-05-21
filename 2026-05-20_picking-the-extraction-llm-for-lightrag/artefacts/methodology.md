@@ -2,7 +2,7 @@
 
 ## Question
 
-Which LLM should LightRAG use as its entity and relation extractor during ingestion, on a coding-orchestration and knowledge-base corpus class, evaluated against a fixed retrieval-acceptance rubric.
+Which LLM should a knowledge-graph RAG system (the class that includes Microsoft GraphRAG, LightRAG, and similar pipelines) use as its entity and relation extractor during ingestion, on a coding-orchestration and knowledge-base corpus class, evaluated against a fixed retrieval-acceptance rubric. Measurements run on LightRAG specifically as the representative implementation.
 
 ## Variable under study
 

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Picking the extraction LLM for LightRAG · Applied AI Research · 2026-05-20</title>
-<meta name="description" content="Eleven extraction LLMs measured on the same corpus, same chunking, same rubric. Why breadth beats density for graph-traversal retrieval, why Gemini 2.5 Flash wins at roughly 3 percent of Sonnet's ingest cost, and what happens when the wrong model gets wired in. Independent practitioner notes, not an official EPAM publication." />
+<title>Picking the extraction LLM for knowledge-graph ingestion · Applied AI Research · 2026-05-20</title>
+<meta name="description" content="Knowledge-graph RAG systems (Microsoft GraphRAG, LightRAG, and the ecosystem around them) extract entities and relations from source text at ingest time using an LLM. Eleven candidate models measured on the same corpus and rubric. Why breadth of extraction beats density of relations for graph-traversal retrieval, and why the cheapest model that clears every retrieval cell costs roughly 3 percent of the strongest commercial alternative. Independent practitioner notes, not an official EPAM publication." />
 <link rel="stylesheet" href="../assets/dialx/tokens.css" />
 <link rel="stylesheet" href="../assets/dialx/type.css" />
 <link rel="stylesheet" href="../assets/dialx/research.css" />
@@ -57,10 +57,10 @@
       <span>13 min read</span>
     </div>
 
-    <h1>Picking the extraction LLM for <em>LightRAG.</em></h1>
+    <h1>Picking the extraction LLM for <em>knowledge-graph ingestion.</em></h1>
 
     <p class="rs-lede">
-      LightRAG's published benchmarks compare retrieval quality across graph backends and embedders. They hold the extraction LLM constant. In production the extraction LLM is the variable that dominates both cost and retrieval quality, and the published numbers do not name a default. I ran eleven candidate models on the same corpus, same chunking, same smoke rubric, and one of them passed every retrieval cell at roughly three percent of the strongest commercial alternative's ingest cost. The counter-intuitive part is which axis decides it: breadth of extraction, not density of relations.
+      Knowledge-graph RAG systems (Microsoft GraphRAG, LightRAG, the ecosystem around them) extract entities and relations from source text at ingest time using an LLM. Published benchmarks for these systems compare retrieval quality across graph backends and embedders. They hold the extraction LLM constant. In production it is the variable that dominates both cost and retrieval quality, and the published numbers do not name a default. I ran eleven candidate models on one such system (LightRAG, used here as the representative implementation), same corpus, same chunking, same smoke rubric. One model passed every retrieval cell at roughly three percent of the strongest commercial alternative's ingest cost. The counter-intuitive part is which axis decides it: breadth of extraction, not density of relations.
     </p>
 
     <div class="rs-hero-meta">
@@ -89,11 +89,11 @@
   <section class="rs-section" id="s01">
     <p class="rs-section-label"><span class="num">01</span> Executive summary</p>
     <h2>Three findings, <em>one model recommendation.</em></h2>
-    <p>The companion <a href="../2026-05-19_choosing-memory-for-enterprise-agents/">memory substrate report</a> answers the question "which graph substrate." This report answers the question that operationally dominates that one: <em>which LLM should that substrate use during ingestion.</em> The choice is not interchangeable. It controls retrieval quality more than the substrate choice does, it controls cost by an order of magnitude or more, and a single misconfigured workstation file can flip a healthy substrate to red overnight. I ran eleven candidates against a fixed 20-document subset and a 24-cell smoke rubric. One model passed every cell. I validated it on a separate 482-document legal corpus before recommending it for production.</p>
+    <p>The companion <a href="../2026-05-19_choosing-memory-for-enterprise-agents/">memory substrate report</a> answers the question "which graph substrate." This report answers the question that operationally dominates that one for any knowledge-graph RAG system: <em>which LLM should the substrate use during ingestion.</em> The choice is not interchangeable. It controls retrieval quality more than the substrate choice does, it controls cost by an order of magnitude or more, and a single misconfigured workstation file can flip a healthy substrate to red overnight. The measurements below are on LightRAG specifically (it is the canonical open-source implementation of this class), but the findings are about the class. I ran eleven candidates against a fixed 20-document subset and a 24-cell smoke rubric. One model passed every cell. I validated it on a separate 482-document legal corpus before recommending it for production.</p>
 
     <div class="rs-callout">
       <h4>Finding 1. Breadth beats density for graph-traversal retrieval</h4>
-      <p>Gemini 2.5 Flash extracts roughly 2x more entities and 1.6x more relations per document than Claude Sonnet 4.6 on the same chunks. Its relation-to-entity ratio is actually slightly lower (1.15 vs 1.43). The mechanism: LightRAG's retrieval pattern is graph traversal followed by chunk fetch, so additional entities anchor additional chunks at retrieval time. Density of relations matters less than the surface area the entity index covers. Sonnet 4.6 ran the rubric to an effective 24/24 by margin recovery; Gemini 2.5 Flash ran it to a clean 24/24 with no marginals. <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
+      <p>Gemini 2.5 Flash extracts roughly 2x more entities and 1.6x more relations per document than Claude Sonnet 4.6 on the same chunks. Its relation-to-entity ratio is actually slightly lower (1.15 vs 1.43). The mechanism: graph-traversal retrieval (the shape every system in this class uses) fetches chunks anchored by the entity index, so additional entities anchor additional chunks at retrieval time. Density of relations matters less than the surface area the entity index covers. Sonnet 4.6 ran the rubric to an effective 24/24 by margin recovery; Gemini 2.5 Flash ran it to a clean 24/24 with no marginals. <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
     </div>
 
     <div class="rs-callout">
@@ -110,11 +110,11 @@
   <section class="rs-section" id="s02">
     <p class="rs-section-label"><span class="num">02</span> What ingest actually controls</p>
     <h2>The extraction LLM <em>is the substrate.</em></h2>
-    <p class="rs-lede">If you read LightRAG's paper without running it, the extraction LLM looks like an implementation detail. The benchmarks hold it constant, the architecture diagrams hide it inside the ingest box, the ablation tables vary chunk size and retrieval mode but not extractor. In production it is the variable that decides what your graph looks like.</p>
+    <p class="rs-lede">Knowledge-graph RAG systems all share the same ingest shape. The published benchmarks for these systems hold the extractor constant, the architecture diagrams hide it inside the ingest box, the ablation tables vary chunk size and retrieval mode but not extractor. In production it is the variable that decides what your graph looks like.</p>
 
-    <p>LightRAG's ingest pipeline (<a href="https://github.com/HKUDS/LightRAG">github.com/HKUDS/LightRAG</a>) does four things to each chunk: extract entities, extract relations among them, summarise the entity description when an entity appears in eight or more chunks, run a gleaning second pass to recover missed extractions. All four are LLM calls. The LLM call dominates wall-clock time, dominates dollar cost, and produces every node and edge in the graph. The graph is what retrieval traverses. So the extractor's biases (which entity types it recognises, which relation types it emits, how strictly it honours the schema) become permanent properties of the substrate until you re-ingest from scratch.</p>
+    <p>The class of system this report studies includes <a href="https://github.com/microsoft/graphrag">Microsoft GraphRAG</a>, <a href="https://github.com/HKUDS/LightRAG">LightRAG</a>, and the smaller ecosystem of similar pipelines built on Neo4j vector-plus-graph storage. They differ in retrieval strategy, in graph schema, in how they expose configuration. They share one ingest pattern: for each chunk of source text, an LLM extracts entities, an LLM extracts relations among them, an LLM summarises the entity when it appears in many chunks, an LLM gleans a second pass to recover missed extractions. All four are LLM calls. The LLM call dominates wall-clock time, dominates dollar cost, and produces every node and edge in the graph. The graph is what retrieval traverses. So the extractor's biases (which entity types it recognises, which relation types it emits, how strictly it honours the schema) become permanent properties of the substrate until you re-ingest from scratch.</p>
 
-    <p>The published LightRAG benchmarks do not specify a default extractor. The paper's appendix names gpt-4o-mini for some runs and reports retrieval scores; it does not study sensitivity to extractor choice. A reader who deploys LightRAG with the upstream defaults gets gpt-4o-mini as the implicit extractor and inherits its limits without ever seeing the choice. That implicit-default-as-decision pattern is the failure mode this report tries to make explicit.</p>
+    <p>The published benchmarks for these systems rarely specify or vary the extractor. LightRAG's paper names gpt-4o-mini for some runs and reports retrieval scores; it does not study sensitivity to extractor choice. A reader who deploys the system with the upstream defaults gets gpt-4o-mini as the implicit extractor and inherits its limits without ever seeing the choice. That implicit-default-as-decision pattern is the failure mode this report tries to make explicit, on LightRAG as the representative implementation.</p>
 
     <p>Three properties of the extractor that show up downstream:</p>
 
@@ -189,11 +189,11 @@
 
     <p>The counter-intuitive finding sits in two columns of the matrix. Gemini 2.5 Flash produces a graph with 2x the entities and 1.6x the relations per document compared to Claude Sonnet 4.6, but its relation-to-entity ratio is lower (1.15 vs 1.43). On a chat benchmark you would expect the higher-ratio extractor to win on synthesis tasks because each entity is more richly connected. On this benchmark the opposite happens. The model that produces more loosely connected nodes wins.</p>
 
-    <p>The mechanism is in LightRAG's retrieval shape. A query is embedded and matched against entity nodes; the top-k entity neighbourhoods are traversed; the chunks that originally produced those entities are fetched and returned. Whether the right chunk gets returned depends primarily on whether <em>any</em> entity in that chunk matches the query, not on how densely entities link to each other. Doubling the entity count roughly doubles the surface area the entity index covers, which roughly doubles the probability that a query lands on at least one entity from each chunk that should be returned.</p>
+    <p>The mechanism is in the retrieval shape shared by every system in this class. A query is embedded and matched against entity nodes; the top-k entity neighbourhoods are traversed; the chunks that originally produced those entities are fetched and returned. Whether the right chunk gets returned depends primarily on whether <em>any</em> entity in that chunk matches the query, not on how densely entities link to each other. Doubling the entity count roughly doubles the surface area the entity index covers, which roughly doubles the probability that a query lands on at least one entity from each chunk that should be returned.</p>
 
     <p>Relation density matters too, but only on a smaller class of queries: those that require multi-hop traversal across the graph (e.g. "what links concept A to concept B in this corpus"). Most production queries do not look like that. They look like "what does this corpus say about X." For those, breadth of the entity index dominates density of the relation index.</p>
 
-    <p>This pattern probably generalises across retrieval-augmented systems that traverse an entity graph: optimise the extractor for entity coverage first, and only optimise for relation density when the query distribution actually rewards it. It does not generalise to systems that score retrieval purely on relation paths (which is a smaller class of systems than the literature implies).</p>
+    <p>This pattern generalises across knowledge-graph RAG systems with traversal-then-fetch retrieval: optimise the extractor for entity coverage first, and only optimise for relation density when the query distribution actually rewards it. It does not generalise to systems that score retrieval purely on relation paths (which is a smaller class than the literature implies), or to pure vector RAG without an entity index.</p>
   </section>
 
   <section class="rs-section" id="s06">
@@ -217,7 +217,7 @@
       </tbody>
     </table>
 
-    <p>Three things this table is not. It is not a forecast for your corpus (your chunks may not average 1200 tokens; your gleaning may run hotter or colder). It is not a contract-pricing table (your DIAL or enterprise discount changes the absolute numbers but rarely changes the ratios inside the cluster). It is not a long-tail study (it covers models I actually ran, not the much larger set of frontier models that are projected on cost but never measured).</p>
+    <p>Three things this table is not. It is not a forecast for your corpus (your chunks may not average 1200 tokens; your gleaning may run hotter or colder). It is not a contract-pricing table (an enterprise gateway discount changes the absolute numbers but rarely changes the ratios inside the cluster). It is not a long-tail study (it covers models I actually ran, not the much larger set of frontier models that are projected on cost but never measured).</p>
 
     <p>The ranking conclusion is robust to multiplicative pricing factors below roughly 10x. Gemini 2.5 Flash is cheaper than Sonnet 4.6 on every published rate card I have seen and scores the same on the smoke rubric. The cheapest model that hits 24/24 is the production answer; nothing in the cost table flips that.</p>
   </section>
@@ -284,11 +284,11 @@
     <p class="rs-section-label"><span class="num">10</span> Recommendations</p>
     <h2>What to deploy, <em>what to instrument.</em></h2>
 
-    <p>The substrate question and the extractor question are answered together. For a coding-orchestration corpus or a knowledge-base corpus shaped like the one I measured:</p>
+    <p>The substrate question and the extractor question are answered together. For a coding-orchestration corpus or a knowledge-base corpus shaped like the one I measured, running on any knowledge-graph RAG system in this class:</p>
 
     <ul>
       <li><strong>Default extractor: Gemini 2.5 Flash via the provider gateway you already use.</strong> Re-validate the smoke rubric on a 20-document subset of your own corpus before locking it in. The rubric file is small enough to put in your repo.</li>
-      <li><strong>Reject the implicit gpt-4o-mini default.</strong> The default that ships with vanilla LightRAG is roughly one hundred times cheaper than Gemini Flash and loses cells you will care about. If you cannot upgrade the extractor, at least make the choice explicit so future operators see it.</li>
+      <li><strong>Reject the implicit gpt-4o-mini default.</strong> Several systems in this class ship gpt-4o-mini or an equivalent small-tier model as the implicit extractor. It is roughly one hundred times cheaper than Gemini Flash and loses cells you will care about. If you cannot upgrade the extractor, at least make the choice explicit so future operators see it.</li>
       <li><strong>Treat the relation-to-entity ratio as diagnostic, not optimisation target.</strong> A ratio above ~1.4 with entity count below ~30 per document indicates a dense small graph that will underperform retrieval at scale. A ratio near 1.0 with entity count above ~60 indicates a wide sparse graph that traverses well.</li>
       <li><strong>For local-only corpora: Qwen 2.5 14B GGUF Q4_K_M in LM Studio on Apple Silicon (32 GB or more).</strong> Pair it with a separate query-time model for synthesis. Accept that you are trading retrieval breadth for data residency.</li>
       <li><strong>Disable reasoning mode on any extractor that supports it.</strong> Verify the flag actually reaches the model.</li>
@@ -313,7 +313,8 @@
       <li><strong>Chunking.</strong> All rows used LightRAG defaults (1200 tokens, 100 overlap). A different chunk size changes per-chunk LLM cost and the entity-to-chunk anchoring shape. Re-derive the cost table if you change chunking.</li>
       <li><strong>Embedder.</strong> All rows used the same local embedder. Changing the embedder changes retrieval behaviour independently of the extractor and would warrant a separate study.</li>
       <li><strong>Provider pricing.</strong> List prices used here are public rate cards. Contract pricing through an enterprise gateway will shift absolute magnitudes; the cost ratios inside the matrix are more stable than the absolutes.</li>
-      <li><strong>Query distribution.</strong> Breadth-over-density holds for traversal-then-fetch retrieval shaped like LightRAG's. Systems that score retrieval on multi-hop relation paths may reward density more.</li>
+      <li><strong>Query distribution.</strong> Breadth-over-density holds for traversal-then-fetch retrieval (the shape LightRAG, Microsoft GraphRAG, and similar systems use). Systems that score retrieval on multi-hop relation paths may reward density more. Pure vector RAG without an entity index does not benefit from this finding at all.</li>
+      <li><strong>Implementation tested.</strong> Measurements were taken on LightRAG. The findings about extraction-LLM choice should generalise to other systems in the same class (Microsoft GraphRAG, Neo4j vector-plus-graph setups), but the absolute entity counts and cost numbers depend on the specific pipeline's prompt templates and gleaning aggressiveness. Re-derive on your chosen implementation before treating the magnitudes as portable.</li>
       <li><strong>Model versions.</strong> Frontier models update frequently. Gemini 2.5 Flash specifically beat its own 3.x successors on this task; do not assume a newer release will preserve the same extraction behaviour.</li>
     </ul>
   </section>

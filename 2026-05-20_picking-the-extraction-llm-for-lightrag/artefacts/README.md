@@ -10,9 +10,13 @@ Companion material to [`../index.html`](../index.html). Each artefact stands on 
 | [`model-matrix.md`](model-matrix.md) | The full eleven-row table with provider, runtime, raw counts, smoke score, and per-row notes. |
 | [`cost-model.md`](cost-model.md) | Per-100-document cost derivation. Token accounting, list-price multiplication, the ratios that survive contract pricing. |
 
+## Scope of measurement
+
+The eleven model rows were measured on LightRAG specifically, as the canonical open-source implementation of the knowledge-graph RAG class. The findings about extractor breadth, the cost ratios at scale, and the failure modes of small open-source extractors should generalise to other systems in the same class (Microsoft GraphRAG, Neo4j vector-plus-graph setups, similar ingestion pipelines). The absolute entity counts and the per-pipeline cost numbers depend on prompt templates, gleaning aggressiveness, and chunking defaults that differ across implementations. Re-derive on yours before treating the magnitudes as portable.
+
 ## How to reproduce
 
-The smoke rubric is the reusable apparatus. Re-instantiate it on your own corpus before committing to a default extractor:
+The smoke rubric is the reusable apparatus. Re-instantiate it on your own corpus and your own pipeline before committing to a default extractor:
 
 1. Pick 20 documents that match the shape of your production corpus (mixed prose plus structured notes worked here; pick what is representative of yours).
 2. Pin them in a list file so the same files are ingested for every model row.
