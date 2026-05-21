@@ -40,7 +40,7 @@ Every headline claim in the report, tagged by epistemic status.
 
 | Tag | Claim | Source |
 |---|---|---|
-| measured | Approximate per-100-document ingest cost on this corpus: ~$7 to $10 (Gemini 2.5 Flash, list-derived), ~$54 to $80 (Sonnet 4.6, list-derived), ~$2 to $3 (gpt-4o-mini, list-derived), $0 (local open-source). Sonnet's measured 20-doc invoice ratio vs Gemini Flash is ~30× to ~33×. | Smoke run invoices; per-1M-token list prices applied to measured token counts. |
+| measured | Approximate per-100-document ingest cost on this corpus: ~$7 to $10 (Gemini 2.5 Flash, list-derived), ~$54 to $69 (Sonnet 4.6, list-derived with gleaning uplift), ~$2 to $3 (gpt-4o-mini, list-derived), $0 (local open-source). Sonnet's measured 20-doc invoice ratio vs Gemini Flash is ~30× to ~33×. | Smoke run invoices; per-1M-token list prices applied to measured token counts. |
 | inferred | Cost ratios inside the matrix are more stable than absolute magnitudes against contract pricing variation. | Inferred from observation that all commercial rows use the same per-token shape and differ only on price; not independently validated against any specific contract. |
 
 ## Open source (§07)

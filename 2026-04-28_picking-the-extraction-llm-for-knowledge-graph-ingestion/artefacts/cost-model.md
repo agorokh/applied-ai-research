@@ -36,7 +36,7 @@ Using public list prices verified at run time. Per-million-token rates are quote
 |---|---:|---:|---:|---:|---:|---:|
 | **Gemini 2.5 Flash** | $0.30 | $2.50 | $2.40 | $5.00 | **~$7 to $10** | 1.0× |
 | gpt-4o-mini | $0.15 | $0.60 | $1.20 | $1.20 | **~$2 to $3** | 0.2× to 0.3× |
-| Claude Sonnet 4.6 | $3.00 | $15.00 | $24.00 | $30.00 | **~$54 to $80** | ~7× to ~10× (at list) |
+| Claude Sonnet 4.6 | $3.00 | $15.00 | $24.00 | $30.00 | **~$54 to $69** | ~6× to ~9× (at list) |
 | Llama 3.2 3B (local Ollama) | $0 | $0 | $0 | $0 | **$0** (electricity) | 0× |
 | Qwen 2.5 14B GGUF Q4 (local M1 Max) | $0 | $0 | $0 | $0 | **$0** (electricity + wall-clock) | 0× |
 
@@ -62,6 +62,6 @@ Both numbers are correct. The ~33x is the measured invoice ratio on this specifi
 
 ## Projection to your corpus
 
-Multiply the per-100-document figure by your corpus size in hundreds. For a 1,500-document corpus on Gemini 2.5 Flash: ~$100 to $150 at list, including gleaning. For the same corpus on Sonnet 4.6: ~$800 to $1,200 at list.
+Multiply the per-100-document figure by your corpus size in hundreds. For a 1,500-document corpus on Gemini 2.5 Flash: ~$100 to $150 at list, including gleaning. For the same corpus on Sonnet 4.6: ~$810 to $1,035 at list.
 
 Re-derive the table for your own list prices and your own measured per-chunk token shape. The ratio claims survive substantial pricing variation; the absolute claims do not.
