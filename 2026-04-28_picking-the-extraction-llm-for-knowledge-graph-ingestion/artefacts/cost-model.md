@@ -65,3 +65,36 @@ Both numbers are correct. The ~33x is the measured invoice ratio on this specifi
 Multiply the per-100-document figure by your corpus size in hundreds. For a 1,500-document corpus on Gemini 2.5 Flash: ~$100 to $150 at list, including gleaning. For the same corpus on Sonnet 4.6: ~$810 to $1,035 at list.
 
 Re-derive the table for your own list prices and your own measured per-chunk token shape. The ratio claims survive substantial pricing variation; the absolute claims do not.
+
+## Enterprise-scale worked examples
+
+Two corpus shapes that a delivery lead at a mid-size enterprise actually has to size. Numbers below use the smoke-corpus per-document averages and the list-price calculator. Real enterprise corpora vary; use these as a budget conversation starter, not a forecast.
+
+### Example A: a 50,000-document Confluence export
+
+Average document length similar to the smoke corpus (mixed prose, ~5 pages). Annual change rate 30 percent (15,000 documents updated or added per year).
+
+| Cost line | Gemini 2.5 Flash | Sonnet 4.6 |
+|---|---:|---:|
+| One-time backfill (50,000 docs, list) | ~$3,500 to ~$5,000 | ~$27,000 to ~$40,000 |
+| Annual delta-ingest (15,000 docs / year) | ~$1,050 to ~$1,500 / year | ~$8,100 to ~$12,000 / year |
+| Re-ingest under model swap (full, ~once / 18 months) | ~$3,500 to ~$5,000 | ~$27,000 to ~$40,000 |
+| Total year-1 cost at list (backfill + delta) | ~$4,500 to ~$6,500 | ~$35,000 to ~$52,000 |
+
+Peak token rate during backfill: at the operator's measured 2.5 calls per chunk and 4 chunks per document, full-parallel ingest of 50,000 documents at `max_async = 4` is roughly 500,000 LLM calls. On a 2M-token-per-day Gemini developer key, this takes weeks. On a paid tier with millions of tokens per day, this takes hours to a day. **Budget the tier upgrade before you budget the run.**
+
+### Example B: a 200,000-document ticket archive
+
+Average document much shorter than the smoke corpus (~10 lines per ticket on average). Lower per-document chunk count (1 to 2 chunks per document). Annual change rate 60 percent (assumes ticket creation and closure churn).
+
+| Cost line | Gemini 2.5 Flash | Sonnet 4.6 |
+|---|---:|---:|
+| One-time backfill (200,000 docs, list) | ~$5,000 to ~$8,000 | ~$40,000 to ~$65,000 |
+| Annual delta-ingest (120,000 docs / year) | ~$3,000 to ~$5,000 / year | ~$24,000 to ~$40,000 / year |
+| Total year-1 cost at list | ~$8,000 to ~$13,000 | ~$64,000 to ~$105,000 |
+
+This corpus shape benefits from extractor breadth more than the Confluence example because per-document text is shorter and a wider entity index covers more of it. The Gemini Flash advantage probably widens. The exact ratio is a re-measurement on your own ticket corpus, not a projection.
+
+### What these examples are not
+
+These are list-price calculations at the per-100-document shape the operator measured on a personal vault. Enterprise contract pricing through DIAL or any other gateway will shift absolute magnitudes. Real ticket corpora have higher entropy than personal notes; real Confluence exports include attached PDFs and code blocks that ingest differently. The numbers above are the calculator output you bring to a budget conversation; the real figure your team should plan against comes from re-running the smoke rubric on a 20-document subset of your own corpus first.

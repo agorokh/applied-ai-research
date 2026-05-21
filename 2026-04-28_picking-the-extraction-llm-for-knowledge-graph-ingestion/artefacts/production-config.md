@@ -2,6 +2,12 @@
 
 The operational discipline behind the report's recommendations. These are not LightRAG defaults; they are choices that emerged from running multiple workspaces in production through the April benchmark and the May drift incident.
 
+The file is split into two parts. **Part A** describes the transferable patterns: choices another operator can adopt independent of their hardware, gateway, or corpus shape. **Part B** records this operator's specific knob values as point-in-time reference: useful as a starting point for sizing your own ingest, not a recommendation to copy verbatim.
+
+---
+
+## Part A: Transferable patterns
+
 ## One LightRAG process per workspace
 
 Most operators run a single multi-tenant LightRAG with all workspaces sharing one process. The operator runs one process per workspace, six total at the time of writing, enforced by a fleet-registry flag:
@@ -52,7 +58,15 @@ The foundation gate's canary check passes a query through the substrate and asse
 
 Both checks are necessary. An empty graph trivially passes the first check by returning the empty-retrieval phrase, so the second check is the substantive one. A healthy graph trivially passes the second check by citing real references, so the first check is the speed-of-failure shortcut for the common case. The week's foundation-gate merge that caught the drift incident in §09 was exactly the addition of the second check; before it landed, an empty substrate had been passing canaries that only looked for "did the substrate respond without error."
 
-## Parallel ingestion settings actually used
+---
+
+## Part B: This operator's knob values, point-in-time
+
+The values below are the live config on the operator's M2 Pro at the time the report was finalised. They are NOT a transferable recommendation. Document length, chunk count, gateway rate-limit shape, embedder throughput, and the extractor's intrinsic per-call latency all vary; the values that work here will not be the values that work on your hardware against your corpus.
+
+What is worth taking is the shape: small `max_async` (not large), embedder concurrency decoupled from extractor concurrency, LLM cache enabled for extract, merge-summary gated by a chunk threshold rather than always-on. The specific numbers below are starting points to measure against, not endpoints to copy.
+
+### Parallel ingestion settings actually used
 
 For reference, the live production config at the time of writing:
 

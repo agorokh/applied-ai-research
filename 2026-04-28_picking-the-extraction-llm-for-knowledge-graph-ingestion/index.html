@@ -54,7 +54,7 @@
       <span class="dot">·</span>
       <span>2026 · 04 · 28</span>
       <span class="dot">·</span>
-      <span>13 min read</span>
+      <span>16 min read</span>
     </div>
 
     <h1>Picking the extraction LLM for <em>knowledge-graph ingestion.</em></h1>
@@ -66,13 +66,15 @@
     <div class="rs-hero-meta">
       <div class="rs-meta-stat"><span class="v">24<span class="unit">/ 24 cells</span></span><span class="l">Gemini 2.5 Flash smoke pass; only model in the matrix at this score</span></div>
       <div class="rs-meta-stat"><span class="v">11<span class="unit">models</span></span><span class="l">Frontier commercial, mid-tier commercial, local open-source</span></div>
-      <div class="rs-meta-stat"><span class="v">~33<span class="unit">×</span></span><span class="l">Sonnet 4.6 measured ingest cost over Gemini 2.5 Flash (22/24 vs 24/24 smoke)</span></div>
+      <div class="rs-meta-stat"><span class="v">10–33<span class="unit">×</span></span><span class="l">Sonnet 4.6 ingest cost vs Gemini 2.5 Flash; low end is list-price calculator, high end is measured invoice on this corpus</span></div>
       <div class="rs-meta-stat"><span class="v">2<span class="unit">×</span></span><span class="l">Gemini Flash entity-extraction breadth over Sonnet 4.6 per document</span></div>
     </div>
     <div class="rs-hero-footnote">
       <span>Artefacts</span>
       <span class="dot">·</span>
       <a href="artefacts/methodology.md">methodology</a>
+      <span class="dot">·</span>
+      <a href="artefacts/smoke-rubric/">smoke rubric</a>
       <span class="dot">·</span>
       <a href="artefacts/claims.md">claims ledger</a>
       <span class="dot">·</span>
@@ -141,13 +143,14 @@
 
     <p><strong>Embedder.</strong> <code>text-embedding-mxbai-embed-large-v1</code> served by LM Studio on M1 Max, 1024-dimensional, local. Held constant across all model rows so that the variable under study is the extractor only.</p>
 
-    <p><strong>Smoke rubric.</strong> Six canary queries times four retrieval modes (naive, local, global, hybrid) equals 24 cells per model. Each cell is scored pass / marginal / fail by the same evaluator looking at the returned chunks against the documented expected references. The cells and the expected references were written before any model ran.</p>
+    <p><strong>Smoke rubric.</strong> Six canary queries times four retrieval modes (naive, local, global, hybrid) equals 24 cells per model. Each cell is scored pass / marginal / fail by the same evaluator looking at the returned chunks against the documented expected references. The cells and the expected references were written before any model ran. The rubric protocol, schema, and an example fixture on a neutral domain are published as <a href="artefacts/smoke-rubric/">the smoke-rubric artefact</a> so a reader can re-instantiate the matrix on their own corpus.</p>
 
     <p><strong>Reporting.</strong> Each row records entities per document, relations per document, relation-to-entity ratio, smoke score as pass/marginal/fail, and measured cost on the 20-document subset. Cost is measured at the model provider's invoice level (OpenRouter or local zero-cost), not estimated.</p>
 
     <div class="rs-callout">
       <h4>What this method does NOT measure</h4>
       <p>It does not measure end-to-end retrieval quality on the full corpus class. The 24-cell smoke rubric is a fast acceptance gate, not a full evaluation harness. Models that pass it earn a production trial on the larger 482-document corpus; that trial is where the production claims live. It also does not measure latency or throughput at scale, which would dominate the picture for streaming-ingest workloads (this report is for batch ingest, not streaming).</p>
+      <p>The rubric was scored by a single evaluator (me) without an inter-rater check or an LLM-as-judge second pass. The 264 cells (11 models x 24 cells) sit inside one person's judgement of what counts as `pass` versus `marginal`. The schema in the smoke-rubric artefact includes the inter-rater discipline that would close this gap; the operator's matrix did not run it. A second-scorer pass on this matrix is the single highest-value re-measurement another practitioner could contribute back.</p>
     </div>
   </section>
 
@@ -207,7 +210,7 @@
     <p class="rs-section-label"><span class="num">06</span> Per-100-doc cost</p>
     <h2>Normalised so you can <em>project your own corpus.</em></h2>
 
-    <p>Ingest cost on this corpus scales roughly linearly with document count. I do not name a total dollar figure because the absolute number depends on document length, chunking, gleaning aggressiveness, and the operator's contract price with the upstream. The per-100-document numbers below let you multiply by your own corpus size.</p>
+    <p>The five rows of the cost table below were measured on the same 20-document corpus, with the per-100-document figures derived as documented in <a href="artefacts/cost-model.md">the cost-model artefact</a>. I do not name a total dollar figure because the absolute number depends on document length, chunking, gleaning aggressiveness, and the contract price with whatever gateway sits in front of the model. The per-100-document numbers let you multiply by your own corpus size; for two enterprise-scale worked examples, see the cost-model artefact's "enterprise-scale worked examples" section.</p>
 
     <p>The full derivation is in <a href="artefacts/cost-model.md">the cost-model artefact</a>. Each document on this corpus produced approximately 4 chunks of 1200 tokens each, and LightRAG made approximately 2.5 LLM calls per chunk on average (entity extraction + relation extraction + occasional merge-summary), with each call consuming roughly 8K input tokens and producing roughly 2K output tokens. That comes to approximately 80K input + 20K output tokens per document, or 8M input + 2M output tokens per 100 documents, before any gleaning overhead.</p>
 
@@ -230,7 +233,24 @@
 
     <p>One reconciliation note: measured invoices on the smoke corpus can run above the list-price calculator (~$7 to $10 per 100 documents at the rates above) because gleaning passes fire more aggressively in real ingest runs than the chunk-token math predicts, and because the model adds explanatory text the cost-calculator does not anticipate. The cost-model artefact walks through both methods. Use the invoice-based number when projecting cost-of-mistake (the drift case in §09), the calculator number when negotiating contract pricing.</p>
 
-    <p>One operational reality from a recent run: even Gemini 2.5 Flash at its low per-token rate trips daily token caps on a single full vault re-ingest. A 180-document re-ingest in flight today hit the 2,000,000 token daily cap and parked the remaining documents until tomorrow. Production-tier accounts raise this cap; the point worth making in advance is that "cheap to run" does not mean "fast to re-ingest at scale" when soft caps are in play. Budget for higher tiers or stagger the re-ingest across days.</p>
+    <div class="rs-callout">
+      <h4>Why list-price math hides the real bottleneck</h4>
+      <p>The per-token rate is not the binding constraint on a full re-ingest at scale. The binding constraint is the daily token quota of the account tier you are on. A 180-document re-ingest in flight on a developer-tier Gemini key tripped a 2,000,000-token daily cap and parked the remaining documents until the quota reset. The list-price column says ingest is cheap. The capacity column says ingest is slow on the wrong tier.</p>
+      <p>Indicative daily caps (verify against your own contract or the provider console; these shift):</p>
+      <table>
+        <thead>
+          <tr><th>Provider tier</th><th>Indicative daily token cap</th><th>Documents per day (this corpus shape)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Gemini Flash developer key</td><td>~2M tokens</td><td>~20 docs</td></tr>
+          <tr><td>Gemini Flash paid tier</td><td>millions to hundreds of millions, contract-dependent</td><td>thousands of docs</td></tr>
+          <tr><td>OpenRouter (no per-day cap; per-request rate limits)</td><td>n/a</td><td>limited by per-minute request rate, not daily</td></tr>
+          <tr><td>Anthropic / OpenAI direct, default tier</td><td>typically per-minute and per-day, both apply</td><td>verify before sizing</td></tr>
+          <tr><td>Enterprise gateway (DIAL, internal proxy)</td><td>contract</td><td>contract</td></tr>
+        </tbody>
+      </table>
+      <p>For a one-time 1,500-document backfill on this corpus shape, the dollar cost on Gemini Flash is roughly $100 to $150 at list. The wall-clock cost on a developer-tier key is one to two months because the cap resets daily. The wall-clock cost on a paid tier or through a higher-throughput gateway is hours. Budget the tier upgrade before you budget the run.</p>
+    </div>
   </section>
 
   <section class="rs-section" id="s07">
@@ -255,7 +275,7 @@
     <p class="rs-section-label"><span class="num">08</span> No-think discipline</p>
     <h2>Reasoning modes are a tax <em>on extraction.</em></h2>
 
-    <p>The thinking-mode failure pattern from §07 is general enough to deserve its own principle. Reasoning-style models that emit a chain-of-thought before the structured output produce two undesirable effects during LightRAG ingest:</p>
+    <p>Reasoning mode is a chat feature. On a structured-extraction workload it is a tax. The thinking-mode failure pattern from §07 is general enough to deserve its own principle: reasoning-style models that emit a chain-of-thought before the structured output produce two undesirable effects during LightRAG ingest:</p>
 
     <ol>
       <li><strong>Per-call latency goes up by the length of the thought.</strong> A non-thinking extraction call takes seconds; the same call with reasoning enabled routinely takes several times longer because the model emits a chain-of-thought the parser then discards. Exact multipliers depend on the model family; the consistent observation across the families I tested was "long enough to blow out the worker timeout on a default LightRAG config." The pipeline does not get more accurate output; it gets the same structured record with a long preamble.</li>
@@ -315,6 +335,16 @@
       <li><strong>Render deployed extractor config from a templated source.</strong> A small renderer that takes (workspace name, extractor, embedder) and emits the plist or systemd unit makes the per-workspace step structural, not a copy-paste. Diff the deployed file against the rendered output on every cron tick; alarm on divergence.</li>
       <li><strong>Keep model-tagged backups of every config edit.</strong> When the deployed config changes, save the previous version with a model-and-date suffix. The cost is bytes; the value is that the next operator can see what was tried and what it cost.</li>
     </ul>
+
+    <div class="rs-callout">
+      <h4>If you are doing this for more than one team</h4>
+      <p>The recommendations above are for an individual operator running one to a handful of workspaces. An enterprise team adding this to a sanctioned-inference platform inherits three more concerns:</p>
+      <ul>
+        <li><strong>Per-workspace billing tagging.</strong> The per-process model from §10 makes per-workspace cost attribution straightforward (one process, one billing tag, one line item). Multi-tenant LightRAG with shared LLM cache makes this nearly impossible. Pick the deployment model with billing in mind, not after.</li>
+        <li><strong>Workspace provisioning workflow.</strong> The templated renderer that catches drift in §09 also becomes the per-team self-serve workspace provisioner. A team requests a workspace, the renderer emits the plist or systemd unit, the canary is registered, the workspace is live. If your platform team is not the bottleneck for new-workspace creation, this scales; otherwise it does not.</li>
+        <li><strong>Vendor lock-in budgeted as re-ingest cost.</strong> Gemini 2.5 Flash will eventually be deprecated or repriced. The unit of swap is one full re-ingest at the new model's rate (cost from §06), the gate is the smoke rubric on the new model, and the rollout is a config change rather than a code change because of the renderer. Audit committees that ask "what is your exit plan" can be answered with the smoke-rubric file plus a re-ingest cost projection. Most enterprise-AI procurement does not ask this question yet; it will.</li>
+      </ul>
+    </div>
   </section>
 
   <section class="rs-section" id="s11">
@@ -341,12 +371,24 @@
 
     <p>The thing I want a delivery team to take from this report is not the specific model. Gemini 2.5 Flash will be obsolete by the next time someone reads this. The thing to take is the discipline: when the substrate's published benchmarks hold a variable constant, that variable is usually the one that decides outcomes in production. Name it, run a smoke rubric on it before locking it in, and instrument for the drift case where someone replaces it for the wrong reason.</p>
 
-    <p>The accidental Sonnet ingest cost roughly thirty times the right number and produced a graph that retrieval failed on. The benchmark that named the right model existed in the vault for three weeks before the drift happened. The recovery took less than a day once the right diagnostic existed. The expensive lesson was not "Sonnet is the wrong extractor" (which was already documented), it was "the bridge between a documented decision and a deployed config has to be instrumented or the decision does not survive contact with operations."</p>
+    <p>The accidental Sonnet ingest cost between roughly ten times and roughly thirty times the right number (depending on whether you count list-priced calculator math or invoice-measured spend on this specific corpus) and produced a graph that retrieval failed on. The benchmark that named the right model existed in the vault for three weeks before the drift happened. The recovery took less than a day once the right diagnostic existed. The expensive lesson was not "Sonnet is the wrong extractor" (which was already documented), it was "the bridge between a documented decision and a deployed config has to be instrumented or the decision does not survive contact with operations."</p>
 
     <p>The full apparatus is in <a href="artefacts/">artefacts/</a>: the methodology, the claims ledger, the falsification conditions, the model matrix, the cost-model derivation. Re-instantiate the smoke rubric on your own corpus before committing to a default. The model that wins on yours may not be the model that wins on mine.</p>
 
     <p class="rs-dim">Companion report: <a href="../2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for enterprise agents</a> (the substrate question). Adapter code referenced in the prior <a href="../2026-05-15_claude-code-via-dial-poc/">Claude Code via DIAL</a> brief is at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>.</p>
+
+    <div class="rs-callout">
+      <h4>About this report</h4>
+      <p>Independent applied-AI engineering notes by Arseny Gorokh, a practitioner at EPAM Applied AI. <strong>Not an official EPAM publication.</strong> Findings are based on one stack measured under stated conditions; magnitudes do not generalise. Where "EPAM DIAL" appears in companion reports, it refers to the gateway product as a technical reference, not as institutional sponsorship. See the repository <a href="https://github.com/agorokh/applied-ai-research/blob/main/ABOUT.md">ABOUT</a> for the full disclaimer. CC BY 4.0.</p>
+    </div>
   </section>
+
+  <nav class="rs-article-end" aria-label="More research">
+    <a href="../" class="rs-article-end__back">
+      <span class="l">All research</span>
+      <span class="t">Browse the index <span class="arrow">→</span></span>
+    </a>
+  </nav>
 
 </article>
 
