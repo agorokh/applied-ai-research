@@ -16,6 +16,10 @@ Companion material to [`../index.html`](../index.html). Each artefact stands on 
 
 The eleven model rows were measured on LightRAG specifically, as the canonical open-source implementation of the knowledge-graph RAG class. The findings about extractor breadth, the cost ratios at scale, and the failure modes of small open-source extractors should generalise to other systems in the same class (Microsoft GraphRAG, Neo4j vector-plus-graph setups, similar ingestion pipelines). The absolute entity counts and the per-pipeline cost numbers depend on prompt templates, gleaning aggressiveness, and chunking defaults that differ across implementations. Re-derive on yours before treating the magnitudes as portable.
 
+## Report shell layout (static HTML)
+
+Each report is a standalone `index.html` under its dated folder. Hero metadata (read time, KPI tiles, artefact footer links) intentionally duplicates patterns from the site landing page because these pages ship as static files without a build step. When adding a fourth report, copy the shell from the most recent report and update: `<title>`, hero KPIs, section count, artefact paths, and the landing-page card in [`../../index.html`](../../index.html). A shared template would reduce drift but is out of scope for this PR; the checklist above is the sync contract.
+
 ## How to reproduce
 
 The smoke rubric is the reusable apparatus. Re-instantiate it on your own corpus and your own pipeline before committing to a default extractor:

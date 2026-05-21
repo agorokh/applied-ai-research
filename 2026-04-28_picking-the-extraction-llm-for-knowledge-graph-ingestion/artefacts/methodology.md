@@ -46,7 +46,7 @@ Scoring is a single human evaluator looking at returned chunks against the rubri
 
 Cost on the smoke corpus is the invoice-level cost from the provider (OpenRouter for all commercial rows, zero-cost for all local rows). Per-1M-token list prices used in the cost-model artefact are public rate cards verified at run time.
 
-The per-100-document derivation in [`cost-model.md`](cost-model.md) multiplies measured token-per-document from the smoke run by published list price, then projects to 100 documents. It does not include amortised infrastructure cost (LM Studio host, local GPU power), gateway markup, or contract-pricing adjustments.
+The per-100-document derivation in [`cost-model.md`](cost-model.md) multiplies estimated token-per-document (derived from chunk size and observed extraction shape, not invoice token logs) by published list price, then projects to 100 documents. It does not include amortised infrastructure cost (LM Studio host, local GPU power), gateway markup, or contract-pricing adjustments.
 
 ## What this method does not measure
 
@@ -60,4 +60,4 @@ The per-100-document derivation in [`cost-model.md`](cost-model.md) multiplies m
 
 The eleven model runs were executed late April 2026 with extensions in early May 2026 (the Gemini 3.x variants). The drift incident described in §09 happened mid-May 2026 and is documented separately in the operator's internal investigation log; it is referenced here as the operational lesson, not as a data point in the matrix.
 
-Original ingest logs, per-cell smoke transcripts, and the measured token counts that feed the cost model are in the operator's vault. They are not published verbatim because they contain corpus content from non-public workspaces. Re-running the rubric on your own corpus is the reproducibility path; the rubric itself is the reusable artefact.
+Original ingest logs, per-cell smoke transcripts, and the estimated token counts that feed the cost model are in the operator's vault. They are not published verbatim because they contain corpus content from non-public workspaces. Re-running the rubric on your own corpus is the reproducibility path; the rubric itself is the reusable artefact.
