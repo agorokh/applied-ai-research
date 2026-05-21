@@ -20,7 +20,7 @@ Falsification conditions per finding. Each row names the specific re-measurement
 
 ## Finding 3: local open-source is hardware-bound, not capability-bound
 
-**Stated claim:** Six local trials across two hardware tiers all scored below Gemini 2.5 Flash on the smoke rubric; the best local result (Qwen 2.5 14B GGUF Q4 on M1 Max) scored 5/4/15.
+**Stated claim:** Six local trials across two hardware tiers all scored below Gemini 2.5 Flash on the smoke rubric; the highest local smoke pass count (Qwen 3.5 4B no-think) scored 8/4/12; the best M1 Max completion (Qwen 2.5 14B GGUF Q4) scored 5/4/15.
 
 **Would be invalidated by:** Running an open-source model on a workstation with substantially larger memory (e.g. 80B-class model on a 96 GB or 128 GB Apple Silicon machine, or a 70B-class model on a multi-GPU server) and scoring 24/24 on the same rubric.
 

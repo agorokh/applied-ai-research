@@ -12,8 +12,8 @@ The eleven model rows measured against the 20-document smoke corpus and 24-cell 
 | 4 | Gemini 3 flash preview | Google via OpenRouter | 34.0 | 40.0 | 1.18 | 21 / 3 / 0 | More expensive than 2.5 and worse on the rubric. |
 | 5 | OpenAI gpt-4o-mini | OpenAI via OpenRouter | — | — | — | 19 / 3 / 2 | The implicit LightRAG default. Loses cross-file synthesis. Cheapest of the commercial cluster. Ent/rel/doc not shown: density was measured on a separate 150-document baseline, not the 20-doc smoke corpus used for every other row. |
 | 6 | Llama 3.2 3B Q4 | Ollama, consumer GPU | 17.4 | 6.0 | 0.34 | 11 / 13 / 0 | 518 schema-violation warnings on 20 docs. Most relation output dropped by parser. |
-| 7 | Qwen 3.5 4B (no-think) | Ollama, consumer GPU | 53.3 | 34.2 | 0.64 | 8 / 4 / 12 | High entity count for a small model; low rel/ent indicates weak relation extraction. |
-| 8 | Qwen 2.5 14B GGUF Q4_K_M | LM Studio llama.cpp, M1 Max (32 GB) | 21.9 | 19.7 | 0.90 | 5 / 4 / 15 | Best local result. 19/20 documents in ~4 hours. |
+| 7 | Qwen 3.5 4B (no-think) | Ollama, consumer GPU | 53.3 | 34.2 | 0.64 | 8 / 4 / 12 | Highest smoke pass count among structurally usable local graphs (Llama 3.2 3B logged 11/13/0 but parser-dropped most relations). High entity count for a small model; low rel/ent indicates weak relation extraction. |
+| 8 | Qwen 2.5 14B GGUF Q4_K_M | LM Studio llama.cpp, M1 Max (32 GB) | 21.9 | 19.7 | 0.90 | 5 / 4 / 15 | Best M1 Max completion. 19/20 documents in ~4 hours. |
 | 9 | Gemma 4 26B Q4 | Ollama, consumer GPU (6 GB VRAM) | aborted | aborted | aborted | timeout on chunk 1 | Thinking-mode tokens push every call past worker timeout. |
 | 10 | Qwen 2.5 32B Q4 | Ollama, consumer GPU | partial | partial | partial | HTTP 502 cascade | Out of VRAM, repeated load/unload cascade. |
 | 11 | Qwen 2.5 14B 4-bit MLX | LM Studio MLX, M1 Max | partial | partial | partial | embed cascade abort | MLX backend interacted poorly with concurrent embedder calls. |
