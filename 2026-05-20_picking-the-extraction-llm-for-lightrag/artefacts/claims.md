@@ -26,8 +26,8 @@ Every headline claim in the report, tagged by epistemic status.
 | Tag | Claim | Source |
 |---|---|---|
 | measured | LightRAG default chunking: 1200 tokens, 100 overlap. | Upstream LightRAG paper §4 and default config. |
-| measured | LightRAG ingest runs ~2.5 LLM calls per chunk on average (entity extraction + relation extraction + occasional merge-summary). | Upstream pipeline structure plus operator measurement on this corpus. |
-| measured | Per chunk on this corpus: ~8K input + ~2K output tokens per LLM call. | Operator measurement during smoke runs. |
+| inferred | LightRAG ingest runs ~2.5 LLM calls per chunk on average (entity extraction + relation extraction + occasional merge-summary). | Derived from upstream pipeline structure plus observed extraction shape; not directly measured per-call. The divorce-corpus closeout reports 1,692 chunks / 482 docs = ~3.5 chunks/doc as a real-corpus data point. |
+| inferred | Per chunk on this corpus: ~8K input + ~2K output tokens per LLM call. | Estimated from chunk size plus typical extraction-prompt overhead; not directly measured against the LLM-cache JSON. Label as estimate in cost-model.md. |
 
 ## Mechanism (§05)
 
@@ -47,7 +47,7 @@ Every headline claim in the report, tagged by epistemic status.
 
 | Tag | Claim | Source |
 |---|---|---|
-| measured | Llama 3.2 3B Q4 produced 518 schema-violation warnings on 20 documents. | Local trial log. |
+| measured | Llama 3.2 3B Q4 produced hundreds of schema-violation warnings on the 20-document corpus, with most extracted relations dropped by LightRAG's parser. | Local trial log. (Earlier vault notes cite a specific count of 518; the report body uses the softer phrasing pending re-verification of the raw counter.) |
 | measured | Gemma 4 26B Q4 on consumer GPU timed out on chunk 1. | Local trial log. |
 | measured | Qwen 2.5 14B GGUF Q4_K_M on M1 Max (32 GB) completed 19/20 documents in ~4 hours, scored 5/4/15. | Local trial log. |
 | recommendation | For local-only corpora, use Qwen 2.5 14B GGUF Q4_K_M in LM Studio on Apple Silicon (32 GB or more) and pair with a separate query-time synthesis model. | Recommendation derived from the local-trial measurements. |
@@ -65,15 +65,28 @@ Every headline claim in the report, tagged by epistemic status.
 | Tag | Claim | Source |
 |---|---|---|
 | measured | A re-ingest at Sonnet 4.6 rates ran to substantial completion before the canary detected retrieval was failing. | Operator's internal incident log (May 2026). |
-| measured | The canary instrumentation that caught the drift had itself landed that week; before it existed, an empty substrate was showing green. | Same. |
-| recommendation | Anchor the ingest-health canary to expected entities, not "did the substrate respond". | Operational lesson from the incident. |
-| recommendation | Diff deployed extractor config against repo template on every cron tick. | Operational lesson from the incident. |
+| measured | The canary instrumentation that caught the drift had itself landed that week; before it existed, an empty substrate was showing green. | Same; the foundation-gate merge that added expected-reference assertion. |
+| recommendation | Anchor the ingest-health canary to expected entities, not "did the substrate respond". | Operational lesson; implemented as the dual check in production-config.md. |
+| recommendation | Render deployed extractor config from a templated source; alarm on divergence between deployed file and rendered template. | Operational lesson; see production-config.md for the renderer pattern. |
+| recommendation | Save backup-on-edit with model-tagged filenames for every plist edit. | Operational lesson; see production-config.md. |
+
+## Production config (production-config.md)
+
+| Tag | Claim | Source |
+|---|---|---|
+| measured | Live config: `max_parallel_insert=2`, `max_async=2`, `embedding_func_max_async=8`, `embedding_batch_num=10`, `force_llm_summary_on_merge=8`. | Live `/health` on M2 Pro at time of writing. |
+| measured | Per-document wall-clock on a recent run (Gemini 2.5 Flash, 17 short docs avg 2.6 KB, 1.4 chunks/doc mean): min 82s, p50 185s, mean 218s, p95 762s. | M2 Pro doc-status JSON, partial re-ingest in flight. |
+| measured | Live agent_factory_steward graph (Gemini 2.5 Flash, 17 docs processed): 1,019 entities, 1,127 relations, 59.9 ent/doc, 66.3 rel/doc, 1.11 rel/ent. | `vdb_entities.json` / `vdb_relationships.json` on M2 Pro. |
+| measured | The fleet registry enforces `require_dedicated_api_per_workspace = true`, one process per workspace. | `tools/hermes_adapter/fleet_registry.toml`. |
+| measured | A current Gemini Flash daily quota of 2,000,000 tokens was exhausted today during a re-ingest, leaving the remaining documents queued. | Live 429 response from the gateway during the run. |
+| recommendation | For full re-ingest workloads, plan for higher-tier pricing or stagger ingest across days. | Operational lesson from the daily-cap incident. |
 
 ## Scope (§11)
 
 | Tag | Claim | Source |
 |---|---|---|
 | scope | Results apply to mixed-Markdown corpora with implicit entity types. Different corpus shapes may produce different model rankings. | Stated explicitly; the smoke rubric is reusable on your corpus. |
+| scope | The 82.5 entities per document headline is corpus-specific. Same model and chunking measured 39.8 ent/doc on a 482-document legal corpus and 59.9 ent/doc on a 17-document partial re-ingest. The breadth ranking (Flash > Sonnet > others) held in every case; the absolute magnitudes vary by ~2x. | Cross-corpus comparison in model-matrix.md. |
 | scope | Results apply at LightRAG-default chunking (1200/100). | Stated explicitly; re-derive cost if you change chunking. |
 | scope | Embedder held constant; results do not control for embedder choice. | Stated explicitly. |
 | scope | List prices used for cost ratios. Contract pricing changes absolute magnitudes but typically preserves ranking within the cluster. | Stated explicitly. |
