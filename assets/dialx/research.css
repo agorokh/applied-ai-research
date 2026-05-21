@@ -745,9 +745,7 @@ main {
 .rs-footer__byline .label { color: var(--dx-fg-4); }
 .rs-footer__byline a,
 .rs-footer__byline a:link,
-.rs-footer__byline a:visited,
-.rs-footer__byline a:hover,
-.rs-footer__byline a:active {
+.rs-footer__byline a:visited {
   color: var(--dx-violet);
   text-decoration: none;
   border-bottom: 1px solid transparent;
