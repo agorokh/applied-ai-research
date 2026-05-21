@@ -16,8 +16,8 @@ Every headline claim in the report, tagged by epistemic status.
 | measured | Gemini 2.5 Flash relation-to-entity ratio (1.15) is lower than Sonnet 4.6's (1.43). | Same rows. |
 | measured | Gemini 2.5 Flash scored 24/0/0 on the smoke rubric; Sonnet 4.6 scored 22/0/2 (two fail cells, zero marginals). | Smoke rubric tabulation. |
 | inferred | Breadth of entity index dominates density of relation index for LightRAG's traversal-then-fetch retrieval shape. | Mechanism derivation in §05; consistent with the smoke results but not independently A/B tested by restricting traversal mode. |
-| measured | gpt-4o-mini ingests at roughly 20% to 40% of Gemini Flash's list-priced cost but loses smoke cells (19/3/2). | Smoke matrix gpt-4o-mini row; cost model derivation per 100 docs. |
-| measured | Sonnet 4.6 ingests at roughly 30x to 33x Gemini Flash's measured invoice cost while scoring 22/24 on the smoke rubric. | Cost model derivation; published list rates verified at run time. |
+| inferred | gpt-4o-mini ingests at roughly 20% to 40% of Gemini Flash's list-priced cost (calculator, not invoice) but loses smoke cells (19/3/2). | Smoke rubric tabulation; cost-model.md list-price derivation per 100 docs. |
+| measured | Sonnet 4.6's 20-document smoke ingest invoice was ~30× to ~33× Gemini Flash's invoice (smoke score 22/0/2 in row above). | Smoke run invoices recorded at run time. |
 | measured | Gemini 3-flash-preview and 3.1-flash-lite-preview both scored below Gemini 2.5 Flash on the smoke rubric. | Smoke rubric rows for Gemini 3 variants (21/3/0 and 22/1/1). |
 | measured | Six local open-source trials at two hardware tiers all scored below Gemini 2.5 Flash; highest local smoke pass count (Qwen 3.5 4B no-think) scored 8/4/12; best M1 Max completion (Qwen 2.5 14B GGUF Q4) scored 5/4/15. | Local trial logs; smoke rubric scoring. |
 
@@ -40,7 +40,8 @@ Every headline claim in the report, tagged by epistemic status.
 
 | Tag | Claim | Source |
 |---|---|---|
-| measured | Approximate per-100-document ingest cost on this corpus: ~$7 to $10 (Gemini 2.5 Flash, list-derived), ~$54 to $69 (Sonnet 4.6, list-derived with gleaning uplift), ~$2 to $3 (gpt-4o-mini, list-derived), $0 (local open-source). Sonnet's measured 20-doc invoice ratio vs Gemini Flash is ~30× to ~33×. | Smoke run invoices; per-1M-token list prices applied to estimated token counts from cost-model.md. |
+| inferred | Approximate per-100-document ingest cost on this corpus (list-price calculator from estimated token counts, not invoice logs): ~$7 to $10 (Gemini 2.5 Flash), ~$54 to $69 (Sonnet 4.6, with gleaning uplift), ~$2 to $3 (gpt-4o-mini), $0 (local open-source). | cost-model.md; methodology §03 token estimates. |
+| measured | Sonnet's 20-document smoke ingest invoice was ~30× to ~33× Gemini Flash's invoice on the same corpus. | Smoke run invoices recorded at run time. |
 | inferred | Cost ratios inside the matrix are more stable than absolute magnitudes against contract pricing variation. | Inferred from observation that all commercial rows use the same per-token shape and differ only on price; not independently validated against any specific contract. |
 
 ## Open source (§07)
