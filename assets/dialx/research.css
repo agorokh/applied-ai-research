@@ -289,6 +289,19 @@ main {
 }
 .rs-section a:hover { border-bottom-color: var(--dx-violet); }
 
+/* Inline artefact-chip link style: a code-styled link to a sub-artefact
+   file. Reuses .rs-mono but suppresses the violet underline so the chip
+   reads as a code-token-shaped link. */
+.rs-section a.rs-mono {
+  border-bottom: none;
+  text-decoration: none;
+  transition: background 200ms;
+}
+.rs-section a.rs-mono:hover {
+  background: color-mix(in srgb, var(--dx-teal) 18%, transparent);
+}
+
+
 .rs-section code, .rs-mono {
   font-family: var(--dx-font-mono);
   font-size: 12.5px;

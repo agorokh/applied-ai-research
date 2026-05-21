@@ -60,7 +60,7 @@
     <h1>Choosing memory for <em>enterprise agents.</em></h1>
 
     <p class="rs-lede">
-      Across enterprise-agent engagements I've worked on, the same memory-substrate question recurs, once on SDLC-shaped corpora where coding-orchestration agents need their own project past, and again on business and domain corpora where the cost of a hallucinated answer is a wrong action taken on a client's behalf. Both classes share one retrieval problem and one adoption bar. This report runs that bar on one corpus class with two purpose-built substrates against a filesystem baseline, and publishes the canary harness so the next account team can re-instantiate it on their corpus in a day.
+      Across enterprise-agent engagements I've worked on, the same memory-substrate question recurs, once on SDLC-shaped corpora where coding-orchestration agents need their own project past, and again on business and domain corpora where the cost of a hallucinated answer is a wrong action taken on a client's behalf. Both classes share one retrieval problem and one adoption bar. This report runs that bar on one corpus class with two purpose-built substrates against a filesystem baseline, and publishes <a href="artefacts/canary-harness/">the canary harness</a> so the next account team can re-instantiate it on their corpus in a day.
     </p>
 
     <div class="rs-hero-meta">
@@ -68,6 +68,7 @@
       <div class="rs-meta-stat"><span class="v">0<span class="unit">vs 4</span></span><span class="l">Fabricated retrievals across 128 paired trials</span></div>
       <div class="rs-meta-stat"><span class="v">2<span class="unit">tiers</span></span><span class="l">Executor capability tiers; stale-fact sign flips</span></div>
       <div class="rs-meta-stat"><span class="v">5<span class="unit">criteria</span></span><span class="l">Adoption bar stated before any candidate ran</span></div>
+      <div class="rs-meta-stat"><a class="rs-mono" href="artefacts/" style="text-decoration:none;border-bottom:none">artefacts/ →</a><span class="l" style="display:block;margin-top:6px">Methodology, claims ledger, invalidation, canary harness</span></div>
     </div>
   </section>
 
@@ -93,7 +94,7 @@
 
     <div class="rs-callout">
       <h4>Finding 4. Tencent DB Agent-Memory fails four of five adoption criteria</h4>
-      <p>The fourth candidate evaluated, <a href="https://github.com/Tencent/agent-memory-toolkit">Tencent DB Agent-Memory</a>, did not clear the adoption bar before any retrieval canary ran. Integration surface failed (TypeScript-only, Python-first stack), install hygiene failed (post-install rewrites a sibling package and silently falls through on error), test coverage failed (test harness wired, zero test files in the published source), operational fit failed (no MCP surface, no DIAL-routed model calls). The bar and the evidence are stated in §08 so another reviewer can reproduce the rejection against the same criteria.</p>
+      <p>The fourth candidate evaluated, <a href="https://github.com/Tencent/agent-memory-toolkit">Tencent DB Agent-Memory</a>, did not clear the adoption bar before any retrieval canary ran. Integration surface failed (TypeScript-only, Python-first stack), install hygiene failed (post-install rewrites a sibling package and silently falls through on error), test coverage failed (test harness wired, zero test files in the published source), operational fit failed (no MCP surface, no DIAL-routed model calls). The bar and the evidence are stated in §08 so another reviewer can reproduce the rejection against the same criteria. <a class="rs-mono" href="artefacts/adoption-bar.md">adoption-bar →</a></p>
     </div>
 
     <div class="rs-callout">
@@ -154,7 +155,7 @@
   <section class="rs-section" id="s03">
     <p class="rs-section-label"><span class="num">03</span> The adoption bar</p>
     <h2>Five criteria, weighted, <em>stated up front.</em></h2>
-    <p>A substrate that survives the first production query is one selected against named criteria, not against taste. Stating the criteria first is what makes a rejection reproducible by another reviewer applying the same bar to the same project.</p>
+    <p>A substrate that survives the first production query is one selected against named criteria, not against taste. Stating the criteria first is what makes a rejection reproducible by another reviewer applying the same bar to the same project. <a class="rs-mono" href="artefacts/adoption-bar.md">adoption-bar →</a></p>
 
     <table class="rs-table">
       <thead>
@@ -177,7 +178,7 @@
   <section class="rs-section" id="s04">
     <p class="rs-section-label"><span class="num">04</span> Test design</p>
     <h2>Three substrates, eight task families, <em>two judges in opposite orderings.</em></h2>
-    <p class="rs-lede">The empirical design served one question: which substrate performs best on the SDLC corpus's actual production query distribution, evaluated by two independent judges in a way that rules out the most common position-bias failure mode in LLM-judge benchmarks.</p>
+    <p class="rs-lede">The empirical design served one question: which substrate performs best on the SDLC corpus's actual production query distribution, evaluated by two independent judges in a way that rules out the most common position-bias failure mode in LLM-judge benchmarks. <a class="rs-mono" href="artefacts/methodology.md">methodology →</a></p>
 
     <h3>Substrates compared</h3>
     <ul>
@@ -193,6 +194,7 @@
     <p>Prior public work on agent-memory substrate comparison includes the Mem0 paper, the Zep / Graphiti paper, the <a href="https://arxiv.org/abs/2506.06331">unbiased-evaluation GraphRAG paper</a> (whose position / length / trial bias controls motivated parts of the judging design here), and <a href="https://www.cognee.ai/blog/deep-dives/ai-memory-evals-0825">Cognee's AI Memory Benchmarking</a> post (the only prior artefact putting Cognee, LightRAG, Graphiti, and Mem0 head-to-head on a shared corpus, with the caveat that Cognee re-used Graphiti's numbers from a smaller study rather than re-running Graphiti). No prior non-vendor LightRAG vs Graphiti head-to-head on a single corpus under a substrate-fair fixture surfaced in review.</p>
 
     <h3>Eight task families and the production weights</h3>
+    <p class="rs-dim"><a class="rs-mono" href="artefacts/task-families.md">task-families →</a></p>
     <table class="rs-table">
       <thead>
         <tr><th>Task family</th><th>What the agent is trying to do</th><th>Production frequency</th></tr>
@@ -272,7 +274,7 @@
 
     <div class="rs-callout">
       <h4>What the bar caught before deployment</h4>
-      <p>The pre-measurement reading of the published vendor numbers (Graphiti as the canonical substrate, on its bi-temporal differentiation) was inverted by the frequency-weighted canary in the first measurement pass. The retraction is itself one of the report's findings: <em>an adoption bar that catches errors before they ship is worth more than an adoption decision that was right on the first try.</em> A delivery team that read the same vendor numbers and skipped the canary would have shipped the slower substrate by default.</p>
+      <p>The pre-measurement reading of the published vendor numbers (Graphiti as the canonical substrate, on its bi-temporal differentiation) was inverted by the frequency-weighted canary in the first measurement pass. The retraction is itself one of the report's findings: <em>an adoption bar that catches errors before they ship is worth more than an adoption decision that was right on the first try.</em> A delivery team that read the same vendor numbers and skipped the canary would have shipped the slower substrate by default. <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
     </div>
 
     <p><strong>For delivery teams</strong>: when a vendor reports a single aggregate across multiple task families, ask which weighting they used. A vendor's aggregate that gives every family equal weight is not the aggregate that maps to your production. The discrepancy between the two weightings is often larger than the difference between the substrates themselves.</p>
@@ -414,7 +416,7 @@
   <section class="rs-section" id="s11">
     <p class="rs-section-label"><span class="num">11</span> Scope</p>
     <h2>What this report <em>does not claim.</em></h2>
-    <p class="rs-lede">Each finding has a scope. Stating the scope as plainly as the finding is what keeps the report from being over-read into contexts where the magnitudes do not transfer.</p>
+    <p class="rs-lede">Each finding has a scope. Stating the scope as plainly as the finding is what keeps the report from being over-read into contexts where the magnitudes do not transfer. <a class="rs-mono" href="artefacts/invalidation.md">invalidation →</a></p>
 
     <ol>
       <li><strong>One corpus class, one work instance.</strong> Empirical work on an SDLC-history corpus of ~130 documents with the production query distribution stated in §04. The pattern (run your own canary, weight by your production distribution, measure cross-tier) transfers across corpora and classes. The specific 36-percentage-point gap, the 0-vs-4 fabrication count, and the stale-fact inversion magnitude do not transfer without re-measurement.</li>
@@ -434,7 +436,7 @@
     <h2>The substrate decision is <em>downstream of the measurement.</em></h2>
     <p class="rs-lede">The headline numbers in this report do not generalise. The discipline that produced them does. A deployment decision that survives the first production query is one settled by measurement on the production workload, not by adoption of a vendor's headline number.</p>
 
-    <p>The artefact worth taking from this report is the canary harness shape (paired questions, position-swap judging, two judges from different model families, on the gateway you will deploy through), the adoption bar (five named criteria applied uniformly), and the section arc of a deployment-decision memo (pattern first, findings as evidence, apparatus folded into closing). Re-instantiate each against the corpus and the executor you are about to deploy on, and the substrate decision falls out.</p>
+    <p>The artefact worth taking from this report is <a href="artefacts/canary-harness/">the canary harness shape</a> (paired questions, position-swap judging, two judges from different model families, on the gateway you will deploy through), <a href="artefacts/adoption-bar.md">the adoption bar</a> (five named criteria applied uniformly), and the section arc of a deployment-decision memo (pattern first, findings as evidence, apparatus folded into closing). Re-instantiate each against the corpus and the executor you are about to deploy on, and the substrate decision falls out.</p>
 
     <p>Applied AI as a practice is the work of building those re-instantiable canaries, not the work of picking a vendor. Frontier research ships papers; consumer AI ships demos; enterprise systems ship the tenancy, audit, schema-stability, cost-bound, and recovery contract neither layer carries. The discipline that closes that gap on one capability at a time is what makes the substrate decision portable across the next account, the next corpus, and the next frontier result that lands without an enterprise deployment story attached.</p>
 
