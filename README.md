@@ -6,6 +6,8 @@ Independent applied-AI engineering notes by [Arseny Gorokh](https://github.com/a
 
 Working drafts. Published independently. See [ABOUT.md](ABOUT.md) for the full disclaimer.
 
+**Companion repositories:** [COMPANION-REPOS.md](COMPANION-REPOS.md)
+
 ## The series
 
 | Date | Report | Iteration |
