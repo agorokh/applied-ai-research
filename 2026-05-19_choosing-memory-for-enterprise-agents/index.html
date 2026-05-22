@@ -12,7 +12,8 @@
 <!-- Google tag (gtag.js) — skipped when Do Not Track / Global Privacy Control is set -->
 <script>
   (function () {
-    if (navigator.doNotTrack === '1' || navigator.globalPrivacyControl) return;
+    var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+    if (dnt === '1' || dnt === 'yes' || navigator.globalPrivacyControl) return;
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16';
