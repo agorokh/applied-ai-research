@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="../assets/dialx/type.css" />
 <link rel="stylesheet" href="../assets/dialx/research.css" />
 <link rel="stylesheet" href="../assets/dialx/diagrams.css" />
-<script src="../assets/dialx/analytics.js"></script>
 </head>
 <body class="rs-page">
 
@@ -170,16 +169,21 @@
     <h2>Five criteria, weighted, <em>stated up front.</em></h2>
     <p>A substrate that survives the first production query is one selected against named criteria, not against taste. Stating the criteria first is what makes a rejection reproducible by another reviewer applying the same bar to the same project. <a class="rs-mono" href="artefacts/adoption-bar.md">adoption-bar →</a></p>
 
-    <table class="rs-table">
+    <table class="rs-table rs-table-wide">
       <thead>
-        <tr><th>Criterion</th><th>What it asks</th><th>Weight</th><th>Pass bar</th></tr>
+        <tr>
+          <th><span class="rs-th-name">Criterion</span></th>
+          <th><span class="rs-th-name">What it asks</span></th>
+          <th class="num"><span class="rs-th-name">Weight</span><span class="rs-th-sub">sums to 1.0</span></th>
+          <th><span class="rs-th-name">Pass bar</span></th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td><strong>Integration surface</strong></td><td>Python-callable read path, MCP-compatible agent interface, multi-tenant per-workspace mode. Same-language parity with the consumer code.</td><td class="mono">0.25</td><td>All three present</td></tr>
-        <tr><td><strong>Install hygiene</strong></td><td>Installing leaves third-party software in the host environment unchanged. No post-install scripts that patch sibling packages, modify the host environment, or silently fall through on error.</td><td class="mono">0.20</td><td>Clean install</td></tr>
-        <tr><td><strong>Test coverage in the public surface</strong></td><td>Non-trivial test suite that exercises the API the consuming stack would call. A wired-but-empty test harness fails this.</td><td class="mono">0.20</td><td>Suite present and non-trivial</td></tr>
-        <tr><td><strong>Maintenance posture</strong></td><td>More than one active contributor; sustainable release cadence; project age sufficient to have surfaced common bugs and stabilised the API.</td><td class="mono">0.15</td><td>≥2 contributors, ≥6 months</td></tr>
-        <tr><td><strong>Operational fit</strong></td><td>Model calls routed through the EPAM DIAL gateway, telemetry through the existing observability stack, secrets through a managed secret store, no bespoke infrastructure for the platform team to maintain indefinitely.</td><td class="mono">0.20</td><td>DIAL-routed; standard secrets</td></tr>
+        <tr><td><strong>Integration surface</strong></td><td>Python-callable read path, MCP-compatible agent interface, multi-tenant per-workspace mode. Same-language parity with the consumer code.</td><td class="num mono">0.25</td><td>All three present</td></tr>
+        <tr><td><strong>Install hygiene</strong></td><td>Installing leaves third-party software in the host environment unchanged. No post-install scripts that patch sibling packages, modify the host environment, or silently fall through on error.</td><td class="num mono">0.20</td><td>Clean install</td></tr>
+        <tr><td><strong>Test coverage in the public surface</strong></td><td>Non-trivial test suite that exercises the API the consuming stack would call. A wired-but-empty test harness fails this.</td><td class="num mono">0.20</td><td>Suite present and non-trivial</td></tr>
+        <tr><td><strong>Maintenance posture</strong></td><td>More than one active contributor; sustainable release cadence; project age sufficient to have surfaced common bugs and stabilised the API.</td><td class="num mono">0.15</td><td>≥2 contributors, ≥6 months</td></tr>
+        <tr><td><strong>Operational fit</strong></td><td>Model calls routed through the EPAM DIAL gateway, telemetry through the existing observability stack, secrets through a managed secret store, no bespoke infrastructure for the platform team to maintain indefinitely.</td><td class="num mono">0.20</td><td>DIAL-routed; standard secrets</td></tr>
       </tbody>
     </table>
 
@@ -208,19 +212,23 @@
 
     <h3>Eight task families and the production weights</h3>
     <p class="rs-dim"><a class="rs-mono" href="artefacts/task-families.md">task-families →</a></p>
-    <table class="rs-table">
+    <table class="rs-table rs-table-wide">
       <thead>
-        <tr><th>Task family</th><th>What the agent is trying to do</th><th>Production frequency</th></tr>
+        <tr>
+          <th><span class="rs-th-name">Task family</span></th>
+          <th><span class="rs-th-name">What the agent is trying to do</span></th>
+          <th class="num"><span class="rs-th-name">Production frequency</span><span class="rs-th-sub">on this corpus; re-derive on yours</span></th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td><strong>Current canonical text</strong></td><td>"What is the current rule / invariant / decision for X?" Read the literal source.</td><td class="mono">~50%</td></tr>
-        <tr><td><strong>Handoff continuity</strong></td><td>"Where did the previous session leave off, and what is the next action?"</td><td class="mono">~20%</td></tr>
-        <tr><td><strong>Entity disambiguation</strong></td><td>"Which of several entities sharing a name is meant in this context?"</td><td class="mono">~10%</td></tr>
-        <tr><td>Temporal supersession</td><td>"What changed between two points in time? What deprecated what?"</td><td class="mono">~4%</td></tr>
-        <tr><td>Multi-hop traversal</td><td>"Which investigations led to this decision? What chain of evidence supports this rule?"</td><td class="mono">~4%</td></tr>
-        <tr><td>Knowledge updates</td><td>"What did the new doctrine just impose that the old one did not?"</td><td class="mono">~4%</td></tr>
-        <tr><td>Abstention on false premise</td><td>"This question references a rule that does not exist. Refuse to answer."</td><td class="mono">~4%</td></tr>
-        <tr><td>Link-graph traversal</td><td>"Which other documents link to this one?"</td><td class="mono">~4%</td></tr>
+        <tr><td><strong>Current canonical text</strong></td><td>"What is the current rule / invariant / decision for X?" Read the literal source.</td><td class="num mono">~50%</td></tr>
+        <tr><td><strong>Handoff continuity</strong></td><td>"Where did the previous session leave off, and what is the next action?"</td><td class="num mono">~20%</td></tr>
+        <tr><td><strong>Entity disambiguation</strong></td><td>"Which of several entities sharing a name is meant in this context?"</td><td class="num mono">~10%</td></tr>
+        <tr><td>Temporal supersession</td><td>"What changed between two points in time? What deprecated what?"</td><td class="num mono">~4%</td></tr>
+        <tr><td>Multi-hop traversal</td><td>"Which investigations led to this decision? What chain of evidence supports this rule?"</td><td class="num mono">~4%</td></tr>
+        <tr><td>Knowledge updates</td><td>"What did the new doctrine just impose that the old one did not?"</td><td class="num mono">~4%</td></tr>
+        <tr><td>Abstention on false premise</td><td>"This question references a rule that does not exist. Refuse to answer."</td><td class="num mono">~4%</td></tr>
+        <tr><td>Link-graph traversal</td><td>"Which other documents link to this one?"</td><td class="num mono">~4%</td></tr>
       </tbody>
     </table>
     <p>The frequency column is the production query distribution on the actual workload, observed over a representative interval. It matters because §05's headline depends on it.</p>
@@ -362,9 +370,13 @@
 
     <p>The project promises a "fully local long-term memory pipeline with zero external API dependencies", a plausible fit for an SDLC-history workload at first glance. As of evaluation (mid-May 2026), no public third-party benchmark of the project exists, it is publicly unevaluated outside its own README. The evaluation below is the first published external bar-check on record. Against the five criteria in §03:</p>
 
-    <table class="rs-table">
+    <table class="rs-table rs-table-wide">
       <thead>
-        <tr><th>Criterion</th><th>Status on the candidate</th><th>Verdict</th></tr>
+        <tr>
+          <th><span class="rs-th-name">Criterion</span></th>
+          <th><span class="rs-th-name">Status on the candidate</span></th>
+          <th><span class="rs-th-name">Verdict</span><span class="rs-th-sub">against the §03 bar</span></th>
+        </tr>
       </thead>
       <tbody>
         <tr><td><strong>Integration surface</strong></td><td>Distributed primarily as a TypeScript / Node package targeted at a single coding-agent framework. The consuming stack is Python-first; no Python integration surface ships.</td><td><span class="rs-pill rs-pill--magenta">fail</span></td></tr>
@@ -455,9 +467,14 @@
     <p>The read-path MCP bridge used in this evaluation (workspace-aware routing to LightRAG with a host-scoped allowlist) is open-source at <a href="https://github.com/agorokh/agentic-memory-mcp">github.com/agorokh/agentic-memory-mcp</a> (Apache-2.0). Applied AI as a practice is the work of building those re-instantiable canaries, not the work of picking a vendor. Frontier research ships papers; consumer AI ships demos; enterprise systems ship the tenancy, audit, schema-stability, cost-bound, and recovery contract neither layer carries. The discipline that closes that gap on one capability at a time is what makes the substrate decision portable across the next account, the next corpus, and the next frontier result that lands without an enterprise deployment story attached.</p>
 
     <h3>Apparatus, for the next reader who would re-run this</h3>
-    <table class="rs-table">
+    <table class="rs-table rs-table-wide">
       <thead>
-        <tr><th>Role</th><th>Capability tier</th><th>Checkpoint</th><th>Routed via</th></tr>
+        <tr>
+          <th><span class="rs-th-name">Role</span></th>
+          <th><span class="rs-th-name">Capability tier</span></th>
+          <th><span class="rs-th-name">Checkpoint</span></th>
+          <th><span class="rs-th-name">Routed via</span></th>
+        </tr>
       </thead>
       <tbody>
         <tr><td>Executor A (closed-loop)</td><td>More-capable / flagship</td><td>Claude Sonnet 4.5</td><td>EPAM DIAL (canonical); interim fallback during this window</td></tr>
@@ -491,7 +508,7 @@
 <footer class="rs-footer">
   <div class="rs-footer__inner">
     <span>Applied AI Research · independent practitioner notes · 2026</span>
-    <span><a href="../privacy.html">Privacy</a> · <a href="https://github.com/agorokh/applied-ai-research">github.com/agorokh/applied-ai-research</a></span>
+    <span><a href="https://github.com/agorokh/applied-ai-research">github.com/agorokh/applied-ai-research</a></span>
   </div>
 </footer>
 
