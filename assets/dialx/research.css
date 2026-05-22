@@ -682,23 +682,26 @@ sup.rs-fn a:hover { color: var(--dx-fg-1); }
 }
 .rs-table-fn dd { margin: 0; }
 
-/* Wide-table escape: at desktop widths (>=1100px), let .rs-table-wide tables bleed beyond
-   the 70ch prose measure so dense cost / matrix tables get breathing room. The prose stays
-   at 70ch (line 265: .rs-section p max-width 70ch); only the tables get the wider canvas.
-   Skip the asymmetrical-grid marginalia variant per council: it collides with the existing
-   TOC rail at 1201px+ and pulls load-bearing callouts into a secondary spatial channel. */
+/* Wide-table escape: at desktop widths (>=1100px), let .rs-table-wide tables expand
+   beyond the 70ch prose measure so dense cost / matrix tables get breathing room.
+   The left edge stays aligned with the prose column (margin-left: 0); only the
+   right edge extends outward, so tables read as part of the section spine rather
+   than as floating elements.
+   Skip the asymmetrical-grid marginalia variant per council: it collides with the
+   existing TOC rail at 1201px+ and pulls load-bearing callouts into a secondary
+   spatial channel. */
 @media (min-width: 1100px) {
   .rs-section .rs-table-wide {
     width: calc(100% + 8vw);
     max-width: 100ch;
-    margin-left: -4vw;
+    margin-left: 0;
   }
 }
 @media (min-width: 1400px) {
   .rs-section .rs-table-wide {
     width: calc(100% + 12vw);
     max-width: 110ch;
-    margin-left: -6vw;
+    margin-left: 0;
   }
 }
 .rs-table td.mono {
