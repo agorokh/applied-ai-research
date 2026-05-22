@@ -43,14 +43,22 @@
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + MEASUREMENT_ID;
+    function releaseWaiters(run) {
+      var waiters = gtagLoadWaiters;
+      gtagLoadWaiters = null;
+      if (waiters) {
+        waiters.forEach(run);
+      }
+    }
     s.onload = function () {
       window.__aaGtagLoaded = true;
       gtag('js', new Date());
-      var waiters = gtagLoadWaiters;
-      gtagLoadWaiters = null;
-      waiters.forEach(function (cb) {
+      releaseWaiters(function (cb) {
         cb();
       });
+    };
+    s.onerror = function () {
+      releaseWaiters(function () {});
     };
     document.head.appendChild(s);
   }

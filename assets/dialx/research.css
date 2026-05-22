@@ -704,6 +704,18 @@ sup.rs-fn a:hover { color: var(--dx-fg-1); }
     margin-left: 0;
   }
 }
+/* When the fixed TOC rail is visible, cap wide-table expansion so columns
+   do not slide under the overlay (TOC ~200px + 32px right inset). */
+@media (min-width: 1201px) {
+  .rs-section .rs-table-wide {
+    max-width: min(100ch, calc(100vw - 300px));
+  }
+}
+@media (min-width: 1400px) {
+  .rs-section .rs-table-wide {
+    max-width: min(110ch, calc(100vw - 300px));
+  }
+}
 .rs-table td.mono {
   font-family: var(--dx-font-mono);
   font-size: 12px;
