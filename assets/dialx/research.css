@@ -32,6 +32,12 @@
   font-feature-settings: "ss01", "ss02", "cv11";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Bringhurst-style optical margin: quotes and bullets at line-start sit just
+     outside the text boundary so the left edge of the prose stays perfectly
+     vertical. Progressive enhancement: WebKit-only as of 2026; Chromium and
+     Firefox no-op safely. Apply only at first (line-start), not last; the
+     `last` variant interacts badly with the rs-callout border. */
+  hanging-punctuation: first;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
@@ -287,11 +293,21 @@ main {
 .rs-section a:link,
 .rs-section a:visited {
   color: var(--dx-violet);
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--dx-violet) 30%, transparent);
-  transition: border-color 200ms;
+  /* Micro-typography per council: real text-decoration (not border-bottom) so the underline
+     clears descenders cleanly. 1px thickness keeps weight calm; 0.18em offset gives the
+     "underline lives below the baseline" effect Bringhurst describes in Elements of
+     Typographic Style. No gradient hover (council rejected: reads as marketing, not research). */
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--dx-violet) 45%, transparent);
+  border-bottom: none;
+  transition: text-decoration-color 160ms ease, color 160ms ease;
 }
-.rs-section a:hover { border-bottom-color: var(--dx-violet); }
+.rs-section a:hover {
+  text-decoration-color: var(--dx-violet);
+  color: var(--dx-fg-1);
+}
 
 /* Inline artefact-chip link style: a code-styled link to a sub-artefact
    file. Reuses .rs-mono but suppresses the violet underline so the chip
@@ -588,8 +604,103 @@ main {
   color: var(--dx-fg-3);
   font-weight: 500;
   border-bottom: 1px solid var(--dx-border-strong);
+  vertical-align: bottom;
+  line-height: 1.2;
 }
 .rs-table tbody tr:hover { background: color-mix(in srgb, var(--dx-fg-1) 2%, transparent); }
+
+/* Two-line table headers: name top, parameter description below in lighter weight.
+   Pattern: <th><span class="rs-th-name">Ingest cost</span><span class="rs-th-sub">per 100 documents, USD</span></th>
+   The .rs-th-sub line drops the uppercase + tight letter-spacing because uppercase is the cue for
+   "this is a header"; the sub-line is metadata, not header. */
+.rs-table .rs-th-name {
+  display: block;
+  font-weight: 500;
+}
+.rs-table .rs-th-sub {
+  display: block;
+  margin-top: 3px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  font-size: 9px;
+  color: var(--dx-fg-4);
+}
+
+/* Numeric column modifier: right-align both header and cell, enable tabular-nums so digits stack. */
+.rs-table th.num,
+.rs-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Winner-row treatment: a left-edge teal accent + lighter background so the row a reader
+   should land on is structurally visible without using bold-everywhere. Applied to the row
+   that the report names as the production answer. */
+.rs-table tbody tr.rs-winner {
+  background: color-mix(in srgb, var(--dx-teal) 5%, transparent);
+}
+.rs-table tbody tr.rs-winner td:first-child {
+  border-left: 2px solid var(--dx-teal);
+  padding-left: 12px;
+}
+.rs-table tbody tr.rs-winner:hover {
+  background: color-mix(in srgb, var(--dx-teal) 8%, transparent);
+}
+
+/* Footnote block immediately below a table. Numbered superscript markers in the cell point
+   to entries here. Numbering is per-table, not document-global. Pattern:
+   <td>~$54 to $69<sup class="rs-fn"><a href="#fn-cost-1">1</a></sup></td>
+   ...
+   <dl class="rs-table-fn">
+     <dt id="fn-cost-1">1</dt>
+     <dd>List-derived; the measured invoice ran 30 to 33x. See cost-model.md.</dd>
+   </dl>
+*/
+sup.rs-fn { font-size: 0.7em; vertical-align: super; margin-left: 0.15em; }
+sup.rs-fn a {
+  color: var(--dx-violet);
+  text-decoration: none;
+  border-bottom: none;
+  font-weight: 500;
+}
+sup.rs-fn a:hover { color: var(--dx-fg-1); }
+.rs-table-fn {
+  display: grid;
+  grid-template-columns: 1.6em 1fr;
+  gap: 4px 12px;
+  margin: 12px 0 32px;
+  max-width: 80ch;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--dx-fg-3);
+}
+.rs-table-fn dt {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--dx-fg-4);
+}
+.rs-table-fn dd { margin: 0; }
+
+/* Wide-table escape: at desktop widths (>=1100px), let .rs-table-wide tables bleed beyond
+   the 70ch prose measure so dense cost / matrix tables get breathing room. The prose stays
+   at 70ch (line 265: .rs-section p max-width 70ch); only the tables get the wider canvas.
+   Skip the asymmetrical-grid marginalia variant per council: it collides with the existing
+   TOC rail at 1201px+ and pulls load-bearing callouts into a secondary spatial channel. */
+@media (min-width: 1100px) {
+  .rs-section .rs-table-wide {
+    width: calc(100% + 8vw);
+    max-width: 100ch;
+    margin-left: -4vw;
+  }
+}
+@media (min-width: 1400px) {
+  .rs-section .rs-table-wide {
+    width: calc(100% + 12vw);
+    max-width: 110ch;
+    margin-left: -6vw;
+  }
+}
 .rs-table td.mono {
   font-family: var(--dx-font-mono);
   font-size: 12px;
