@@ -4,7 +4,7 @@
 #
 # Council v12 verdict (2026-05-20):
 #   - Each report must instance research-paper.html grammar
-#   - Exactly 13 <section> elements (hero + 12 numbered)
+#   - 12–13 <section> elements (hero + 11–12 numbered; extraction report may omit drift section)
 #   - .rs-callout count in [3, 15] (v17 diligent reports use more callouts)
 #   - Zero <div class="rs-container"> wrappers
 #   - Zero inline <style> blocks
