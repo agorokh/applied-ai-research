@@ -60,9 +60,9 @@ Both checks are necessary. An empty graph fails the first check because the resp
 
 ---
 
-## Part B: This operator's knob values, point-in-time
+## Part B: This deployment's knob values, point-in-time
 
-The values below are the live config on the operator's M2 Pro at the time the report was finalised. They are NOT a transferable recommendation. Document length, chunk count, gateway rate-limit shape, embedder throughput, and the extractor's intrinsic per-call latency all vary; the values that work here will not be the values that work on your hardware against your corpus.
+The values below are the live config on the test host at the time the report was finalised. They are NOT a transferable recommendation. Document length, chunk count, gateway rate-limit shape, embedder throughput, and the extractor's intrinsic per-call latency all vary; the values that work here will not be the values that work on your hardware against your corpus.
 
 What is worth taking is the shape: small `max_async` (not large), embedder concurrency decoupled from extractor concurrency, LLM cache enabled for extract, merge-summary gated by a chunk threshold rather than always-on. The specific numbers below are starting points to measure against, not endpoints to copy.
 

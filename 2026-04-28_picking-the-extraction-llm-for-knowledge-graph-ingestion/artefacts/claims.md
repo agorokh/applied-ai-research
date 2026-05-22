@@ -75,11 +75,11 @@ Every headline claim in the report, tagged by epistemic status.
 
 | Tag | Claim | Source |
 |---|---|---|
-| measured | Live config: `max_parallel_insert=2`, `max_async=2`, `embedding_func_max_async=8`, `embedding_batch_num=10`, `force_llm_summary_on_merge=8`. | Live `/health` on M2 Pro at time of writing. |
-| measured | Per-document wall-clock on a recent run (Gemini 2.5 Flash, 17 short docs avg 2.6 KB, 1.4 chunks/doc mean): min 82s, p50 185s, mean 218s, p95 762s. | M2 Pro doc-status JSON, partial re-ingest in flight. |
-| measured | Live 17-document working corpus graph (Gemini 2.5 Flash, 17 docs processed): 1,019 entities, 1,127 relations, 59.9 ent/doc, 66.3 rel/doc, 1.11 rel/ent. | `vdb_entities.json` / `vdb_relationships.json` on M2 Pro. |
-| measured | The fleet registry enforces `require_dedicated_api_per_workspace = true`, one process per workspace. | `tools/hermes_adapter/fleet_registry.toml`. |
-| measured | A current Gemini Flash daily quota of 2,000,000 tokens was exhausted today during a re-ingest, leaving the remaining documents queued. | Live 429 response from the gateway during the run. |
+| measured | Deployed config at time of writing: `max_parallel_insert=2`, `max_async=2`, `embedding_func_max_async=8`, `embedding_batch_num=10`, `force_llm_summary_on_merge=8`. | LightRAG `/health` endpoint on the test host. |
+| measured | Per-document wall-clock on a recent run (Gemini 2.5 Flash, 17 short documents averaging 2.6 KB, 1.4 chunks per document mean): min 82s, p50 185s, mean 218s, p95 762s. | Doc-status JSON exported from the test host during a partial re-ingest. |
+| measured | A working-corpus graph at a partial-ingest checkpoint (Gemini 2.5 Flash, 17 documents processed): 1,019 entities, 1,127 relations, 59.9 ent/doc, 66.3 rel/doc, 1.11 rel/ent. | `vdb_entities.json` / `vdb_relationships.json` on the test host. |
+| measured | The fleet registry enforces `require_dedicated_api_per_workspace = true`, one process per workspace. | The operator's fleet-registry configuration file. |
+| measured | A developer-tier Gemini Flash daily quota of 2,000,000 tokens was exhausted during the partial re-ingest cited above, leaving the remaining documents queued. | 429 response from the gateway during the run. |
 | recommendation | For full re-ingest workloads, plan for higher-tier pricing or stagger ingest across days. | Operational lesson from the daily-cap incident. |
 
 ## Scope (§11)
