@@ -4,11 +4,11 @@ This site is published as static HTML on GitHub Pages by [Arseny Gorokh](https:/
 
 ## Analytics
 
-Pages load [Google Analytics 4](https://support.google.com/analytics) (measurement ID `G-HHYGP07F16`) to understand aggregate traffic — page views, referrers, and coarse geography. IP addresses are anonymized in the GA configuration.
+Pages may load [Google Analytics 4](https://support.google.com/analytics) (measurement ID `G-HHYGP07F16`) to understand aggregate traffic — page views, referrers, and coarse geography. IP addresses are anonymized in the GA configuration.
 
-Analytics **does not run** when your browser sends **Do Not Track** (`1` or `yes`) or **Global Privacy Control**, or when those signals are exposed via legacy `window.doNotTrack` / `msDoNotTrack` properties.
+**Consent:** On first visit, a banner asks you to accept or decline analytics. Your choice is stored in `localStorage` (`aa_research_analytics_consent`). Google Consent Mode defaults to **denied** until you accept; declining never loads the GA script.
 
-There is no cookie-consent banner on this static site. If you are in a jurisdiction that requires opt-in consent before analytics cookies, disable tracking via DNT/GPC or use a browser extension that blocks third-party scripts.
+Analytics **does not run** when your browser sends **Do Not Track** (`1` or `yes`) or **Global Privacy Control**, or when those signals are exposed via legacy `window.doNotTrack` / `msDoNotTrack` properties. In that case the banner is not shown and no GA requests are made.
 
 Google’s processing is governed by [Google’s privacy policy](https://policies.google.com/privacy). You can opt out of Google Analytics in browsers via [Google’s add-on](https://tools.google.com/dlpage/gaoptout).
 
