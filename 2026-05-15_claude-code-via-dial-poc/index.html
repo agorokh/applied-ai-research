@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Claude Code via EPAM DIAL — Engineering brief — Applied AI Research — 2026-05-15</title>
-<meta name="description" content="Engineering brief: routing Claude Code through EPAM DIAL as a sanctioned-inference gateway. 192 trials, eight upstreams at AWS Bedrock list pricing, Qwen3-Coder 480B as the cheapest 100%-pass model. Independent practitioner notes, not an official EPAM publication." />
+<title>Claude Code via EPAM DIAL · Engineering brief · Applied AI Research · 2026-05-15</title>
+<meta name="description" content="Engineering brief: routing Claude Code through EPAM DIAL as a sanctioned-inference gateway. Eight upstreams compared at AWS Bedrock list pricing on a synthetic 8-task harness; Qwen3-Coder 480B is the cheapest 100%-pass model. Independent practitioner notes, not an official EPAM publication." />
 <link rel="stylesheet" href="../assets/dialx/tokens.css" />
 <link rel="stylesheet" href="../assets/dialx/type.css" />
 <link rel="stylesheet" href="../assets/dialx/research.css" />
@@ -60,11 +60,11 @@
     <h1>Claude Code via EPAM DIAL · <em>POC report.</em></h1>
 
     <p class="rs-lede">
-      192 trials across eight upstreams behind one coding-agent harness, costed at AWS Bedrock list pricing verified 2026-05-14. Qwen3-Coder 480B is the cheapest 100%-pass model at $0.101 per success, 4.7× below Claude Sonnet 4.6. The bridge that routes Claude Code 2.1 through an enterprise gateway is one ~600-line Anthropic-to-OpenAI translation adapter (open-source at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>); the same adapter becomes a structured observation point for coding-agent telemetry, which §04–§10 turn into a data plane for any organisation running a sanctioned-inference gateway.
+      192 trials across eight upstreams behind one coding-agent harness on a synthetic 8-task portfolio, costed at AWS Bedrock list pricing verified 2026-05-14. On this task surface Qwen3-Coder 480B is the cheapest 100%-pass model at $0.101 per success at list, 4.7× below Claude Sonnet 4.6 on the same harness; the ranking is harness-specific and the magnitudes need re-derivation on your own task set before deployment sizing. The bridge that routes Claude Code 2.1 through an enterprise gateway is a ~600-line ingress wrapper (open-source at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>); the translation core in §10 is ~1500 lines of Python in two functions plus the SSE streaming bridge. That stack becomes a structured observation point for coding-agent telemetry, which §04–§10 turn into a data plane for any organisation running a sanctioned-inference gateway.
     </p>
 
     <div class="rs-hero-meta">
-      <div class="rs-meta-stat"><span class="v">$0.101<span class="unit">/ success</span></span><span class="l">Qwen3-Coder 480B, cost leader of the 100%-pass cluster</span></div>
+      <div class="rs-meta-stat"><span class="v">$0.101<span class="unit">/ success</span></span><span class="l">Qwen3-Coder 480B, cost leader of the 100%-pass cluster on this synthetic 8-task harness at Bedrock list pricing; re-derive on your own task set</span></div>
       <div class="rs-meta-stat"><span class="v">8<span class="unit">upstreams</span></span><span class="l">Three tiers of viability across one harness</span></div>
       <div class="rs-meta-stat"><span class="v">192<span class="unit">trials</span></span><span class="l">Eight task families, three runs per cell</span></div>
       <div class="rs-meta-stat"><span class="v">~30<span class="unit">fields</span></span><span class="l">Per-request telemetry retained at the adapter</span></div>
@@ -93,7 +93,7 @@
 
     <div class="rs-callout">
       <h4>Finding 1. The bridge runs on the EPAM-compliant inference path</h4>
-      <p>Claude Code 2.1 talks to any DIAL-hosted upstream through one Anthropic-to-OpenAI translation adapter. The harness routes traffic through <code>&lt;dial-gateway-host&gt;</code>, the same gateway EPAM already uses for sanctioned LLM access, instead of calling <code>api.anthropic.com</code> directly. 192 trials produced zero authentication incidents and required no Claude Code source modifications. From DIAL's perspective the requests look like any other OpenAI-shape call; the adapter handles the Anthropic-shape input/output on the client side. <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
+      <p>Claude Code 2.1 talks to any DIAL-hosted upstream through one Anthropic-to-OpenAI translation adapter. The harness routes traffic through the gateway, the same one used for sanctioned LLM access, instead of calling <code>api.anthropic.com</code> directly. The adapter required no Claude Code source modifications. From the gateway's perspective the requests look like any other OpenAI-shape call; the adapter handles the Anthropic-shape input/output on the client side. <a class="rs-mono" href="artefacts/claims.md">claims-ledger →</a></p>
     </div>
 
     <div class="rs-callout">
@@ -132,7 +132,7 @@
     </table>
 
     <h3>Two technical realities to flag for Part III</h3>
-    <p>First, the adapter strips <code>cache_control</code> on every non-Anthropic upstream (else DIAL returns <code>502 No route</code>), a known gateway gap. Second, on every <code>response_out</code> the adapter emits a structured GFLog record with token counts, tool inventory hash, MCP servers seen, cache strategy, elapsed milliseconds, and a Bedrock-verified <code>cost_usd_estimate</code> field. Today that record lands in Influx <code>adapter_metrics</code> as a tag-and-field rollup, and Grafana shows it as KPIs. With business-identity headers forwarded, the same record carries project, team, and industry. That is what Part III addresses.</p>
+    <p>First, the adapter strips Anthropic <code>cache_control</code> blocks on every non-Anthropic upstream before translation, since not every upstream behind the gateway accepts them. Second, on every <code>response_out</code> the adapter emits a structured GFLog record with token counts, tool inventory hash, MCP servers seen, cache strategy, elapsed milliseconds, and a Bedrock-verified <code>cost_usd_estimate</code> field. That record can be shipped to whatever telemetry sink your platform team operates; with business-identity headers forwarded, the same record carries project, team, and industry. That is what Part III addresses.</p>
 
     <p><strong>For platform teams</strong>: the adapter is the only component in the request path that sees the full Anthropic-shape request, the translated upstream call, and the full streamed response. That position is what makes it a natural telemetry capture point, regardless of where it ends up running. Centralising it into DIAL preserves that property and adds the per-tenant identifiers the wire already needs.</p>
   </section>
@@ -140,7 +140,7 @@
   <section class="rs-section" id="s03">
     <p class="rs-section-label"><span class="num">03</span> Part II · Matrix verdict</p>
     <h2>Three viability tiers, <em>Bedrock-verified economics.</em></h2>
-    <p class="rs-lede">Two evaluation waves, 192 trials total. Wave 1 (2026-05-14, 18:19 UTC): 120 trials across Anthropic Haiku/Sonnet/Opus, Qwen3-Coder 480B and 30B, and DeepSeek v3.2. Wave 2 (2026-05-14, 20:15 UTC): Kimi K2.5 and MiniMax M2.5 plus an early Claude Sonnet 4.6 re-run (72 trial appearances, 48 net-new model cells — see <a class="rs-mono" href="artefacts/methodology.md">methodology.md</a>). Same harness (Claude Code 2.1), same 8-task portfolio, same hidden <code>pytest</code> validators, same DIAL gateway. All cost numbers come from the AWS Bedrock pricing console (US East Ohio, captured 2026-05-14). <a class="rs-mono" href="artefacts/pricing-snapshot/bedrock-us-east-ohio-2026-05-14.md">snapshot →</a></p>
+    <p class="rs-lede">Two evaluation waves, 192 trials total. Wave 1 (2026-05-14, 18:19 UTC): 120 trials across Anthropic Haiku/Sonnet/Opus, Qwen3-Coder 480B and 30B, and DeepSeek v3.2. Wave 2 (2026-05-14, 20:15 UTC): Kimi K2.5 and MiniMax M2.5 plus an early Claude Sonnet 4.6 re-run (72 trial appearances, 48 net-new model cells; see <a class="rs-mono" href="artefacts/methodology.md">methodology.md</a>). Same harness (Claude Code 2.1), same 8-task portfolio, same hidden <code>pytest</code> validators, same DIAL gateway. All cost numbers come from the AWS Bedrock pricing console (US East Ohio, captured 2026-05-14). <a class="rs-mono" href="artefacts/pricing-snapshot/bedrock-us-east-ohio-2026-05-14.md">snapshot →</a></p>
 
     <div class="rs-tiers">
       <div class="rs-tier" style="--accent: var(--dx-teal);">
@@ -271,26 +271,26 @@
     <p class="rs-lede">The Grafana dashboard today is full of correct numbers without an organising spine. Below is the spine. Each tier answers a different question, and Tier 4 is the one that becomes possible only after business-metadata enrichment lands.</p>
 
     <h3>Tier 1 · Wire-level · what runs?</h3>
-    <p>Available today from the adapter GFLog directly. No enrichment.</p>
+    <p>Available today from the adapter GFLog directly. No enrichment. The columns below are the shape (the metric and its unit); the magnitudes for your deployment come from your own telemetry, not from this POC's single-operator window.</p>
     <table class="rs-table">
       <tbody>
-        <tr><td>Request volume by model family</td><td class="mono">4,200 req/day</td></tr>
-        <tr><td>Cache hit rate</td><td class="mono">38%</td></tr>
-        <tr><td>Tool call density</td><td class="mono">6.2 / session</td></tr>
-        <tr><td>p95 end-to-end latency</td><td class="mono">4.1s</td></tr>
-        <tr><td>Client variant distribution</td><td class="mono">CLI / Cursor / API</td></tr>
+        <tr><td>Request volume by model family</td><td class="mono">requests / day</td></tr>
+        <tr><td>Cache hit rate</td><td class="mono">percentage</td></tr>
+        <tr><td>Tool call density</td><td class="mono">calls / session</td></tr>
+        <tr><td>p95 end-to-end latency</td><td class="mono">seconds (includes network RTT)</td></tr>
+        <tr><td>Client variant distribution</td><td class="mono">CLI / IDE / API</td></tr>
       </tbody>
     </table>
 
     <h3>Tier 2 · Outcome · does it work?</h3>
-    <p>Requires test-harness or accept-signal join.</p>
+    <p>Requires test-harness or accept-signal join. Shape only; populate from your own harness output.</p>
     <table class="rs-table">
       <tbody>
-        <tr><td>Task completion rate by model</td><td class="mono">100% / 87% / 0%</td></tr>
-        <tr><td>Retry rate per session</td><td class="mono">12% on DeepSeek</td></tr>
-        <tr><td>Agentic loop depth</td><td class="mono">median 8 turns</td></tr>
-        <tr><td>Error class distribution</td><td class="mono">3.2% ctx-len errors</td></tr>
-        <tr><td>TTFT by model</td><td class="mono">Sonnet 0.9s · Qwen 2.1s</td></tr>
+        <tr><td>Task completion rate by model</td><td class="mono">percentage per model</td></tr>
+        <tr><td>Retry rate per session</td><td class="mono">percentage per model</td></tr>
+        <tr><td>Agentic loop depth</td><td class="mono">median turns / session</td></tr>
+        <tr><td>Error class distribution</td><td class="mono">percentage by class</td></tr>
+        <tr><td>TTFT by model</td><td class="mono">seconds (includes network RTT)</td></tr>
       </tbody>
     </table>
 
@@ -421,7 +421,7 @@ ANTHROPIC_BASE_URL=https://&lt;dial-gateway-host&gt;</pre>
 
     <h3>Pilot rollout proposal</h3>
     <ol>
-      <li><strong>Build the in-DIAL adapter.</strong> Port the translation core (<code>anthropic_to_openai</code> / <code>openai_to_anthropic_response</code> / SSE bridge — reference implementation at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>) into the gateway's ingress codepath, behind a feature flag. <a class="rs-mono" href="artefacts/methodology.md">adapter-conformance →</a></li>
+      <li><strong>Build the in-DIAL adapter.</strong> Port the translation core (<code>anthropic_to_openai</code> / <code>openai_to_anthropic_response</code> / SSE bridge; reference implementation at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>) into the gateway's ingress codepath, behind a feature flag. <a class="rs-mono" href="artefacts/methodology.md">adapter-conformance →</a></li>
       <li><strong>Select 2–3 friendly pilot projects.</strong> Delivery teams already using Claude Code informally, ideally with diverse stacks (one heavy-Python, one TypeScript, one mixed). Centrally update their DIAL project configuration to enable the Anthropic-compatible ingress.</li>
       <li><strong>Observe for 2–4 weeks.</strong> Existing DIAL telemetry surfaces per-project token / cost / latency; Claude Code-specific signals continue to land in the Layer-A measurements described in §05.</li>
       <li><strong>If telemetry holds and cost-per-success matches the Part II numbers, expand.</strong> Add cohorts of additional projects in waves, each wave with a brief feedback loop to capture friction before the next cohort.</li>
@@ -448,7 +448,7 @@ ANTHROPIC_BASE_URL=https://&lt;dial-gateway-host&gt;</pre>
     <p class="rs-dim"><a class="rs-mono" href="artefacts/invalidation.md">invalidation →</a></p>
 
     <ul>
-      <li><strong>Single-operator data.</strong> All 192 trials originate from one engineer's laptop, one DIAL deployment, one network path to <code>&lt;dial-gateway-host&gt;</code>. Latency tails include network RTT variance that production deployments would see differently.</li>
+      <li><strong>Single-operator data.</strong> The 192 trials originate from one workstation, one gateway deployment, and one network path. Latency tails include network RTT variance that production deployments would see differently; the cost-per-success ratios derive from list pricing and survive routing changes, but the absolute latency numbers do not.</li>
       <li><strong>Synthetic task surface.</strong> The 8-task portfolio is reproducible and discriminating but is not a stand-in for any specific real codebase. T8 (refactor → test → document) is the closest to a realistic refactor; T1–T7 are unit-test shaped.</li>
       <li><strong>Bedrock list pricing, not EPAM DIAL contract pricing.</strong> Every $/M rate in the cost table is taken from the AWS Bedrock pricing console (US East Ohio, 2026-05-14). EPAM DIAL contract pricing may include a markup or discount that shifts absolute magnitudes; the qualitative ranking inside the 100%-pass cluster is stable under markup factors below ~6.7× on Qwen 480B input rates. <a class="rs-mono" href="artefacts/pricing-snapshot/bedrock-us-east-ohio-2026-05-14.md">sensitivity →</a></li>
       <li><strong>Part III is a description of latent capability, not a deployed system.</strong> The three tag promotions and header allowlist described in §10 are not in production. Illustrative numbers in §06, §07, and §08 are not measurements from current data and are labelled as such.</li>

@@ -4,7 +4,7 @@ Per-100-document ingest cost derivation. Normalised so a reader can multiply by 
 
 ## A note on what is measured vs estimated
 
-The per-call token counts in this artefact are derivations from the chunk size and observed extraction shape, not direct measurements from the LLM's token-usage records. They are within an order of magnitude of what an audit pass over the on-disk LLM-cache JSON would report; they are not invoice-level numbers. The list-price table below yields **~$7 to $10 per 100 documents** for Gemini 2.5 Flash: ~$7 at the no-gleaning baseline, with the high end reflecting the documented 30% to 50% gleaning uplift on output cost. Measured invoices on the smoke corpus can run higher when gleaning and explanatory output exceed the calculator (see §06 reconciliation in the main report). Where the calculator and the invoice disagree, the invoice is the more accurate number for projecting future spend on a similar corpus; the calculator is the more appropriate number for negotiating per-token contract pricing.
+The per-call token counts in this artefact are derivations from the chunk size and observed extraction shape, not direct measurements from the LLM's token-usage records. They are within an order of magnitude of what an audit pass over the on-disk LLM-cache JSON would report; they are not invoice-level numbers. The list-price table below yields **~$7 to $10 per 100 documents** for Gemini 2.5 Flash: ~$7 at the no-gleaning baseline, with the high end reflecting the documented 30% to 50% gleaning uplift on output cost. The calculator is the appropriate number for negotiating per-token contract pricing; for projecting future spend on a similar corpus, re-measure invoice cost on a representative subset of your own corpus rather than projecting from this calculator.
 
 ## Per-document token accounting (estimated)
 
@@ -43,23 +43,17 @@ Using public list prices verified at run time. Per-million-token rates are quote
 
 Range reflects gleaning vs no-gleaning. Operators on a fresh corpus typically see the gleaning-active numbers.
 
-## Why the report says "~33x" for Sonnet vs Gemini Flash
+## Why measured invoices can exceed the list-price calculator
 
-The benchmark paper that locked in Gemini 2.5 Flash measured the cost ratio empirically on the 20-document smoke corpus, where Sonnet's invoice came in roughly 33 times Gemini Flash's invoice. The ~6x to ~9x figure in the table above is the list-price derivation; the gap between list-derived and invoice-measured ratios reflects three things:
-
-1. Sonnet's output cost dominates its bill on this workload (extraction generates more output per chunk than the schema implies because of explanatory text the model adds).
-2. Gemini Flash's actual usage came in below the per-1M estimate because the model emits more compact extractions per call.
-3. Gleaning ran differently on the two models; Sonnet triggered more gleaning passes.
-
-Both numbers are correct. The ~33x is the measured invoice ratio on this specific corpus. The ~6x to ~9x is the calculator-grade list-price derivation. Use the larger one when projecting cost-of-mistake (e.g. "if I accidentally re-ingest on Sonnet for a week"); use the smaller one when negotiating contract pricing.
+The list-price calculator above derives spend from per-1M-token rates at the per-document token shape. Measured invoices on the same corpus can come in higher than the calculator predicts because (1) extraction output frequently exceeds the schema (models add explanatory text the calculator does not anticipate), (2) gleaning fires more aggressively on some models than the no-gleaning baseline assumes, and (3) actual per-call usage varies from the per-1M estimate by model. The calculator is the right number for negotiating contract pricing; for projecting spend on a specific corpus and model pairing, re-measure invoice cost on a representative subset.
 
 ## What this model does NOT include
 
 - **Embedder cost.** Held constant across all rows (local embedder). If you use a hosted embedder, add its cost separately; it does not change the ranking inside the matrix.
 - **Gateway markup.** OpenRouter adds a small markup on top of provider list. Enterprise gateways may charge differently. The ratios above are robust to multiplicative pricing factors below roughly 10x.
-- **Infrastructure cost.** Local rows show $0 inference cost but absorb the cost of the workstation, power, and (for M1 Max) wall-clock hours that the operator is not otherwise using the machine.
+- **Infrastructure cost.** Local rows show $0 inference cost; workstation, GPU, power, and wall-clock hours are independent of the model choice and not included.
 - **Storage and graph database cost.** Neo4j or PostgreSQL hosting cost is independent of extractor choice.
-- **Re-ingest cost.** Multiplies all of the above by the number of re-ingest events. The drift incident in §09 of the main report was costly precisely because it forced a full re-ingest at the wrong model's rate.
+- **Re-ingest cost.** Multiplies all of the above by the number of re-ingest events. A model swap or a chunking change forces a full re-ingest at the new configuration's rate; budget for this when picking the substrate.
 
 ## Projection to your corpus
 
@@ -82,7 +76,7 @@ Average document length similar to the smoke corpus (mixed prose, ~5 pages). Ann
 | Re-ingest under model swap (full, ~once / 18 months) | ~$3,500 to ~$5,000 | ~$27,000 to ~$34,500 |
 | Total year-1 cost at list (backfill + delta) | ~$4,500 to ~$6,500 | ~$35,000 to ~$45,000 |
 
-Peak ingest load for Example A: 50,000 documents at the smoke-corpus shape (~80K input + ~20K output tokens per document) is on the order of **5 billion tokens** total. At a hard **2M-token-per-day** developer-tier cap, that is roughly **2,500 days** (~7 years) of calendar time if the cap binds before any parallelization win — not weeks. Raising the daily cap (paid tier, enterprise gateway) shrinks wall-clock dramatically; the main report documents a separate 180-document re-ingest that exhausted a 2M/day cap in a single day. **Budget tier throughput before you budget dollars.**
+Peak ingest load for Example A: 50,000 documents at the smoke-corpus shape (~80K input + ~20K output tokens per document) is on the order of **5 billion tokens** total. Wall-clock cost depends on your contracted per-minute and per-day rate limits on the chosen tier; verify the throughput shape against your re-ingest volume before sizing the dollar budget. The pricing rows above answer "how much does it cost"; the wall-clock answer is a separate question determined by your gateway contract, not by list price.
 
 ### Example B: a 200,000-document ticket archive
 

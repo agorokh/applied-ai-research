@@ -58,6 +58,6 @@ The per-100-document derivation in [`cost-model.md`](cost-model.md) multiplies e
 
 ## Provenance
 
-The eleven model runs were executed late April 2026 with extensions in early May 2026 (the Gemini 3.x variants). The drift incident described in §09 happened mid-May 2026 and is documented separately in the operator's internal investigation log; it is referenced here as the operational lesson, not as a data point in the matrix.
+The eleven model runs were executed late April 2026 with extensions in early May 2026 (the Gemini 3.x variants).
 
 Original ingest logs, per-cell smoke transcripts, and the estimated token counts that feed the cost model are held in an internal investigation log. They are not published verbatim because they contain corpus content from non-public workspaces. Re-running the rubric on your own corpus is the reproducibility path; the rubric itself is the reusable artefact.

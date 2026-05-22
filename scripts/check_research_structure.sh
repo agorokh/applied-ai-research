@@ -4,7 +4,7 @@
 #
 # Council v12 verdict (2026-05-20):
 #   - Each report must instance research-paper.html grammar
-#   - Exactly 13 <section> elements (hero + 12 numbered)
+#   - 12–13 <section> elements (hero + 11–12 numbered; extraction report may omit drift section)
 #   - .rs-callout count in [3, 15] (v17 diligent reports use more callouts)
 #   - Zero <div class="rs-container"> wrappers
 #   - Zero inline <style> blocks
@@ -79,7 +79,7 @@ print(sum(1 for block in blocks if len(re.findall(r"<em\b", block, flags=re.IGNO
 PY
 )
 
-  check_count "sections" "$sections" 13 13 "$report"
+  check_count "sections" "$sections" 12 13 "$report"
   check_count "callouts" "$callouts" 3 15 "$report"
   check_count "h1"       "$h1"       1 1  "$report"
   check_count "em in h1" "$ems_in_h1" 1 1 "$report"
