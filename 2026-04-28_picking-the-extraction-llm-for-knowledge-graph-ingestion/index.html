@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Picking the extraction LLM for knowledge-graph ingestion — Applied AI Research — 2026-04-28</title>
+<title>Picking the extraction LLM for knowledge-graph ingestion · Applied AI Research · 2026-04-28</title>
 <meta name="description" content="Knowledge-graph RAG systems (Microsoft GraphRAG, LightRAG, and the ecosystem around them) extract entities and relations from source text at ingest time using an LLM. Eleven candidate models measured on the same corpus and rubric. Why breadth of extraction beats density of relations for graph-traversal retrieval, and why the cheapest model that clears every retrieval cell costs roughly 3 percent of the strongest commercial alternative. Independent practitioner notes, not an official EPAM publication." />
 <link rel="stylesheet" href="../assets/dialx/tokens.css" />
 <link rel="stylesheet" href="../assets/dialx/type.css" />
@@ -160,34 +160,58 @@
 
     <p>The full table lives in <a href="artefacts/model-matrix.md">the model-matrix artefact</a>. The headline rows, sorted by smoke score:</p>
 
-    <table class="rs-table">
+    <table class="rs-table rs-table-wide">
       <thead>
-        <tr><th>Model</th><th>Provider / runtime</th><th>Ent / doc</th><th>Rel / doc</th><th>Rel / ent</th><th>Smoke (pass / marginal / fail)</th></tr>
+        <tr>
+          <th><span class="rs-th-name">Model</span></th>
+          <th><span class="rs-th-name">Provider</span><span class="rs-th-sub">runtime</span></th>
+          <th class="num"><span class="rs-th-name">Entities</span><span class="rs-th-sub">per document</span></th>
+          <th class="num"><span class="rs-th-name">Relations</span><span class="rs-th-sub">per document</span></th>
+          <th class="num"><span class="rs-th-name">Ratio</span><span class="rs-th-sub">relations per entity</span></th>
+          <th class="num"><span class="rs-th-name">Smoke score</span><span class="rs-th-sub">pass / marginal / fail, out of 24</span></th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>Google via OpenRouter</td><td>82.5</td><td>95.0</td><td>1.15</td><td><strong>24 / 0 / 0</strong></td></tr>
-        <tr><td>Gemini 3.1 flash-lite preview</td><td>Google via OpenRouter</td><td>19.6</td><td>23.3</td><td>1.19</td><td>22 / 1 / 1</td></tr>
-        <tr><td>Claude Sonnet 4.6</td><td>Anthropic via OpenRouter</td><td>40.8</td><td>58.4</td><td>1.43</td><td>22 / 0 / 2</td></tr>
-        <tr><td>Gemini 3 flash preview</td><td>Google via OpenRouter</td><td>34.0</td><td>40.0</td><td>1.18</td><td>21 / 3 / 0</td></tr>
-        <tr><td>OpenAI gpt-4o-mini</td><td>OpenAI via OpenRouter</td><td>—</td><td>—</td><td>—</td><td>19 / 3 / 2</td></tr>
-        <tr><td>Llama 3.2 3B Q4</td><td>Ollama, consumer GPU</td><td>17.4</td><td>6.0</td><td>0.34</td><td>11 / 13 / 0</td></tr>
-        <tr><td>Qwen 3.5 4B (no-think)</td><td>Ollama, consumer GPU</td><td>53.3</td><td>34.2</td><td>0.64</td><td>8 / 4 / 12</td></tr>
+        <tr class="rs-winner"><td><strong>Gemini 2.5 Flash</strong></td><td>Google via OpenRouter</td><td class="num">82.5</td><td class="num">95.0</td><td class="num">1.15</td><td class="num"><strong>24 / 0 / 0</strong></td></tr>
+        <tr><td>Gemini 3.1 flash-lite preview</td><td>Google via OpenRouter</td><td class="num">19.6</td><td class="num">23.3</td><td class="num">1.19</td><td class="num">22 / 1 / 1</td></tr>
+        <tr><td>Claude Sonnet 4.6</td><td>Anthropic via OpenRouter</td><td class="num">40.8</td><td class="num">58.4</td><td class="num">1.43</td><td class="num">22 / 0 / 2</td></tr>
+        <tr><td>Gemini 3 flash preview</td><td>Google via OpenRouter</td><td class="num">34.0</td><td class="num">40.0</td><td class="num">1.18</td><td class="num">21 / 3 / 0</td></tr>
+        <tr><td>OpenAI gpt-4o-mini</td><td>OpenAI via OpenRouter</td><td class="num">n/a<sup class="rs-fn"><a href="#fn-matrix-1">1</a></sup></td><td class="num">n/a<sup class="rs-fn"><a href="#fn-matrix-1">1</a></sup></td><td class="num">n/a<sup class="rs-fn"><a href="#fn-matrix-1">1</a></sup></td><td class="num">19 / 3 / 2</td></tr>
+        <tr><td>Llama 3.2 3B Q4</td><td>Ollama, consumer GPU</td><td class="num">17.4</td><td class="num">6.0</td><td class="num">0.34<sup class="rs-fn"><a href="#fn-matrix-2">2</a></sup></td><td class="num">11 / 13 / 0</td></tr>
+        <tr><td>Qwen 3.5 4B (no-think)</td><td>Ollama, consumer GPU</td><td class="num">53.3</td><td class="num">34.2</td><td class="num">0.64</td><td class="num">8 / 4 / 12</td></tr>
       </tbody>
     </table>
+    <dl class="rs-table-fn">
+      <dt id="fn-matrix-1">1</dt><dd>Ent / rel / ratio for gpt-4o-mini come from a 150-document full-corpus run rather than the pinned 20-document smoke subset; the smoke-score column is comparable, the density columns are not, so they are not shown here. Full numbers in the model-matrix artefact.</dd>
+      <dt id="fn-matrix-2">2</dt><dd>Llama 3.2 3B's relation extraction emitted hundreds of pipe-delimited records that LightRAG's parser dropped as malformed; the 0.34 ratio reflects only the relations that passed schema validation. Schema noise discussion in §07.</dd>
+    </dl>
 
     <p>Partial or incomplete local runs (not ranked against full-corpus rows):</p>
 
-    <table class="rs-table">
+    <table class="rs-table rs-table-wide">
       <thead>
-        <tr><th>Model</th><th>Provider / runtime</th><th>Ent / doc</th><th>Rel / doc</th><th>Rel / ent</th><th>Smoke (pass / marginal / fail)</th></tr>
+        <tr>
+          <th><span class="rs-th-name">Model</span></th>
+          <th><span class="rs-th-name">Provider</span><span class="rs-th-sub">runtime</span></th>
+          <th class="num"><span class="rs-th-name">Entities</span><span class="rs-th-sub">per document</span></th>
+          <th class="num"><span class="rs-th-name">Relations</span><span class="rs-th-sub">per document</span></th>
+          <th class="num"><span class="rs-th-name">Ratio</span><span class="rs-th-sub">relations per entity</span></th>
+          <th class="num"><span class="rs-th-name">Smoke score</span><span class="rs-th-sub">pass / marginal / fail, plus completion note</span></th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>Qwen 2.5 14B GGUF Q4</td><td>LM Studio llama.cpp, M1 Max</td><td>21.9</td><td>19.7</td><td>0.90</td><td>5 / 4 / 15 (19/20 docs)</td></tr>
-        <tr><td>Gemma 4 26B Q4</td><td>Ollama, consumer GPU</td><td>aborted</td><td>aborted</td><td>aborted</td><td>timeout on chunk 1</td></tr>
-        <tr><td>Qwen 2.5 32B Q4</td><td>Ollama, consumer GPU</td><td>partial</td><td>partial</td><td>partial</td><td>HTTP 502 cascade</td></tr>
-        <tr><td>Qwen 2.5 14B 4-bit MLX</td><td>LM Studio MLX, M1 Max</td><td>partial</td><td>partial</td><td>partial</td><td>embed cascade abort</td></tr>
+        <tr><td>Qwen 2.5 14B GGUF Q4</td><td>LM Studio llama.cpp, M1 Max</td><td class="num">21.9</td><td class="num">19.7</td><td class="num">0.90</td><td class="num">5 / 4 / 15<sup class="rs-fn"><a href="#fn-partial-1">1</a></sup></td></tr>
+        <tr><td>Gemma 4 26B Q4</td><td>Ollama, consumer GPU</td><td class="num">aborted</td><td class="num">aborted</td><td class="num">aborted</td><td class="num">timeout<sup class="rs-fn"><a href="#fn-partial-2">2</a></sup></td></tr>
+        <tr><td>Qwen 2.5 32B Q4</td><td>Ollama, consumer GPU</td><td class="num">partial</td><td class="num">partial</td><td class="num">partial</td><td class="num">cascade<sup class="rs-fn"><a href="#fn-partial-3">3</a></sup></td></tr>
+        <tr><td>Qwen 2.5 14B 4-bit MLX</td><td>LM Studio MLX, M1 Max</td><td class="num">partial</td><td class="num">partial</td><td class="num">partial</td><td class="num">cascade<sup class="rs-fn"><a href="#fn-partial-4">4</a></sup></td></tr>
       </tbody>
     </table>
+    <dl class="rs-table-fn">
+      <dt id="fn-partial-1">1</dt><dd>19 of 20 documents completed in approximately 4 hours; one fatal worker timeout. Smoke score is for the 19 documents that ingested cleanly.</dd>
+      <dt id="fn-partial-2">2</dt><dd>Thinking-mode tokens pushed every per-chunk call past the worker timeout; ingest aborted on chunk 1. See §07 / §08 for the no-think discipline.</dd>
+      <dt id="fn-partial-3">3</dt><dd>Repeated HTTP 502 from the inference server, attributed to a VRAM-pressure load/unload cascade on a 6 GB consumer GPU.</dd>
+      <dt id="fn-partial-4">4</dt><dd>MLX backend interacted poorly with concurrent embedder calls; embed-side timeouts cascaded back into LightRAG retry storm and the ingest never converged. Resolution pattern in §07 (embedder on a separate host with its own concurrency cap).</dd>
+    </dl>
 
     <p>Three observations the table does not state outright:</p>
 
@@ -224,25 +248,34 @@
 
     <p>The full derivation is in <a href="artefacts/cost-model.md">the cost-model artefact</a>. Each document on this corpus produced approximately 4 chunks of 1200 tokens each, and LightRAG made approximately 2.5 LLM calls per chunk on average (entity extraction + relation extraction + occasional merge-summary), with each call consuming roughly 8K input tokens and producing roughly 2K output tokens. That comes to approximately 80K input + 20K output tokens per document, or 8M input + 2M output tokens per 100 documents, before any gleaning overhead.</p>
 
-    <table class="rs-table">
+    <table class="rs-table rs-table-wide">
       <thead>
-        <tr><th>Model</th><th>List price (per 1M input / output, USD)</th><th>Ingest cost per 100 docs (USD)</th><th>Cost ratio (vs Gemini Flash)</th><th>Smoke pass</th></tr>
+        <tr>
+          <th><span class="rs-th-name">Model</span></th>
+          <th class="num"><span class="rs-th-name">List price</span><span class="rs-th-sub">per 1M tokens, input / output, USD</span></th>
+          <th class="num"><span class="rs-th-name">Ingest cost</span><span class="rs-th-sub">per 100 documents, USD</span></th>
+          <th class="num"><span class="rs-th-name">Cost ratio</span><span class="rs-th-sub">vs Gemini 2.5 Flash</span></th>
+          <th class="num"><span class="rs-th-name">Smoke score</span><span class="rs-th-sub">pass / marginal / fail</span></th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>$0.30 / $2.50</td><td>~$7 to $10</td><td>1.0×</td><td>24 / 24</td></tr>
-        <tr><td>gpt-4o-mini</td><td>$0.15 / $0.60</td><td>~$2 to $3</td><td>~0.2× to ~0.4×</td><td>19 / 24</td></tr>
-        <tr><td>Claude Sonnet 4.6</td><td>$3.00 / $15.00</td><td>~$54 to $69 (list-derived)</td><td>~6× to ~9× at list; ~30–33× measured on 20-doc invoice</td><td>22 / 24</td></tr>
-        <tr><td>Llama 3.2 3B (local Ollama)</td><td>$0 (electricity)</td><td>$0</td><td>0×</td><td>11 / 24</td></tr>
+        <tr class="rs-winner"><td><strong>Gemini 2.5 Flash</strong></td><td class="num">$0.30 / $2.50</td><td class="num">~$7 to $10</td><td class="num">1.0×</td><td class="num"><strong>24 / 0 / 0</strong></td></tr>
+        <tr><td>gpt-4o-mini</td><td class="num">$0.15 / $0.60</td><td class="num">~$2 to $3</td><td class="num">~0.2× to ~0.4×</td><td class="num">19 / 3 / 2</td></tr>
+        <tr><td>Claude Sonnet 4.6</td><td class="num">$3.00 / $15.00</td><td class="num">~$54 to $69<sup class="rs-fn"><a href="#fn-cost-1">1</a></sup></td><td class="num">~6× to ~9×<sup class="rs-fn"><a href="#fn-cost-2">2</a></sup></td><td class="num">22 / 0 / 2</td></tr>
+        <tr><td>Llama 3.2 3B (local Ollama)</td><td class="num">$0<sup class="rs-fn"><a href="#fn-cost-3">3</a></sup></td><td class="num">$0</td><td class="num">0×</td><td class="num">11 / 13 / 0</td></tr>
       </tbody>
     </table>
+    <dl class="rs-table-fn">
+      <dt id="fn-cost-1">1</dt><dd>List-derived from $3 / $15 per 1M tokens at the per-document token shape described in <a href="artefacts/cost-model.md">cost-model.md</a>.</dd>
+      <dt id="fn-cost-2">2</dt><dd>Range is the list-price calculator. The measured invoice on the 20-document smoke corpus ran roughly 30 to 33 times Gemini Flash because gleaning fired more aggressively and the model added explanatory text the calculator does not anticipate. Reconciliation in <a href="artefacts/cost-model.md">cost-model.md</a>; use the list ratio for contract pricing, the invoice ratio for projecting cost-of-mistake (the drift case in §09).</dd>
+      <dt id="fn-cost-3">3</dt><dd>Local rows show $0 inference cost but absorb workstation power and wall-clock hours.</dd>
+    </dl>
 
     <p><strong>Partial local run (not in table above):</strong> Qwen 2.5 14B GGUF Q4 on M1 Max completed <strong>19/20</strong> smoke documents at $0 list (electricity only), scoring <strong>5 / 24</strong>. Densities and smoke score are not cross-comparable to the full-corpus rows; see §04 partial-runs table.</p>
 
     <p>Three things this table is not. It is not a forecast for your corpus (your chunks may not average 1200 tokens; your gleaning may run hotter or colder). It is not a contract-pricing table (an enterprise gateway discount changes the absolute numbers but rarely changes the ratios inside the cluster). It is not a long-tail study (it covers models actually run in the matrix; additional candidates are listed as pending in <a href="artefacts/model-matrix.md">model-matrix.md</a> but were never run and are not costed in <a href="artefacts/cost-model.md">cost-model.md</a>).</p>
 
-    <p>The ranking conclusion is robust to multiplicative pricing factors below roughly 10x. Gemini 2.5 Flash is cheaper than Sonnet 4.6 on every published rate card surveyed here and is the only model in the matrix with a strict 24/24 smoke score. The cheapest model that hits 24/24 is the production answer; nothing in the cost table flips that.</p>
-
-    <p>One reconciliation note: measured invoices on the smoke corpus can run above the list-price calculator (~$7 to $10 per 100 documents at the rates above) because gleaning passes fire more aggressively in real ingest runs than the chunk-token math predicts, and because the model adds explanatory text the cost-calculator does not anticipate. The cost-model artefact walks through both methods. Use the invoice-based number when projecting cost-of-mistake (the drift case in §09), the calculator number when negotiating contract pricing.</p>
+    <p>The ranking conclusion is robust to multiplicative pricing factors below roughly 10x. Gemini 2.5 Flash is cheaper than Sonnet 4.6 on every published rate card surveyed here and is the only model in the matrix with a strict 24/0/0 smoke score. The cheapest model that hits 24/0/0 is the production answer; nothing in the cost table flips that.</p>
 
     <div class="rs-callout">
       <h4>Why list-price math hides the real bottleneck</h4>
