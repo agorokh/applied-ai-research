@@ -64,7 +64,7 @@
     </p>
 
     <div class="rs-hero-meta">
-      <div class="rs-meta-stat"><span class="v">36<span class="unit">pp gap</span></span><span class="l">LightRAG vs Graphiti under production weighting</span></div>
+      <div class="rs-meta-stat"><span class="v">Re-weight<span class="unit">decides</span></span><span class="l">Production-frequency weighting of test families changes the ranking; uniform weighting calls it a tie. The weighting choice is the methodology finding.</span></div>
       <div class="rs-meta-stat"><span class="v">2<span class="unit">failure shapes</span></span><span class="l">"Wrong chunk" (chunk-text) vs "invented relation" (extraction-mediated)</span></div>
       <div class="rs-meta-stat"><span class="v">2<span class="unit">substrates</span></span><span class="l">Purpose-built retrieval substrates compared against a filesystem baseline</span></div>
       <div class="rs-meta-stat"><span class="v">5<span class="unit">criteria</span></span><span class="l">Adoption bar stated before any candidate ran</span></div>
@@ -91,7 +91,7 @@
 
     <div class="rs-callout">
       <h4>Finding 1. Production-weighted retrieval separates the substrates by 36 points</h4>
-      <p>The chunk-text retrieval approach (<a href="https://github.com/HKUDS/LightRAG">LightRAG</a>) outperformed the entity-graph approach (<a href="https://github.com/getzep/graphiti">Graphiti</a>) by 36 percentage points when the eight test families were weighted to match real production query frequency (current canonical text ~50%, handoff continuity ~20%, entity disambiguation ~10%, the remaining five families ~4% each). Under naïve uniform weighting the two were statistically tied with a confidence interval that crossed zero; the weighting decided the outcome, not the candidates.</p>
+      <p>The chunk-text retrieval approach (<a href="https://github.com/HKUDS/LightRAG">LightRAG</a>) outperformed the entity-graph approach (<a href="https://github.com/getzep/graphiti">Graphiti</a>) on the observed query distribution of one SDLC-shaped corpus when the eight test families were weighted to match production-frequency on that corpus. Under naïve uniform weighting the two were statistically tied with a confidence interval that crossed zero. The methodology finding is that the weighting choice decides the outcome; the specific magnitude is a function of the corpus and the production-frequency profile, and another team's corpus will produce a different gap. Re-derive the weighting on your own corpus before treating the magnitude as portable.</p>
     </div>
 
     <div class="rs-callout">
@@ -247,7 +247,7 @@
     <h3>The two numbers</h3>
     <p>Under uniform weighting (each of the eight task families given equal mass), LightRAG and Graphiti were statistically tied: a small win-rate gap with a confidence interval that crossed zero. That is the number a benchmark report stopping at the uniform aggregate would publish.</p>
 
-    <p>Re-weighted to the production query distribution from §04 (current canonical text at ~50%, handoff continuity at ~20%, entity disambiguation at ~10%, the remaining five families at ~4% each), LightRAG beat Graphiti by roughly 36 percentage points. The two task families that carry 70% of production weight (current canonical text and handoff continuity) are the two where chunk-text wins decisively. The family where entity-graph wins (entity disambiguation) carries 10% of the weight.</p>
+    <p>Re-weighted to the production query distribution from §04, LightRAG beat Graphiti by a wide margin on this corpus. The methodology finding (the one that transfers) is that the weighting choice decides the headline. The two task families that carry 70% of production weight on this corpus (current canonical text and handoff continuity) are the two where chunk-text wins decisively; the family where entity-graph wins (entity disambiguation) carries 10% of the weight. The structural lesson is to derive the weighting from the actual production query distribution rather than weight uniformly; the absolute magnitude on your corpus will reflect your distribution, not this one.</p>
 
     <div class="rs-tiers rs-tiers--2">
       <div class="rs-tier" style="--accent: var(--dx-violet);">

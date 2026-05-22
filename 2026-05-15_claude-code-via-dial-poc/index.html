@@ -60,11 +60,11 @@
     <h1>Claude Code via EPAM DIAL · <em>POC report.</em></h1>
 
     <p class="rs-lede">
-      192 trials across eight upstreams behind one coding-agent harness, costed at AWS Bedrock list pricing verified 2026-05-14. Qwen3-Coder 480B is the cheapest 100%-pass model at $0.101 per success, 4.7× below Claude Sonnet 4.6. The bridge that routes Claude Code 2.1 through an enterprise gateway is one ~600-line Anthropic-to-OpenAI translation adapter (open-source at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>); the same adapter becomes a structured observation point for coding-agent telemetry, which §04–§10 turn into a data plane for any organisation running a sanctioned-inference gateway.
+      192 trials across eight upstreams behind one coding-agent harness on a synthetic 8-task portfolio, costed at AWS Bedrock list pricing verified 2026-05-14. On this task surface Qwen3-Coder 480B is the cheapest 100%-pass model at $0.101 per success at list, 4.7× below Claude Sonnet 4.6 on the same harness; the ranking is harness-specific and the magnitudes need re-derivation on your own task set before deployment sizing. The bridge that routes Claude Code 2.1 through an enterprise gateway is one ~600-line Anthropic-to-OpenAI translation adapter (open-source at <a href="https://github.com/agorokh/sdlc-dial-adapter">github.com/agorokh/sdlc-dial-adapter</a>); the same adapter becomes a structured observation point for coding-agent telemetry, which §04–§10 turn into a data plane for any organisation running a sanctioned-inference gateway.
     </p>
 
     <div class="rs-hero-meta">
-      <div class="rs-meta-stat"><span class="v">$0.101<span class="unit">/ success</span></span><span class="l">Qwen3-Coder 480B, cost leader of the 100%-pass cluster</span></div>
+      <div class="rs-meta-stat"><span class="v">$0.101<span class="unit">/ success</span></span><span class="l">Qwen3-Coder 480B, cost leader of the 100%-pass cluster on this synthetic 8-task harness at Bedrock list pricing; re-derive on your own task set</span></div>
       <div class="rs-meta-stat"><span class="v">8<span class="unit">upstreams</span></span><span class="l">Three tiers of viability across one harness</span></div>
       <div class="rs-meta-stat"><span class="v">192<span class="unit">trials</span></span><span class="l">Eight task families, three runs per cell</span></div>
       <div class="rs-meta-stat"><span class="v">~30<span class="unit">fields</span></span><span class="l">Per-request telemetry retained at the adapter</span></div>
