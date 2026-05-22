@@ -9,7 +9,7 @@ Companion material to [`../index.html`](../index.html). Each artefact stands on 
 | [`invalidation.md`](invalidation.md) | Falsification conditions: what re-measurement would invalidate each finding. |
 | [`model-matrix.md`](model-matrix.md) | The full eleven-row table with provider, runtime, raw counts, smoke score, per-row notes, and a cross-corpus comparison for the production answer. |
 | [`cost-model.md`](cost-model.md) | Per-100-document cost derivation. Token accounting (estimated, not invoice-measured), list-price multiplication, the ratios that survive contract pricing. |
-| [`production-config.md`](production-config.md) | Operational discipline: one process per workspace, plist rendered from template, backup-on-edit, embedder on separate host, smoke-corpus pinned by file list, canary anchored to expected references, parallel-ingest settings used in practice. |
+| [`production-config.md`](production-config.md) | LightRAG configuration knobs that affect ingest cost, throughput, and graph quality, with what to measure before choosing values. |
 | [`smoke-rubric/README.md`](smoke-rubric/README.md) | The reusable rubric apparatus. Protocol (6 query shapes × 4 retrieval modes), YAML schema for your own canary file, and an example fixture on a neutral domain (Linux kernel scheduler) you can use to validate a harness implementation before pointing it at your real corpus. |
 
 ## Scope of measurement

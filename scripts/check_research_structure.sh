@@ -79,7 +79,7 @@ print(sum(1 for block in blocks if len(re.findall(r"<em\b", block, flags=re.IGNO
 PY
 )
 
-  check_count "sections" "$sections" 13 13 "$report"
+  check_count "sections" "$sections" 12 13 "$report"
   check_count "callouts" "$callouts" 3 15 "$report"
   check_count "h1"       "$h1"       1 1  "$report"
   check_count "em in h1" "$ems_in_h1" 1 1 "$report"

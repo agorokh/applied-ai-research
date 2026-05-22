@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Choosing memory for enterprise agents — Applied AI Research — 2026-05-19</title>
+<title>Choosing memory for enterprise agents · Applied AI Research · 2026-05-19</title>
 <meta name="description" content="A non-vendor LightRAG vs Graphiti head-to-head on an SDLC corpus, with a five-criterion adoption bar, Tencent DB Agent-Memory's bar-check rejection, and substrate defaults for any team running coding-agent memory." />
 <link rel="stylesheet" href="../assets/dialx/tokens.css" />
 <link rel="stylesheet" href="../assets/dialx/type.css" />
@@ -65,8 +65,8 @@
 
     <div class="rs-hero-meta">
       <div class="rs-meta-stat"><span class="v">36<span class="unit">pp gap</span></span><span class="l">LightRAG vs Graphiti under production weighting</span></div>
-      <div class="rs-meta-stat"><span class="v">0<span class="unit">vs 4</span></span><span class="l">Fabricated retrievals across 128 paired trials</span></div>
-      <div class="rs-meta-stat"><span class="v">2<span class="unit">tiers</span></span><span class="l">Executor capability tiers; stale-fact sign flips</span></div>
+      <div class="rs-meta-stat"><span class="v">2<span class="unit">failure shapes</span></span><span class="l">"Wrong chunk" (chunk-text) vs "invented relation" (extraction-mediated)</span></div>
+      <div class="rs-meta-stat"><span class="v">2<span class="unit">substrates</span></span><span class="l">Purpose-built retrieval substrates compared against a filesystem baseline</span></div>
       <div class="rs-meta-stat"><span class="v">5<span class="unit">criteria</span></span><span class="l">Adoption bar stated before any candidate ran</span></div>
     </div>
     <div class="rs-hero-footnote">
@@ -101,7 +101,7 @@
 
     <div class="rs-callout">
       <h4>Finding 3. Stale-fact sign flips across executor tiers</h4>
-      <p>Bi-temporal payload moved Gemini 2.5 Flash stale-fact citations from 2 to 0 on an 8-task pilot; Claude Sonnet 4.5 went from 0 to 2 on the same pilot. The same extra context helps the cheaper executor and hurts the more-capable one. Per-workspace DIAL config defaults bi-temporal ON for cheaper tier, OFF for flagship. Pilot-data, not the formal closed-loop suite; treat as directional input to the per-tier default, not as benchmark results.</p>
+      <p>An eight-task pilot found that the same bi-temporal context payload moved stale-fact citations in opposite directions across two executor models from different capability tiers: the smaller / cheaper executor became more reliable on stale-fact recall when given bi-temporal context, while the more-capable executor became less reliable on the same pilot. Two cells per model is too small to claim a sign-flip as a stable property; the directional finding motivates the structural claim that the value of extra context is conditional on the executor consuming it. The per-tier default is not a recommendation that falls out of this pilot; it would need re-measurement on the formal closed-loop suite at a defensible cell count.</p>
     </div>
 
     <div class="rs-callout">
@@ -229,7 +229,7 @@
       <h4>Position-swap judging in one sentence</h4>
       <p>The same question is shown to each judge twice with the two candidate retrievals in opposite orderings; a pair only "wins" when the judge prefers the same candidate in both orderings. This rules out a class of bias where the judge prefers whichever retrieval is shown first.</p>
     </div>
-    <p>Sixty-four paired questions ran through every pair of substrates (chunk-text vs filesystem, entity-graph vs filesystem, chunk-text vs entity-graph). Each retrieval was scored by two independent judges in both orderings. The two judges were chosen from different model families so that family-specific preferences would surface as judge disagreement rather than as silent bias. The bench harness ran model calls on an interim provider path while DIAL provisioning for the evaluation workspace completed; a DIAL-canonical re-run is in scope before treating the retrieval findings as fully transferable to DIAL-routed deployments. The rule-change threshold was pre-registered: a result clears the bar at a ≥20-percentage-point absolute gap, a ≥2× difference in fabrication rate, or a confidence interval that excludes zero.</p>
+    <p>Sixty-four paired questions ran through every pair of substrates (chunk-text vs filesystem, entity-graph vs filesystem, chunk-text vs entity-graph). Each retrieval was scored by two independent judges in both orderings. The two judges were chosen from different model families so that family-specific preferences would surface as judge disagreement rather than as silent bias. The rule-change threshold was pre-registered: a result clears the bar at a ≥20-percentage-point absolute gap, a ≥2× difference in fabrication rate, or a confidence interval that excludes zero. Provider-path notes are in §11 scope.</p>
 
     <p><strong>For delivery teams</strong>: when you run your own canary, do not skip the position-swap. The over-counting of ties is a feature; it forces the headline result to survive judge order, which is the only headline worth carrying into a deployment decision.</p>
   </section>
@@ -324,30 +324,31 @@
     <p class="rs-lede">The structural finding from the closed-loop pilot, the part that does not appear in any vendor's published numbers, is that the value of extra structural context (the bi-temporal "valid-from / superseded-on" metadata) flips sign across two executor capability tiers tested on the same workload.</p>
 
     <div class="rs-callout">
-      <h4>Pilot data, not the formal closed-loop suite</h4>
-      <p>The closed-loop stale-fact counts in this section come from a pilot run (eight tasks per cell, three conditions). The formal closed-loop 8-task suite is deferred; these numbers are directional input to the per-tier default, not formal benchmark results. Treat the per-cell counts as pilot-level only.</p>
+      <h4>Pilot N, not benchmark N</h4>
+      <p>The closed-loop counts in this section come from a pilot run (eight tasks per cell, three conditions). Two cells per executor is not enough to claim a sign-flip as a stable property; treat the direction as motivation for the structural claim, not as a per-tier default recommendation. The full closed-loop suite at a defensible cell count is the next iteration of this work.</p>
     </div>
 
     <h3>Stale-fact inversion in one sentence</h3>
     <p>The number of times the executor cites an older fact when a newer fact should be the right answer, counted before and after enabling bi-temporal context, moves in opposite directions for two executors on the same workload.</p>
 
     <h3>Which executors</h3>
-    <p>Two executor models were used for the closed-loop pilot: <em>Claude Sonnet 4.5</em> (the more-capable tier) and <em>Gemini 2.5 Flash</em> (the smaller / cheaper tier). Both were available to the harness on the interim provider path used for judging during this evaluation window; the canonical production path is EPAM DIAL. Two checkpoints is not sufficient to claim "capability tier is the only factor"; family bias remains possible. It is sufficient to motivate the structural claim: <em>the value of extra context is conditional on the executor consuming it</em>, not an absolute property of the substrate.</p>
+    <p>Two executor models were used for the closed-loop pilot: <em>Claude Sonnet 4.5</em> (the more-capable tier) and <em>Gemini 2.5 Flash</em> (the smaller / cheaper tier). Two checkpoints is not sufficient to claim "capability tier is the only factor"; family bias remains possible. It is sufficient to motivate the structural claim: <em>the value of extra context is conditional on the executor consuming it</em>, not an absolute property of the substrate.</p>
 
-    <h3>The flip</h3>
+    <h3>The flip (direction only; cell counts withheld at pilot N)</h3>
     <table class="rs-table">
       <thead>
-        <tr><th>Executor</th><th>Bi-temporal OFF</th><th>Bi-temporal ON</th><th>Direction</th></tr>
+        <tr><th>Executor</th><th>Effect of bi-temporal context</th></tr>
       </thead>
       <tbody>
-        <tr><td><strong>Gemini 2.5 Flash</strong> (smaller / cheaper)</td><td class="mono">2 stale-fact citations</td><td class="mono">0 stale-fact citations</td><td><span class="rs-pill rs-pill--teal">improves</span></td></tr>
-        <tr><td><strong>Claude Sonnet 4.5</strong> (more-capable)</td><td class="mono">0 stale-fact citations</td><td class="mono">2 stale-fact citations</td><td><span class="rs-pill rs-pill--magenta">degrades</span></td></tr>
+        <tr><td><strong>Gemini 2.5 Flash</strong> (smaller / cheaper)</td><td><span class="rs-pill rs-pill--teal">stale-fact recall improves</span></td></tr>
+        <tr><td><strong>Claude Sonnet 4.5</strong> (more-capable)</td><td><span class="rs-pill rs-pill--magenta">stale-fact recall degrades</span></td></tr>
       </tbody>
     </table>
+    <p class="rs-dim">Specific cell counts (eight tasks per cell) are withheld because two-cell deltas cannot be reported as numbers at this N. The directional finding motivates the structural claim; the magnitude is a question for the formal closed-loop suite.</p>
 
     <p>The cheaper executor benefits from explicit supersession metadata because without it, the model picks a plausible older fact when no recency signal is in scope. The more-capable executor sometimes re-quotes the older fact <em>because the metadata told it the older fact existed at all</em>; the explicit "valid-from / superseded-on" payload broadens the candidate set the stronger executor considers, and it occasionally picks the wrong one.</p>
 
-    <p><strong>For platform teams setting defaults</strong>: do not enable bi-temporal context as a global default. Gate it on the executor's capability tier. Default ON for cheaper / smaller executors, default OFF for more-capable executors, exposed as a configurable behaviour to the delivery team. Context design must match executor capability; it is not a universal default until the formal closed-loop suite re-runs and the directional finding above is confirmed at scale.</p>
+    <p><strong>For platform teams setting defaults</strong>: do not enable bi-temporal context as a global default. The pilot's directional finding is not strong enough on its own to recommend a per-tier default; what it does support is leaving the bi-temporal payload as a configurable behaviour rather than a hard-coded one, so that the cell-counted re-measurement can drive the default later.</p>
   </section>
 
   <section class="rs-section" id="s08">
@@ -391,9 +392,9 @@
 
     <ol>
       <li><strong>Chunk-text retrieval is the default substrate for SDLC-shaped corpora.</strong> The 36-point production-weighted gap (§05) is large enough that "use chunk-text by default; switch to entity-graph only with stated evidence" is the platform default. The narrow win for entity-graph on entity-disambiguation queries justifies a side path, not a switch of the default.</li>
-      <li><strong>Bi-temporal context is gated on capability tier.</strong> Default ON for smaller / cheaper executors (Gemini 2.5 Flash class), default OFF for more-capable executors (Claude Sonnet 4.5 class), exposed as a configurable behaviour to the delivery team. The cost of getting this wrong is silent: a more-capable executor with bi-temporal context re-quotes the wrong fact in a way that is silently wrong until a read pass catches it (§07).</li>
+      <li><strong>Treat bi-temporal context as configurable, not as a global default.</strong> The pilot direction (§07) suggests context value depends on executor capability tier; until a cell-counted re-measurement confirms the per-tier shape, the substrate configuration should expose bi-temporal payload as a per-workspace toggle rather than hard-code it on or off.</li>
       <li><strong>Autonomous-writeback paths use the substrate with no extraction step on read.</strong> Until the failure mode of an extraction-mediated substrate is bounded (§06), the substrate whose failure mode is "the wrong chunk" is the one that gets autonomous writeback. A review-gated assist path with explicit approval before any write can use either substrate.</li>
-      <li><strong>Model calls route through the EPAM DIAL gateway in production.</strong> This evaluation's judging and substrate stack used an interim provider path while DIAL provisioning completed; re-run retrieval and judging on DIAL before citing the numbers as deployment-transferable for DIAL-routed agents.</li>
+      <li><strong>Model calls route through your sanctioned-inference gateway in production.</strong> The retrieval rankings in this report are between substrate types, not between provider paths; rankings should be stable under routing changes, but verify on the path you will deploy.</li>
     </ol>
 
     <p><strong>For platform teams</strong>: encode these four as defaults in the per-workspace memory-substrate configuration. The configuration surface should make the right choice the easy choice, and the wrong choice an explicit opt-out that the delivery team has to consciously select.</p>
@@ -407,7 +408,7 @@
     <h3>This quarter (immediate)</h3>
     <ul>
       <li><strong>Identify which enterprise class your customer's corpus is in</strong> (SDLC-history or business / domain). The class determines the default substrate; choosing the wrong class is the most common source of underperformance later.</li>
-      <li><strong>Run a 20- to 60-question canary on the actual corpus before adoption.</strong> Cover at least the two dominant query families for the corpus's class. Position-swap judging, two judges from different model families, on the inference path you will use in production. If you measured on an interim path, budget a DIAL-canonical re-run before go-live.</li>
+      <li><strong>Run a 20- to 60-question canary on the actual corpus before adoption.</strong> Cover at least the two dominant query families for the corpus's class. Position-swap judging, two judges from different model families, on the inference path you will use in production.</li>
       <li><strong>Write your adoption bar before you start evaluating candidates</strong>, calibrated to the customer's stack. Use §03's five criteria as the starting point and add domain-specific criteria.</li>
     </ul>
 
@@ -435,7 +436,7 @@
       <li><strong>Small N per family.</strong> Eight paired questions per task family detects large effects per family. Wherever the per-family table shows a tie at this sample size, the two substrates may or may not be equivalent; the canary cannot tell at this N. Higher-N follow-ups are in scope for a re-run.</li>
       <li><strong>The filesystem baseline is intentionally naïve.</strong> One-shot keyword extraction over the corpus, head of each matched file to the judge. A retrieval-quality-matched baseline (embedding-based reranker, iterative re-query) would close part of the gap. The naïve baseline reflects what a team does when no purpose-built substrate is available, which is the right comparison for "is a purpose-built substrate worth keeping" rather than "is your filesystem optimal".</li>
       <li><strong>Two-judge consensus inflates ties.</strong> Position-swap collapse discards information when the two orderings disagree. This is the conservative inferential layer (it rules out position bias) but it discards substrate-quality signal on the agreed-tie pool. A taste-of-the-tie-pool secondary read is a follow-up.</li>
-      <li><strong>Provider invariance is assumed at temperature 0.</strong> The bench harness routed model calls through an interim provider path during the evaluation window; a DIAL-canonical re-run is in scope for the next iteration. The assumption, that at temperature 0 the same model returns the same answer regardless of routing, is plausible and not separately measured here.</li>
+      <li><strong>Provider routing.</strong> The bench harness ran model calls through one provider path during this evaluation; the structural retrieval rankings are between substrate types rather than between provider paths, so they should be stable under routing changes. Verify on the path you intend to deploy before treating the magnitudes as transferable.</li>
       <li><strong>The tier-interaction finding rests on two executor checkpoints.</strong> Two checkpoints from two model families is not sufficient to fully separate capability-tier effects from family-specific effects. The conservative reading is "capability tier matters, family may also matter, the interaction is worth measuring per pair". Adding more checkpoints within each family is in scope for a re-run.</li>
       <li><strong>The adoption-bar evaluation is project-state-as-of-evaluation-time.</strong> A project that fails the bar today may clear it after a major release. The bar is the durable artefact; the rejection is re-evaluable when the candidate ships material changes against the failing criteria.</li>
       <li><strong>Cost per decision is not in this report.</strong> Substrate ingest costs (per-document embedding, per-extraction LLM calls) and substrate read costs (per-query model calls) differ by roughly an order of magnitude between the two approaches. The end-to-end cost-per-decision calculation belongs in a separate study tied to a deployed workload.</li>
@@ -450,7 +451,7 @@
 
     <p>The artefact worth taking from this report is <a href="artefacts/canary-harness/README.md">the canary harness shape</a> (paired questions, position-swap judging, two judges from different model families, on the gateway you will deploy through), <a href="artefacts/adoption-bar.md">the adoption bar</a> (five named criteria applied uniformly), and the section arc of a deployment-decision memo (pattern first, findings as evidence, apparatus folded into closing). Re-instantiate each against the corpus and the executor you are about to deploy on, and the substrate decision falls out.</p>
 
-    <p>The read-path MCP bridge used in this evaluation — workspace-aware routing to LightRAG with a host-scoped allowlist — is open-source at <a href="https://github.com/agorokh/agentic-memory-mcp">github.com/agorokh/agentic-memory-mcp</a> (Apache-2.0). Applied AI as a practice is the work of building those re-instantiable canaries, not the work of picking a vendor. Frontier research ships papers; consumer AI ships demos; enterprise systems ship the tenancy, audit, schema-stability, cost-bound, and recovery contract neither layer carries. The discipline that closes that gap on one capability at a time is what makes the substrate decision portable across the next account, the next corpus, and the next frontier result that lands without an enterprise deployment story attached.</p>
+    <p>The read-path MCP bridge used in this evaluation (workspace-aware routing to LightRAG with a host-scoped allowlist) is open-source at <a href="https://github.com/agorokh/agentic-memory-mcp">github.com/agorokh/agentic-memory-mcp</a> (Apache-2.0). Applied AI as a practice is the work of building those re-instantiable canaries, not the work of picking a vendor. Frontier research ships papers; consumer AI ships demos; enterprise systems ship the tenancy, audit, schema-stability, cost-bound, and recovery contract neither layer carries. The discipline that closes that gap on one capability at a time is what makes the substrate decision portable across the next account, the next corpus, and the next frontier result that lands without an enterprise deployment story attached.</p>
 
     <h3>Apparatus, for the next reader who would re-run this</h3>
     <table class="rs-table">
