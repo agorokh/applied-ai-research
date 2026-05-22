@@ -682,23 +682,38 @@ sup.rs-fn a:hover { color: var(--dx-fg-1); }
 }
 .rs-table-fn dd { margin: 0; }
 
-/* Wide-table escape: at desktop widths (>=1100px), let .rs-table-wide tables bleed beyond
-   the 70ch prose measure so dense cost / matrix tables get breathing room. The prose stays
-   at 70ch (line 265: .rs-section p max-width 70ch); only the tables get the wider canvas.
-   Skip the asymmetrical-grid marginalia variant per council: it collides with the existing
-   TOC rail at 1201px+ and pulls load-bearing callouts into a secondary spatial channel. */
+/* Wide-table escape: at desktop widths (>=1100px), let .rs-table-wide tables expand
+   beyond the 70ch prose measure so dense cost / matrix tables get breathing room.
+   The left edge stays aligned with the prose column (margin-left: 0); only the
+   right edge extends outward, so tables read as part of the section spine rather
+   than as floating elements.
+   Skip the asymmetrical-grid marginalia variant per council: it collides with the
+   existing TOC rail at 1201px+ and pulls load-bearing callouts into a secondary
+   spatial channel. */
 @media (min-width: 1100px) {
   .rs-section .rs-table-wide {
     width: calc(100% + 8vw);
     max-width: 100ch;
-    margin-left: -4vw;
+    margin-left: 0;
   }
 }
 @media (min-width: 1400px) {
   .rs-section .rs-table-wide {
     width: calc(100% + 12vw);
     max-width: 110ch;
-    margin-left: -6vw;
+    margin-left: 0;
+  }
+}
+/* When the fixed TOC rail is visible, cap wide-table expansion so columns
+   do not slide under the overlay (TOC ~200px + 32px right inset). */
+@media (min-width: 1201px) {
+  .rs-section .rs-table-wide {
+    max-width: min(100ch, calc(100vw - 300px));
+  }
+}
+@media (min-width: 1400px) {
+  .rs-section .rs-table-wide {
+    max-width: min(110ch, calc(100vw - 300px));
   }
 }
 .rs-table td.mono {
@@ -982,7 +997,55 @@ sup.rs-fn a:hover { color: var(--dx-fg-1); }
 
 /* ---------- Mobile collapse -------------------------- */
 
+/* ---------- Analytics consent banner ----------------- */
+
+.aa-analytics-consent {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
+  max-width: 420px;
+  padding: 16px 18px;
+  border: 1px solid var(--dx-border);
+  background: var(--dx-bg-2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  font-family: var(--dx-font-sans);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--dx-fg-2);
+}
+.aa-analytics-consent p { margin: 0 0 12px; }
+.aa-analytics-consent a { color: var(--dx-violet); }
+.aa-analytics-consent__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.aa-analytics-consent__btn {
+  font-family: var(--dx-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  border: 1px solid var(--dx-border);
+  background: transparent;
+  color: var(--dx-fg-2);
+  cursor: pointer;
+}
+.aa-analytics-consent__btn--primary {
+  border-color: var(--dx-violet);
+  color: var(--dx-fg-1);
+  background: rgba(139, 92, 246, 0.12);
+}
+.aa-analytics-consent__btn:hover { border-color: var(--dx-violet); }
+
 @media (max-width: 880px) {
+  .aa-analytics-consent {
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+    max-width: none;
+  }
   main { padding: 0 24px; }
   .rs-topbar__inner { flex-wrap: wrap; gap: 14px; padding: 14px 24px; }
   .rs-nav-meta { display: none; }
