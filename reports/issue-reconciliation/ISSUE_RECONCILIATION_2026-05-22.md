@@ -48,7 +48,7 @@ Result: there are currently no open non-PR GitHub issues to reconcile. No issue 
 | Source | Result |
 |---|---|
 | `gh issue list --state open --limit 200 --json number,title,labels,assignees,milestone,createdAt,updatedAt,author,url` | `[]` |
-| `gh api --method GET --paginate repos/agorokh/applied-ai-research/issues -f state=open -F per_page=100 --jq '[.[] | select(.pull_request|not) | ...]'` | `[]` |
+| `gh api --method GET --paginate repos/agorokh/applied-ai-research/issues -f state=open -F per_page=100 --jq '[.[] \| select(.pull_request\|not) \| ...]'` | `[]` |
 | `gh api --method GET repos/agorokh/applied-ai-research --jq '{full_name, default_branch, open_issues_count, pushed_at, updated_at}'` | `open_issues_count=0` |
 | `gh issue list --state all --limit 100 --json number,title,state,createdAt,updatedAt,closedAt,author,url,labels` | `[]` |
 | Independent sidecar verifier | Confirmed `gh issue list --state open --limit 100` returned `[]`; also confirmed `gh pr list --state open` returned `[]`. |
