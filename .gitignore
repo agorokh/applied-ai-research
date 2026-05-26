@@ -11,3 +11,7 @@
 !.cursor/skills/post-merge/**
 !.codex/skills/post-merge/
 !.codex/skills/post-merge/**
+!.codex/skills/
+!.codex/skills/**
+!.cursor/skills/
+!.cursor/skills/**
