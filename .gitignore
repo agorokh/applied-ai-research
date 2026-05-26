@@ -1,4 +1,4 @@
-.cursor/
+.cursor/*
 .scratch/
 
 # /post-merge unification (agorokh/agent-factory#246 follow-up):
