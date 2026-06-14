@@ -29,29 +29,56 @@ _STRENGTHS = set(SCHEMA["properties"]["evidence_strength"]["enum"])
 _VERDICTS = set(SCHEMA["properties"]["gate_verdict"]["enum"])
 
 
+_REQUIRED = tuple(SCHEMA["required"])
+_ALLOWED_TOP = set(SCHEMA["properties"].keys())
+_ALLOWED_LOC = set(SCHEMA["properties"]["locator"]["properties"].keys())
+
+
 def validate_atom(atom):
-    """Minimal shape check against provenance-atom v0.1. Returns (ok, [errors])."""
+    """Minimal shape check against provenance-atom v0.1. Returns (ok, [errors]).
+
+    Mirrors the schema's own contract: the required set, ``additionalProperties: false``
+    at both levels, and the field types. Type checks are guarded so a malformed atom
+    (e.g. a non-string enum field) yields a deterministic reject, not a TypeError crash."""
     errs = []
     if not isinstance(atom, dict):
         return False, ["atom is not an object"]
-    for req in ("kind", "claim", "evidence_strength", "locator"):
+    for req in _REQUIRED:
         if req not in atom:
             errs.append(f"missing required field: {req}")
-    if "kind" in atom and atom["kind"] not in _KINDS:
-        errs.append(f"kind not in enum: {atom['kind']}")
-    if "evidence_strength" in atom and atom["evidence_strength"] not in _STRENGTHS:
-        errs.append(f"evidence_strength not in enum: {atom['evidence_strength']}")
-    if atom.get("claim", "") == "":
-        errs.append("claim is empty")
-    if "gate_verdict" in atom and atom["gate_verdict"] not in _VERDICTS:
-        errs.append(f"gate_verdict not in enum: {atom['gate_verdict']}")
+    for k in sorted(set(atom.keys()) - _ALLOWED_TOP):
+        errs.append(f"unexpected field: {k}")
+    if "kind" in atom:
+        if not isinstance(atom["kind"], str):
+            errs.append("kind must be a string")
+        elif atom["kind"] not in _KINDS:
+            errs.append(f"kind not in enum: {atom['kind']}")
+    if "evidence_strength" in atom:
+        if not isinstance(atom["evidence_strength"], str):
+            errs.append("evidence_strength must be a string")
+        elif atom["evidence_strength"] not in _STRENGTHS:
+            errs.append(f"evidence_strength not in enum: {atom['evidence_strength']}")
+    if "claim" in atom and (not isinstance(atom["claim"], str) or atom["claim"] == ""):
+        errs.append("claim must be a non-empty string")
+    if "gate_verdict" in atom:
+        if not isinstance(atom["gate_verdict"], str):
+            errs.append("gate_verdict must be a string")
+        elif atom["gate_verdict"] not in _VERDICTS:
+            errs.append(f"gate_verdict not in enum: {atom['gate_verdict']}")
+    for arrf in ("open_questions", "red_flags"):
+        if arrf in atom and (not isinstance(atom[arrf], list)
+                             or not all(isinstance(x, str) for x in atom[arrf])):
+            errs.append(f"{arrf} must be an array of strings")
     loc = atom.get("locator")
     if isinstance(loc, dict):
+        for k in sorted(set(loc.keys()) - _ALLOWED_LOC):
+            errs.append(f"unexpected locator field: {k}")
         for req in ("source", "sha256", "quote"):
-            if not loc.get(req):
-                errs.append(f"locator.{req} missing or empty")
-        sha = loc.get("sha256", "")
-        if sha and not re.fullmatch(r"[a-f0-9]{6,64}", sha):
+            val = loc.get(req)
+            if not isinstance(val, str) or not val:
+                errs.append(f"locator.{req} missing or not a non-empty string")
+        sha = loc.get("sha256")
+        if isinstance(sha, str) and sha and not re.fullmatch(r"[a-f0-9]{6,64}", sha):
             errs.append(f"locator.sha256 not a hex hash: {sha}")
     elif loc is not None:
         errs.append("locator is not an object")

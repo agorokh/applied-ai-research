@@ -60,9 +60,12 @@
     var pinned = document.body.getAttribute('data-room');
     var ix;
     if (pinned !== null && pinned !== '') {
-      ix = (parseInt(pinned, 10) - 1 + ROOMS.length) % ROOMS.length;
+      var parsed = parseInt(pinned, 10);
+      ix = isNaN(parsed) ? 0 : (parsed - 1 + ROOMS.length) % ROOMS.length;
     } else {
-      var last = parseInt(sessionStorage.getItem(KEY), 10);
+      var rawLast = null;
+      try { rawLast = sessionStorage.getItem(KEY); } catch (e) {}
+      var last = parseInt(rawLast, 10);
       ix = isNaN(last) ? Math.floor(Math.random() * ROOMS.length) : (last + 1) % ROOMS.length;
     }
 

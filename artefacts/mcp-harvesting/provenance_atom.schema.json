@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://agorokh.github.io/applied-ai-research/schema/provenance-atom-v0.1.json",
+  "$id": "https://agorokh.github.io/applied-ai-research/artefacts/mcp-harvesting/provenance_atom.schema.json",
   "title": "provenance-atom",
   "version": "0.1",
   "description": "One typed claim extracted from a harvested source, carrying the provenance and evidence strength that let a downstream agent decide how far to trust it. The locator is the falsifiability handle: a quote copied literally from the source, checkable without a model.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["kind", "claim", "evidence_strength", "locator"],
+  "required": ["kind", "claim", "evidence_strength", "locator", "open_questions", "red_flags"],
   "properties": {
     "kind": {
       "type": "string",

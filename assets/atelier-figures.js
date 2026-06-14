@@ -30,6 +30,7 @@
   function measure(box, cfg) {
     var W = 720, H = 132, padL = 16, padR = 16, axisY = 86;
     var min = cfg.min != null ? cfg.min : 0, max = cfg.max != null ? cfg.max : 100;
+    if (max === min) max = min + 1;
     var x = function (v) { return padL + (W - padL - padR) * (v - min) / (max - min); };
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: '100%', role: 'img' });
     // baseline
@@ -60,6 +61,7 @@
   // cfg: {type:'bars', max, unit, rows:[{label, value, valueLabel, tint}]}
   function bars(box, cfg) {
     var rows = cfg.rows || [], max = cfg.max != null ? cfg.max : Math.max.apply(null, rows.map(function (r) { return r.value; }));
+    if (!isFinite(max) || max <= 0) max = 1;
     var W = 720, rowH = 34, padL = 168, padR = 64, top = 14;
     var H = top + rows.length * rowH + 26;
     var x = function (v) { return padL + (W - padL - padR) * v / max; };
@@ -89,6 +91,8 @@
   function scatter(box, cfg) {
     var W = 720, H = 440, padL = 60, padR = 28, padT = 20, padB = 54;
     var ax = cfg.x, ay = cfg.y;
+    if (ax.max === ax.min) ax.max = ax.min + 1;
+    if (ay.max === ay.min) ay.max = ay.min + 1;
     var X = function (v) { return padL + (W - padL - padR) * (v - ax.min) / (ax.max - ax.min); };
     var Y = function (v) { return (H - padB) - (H - padB - padT) * (v - ay.min) / (ay.max - ay.min); };
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: '100%', role: 'img' });

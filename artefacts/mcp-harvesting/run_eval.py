@@ -104,7 +104,7 @@ def embed(text):
             time.sleep(1.5)
         except Exception:
             time.sleep(1.5)
-    return None
+    raise RuntimeError("Fireworks embedding API failed after 3 retries (transport/provider error, not a no-key skip)")
 
 def cos_dense(a, b):
     if a is None or b is None: return None
@@ -140,7 +140,7 @@ def llm_call(model, prompt, max_tokens=120):
             time.sleep(2)
         except Exception:
             time.sleep(2)
-    return {"text": "", "usage": {}}
+    raise RuntimeError(f"OpenRouter LLM API failed after 3 retries for model={model} (transport/provider error, not a no-key skip)")
 
 ENTAIL_PROMPT = (
     "You check whether a SOURCE passage supports a CLAIM. Reply with exactly ONE word:\n"
