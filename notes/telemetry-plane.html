@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code through DIAL: eight models, 192 runs, metering every request · Applied Intelligence</title>
+<meta name="description" content="Claude Code connected to EPAM's DIAL gateway across eight models; the cheapest that passes everything is open-source, and the routing adapter meters every request for a per-project cost view.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/telemetry-plane.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Claude Code, routed through DIAL: eight models, 192 runs, and metering every request">
+<meta property="og:description" content="Claude Code connected to EPAM's DIAL gateway across eight models; the cheapest that passes everything is open-source, and the routing adapter meters every request for a per-project cost view.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/telemetry-plane.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta name="twitter:title" content="Claude Code, routed through DIAL: eight models, 192 runs, and metering every request">
+<meta name="twitter:description" content="The cheapest model that passes everything is open-source, and the routing adapter meters every request for a per-project cost view.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style> body { background:#e6dccb; } </style>
+</head>
+<body data-room="2" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">independent · by Arseny Gorokh</span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#artefacts">artefacts</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 03</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 05 · 15</span>
+      <span class="dot">·</span><span>ai-03</span>
+      <span class="dot">·</span><span>17 min read</span>
+      <span class="dot">·</span><span>systems &amp; telemetry</span>
+    </div>
+    <h1>Claude Code, routed through DIAL:<em>eight models, 192 runs, and metering every request.</em></h1>
+    <p class="lede">If you are rolling out AI coding agents, two questions arrive together: does an open model actually do the work, and what is it costing us per project. This note connects Claude Code to EPAM's DIAL gateway across eight models and reports the cheapest one that passes everything, which is open-source. The same routing adapter meters every request, so the per-project cost answer your finance team wants comes out of the path itself, not a spreadsheet you maintain by hand.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">192</div><span class="l">trials across eight upstream models and an eight-task portfolio, two waves, a combined 35 dollars of gateway-priced spend.</span></div>
+      <div class="ms"><div class="v">$0.101</div><span class="l">cost per successful task for the cheapest model that passes all eight, an open 480B coder, 38 percent under the cheapest viable Anthropic tier.</span></div>
+      <div class="ms"><div class="v">3</div><span class="l">cumulative failure modes that separate viable from non-viable open models: prose emission, one-call stall, state loss across a tool boundary.</span></div>
+      <div class="ms"><div class="v">~30</div><span class="l">structured fields the adapter already retains per request, of which two carry business meaning and three more are in the wire awaiting promotion.</span></div>
+    </div>
+
+    <div class="artefacts" id="artefacts">
+      <span class="k">artefacts</span><span class="dot">·</span>
+      <a href="https://github.com/agorokh/sdlc-dial-adapter">the translation adapter</a><span class="dot">·</span>
+      <a href="../2026-05-15_claude-code-via-dial-poc/artefacts/telemetry-schema.md">telemetry schema</a><span class="dot">·</span>
+      <a href="../2026-05-15_claude-code-via-dial-poc/artefacts/pricing-snapshot/bedrock-us-east-ohio-2026-05-14.md">price snapshot</a><span class="dot">·</span>
+      <a href="../2026-05-15_claude-code-via-dial-poc/artefacts/methodology.md">methodology</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>Three findings</a>
+        <a href="#s02"><span class="no">ii</span>One adapter, eight upstreams</a>
+        <a href="#s03"><span class="no">iii</span>Three viability tiers</a>
+        <a href="#s04"><span class="no">iv</span>Three failure modes</a>
+        <a href="#s05"><span class="no">v</span>A telemetry plane</a>
+        <a href="#s06"><span class="no">vi</span>Three layers of data</a>
+        <a href="#s07"><span class="no">vii</span>Into the gateway</a>
+        <a href="#s08"><span class="no">·</span>Closing</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the study</div>
+        <div class="v"><span class="k">published</span><span class="d">15 may 2026</span></div>
+        <div class="v"><span class="k">trials</span><span class="d">192</span></div>
+        <div class="v"><span class="k">upstreams</span><span class="d">8</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-03</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>three findings, stated up front</span></div>
+        <h2>A cost answer, a failure taxonomy, and <em>a place to measure from.</em></h2>
+        <p class="lede">When finance asks what the agents cost and security asks whether they are on a governed path, you usually cannot answer both at once. This work produces one path that does: the same route that runs the agents also measures them, and that measurement is the part nobody set out to build.</p>
+        <ul>
+          <li><b>The adapter routes anything.</b> An Anthropic-to-OpenAI translation adapter lets an unmodified coding agent talk to any upstream the gateway brokers; 192 trials produced zero authentication incidents and required no harness source changes.</li>
+          <li><b>Open-source is the cost floor, at scale.</b> At verified list pricing an open model is the cheapest model that passes every task, while several smaller open models fail with a shared, scale-driven signature.</li>
+          <li><b>The adapter is one change from business telemetry.</b> It already writes rich per-request records and is a single, client-free change away from joining that telemetry to project, team, and use-case context.</li>
+        </ul>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the path</span></div>
+        <h2>One adapter, eight upstreams, <em>one compliant path.</em></h2>
+        <p>The adapter accepts the request shape the coding agent emits, translates it to the gateway's OpenAI-style chat-completions, and streams the response back in the expected shape. A thin wrapper redirects the agent's three model slots at any gateway deployment without restarting the session. Traffic that would otherwise leave for the public API stays on the sanctioned inference path; the engineer-side change is a single environment variable. The adapter strips cache-control on every non-Anthropic upstream, a known gateway gap, and emits a structured record on every response, which is where the third finding comes from.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · the request path. The adapter is the only point that sees the request, the translated upstream call, and the full streamed response, so it is the natural observation point.</figcaption>
+          <div class="flow">
+            <div class="stage"><div class="sn">01</div><div class="st">Harness</div><div class="sd">unmodified agent, messages API.</div></div>
+            <div class="stage work"><div class="sn">02</div><div class="st">The adapter</div><div class="sd">shape translation, cache-control strip, ~30 log fields per request, list-priced cost estimate.</div></div>
+            <div class="stage"><div class="sn">03</div><div class="st">Gateway</div><div class="sd">project routing, auth.</div></div>
+            <div class="stage"><div class="sn">04</div><div class="st">Eight upstreams</div><div class="sd">Anthropic Opus/Sonnet/Haiku; Qwen 480B viable; Kimi, MiniMax partial; DeepSeek, Qwen 30B fail.</div></div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the evaluation, in brief</span></div>
+        <h2>Eight models sort into three tiers, <em>with the cutoff at scale.</em></h2>
+        <p>Every cell is a fresh worktree seeded with identical files; the agent runs non-interactively through the adapter and a hidden validator asserts behaviour, with exit-zero the only pass signal. No LLM judge, a 300-second hard timeout. The eight models split cleanly into three tiers with a sharp boundary: a model either closes the agentic loop or it does not, and the only gradient is cost, inside the viable cluster.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> the eight-model matrix, ranked on cost per successful task (gateway-verified rates). 24 trials per model.</div>
+          <table class="data">
+            <thead><tr><th>model</th><th class="n">pass</th><th class="n">avg turns</th><th class="n">cost / success</th><th>tier</th></tr></thead>
+            <tbody>
+              <tr class="win"><td><b>Qwen3-Coder 480B</b> <span class="d">Alibaba</span></td><td class="n">24/24</td><td class="n">8.3</td><td class="n">$0.101</td><td><span class="d">A · cost leader</span></td></tr>
+              <tr><td>Claude Haiku 4.5 <span class="d">Anthropic</span></td><td class="n">24/24</td><td class="n">10.4</td><td class="n">$0.162</td><td><span class="d">A</span></td></tr>
+              <tr><td>Claude Sonnet 4.6 <span class="d">Anthropic</span></td><td class="n">22/24</td><td class="n">9.5</td><td class="n">$0.474</td><td><span class="d">A</span></td></tr>
+              <tr><td>Claude Opus 4.7 <span class="d">Anthropic</span></td><td class="n">24/24</td><td class="n">7.1</td><td class="n">$0.685</td><td><span class="d">A · ceiling</span></td></tr>
+              <tr><td>MiniMax M2.5 <span class="d">MiniMax</span></td><td class="n">17/24</td><td class="n">5.5</td><td class="n">partial</td><td><span class="d">B · partial</span></td></tr>
+              <tr><td>Kimi K2.5 <span class="d">Moonshot</span></td><td class="n">15/24</td><td class="n">4.8</td><td class="n">partial</td><td><span class="d">B · partial</span></td></tr>
+              <tr><td>Qwen3-Coder 30B <span class="d">Alibaba</span></td><td class="n">9/24</td><td class="n">1.6</td><td class="n">moot</td><td><span class="d">C · toy</span></td></tr>
+              <tr><td>DeepSeek v3.2 <span class="d">DeepSeek</span></td><td class="n">0/24</td><td class="n">1.0</td><td class="n">none</td><td><span class="d">C · toy</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>where each model fails</span></div>
+        <h2>Three failure modes, and a <em>pricing trap in the tooling.</em></h2>
+        <p>The non-viable runs fall into three cumulative failure modes. <b>Prose emission</b>: the model returns markdown instead of a structured tool call, falsely signalling success at about one turn; the fix is retraining. <b>One-call stall</b>: it emits one correct tool call then cannot ingest the result and continue, hitting the watchdog at about 1.6 turns; the fix is more active parameters, on the order of 100B. <b>State loss</b>: the loop sustains for ten to fifteen turns, but the model cannot carry forward what it changed to update an external surface; the fix is better instruction training. The single task that discriminates full from partial viability is the one that requires remembering a change across a tool boundary: the viable tier passes it every time, both partial models pass it never.</p>
+        <div class="finding hold">
+          <div class="fk">A correction worth publishing</div>
+          <h3>The agent's own cost field over-stated open-source spend by four to eleven times.</h3>
+          <p>The coding agent's SDK self-reported 81.55 dollars for the matrix against 34.91 verified at console rates, a 47-dollar inflation, because the SDK falls back to top-tier rates for unrecognised non-Anthropic models. Read the cost from the gateway, not the tool, or the open models look an order of magnitude more expensive than they are.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>the third finding</span></div>
+        <h2>Every request passes through the adapter, <em>so every request can be logged.</em></h2>
+        <p>The adapter is the only component that sees the full request, the translated upstream call, and the full streamed response. On every response it writes a structured record: token counts, the tool-inventory hash, the MCP servers seen, the cache strategy, the latency, the stop reason, and a list-priced cost estimate. Nothing about that is exotic, and that is the point: an observation plane for AI-assisted development already exists in the request path, as a side effect of routing.</p>
+        <p class="pull">The hard part of measuring AI-assisted work is not collection. It is the join to business context.</p>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>three honest layers</span></div>
+        <h2>What is recorded, what is in the wire, <em>and what needs a header.</em></h2>
+        <p>The telemetry separates into three layers, and being honest about which is which is the whole contribution. <b>Layer A</b> is what already reaches the time-series store and dashboards today, tagged only by client name and model family. <b>Layer B</b> is identifiers already in the wire but not yet promoted to tags, the session id, the request id, the tool-inventory hash, the MCP-servers list, the command name, a mechanical exporter change needing no client cooperation. <b>Layer C</b> is the business context, project, team, industry, use-case, that the proof of concept does not capture and that would require headers the agent does not send today.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 2 ·</b> Layer A, what is measured today.</div>
+          <table class="data">
+            <thead><tr><th>measurement</th><th>tags</th><th>selected fields</th></tr></thead>
+            <tbody>
+              <tr><td><b>adapter metrics</b></td><td><span class="d">client, model family</span></td><td><span class="d">token totals, list-priced cost, p50/p95 latency, tool-use round-trip success, partial-message rate, upstream throttle rate, cache fields.</span></td></tr>
+              <tr><td><b>agent events</b></td><td><span class="d">event, model, client</span></td><td><span class="d">count, duration, tokens, cost.</span></td></tr>
+              <tr><td><b>traces</b></td><td><span class="d">trace, span, client, model family</span></td><td><span class="d">time-to-first-token, count.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The distance from Layer A to a per-project, per-team, per-use-case cost-and-quality view is one promotion of Layer B and one header convention for Layer C. The per-segment views in the proof of concept are illustrative placeholders, not a deployed system, and the note is careful to label them as such.</p>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>the proposal</span></div>
+        <h2>From a per-laptop adapter to <em>a feature in the gateway.</em></h2>
+        <p>The pattern the work supports is to move the validated translation inside the gateway itself, so any licensed developer can point the agent at it without running a local adapter, and per-project configuration decides which upstream each picker slot resolves to. The translation core is roughly 1500 lines in two functions plus a streaming bridge; porting it is a rewrite against existing auth and routing, not a new design, and the existing test suite carries forward as the conformance bar.</p>
+        <div class="finding">
+          <div class="fk">What this earns</div>
+          <h3>One sanctioned path that is also a measurement plane.</h3>
+          <p>Traffic stays on the governed path, model choice becomes a per-project decision, and the cost and quality of AI-assisted development become observable per workflow rather than per provider bill. The telemetry is latent capability the routing already produces; the work is to promote and join it.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">·</span><span>closing, and the limits</span></div>
+        <h2>The routing was the task. <em>The observation point was the find.</em></h2>
+        <p>Two questions went into this work: does an unmodified coding agent route cleanly through the gateway, and can an open model keep up. Both are answered, the second turning on scale rather than vendor. The third thing, the one worth carrying forward, was not a question at all but a side effect: the adapter that makes routing work is the only place that sees the whole exchange, and so it is where AI-assisted development becomes measurable, once the data is joined to the work it belongs to.</p>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> EPAM's DIAL and the named models are the public subject; the adapter, tasks, and telemetry design are the author's own. The limits bound every claim: single-operator data from one laptop and one network path; a synthetic, reproducible task surface; list pricing rather than a negotiated contract; the telemetry-enrichment layer is latent capability, not a deployed system, and the per-segment views are illustrative placeholders; no human-eval cross-check, so validators catch correctness, not code quality.</p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>AWS <i>Bedrock pricing console</i> (US East, captured 2026-05-14), the canonical source for every per-million rate and every cost-per-success figure.</li>
+          <li>The coding agent's <i>SDK self-reported cost field</i>, cited as the misleading source ($81.55 against $34.91 verified) behind the pricing-trap correction.</li>
+          <li>The time-series store and dashboard stack behind the Layer-A inventory and the operational panels.</li>
+          <li>The two run directories and the run harness, the artefact set from which every number reproduces.</li>
+          <li>Companion note <i>ai-02</i>, the focused five-model viability experiment this evaluation extends.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-03</span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('pbar');
+  const links = [...document.querySelectorAll('.toc a')];
+  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
+  function onScroll() {
+    const sd = window.scrollY || document.documentElement.scrollTop;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    const y = sd + 130; let cur = targets[0];
+    for (const o of targets) { if (o.t.getBoundingClientRect().top + sd <= y) cur = o; }
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) cur.a.classList.add('on');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  links.forEach(a => a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
+  }));
+  onScroll();
+</script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>

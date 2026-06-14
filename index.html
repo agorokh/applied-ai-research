@@ -1,13 +1,23 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Applied AI Research · Arseny Gorokh</title>
-<meta name="description" content="Independent applied-AI engineering notes by Arseny Gorokh, a practitioner at EPAM Applied AI. Not an official EPAM publication. Each report measures one capability (memory, gateways, agent harnesses) on real stacks with named failure modes." />
-<link rel="stylesheet" href="assets/dialx/tokens.css" />
-<link rel="stylesheet" href="assets/dialx/type.css" />
-<link rel="stylesheet" href="assets/dialx/research.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Applied Intelligence · independent · by Arseny Gorokh</title>
+<meta name="description" content="Independent applied-AI engineering notes by Arseny Gorokh, a practitioner at EPAM Applied AI. Not an official EPAM publication. Each note measures one capability, agent data, open models, telemetry, memory, on a real stack with named failure modes.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Applied Intelligence · independent · by Arseny Gorokh">
+<meta property="og:description" content="Independent applied-AI engineering notes. Each note takes one piece of real engineering, an agent, an adapter, a gateway, a gate, and reports what held and what did not, with the magnitudes kept honest.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta name="twitter:title" content="Applied Intelligence · independent · by Arseny Gorokh">
+<meta name="twitter:description" content="Independent applied-AI engineering notes. One piece of real engineering per note; what held, what did not, magnitudes kept honest.">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
@@ -18,89 +28,156 @@
 
   gtag('config', 'G-HHYGP07F16');
 </script>
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+  .sheet { max-width: 1180px; }
+
+  /* the journal cover · the featured note */
+  .folio-cover { padding: clamp(36px,4vw,68px) 0 clamp(28px,3vw,44px); }
+  .folio-cover .eyebrow { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:baseline; font-size:12.5px; color:var(--ink-3); }
+  .folio-cover .eyebrow .lead { font-family:var(--serif); font-style:italic; font-size:15px; color:var(--ink-2); }
+  .folio-cover .eyebrow .dot { color:var(--ink-4); }
+  .folio-cover h1 { font-family:var(--serif); font-weight:300; font-size:clamp(40px,5.4vw,80px); line-height:0.99; letter-spacing:-0.025em; margin:20px 0 0; max-width:18ch; text-wrap:balance; }
+  .folio-cover h1 em { display:block; font-style:italic; color:var(--ink-2); font-size:0.82em; margin-top:4px; }
+  .folio-cover .abstract { font-family:var(--serif); font-weight:300; font-size:clamp(18px,1.8vw,22px); line-height:1.55; color:var(--ink); margin:26px 0 0; max-width:64ch; }
+  .folio-cover .read { display:inline-block; margin-top:24px; font-family:var(--serif); font-style:italic; font-size:16px; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:3px; }
+  .folio-cover .read:hover { color:var(--ink-2); }
+
+  /* the claims band · quiet hairline grid, serif value + prose label */
+  .claims { display:grid; grid-template-columns:repeat(4,1fr); margin-top:38px; border-top:1px solid var(--line-2); border-bottom:1px solid var(--line); }
+  .claims .c { padding:20px 24px 22px; border-left:1px solid var(--line); }
+  .claims .c:first-child { border-left:0; padding-left:0; }
+  .claims .cv { font-family:var(--serif); font-size:28px; color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-0.01em; }
+  .claims .cl { display:block; margin-top:10px; font-size:12px; line-height:1.5; color:var(--ink-3); }
+
+  /* the bound archive · rows on a paper sheet, never cards */
+  .archive { margin-top:clamp(40px,4vw,64px); }
+  .archive h2 { font-family:var(--serif); font-weight:400; font-style:italic; font-size:19px; color:var(--ink-2); margin:0 0 4px; }
+  .archive .sub { font-size:12.5px; color:var(--ink-3); margin-bottom:14px; }
+  .archive .sheet-rows { background:linear-gradient(rgba(245,240,231,0.9),rgba(243,237,227,0.88)); border:1px solid var(--line); box-shadow:0 30px 70px -55px rgba(45,33,18,0.45); }
+  .arow { display:grid; grid-template-columns:88px 116px 116px minmax(0,1fr) 64px; gap:18px; align-items:baseline; padding:20px 28px; border-top:1px solid var(--line); text-decoration:none; transition:background .2s; }
+  .arow:first-child { border-top:0; }
+  .arow:hover { background:rgba(154,123,60,0.05); }
+  .arow .code { font-family:var(--mono); font-size:12.5px; color:var(--work); }
+  .arow .date { font-size:12.5px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+  .arow .type { font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--ink-3); }
+  .arow .ttl { min-width:0; }
+  .arow .ttl .t { font-family:var(--serif); font-size:20px; line-height:1.2; color:var(--ink); }
+  .arow .ttl .th { font-family:var(--sans); font-size:13px; line-height:1.5; color:var(--ink-2); margin-top:5px; max-width:62ch; }
+  .arow .read { font-family:var(--serif); font-style:italic; font-size:13px; color:var(--ink-3); text-align:right; white-space:nowrap; }
+  @media (max-width:880px){ .claims{grid-template-columns:1fr 1fr;} .arow{grid-template-columns:72px 1fr; gap:6px 14px;} .arow .date,.arow .type,.arow .read{grid-column:2;} }
+
+  .pubabout { margin-top:clamp(40px,4vw,64px); display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:clamp(28px,4vw,64px); align-items:start; }
+  .pubabout h2 { font-family:var(--serif); font-weight:400; font-size:clamp(24px,2.4vw,32px); line-height:1.16; margin:0 0 16px; max-width:20ch; }
+  .pubabout h2 em { font-style:italic; color:var(--ink-2); }
+  .pubabout p { font-family:var(--serif); font-size:17px; line-height:1.7; color:var(--ink); margin:0 0 14px; max-width:60ch; }
+  .pubabout .side { padding-top:6px; }
+  .pubabout .side .sk { font-family:var(--serif); font-style:italic; font-size:14px; color:var(--ink-2); margin-bottom:8px; }
+  .pubabout .side .sv { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-top:1px solid var(--line); font-size:13px; }
+  .pubabout .side .sv:first-of-type { border-top:0; }
+  .pubabout .side .sv .k { color:var(--ink-3); } .pubabout .side .sv .d { font-family:var(--serif); color:var(--ink); }
+  @media (max-width:880px){ .pubabout{grid-template-columns:1fr;} }
+</style>
 </head>
-<body class="rs-page">
+<body data-room="5" data-mood="paper">
+<div class="wash"></div>
 
-<header class="rs-topbar">
-  <div class="rs-topbar__inner">
-    <a class="rs-mark" href="./">
-      <span>Applied AI Research</span>
-      <span class="sep">·</span>
-      <span class="meta">Independent · Arseny Gorokh</span>
-    </a>
-    <nav class="rs-nav">
-      <a href="./" class="is-current" aria-current="page">Index</a>
-      <a href="https://github.com/agorokh/applied-ai-research">About</a>
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="index.html">Applied Intelligence</a><span class="sub">independent · by Arseny Gorokh</span></div>
+    <nav>
+      <a href="index.html" class="here">index</a>
+      <a href="#archive">notes</a>
+      <a href="#about">about</a>
     </nav>
-  </div>
-</header>
+    <span class="folio">applied AI research · independent</span>
+  </header>
 
-<main>
-
-  <section class="rs-index-hero">
-    <h1>Field reports on <em>enterprise AI substrates.</em></h1>
-    <p>Working notes on what it takes to convert a frontier or consumer-grade AI capability into an enterprise substrate. Memory, gateways, agent harnesses, measured on real stacks, with named failure modes and an adoption path stated up front.</p>
-  </section>
-
-  <section class="rs-posts">
-    <div class="rs-posts__header">
-      <p class="rs-section-label"><span class="num">·</span> Publications</p>
-      <p class="rs-posts__count">3 reports</p>
+  <!-- featured note: the journal cover -->
+  <section class="folio-cover anim d2">
+    <div class="eyebrow">
+      <span class="lead">in this issue</span>
+      <span class="dot">·</span><span>ai-06</span>
+      <span class="dot">·</span><span>applied research note</span>
+      <span class="dot">·</span><span>13 jun 2026</span>
+      <span class="dot">·</span><span>18 min read</span>
     </div>
+    <h1>MCP harvesting:<em>trustworthy data when your agent has a connector, not an API.</em></h1>
+    <p class="abstract">If you wire agents to enterprise systems that expose a flaky MCP connector instead of a clean API, the agent will eventually report a fact it never actually read, and a downstream system will act on it before anyone checks. MCP harvesting is the discipline that stops that: every claim points back to a real source. The number that should set your bar, on a set built to fool both gates: an entailment check caught 98 percent of unsupported claims where the similarity check most teams reach for first caught 27.</p>
+    <a class="read" href="notes/mcp-harvesting.html">Read the note &nbsp;›</a>
 
-    <article class="rs-post">
-      <div class="rs-post__date">2026 · 05 · 19</div>
-      <div>
-        <h3 class="rs-post__title"><a href="2026-05-19_choosing-memory-for-enterprise-agents/">Choosing memory for <em>enterprise agents.</em></a></h3>
-        <p class="rs-post__excerpt">Production-weighted retrieval on an SDLC-history corpus. LightRAG beats Graphiti by 36 percentage points under realistic weighting; under uniform aggregation Graphiti edged ahead slightly before weighting inverted the spread. Stale-fact inversion by executor tier. Why a fourth candidate did not clear the adoption bar.</p>
-      </div>
-      <div class="rs-post__meta">
-        <span class="tag">Applied research note</span>
-        <span>Memory · adoption bar</span>
-        <span>14 min read</span>
-      </div>
-    </article>
-
-    <article class="rs-post">
-      <div class="rs-post__date">2026 · 05 · 15</div>
-      <div>
-        <h3 class="rs-post__title"><a href="2026-05-15_claude-code-via-dial-poc/">Claude Code via EPAM DIAL · <em>POC report.</em></a></h3>
-        <p class="rs-post__excerpt">Routing a frontier coding harness through an enterprise gateway. 192 trials, eight upstreams, AWS Bedrock list pricing. Qwen3-Coder 480B lands as the cheapest 100%-pass model at $0.101 per success. The adapter doubles as a structured observation point for the AI-native SDLC.</p>
-      </div>
-      <div class="rs-post__meta">
-        <span class="tag">Engineering brief</span>
-        <span>Gateway · telemetry</span>
-        <span>12 min read</span>
-      </div>
-    </article>
-
-    <article class="rs-post">
-      <div class="rs-post__date">2026 · 04 · 28</div>
-      <div>
-        <h3 class="rs-post__title"><a href="2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/">Picking the extraction LLM for <em>knowledge-graph ingestion.</em></a></h3>
-        <p class="rs-post__excerpt">Knowledge-graph RAG systems (Microsoft GraphRAG, LightRAG, the ecosystem around them) extract entities and relations from source text at ingest time using an LLM. Eleven candidate models measured on one such system, same corpus, same chunking, same rubric. Gemini 2.5 Flash clears every retrieval cell at roughly 3 percent of Sonnet 4.6's ingest cost. The counter-intuitive part: it wins on breadth (2x more entities per document) while its relation-to-entity ratio is lower. Why breadth dominates density for graph-traversal retrieval, what local open-source can and cannot do, and a per-100-document cost model a delivery lead can take to a budget conversation.</p>
-      </div>
-      <div class="rs-post__meta">
-        <span class="tag">Applied research note</span>
-        <span>Knowledge graph · ingest LLM · cost model</span>
-        <span>16 min read</span>
-      </div>
-    </article>
-
+    <div class="claims">
+      <div class="c"><div class="cv">55%</div><span class="cl">the accuracy ceiling of the best end-to-end system over messy enterprise data, the reason a disciplined pipeline still beats one agent call.</span></div>
+      <div class="c"><div class="cv">27%</div><span class="cl">of unsupported claims a similarity gate catches at the false-refuse rate where an entailment gate catches 98.</span></div>
+      <div class="c"><div class="cv">the&nbsp;disk</div><span class="cl">where determinism begins: the agent collects raw bytes; every guarantee runs on what is written down.</span></div>
+      <div class="c"><div class="cv">72</div><span class="cl">hand-authored pairs behind the gate result. One controlled experiment, stated as such.</span></div>
+    </div>
   </section>
 
-  <div class="rs-footer__byline">
-    <p><span class="label">Companion repos</span> (<a href="https://github.com/agorokh/applied-ai-research/blob/main/COMPANION-REPOS.md">descriptions</a>): <a href="https://github.com/agorokh/sdlc-dial-adapter" title="Anthropic Messages API to OpenAI chat-completions translator (Apache-2.0)">sdlc-dial-adapter</a> · <a href="https://github.com/agorokh/agentic-memory-mcp" title="Read-path MCP server bridging MCP clients to LightRAG backends (Apache-2.0)">agentic-memory-mcp</a></p>
+  <!-- the bound archive -->
+  <section class="archive" id="archive">
+    <h2>the archive</h2>
+    <div class="sub">every note carries one folio. the magnitudes are corpus-specific; the structural claims are what transfer.</div>
+    <div class="sheet-rows">
+      <a class="arow" href="notes/mcp-harvesting.html">
+        <span class="code">ai-06</span><span class="date">13 jun 2026</span><span class="type">agent data</span>
+        <span class="ttl"><span class="t">MCP harvesting: trustworthy data when your agent has a connector, not an API</span><span class="th">An agent that can only reach a system through a flaky MCP connector treats its output as evidence to check, not a value to trust; an entailment gate caught 98 percent of unsupported claims where a similarity gate caught 27.</span></span>
+        <span class="read">18 min</span>
+      </a>
+      <a class="arow" href="notes/value-layer.html">
+        <span class="code">ai-05</span><span class="date">5 jun 2026</span><span class="type">agent memory</span>
+        <span class="ttl"><span class="t">A memory-and-policy layer above the model: the build-versus-buy case</span><span class="th">A gateway routes a prompt but does not know the repository, policy, or budget; own the in-path layer that governs memory, policy, and cost while the model stays swappable, and prove it ports across providers.</span></span>
+        <span class="read">12 min</span>
+      </a>
+      <a class="arow" href="2026-05-19_choosing-memory-for-enterprise-agents/">
+        <span class="code">ai-04</span><span class="date">19 may 2026</span><span class="type">memory substrate</span>
+        <span class="ttl"><span class="t">Choosing the memory substrate for enterprise agents: LightRAG, Graphiti, and the weighting that decides</span><span class="th">Two purpose-built substrates and a filesystem baseline against a five-criterion adoption bar on an SDLC corpus; production weighting separates them by 36 points where uniform weighting calls it a tie, and the entity graph fabricated four times where the chunk-text retriever never did.</span></span>
+        <span class="read">14 min</span>
+      </a>
+      <a class="arow" href="notes/telemetry-plane.html">
+        <span class="code">ai-03</span><span class="date">15 may 2026</span><span class="type">agent telemetry</span>
+        <span class="ttl"><span class="t">Claude Code through DIAL: eight models, 192 runs, and metering every request</span><span class="th">A POC connecting Claude Code to DIAL across eight models; the cheapest that passes everything is open-source, and the routing adapter meters every request for a per-project view of AI-coding cost.</span></span>
+        <span class="read">17 min</span>
+      </a>
+      <a class="arow" href="notes/harness-viability.html">
+        <span class="code">ai-02</span><span class="date">14 may 2026</span><span class="type">open models</span>
+        <span class="ttl"><span class="t">Which models can run Claude Code through DIAL? Five upstreams, and the cost</span><span class="th">Three Anthropic tiers and two open Qwen coders through one gateway; an open 480B passed every task at $0.101 each, the cheapest of the field, and capability tracks scale, not vendor.</span></span>
+        <span class="read">16 min</span>
+      </a>
+      <a class="arow" href="2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/">
+        <span class="code">ai-01</span><span class="date">28 apr 2026</span><span class="type">ingest model</span>
+        <span class="ttl"><span class="t">Picking the extraction LLM for knowledge-graph ingestion: breadth beats density</span><span class="th">Eleven models measured as the entity-extraction LLM for a knowledge-graph RAG system; Gemini 2.5 Flash cleared every retrieval cell at roughly three percent of the strongest commercial model's ingest cost, because breadth of extraction beats density of relations.</span></span>
+        <span class="read">16 min</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- about -->
+  <section class="pubabout" id="about">
+    <div>
+      <h2>An applied-AI reading style, <em>for work that has to survive diligence.</em></h2>
+      <p>Applied Intelligence is an independent practitioner publication. Each note takes one piece of real engineering, an agent, an adapter, a gateway, a gate, and reports what held and what did not, with the magnitudes kept honest and the structural claims stated so another team can re-derive them.</p>
+      <p>The register is deliberate: calm on the surface, hard engineering underneath. A finding leads; the evidence follows; the method and the limits sit where a reader can check them. The companion repositories are artefacts, one click away, never decoration: <a href="https://github.com/agorokh/sdlc-dial-adapter">sdlc-dial-adapter</a> and <a href="https://github.com/agorokh/agentic-memory-mcp">agentic-memory-mcp</a>.</p>
+      <p>Written by Arseny Gorokh. The notes draw on real systems and name the public platforms they study; all client-specific material is excluded, and the notes are not official publications of any employer.</p>
+    </div>
+    <div class="side">
+      <div class="sk">the publication</div>
+      <div class="sv"><span class="k">notes</span><span class="d">6</span></div>
+      <div class="sv"><span class="k">latest</span><span class="d">ai-06</span></div>
+      <div class="sv"><span class="k">register</span><span class="d">applied AI research</span></div>
+      <div class="sv"><span class="k">set in</span><span class="d">Newsreader</span></div>
+    </div>
+  </section>
+
+  <div class="colophon">
+    <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+    <span>by Arseny Gorokh</span>
+    <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
   </div>
+</div>
 
-</main>
-
-<footer class="rs-footer">
-  <div class="rs-footer__inner">
-    <span>Applied AI Research · independent practitioner notes · 2026</span>
-    <span><a href="https://github.com/agorokh/applied-ai-research">github.com/agorokh/applied-ai-research</a></span>
-  </div>
-</footer>
-
+<script src="assets/atelier-rooms.js"></script>
 </body>
 </html>

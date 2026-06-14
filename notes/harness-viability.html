@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which models can run Claude Code through DIAL? · Applied Intelligence</title>
+<meta name="description" content="One Claude Code harness against five upstream models through EPAM's DIAL gateway, scored on pass rate and dollars per success. An open 480B model passed every task at $0.101 each, the cheapest of the field; capability tracked model scale, not vendor.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/harness-viability.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Which models can run Claude Code through DIAL? Five upstreams, and the cost winner is open-source">
+<meta property="og:description" content="One Claude Code harness against five upstream models through EPAM's DIAL gateway, scored on pass rate and dollars per success. An open 480B model passed every task at $0.101 each, the cheapest of the field; capability tracked model scale, not vendor.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/harness-viability.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta name="twitter:title" content="Which models can run Claude Code through DIAL? Five upstreams, and the cost winner is open-source">
+<meta name="twitter:description" content="An open 480B model passed every task at $0.101 each, the cheapest of the field; capability tracked model scale, not vendor.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style> body { background:#e6dccb; } </style>
+</head>
+<body data-room="8" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">independent · by Arseny Gorokh</span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#artefacts">artefacts</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 02</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 05 · 14</span>
+      <span class="dot">·</span><span>ai-02</span>
+      <span class="dot">·</span><span>16 min read</span>
+      <span class="dot">·</span><span>empirical study</span>
+    </div>
+    <h1>Which models can run Claude Code through DIAL?<em>Five upstreams, and the cost winner is open-source.</em></h1>
+    <p class="lede">If you are paying per seat for a coding agent at team scale, the live question is whether a cheaper open model through your own gateway could do the same work. This note runs one Claude Code harness against five upstream models through EPAM's DIAL gateway and scores each on the two things that decide a rollout: did the task pass, and what did each success cost. An open 480B model passed every task at $0.101 each, the cheapest of the field; the result that goes in your budget is that capability tracked model scale, not vendor.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">$0.101</div><span class="l">cost per successful task for the cheapest model that passed everything, an open 480B coder, 38 percent under Haiku and well under Sonnet.</span></div>
+      <div class="ms"><div class="v">100%</div><span class="l">pass rate for that open 480B model, 24 of 24 tasks, matching the two strongest Anthropic models in the matrix.</span></div>
+      <div class="ms"><div class="v">38%</div><span class="l">pass rate for a 30B open model, which fails every multi-step task with the same one-call-then-stall signature, below the viability line.</span></div>
+      <div class="ms"><div class="v">120</div><span class="l">trials, five models by eight tasks by three, run in 31 minutes wall-clock with zero retries and zero rate-limit errors.</span></div>
+    </div>
+
+    <div class="artefacts" id="artefacts">
+      <span class="k">artefacts</span><span class="dot">·</span>
+      <a href="https://github.com/agorokh/sdlc-dial-adapter">the translation bridge</a><span class="dot">·</span>
+      <a href="../2026-05-15_claude-code-via-dial-poc/artefacts/methodology.md">methodology</a><span class="dot">·</span>
+      <a href="../2026-05-15_claude-code-via-dial-poc/artefacts/claims.md">claims ledger</a><span class="dot">·</span>
+      <a href="../2026-05-15_claude-code-via-dial-poc/artefacts/invalidation.md">invalidation</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>Two questions</a>
+        <a href="#s02"><span class="no">ii</span>Sustain a plan</a>
+        <a href="#s03"><span class="no">iii</span>One adapter, two routes</a>
+        <a href="#s04"><span class="no">iv</span>The eight-task gauntlet</a>
+        <a href="#s05"><span class="no">v</span>Pass rate is a lie</a>
+        <a href="#s06"><span class="no">vi</span>The cost story flips</a>
+        <a href="#s07"><span class="no">vii</span>The viability frontier</a>
+        <a href="#s08"><span class="no">·</span>What to do</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the study</div>
+        <div class="v"><span class="k">published</span><span class="d">14 may 2026</span></div>
+        <div class="v"><span class="k">trials</span><span class="d">120</span></div>
+        <div class="v"><span class="k">models</span><span class="d">5</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-02</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>two questions hiding in one experiment</span></div>
+        <h2>Does the harness route, and does it <em>survive the swap.</em></h2>
+        <p class="lede">Before you can swap in a cheaper model, two things have to be true, and only one is plumbing: Claude Code has to reach the model through the gateway at all, and the harness has to keep working when you point it at an open-source upstream instead of an Anthropic one.</p>
+        <p>The first question is settled quickly; the second is the one that decides your bill. Its answer is that the harness is portable at Sonnet scale, not at Haiku scale, and the determining variable is model scale, not vendor.</p>
+        <div class="finding">
+          <div class="fk">The headline</div>
+          <h3>Claude Code works through the gateway; an open 480B model is the cheapest thing that passes everything.</h3>
+          <p>At verified Bedrock pricing, the open 480B coder is the cheapest 100-percent-pass model in the matrix, 38 percent cheaper than Haiku and roughly five times cheaper than Sonnet, while nothing tested can replace Claude Haiku 4.5 at the Haiku tier. The cost flip versus an earlier bake-off comes from replacing the SDK's fallback Opus rate for unrecognised models with actual console rates.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the narrow research question</span></div>
+        <h2>Sustain a plan, <em>not just emit a tool call.</em></h2>
+        <p>"Does open-source work with Claude Code?" collapses on contact, because most modern coder models can emit a single tool-use block. The harness needs more: the model must plan, observe a tool result, update its plan, and continue. The gating question is agentic-loop sustainment, not structured-output emission. Two falsifiable hypotheses frame it.</p>
+        <ul>
+          <li><b>H1, plumbing.</b> Claude Code routes through the gateway via an Anthropic-to-OpenAI shim with no harness changes. Falsified by any partial-message rate above zero across 100 consecutive runs, or any tool-use round-trip divergence between the local-Anthropic and gateway-Anthropic baselines.</li>
+          <li><b>H2, portability.</b> Harness viability with non-Anthropic upstreams is a function of model scale; sub-100B active-parameter models cannot sustain the multi-step loop. Falsified by a sub-100B open model passing the multi-step tasks at a rate comparable to Haiku 4.5.</li>
+        </ul>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the bridge</span></div>
+        <h2>One adapter, two routes, <em>one wire surface.</em></h2>
+        <p>The bridge is the only custom code between Claude Code and the upstream. It exposes Anthropic's messages shape on the wire, translates each request into the gateway's OpenAI-shaped chat-completions API, and streams the response back in the shape the harness expects. Two wrapper configurations differ only in which upstream the harness's three model slots point at; everything else, the agentic loop, the system prompt, the tool inventory, is untouched. One behaviour is load-bearing: the bridge strips cache-control markers when the upstream is not Anthropic, because the open routes otherwise return a no-route error.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · the request path. The harness is stock; only the bridge is custom, and model selection is environment-driven.</figcaption>
+          <div class="flow">
+            <div class="stage"><div class="sn">01</div><div class="st">Harness</div><div class="sd">Claude Code, stock CLI, messages API.</div></div>
+            <div class="stage work"><div class="sn">02</div><div class="st">The bridge</div><div class="sd">Anthropic shape to OpenAI shape; strips cache-control for open routes; emits cost and token telemetry.</div></div>
+            <div class="stage"><div class="sn">03</div><div class="st">DIAL gateway</div><div class="sd">project routing, auth.</div></div>
+            <div class="stage"><div class="sn">04</div><div class="st">Upstreams</div><div class="sd">Anthropic on Bedrock (Opus 4.7 / Sonnet 4.6 / Haiku 4.5); open Qwen3-Coder 480B; open Qwen3-Coder 30B.</div></div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>the task portfolio</span></div>
+        <h2>Eight tasks, escalating so the <em>shape of failure carries the diagnosis.</em></h2>
+        <p>Each task is self-contained Python under a hundred lines, with a hidden validator that exits non-zero on any deviation, removing LLM-judge bias. The portfolio climbs from one-shot answers to the full agentic loop, where the hardest task requires the model to remember what it just did across a tool call and update an external surface from memory. No model lands between "passes all multi-step" and "passes none": failure is at the loop level, not the task level.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> the eight-task gauntlet, by the capability it stresses.</div>
+          <table class="data">
+            <thead><tr><th>tier</th><th>task</th><th>what it stresses</th></tr></thead>
+            <tbody>
+              <tr><td>single-turn</td><td><b>T1</b> read and explain a trap value</td><td><span class="d">comprehension, ignoring noise.</span></td></tr>
+              <tr><td>single-turn</td><td><b>T4</b> generate from boilerplate</td><td><span class="d">spec-driven generation, pattern match.</span></td></tr>
+              <tr><td>multi-file</td><td><b>T2</b> rename across several files</td><td><span class="d">multi-file consistency, aliased imports.</span></td></tr>
+              <tr><td>multi-file</td><td><b>T3</b> bump a constant, leave tests alone</td><td><span class="d">conditional edit, negative space.</span></td></tr>
+              <tr><td>multi-file</td><td><b>T5</b> "fix the test" where the bug is elsewhere</td><td><span class="d">investigation under misleading framing.</span></td></tr>
+              <tr><td>multi-file</td><td><b>T6</b> refactor without touching auth</td><td><span class="d">a negative constraint held across edits.</span></td></tr>
+              <tr><td>full loop</td><td><b>T7</b> plan, run the tests, report</td><td><span class="d">three independent tool roles, three or more turns.</span></td></tr>
+              <tr class="win"><td>full loop</td><td><b>T8</b> refactor, test, update the README from memory</td><td><span class="d">the hardest: retain state across a tool call, five or more turns.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>instrumentation</span></div>
+        <h2>Pass rate misleads <em>without cost per success.</em></h2>
+        <p>A 38 percent pass rate could mean "half competent" or "passes the easy tasks and bricks the hard ones in a structured way," so the metric portfolio is designed to disambiguate. Hidden validators provide outcome ground truth without an LLM judge, whose sharpest failure in the prior bake-off was over-rating models whose prose style resembled its own.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 2 ·</b> the metric portfolio, and why each metric is in the matrix.</div>
+          <table class="data">
+            <thead><tr><th>metric</th><th>what it measures</th><th>why it is here</th></tr></thead>
+            <tbody>
+              <tr><td><b>success rate</b></td><td><span class="d">validator exit-zero fraction across three trials</span></td><td><span class="d">outcome ground truth, no LLM-judge bias.</span></td></tr>
+              <tr><td><b>avg turns</b></td><td><span class="d">mean tool-use turns per trial</span></td><td><span class="d">a diagnostic: Anthropic clusters at 7 to 10, failing open models at 1 to 2.</span></td></tr>
+              <tr><td><b>friction</b></td><td><span class="d">turns plus five times contract violations</span></td><td><span class="d">penalises success via brute retry instead of clean planning.</span></td></tr>
+              <tr><td><b>violations</b></td><td><span class="d">harness-contract breaks, untyped tool args</span></td><td><span class="d">separates "model is wrong" from "model does not speak the protocol."</span></td></tr>
+              <tr><td><b>wall p50 / p95</b></td><td><span class="d">wall-clock medians and tails on successful trials</span></td><td><span class="d">p50 is throughput, p95 is the long-tail cost; they diverge.</span></td></tr>
+              <tr><td><b>cost per success</b></td><td><span class="d">standardised cost per successful trial</span></td><td><span class="d">the only honest economic metric across models.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>the result</span></div>
+        <h2>The cheapest model that passes everything <em>is the big open one.</em></h2>
+        <p>At Bedrock-verified pricing, the open 480B model is not just viable, it is the floor. The earlier bake-off had it looking expensive only because the SDK billed unrecognised models at the Opus fallback rate; the console rates tell the real story.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 3 ·</b> the matrix, by pass rate and cost per successful task (Bedrock-verified rates). 24 trials per model, 8 tasks by 3.</div>
+          <table class="data">
+            <thead><tr><th>model</th><th class="n">pass</th><th class="n">cost / success</th><th>standing</th></tr></thead>
+            <tbody>
+              <tr class="win"><td><b>Qwen3-Coder 480B</b> <span class="d">open</span></td><td class="n">24/24</td><td class="n">$0.101</td><td><span class="d">cheapest viable, the Pareto floor.</span></td></tr>
+              <tr><td>Claude Haiku 4.5</td><td class="n">24/24</td><td class="n">$0.162</td><td><span class="d">1.6x the 480B; nothing open replaces it at this tier.</span></td></tr>
+              <tr><td>Claude Sonnet 4.6</td><td class="n">22/24</td><td class="n">$0.474</td><td><span class="d">4.7x; the 480B is the Sonnet-tier substitute.</span></td></tr>
+              <tr><td>Claude Opus 4.7</td><td class="n">24/24</td><td class="n">$0.691</td><td><span class="d">6.8x; the capability ceiling, at a price.</span></td></tr>
+              <tr><td>Qwen3-Coder 30B <span class="d">open</span></td><td class="n">9/24</td><td class="n">moot</td><td><span class="d">a toy here: fails 15 of 24, cost-per-success is undefined in the failing cluster.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>One honest uncertainty: the Anthropic 4.x Bedrock rates come from the SDK's internal table, which agreed with verified rows within about five percent but was not independently console-checked. And the gateway contract price is the only number that matters in production; the ranking survives any contract that does not inflate the 480B input rate above roughly a 6.7x markup.</p>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>cache, latency, and the frontier</span></div>
+        <h2>Capability tracks parameter scale, <em>not vendor.</em></h2>
+        <p>The open 480B model's input-token total exceeds Sonnet's on the same workload for a structural reason, not a model one: the gateway forwards cache-control intact for Anthropic, so Bedrock caches the 20K-token system prompt and reads it back at about a tenth of the cost, whereas the bridge must strip cache-control for the open routes, so they pay full rate every turn. That is a gateway gap, not a model gap; cache support for non-Anthropic routes would narrow the cost difference an estimated 30 to 50 percent. On latency, per-call the open 480B is actually slightly faster than Anthropic; the long tail comes from turn count and tool-result round-trips, so the harness makes the tail.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 2</b> · the viability frontier: pass rate against cost per success, lower-left is the floor. The 30B model sits off this chart at 38 percent pass, below the roughly 90-percent viability line, where cost per success is undefined.</figcaption>
+          <div data-atelier-figure='{"type":"scatter","x":{"label":"pass rate","min":85,"max":101,"unit":"%"},"y":{"label":"cost per success (USD)","min":0,"max":0.8},"points":[{"x":100,"y":0.101,"label":"Qwen 480B","tint":"work"},{"x":100,"y":0.162,"label":"Haiku 4.5","tint":"ink"},{"x":92,"y":0.474,"label":"Sonnet 4.6","tint":"ink"},{"x":100,"y":0.691,"label":"Opus 4.7","tint":"ink"}]}'></div>
+        </figure>
+        <p>The closing thesis: harness viability is scale-driven, not vendor-driven. Three open lineages tested across this and the prior bake-off, a 27B, a 123B, and the 30B here, all fail with the same one-call-then-stall signature; only the 480B, roughly an order of magnitude larger in active parameters, closes the loop. Open models keep up at roughly 400B-plus active parameters on a coder-tuned base, and not below.</p>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">·</span><span>what to do, and the limits</span></div>
+        <h2>Put the 480B in the Sonnet slot. <em>Never the 30B in the Haiku slot.</em></h2>
+        <ul>
+          <li><b>For operators.</b> Adopt the open 480B as the Sonnet-tier default; never put a sub-100B open model in the Haiku slot. The economics and the loop both favour it.</li>
+          <li><b>For gateway operators.</b> Ship cache-header support for non-Anthropic routes; it is the single change that most narrows the cost gap.</li>
+          <li><b>For open-model trainers.</b> The target is multi-turn tool-use transcripts with sustained plans, not single-shot tool-call benchmarks.</li>
+          <li><b>For replication.</b> The real cutoff lives somewhere in the 30B-to-480B gap; test 70B to 150B coder models to find it.</li>
+        </ul>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> EPAM's DIAL and the named models are the public subject; the harness, tasks, and bridge are the author's own. The limits bound the claim: a single operator and network path, synthetic tasks, a print-mode artefact, placeholder pricing pending a contract rate, un-normalised tokenizers, no human-eval cross-check, one harness version. <b>Re-run the matrix before treating any magnitude as portable.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>AWS <i>Bedrock pricing console</i> (US East, 2026-05-14), source of the verified open-model rates that anchor the corrected cost story.</li>
+          <li>Claude Code <i>SDK internal price table</i>, source of the Anthropic 4.x Bedrock rates (within ~5% of verified rows) and of the Opus-rate fallback that caused the original overstatement.</li>
+          <li>An independent council critique of the prior bake-off, which produced the loop-sustainment framing and the hidden-validator decision.</li>
+          <li>The prior bake-off (May 2026): a 123B and a 27B open model whose failure signature this study reproduces, basis for the cross-vendor scale claim.</li>
+          <li>The cost-per-success discipline: headline cost and self-reported speed are not the honest economic metric; cost per successful task is.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-02</span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('pbar');
+  const links = [...document.querySelectorAll('.toc a')];
+  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
+  function onScroll() {
+    const sd = window.scrollY || document.documentElement.scrollTop;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    const y = sd + 130; let cur = targets[0];
+    for (const o of targets) { if (o.t.getBoundingClientRect().top + sd <= y) cur = o; }
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) cur.a.classList.add('on');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  links.forEach(a => a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
+  }));
+  onScroll();
+</script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>

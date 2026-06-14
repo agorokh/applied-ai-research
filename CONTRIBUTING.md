@@ -1,6 +1,6 @@
 # Contributing
 
-This is a working-drafts series of practitioner research notes. Contributions are welcome from other practitioners working on similar enterprise-AI deployment problems — gateways, memory, agent harnesses, telemetry, evaluation methodology, cost analysis, production adoption.
+This is a working-drafts series of practitioner research notes. Contributions are welcome from other practitioners working on similar enterprise-AI deployment problems: gateways, memory, agent harnesses, telemetry, evaluation methodology, cost analysis, production adoption.
 
 ## What kind of contribution
 
@@ -18,16 +18,16 @@ For corrections, broken-link fixes, methodology clarifications, or new sub-artef
 
 ## How to write a report
 
-Each report follows a 13-section spine. The clearest exemplars are:
+Each note is a single HTML file under `notes/<slug>.html`, built on the Atelier reading style (cover, sticky rail, roughly eight numbered sections, findings, captioned figures, references, colophon). The clearest exemplars are:
 
-- [`2026-05-19_choosing-memory-for-enterprise-agents/index.html`](2026-05-19_choosing-memory-for-enterprise-agents/index.html) — depth piece with weighted-aggregate methodology
-- [`2026-05-15_claude-code-via-dial-poc/index.html`](2026-05-15_claude-code-via-dial-poc/index.html) — engineering brief on a routing pattern + cost matrix
+- [`notes/value-layer.html`](notes/value-layer.html): a prose-led decision memo
+- [`notes/harness-viability.html`](notes/harness-viability.html): a data-heavy empirical note with figures and tables
 
-Both ship a parallel `artefacts/` directory with:
+A note ships its companion material under `artefacts/<slug>/` (or links the relevant companion repository). The reproducibility-grade notes ship:
 
-- `methodology.md` — test design, scoring rubric, aggregation formula, what the methodology is NOT
-- `claims.md` — claims ledger (every headline tagged `measured` / `inferred` / `hypothetical` / `recommendation` / `scope`)
-- `invalidation.md` — Popperian falsification conditions per finding
+- `methodology.md`: test design, scoring rubric, aggregation formula, what the methodology is NOT
+- `claims.md`: claims ledger (every headline tagged `measured` / `inferred` / `hypothetical` / `recommendation` / `scope`)
+- `invalidation.md`: Popperian falsification conditions per finding
 - Subject-specific reference files (e.g. `adoption-bar.md`, `task-families.md`, `pricing-snapshot/`, `telemetry-schema.md`, `canary-harness/`)
 
 A new report should ship at least `methodology.md` + `claims.md` + `invalidation.md` alongside the HTML.
@@ -42,25 +42,23 @@ A new report should ship at least `methodology.md` + `claims.md` + `invalidation
 
 ## Visual identity
 
-The site uses the dialx CSS subsystem under `assets/dialx/`:
+The site uses the Atelier reading style, owned by Claude Design, under `assets/`:
 
-- `tokens.css` — colour palette + font stacks
-- `type.css` — semantic type roles
-- `research.css` — page primitives (sections, hero, tier cards, callouts, tables, pills)
+- `theme.css`: the design language (tokens and primitives). **Never edit it.**
+- `notes.css`: the shared note stylesheet (cover, rail, sections, findings, figures, tables, colophon). Edit here to change all notes.
+- `atelier-figures.js`: the inline-SVG figure renderer (measure / bars / scatter / flow).
+- `atelier-rooms.js`: the room background; the publication tier is `data-mood="paper"`.
 
-Do not introduce inline `<style>` blocks or per-report CSS overrides. If a layout primitive is missing, extend `research.css` and document the new class.
+Every page is set in Newsreader, Schibsted Grotesk, and Spline Sans Mono only. Fonts load from Google Fonts; do not vendor font files.
 
-The structural check in `scripts/check_research_structure.sh` enforces:
-- 13 `<section>` elements per report (hero + 12 numbered)
-- 3–15 `.rs-callout` elements per report
-- Exactly one `<h1>` with exactly one `<em>` inside
-- 0–30 `<h3>` elements per report
-- No `<div class="rs-container">` wrappers
-- No inline `<style>` blocks
-- No links to `research-overrides.css`
-- Landing has `rs-index-hero` + `rs-posts` with one post per report
+Before opening a PR, confirm the publication gates hold across every published page:
 
-Run `bash scripts/check_research_structure.sh` before opening a PR.
+- Google Analytics tag (`G-HHYGP07F16`) present in every page `<head>`.
+- Zero placeholder links: `grep -rn 'href="#"' index.html notes/*.html` returns nothing.
+- Zero em or en dashes in published HTML (the house rule is `·`, commas, or "X to Y").
+- A `<title>`, a `<meta name="description">`, and a `<link rel="canonical">` on every page.
+
+The note-creation discipline (titling, openings, gates) lives in the `applied-ai-note` skill in the authoring repository.
 
 ## Licensing
 
