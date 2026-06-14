@@ -35,6 +35,19 @@
   <p>Claude Code routed through DIAL, eight models and 192 runs, has been refaced. If you are not redirected automatically, continue to the note.</p>
   <a href="../notes/telemetry-plane.html">Read the note &nbsp;&rsaquo;</a>
 </div>
-<script>window.setTimeout(function(){window.location.replace("../notes/telemetry-plane.html");},150);</script>
+<script>
+  (function () {
+    var TARGET = "../notes/telemetry-plane.html";
+    var done = false;
+    var go = function () { if (!done) { done = true; window.location.replace(TARGET); } };
+    // Redirect only after GA has had a chance to send the pageview, so the old URL
+    // keeps recording (GA continuity); event_timeout + the setTimeout fallback
+    // guarantee navigation even if gtag.js is slow, blocked, or fails to load.
+    if (typeof gtag === 'function') {
+      gtag('event', 'legacy_redirect', { event_callback: go, event_timeout: 900 });
+    }
+    window.setTimeout(go, 1000);
+  })();
+</script>
 </body>
 </html>
