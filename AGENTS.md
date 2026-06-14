@@ -10,9 +10,9 @@
 ## Learned Workspace Facts
 
 - GitHub repository `agorokh/applied-ai-research`; active line is `main` (feature branches are deleted after squash merges).
-- Published reports are static HTML under dated directories; on `main`: `2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/`, `2026-05-19_choosing-memory-for-enterprise-agents/`, `2026-05-15_claude-code-via-dial-poc/`.
+- Published notes are static HTML; the catalogue is the Atelier publication: `index.html` (journal cover + bound archive) and one file per note under `notes/` (`mcp-harvesting`, `harness-viability`, `telemetry-plane`, `value-layer`). The retired dated directories (`2026-04-28_…`, `2026-05-15_…`, `2026-05-19_…`) now hold GA-bearing redirect stubs that preserve their old URLs; their `artefacts/` folders are kept as linkable companion material.
 - Extraction LLM report was renamed from `2026-05-20_picking-the-extraction-llm-for-lightrag` to `2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion`.
-- Pre-merge local checks: `bash scripts/check_research_structure.sh` and `python3 scripts/validate_reports.py`.
+- Pre-merge local checks (Atelier publication gates): GA tag `G-HHYGP07F16` in every page `<head>`; `grep -rn 'href="#"' index.html notes/*.html` returns nothing; zero em or en dashes in published HTML; a `<title>`, `<meta name="description">`, and `<link rel="canonical">` on every page.
 - Companion repositories are canonicalized in `COMPANION-REPOS.md` (`sdlc-dial-adapter`, `agentic-memory-mcp`); README, CONTRIBUTING, and `index.html` link there.
-- Shared styling lives in `assets/dialx/research.css` with `rs-*` components; research pages use `.rs-page` (including a scoped `border-box` reset).
+- Shared styling is the Atelier reading style under `assets/`: `theme.css` (Claude Design tokens and primitives, never edit), `notes.css` (shared note stylesheet), `atelier-figures.js` (inline-SVG figures), `atelier-rooms.js` (room background, publication tier `data-mood="paper"`). Fonts are Newsreader / Schibsted Grotesk / Spline Sans Mono from Google Fonts.
 - `.gitignore` covers `.cursor/` and `.scratch/`; typical merge signal is CodeRabbit plus Cursor Bugbot green; Copilot reviewer rate limits are usually non-blocking.

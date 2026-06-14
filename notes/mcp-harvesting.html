@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCP harvesting: trustworthy data when your agent has a connector, not an API · Applied Intelligence</title>
+<meta name="description" content="When an agent reads enterprise systems through a flaky MCP connector instead of an API, it will eventually report a fact it never read. An entailment gate caught 98 percent of unsupported claims where a similarity gate caught 27.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/mcp-harvesting.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="MCP harvesting: trustworthy data when your agent has a connector, not an API">
+<meta property="og:description" content="When an agent reads enterprise systems through a flaky MCP connector instead of an API, it will eventually report a fact it never read. An entailment gate caught 98 percent of unsupported claims where a similarity gate caught 27.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/mcp-harvesting.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta name="twitter:title" content="MCP harvesting: trustworthy data when your agent has a connector, not an API">
+<meta name="twitter:description" content="An entailment gate caught 98 percent of unsupported claims where the similarity gate most teams reach for first caught 27.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<style>
+  body { background:#e6dccb; }
+  .progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--line); z-index: 60; }
+  .progress i { display: block; height: 100%; width: 0; background: var(--ink); }
+  .sheet { max-width: 1240px; }
+
+  /* cover */
+  .cover { padding: clamp(34px,4vw,64px) 0 clamp(30px,3.4vw,48px); }
+  .eyebrow { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; font-size: 12.5px; color: var(--ink-3); }
+  .eyebrow .lead { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-2); }
+  .eyebrow .dot { color: var(--ink-4); }
+  .cover h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(42px,5.6vw,84px); line-height: 0.98; letter-spacing: -0.025em; margin: 22px 0 0; max-width: 20ch; text-wrap: balance; }
+  .cover h1 em { display:block; font-style: italic; color: var(--ink-2); font-size: 0.82em; line-height: 1.04; margin-top: 4px; }
+  .cover .lede { font-family: var(--serif); font-weight: 300; font-size: clamp(19px,1.9vw,23px); line-height: 1.5; color: var(--ink); margin: 28px 0 0; max-width: 62ch; }
+
+  .metastats { display: grid; grid-template-columns: repeat(4,1fr); margin-top: 40px; }
+  .metastats .ms { padding: 22px 26px; border-left: 1px solid var(--line); }
+  .metastats .ms:first-child { border-left: 0; padding-left: 28px; }
+  .metastats .v { font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1; color: var(--ink); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .metastats .l { display: block; margin-top: 13px; font-size: 12.5px; line-height: 1.55; color: var(--ink-3); }
+  .artefacts { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink-3); }
+  .artefacts .k { color: var(--ink-3); }
+  .artefacts a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+  .artefacts a:hover { border-bottom-color: var(--ink); color: var(--ink); }
+  .artefacts .dot { color: var(--ink-4); }
+
+  .grid { display: grid; grid-template-columns: 232px minmax(0,1fr); gap: clamp(34px,4vw,72px); margin-top: clamp(28px,3vw,44px); align-items: start; }
+  .rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 22px; background: linear-gradient(rgba(245,240,231,0.84), rgba(243,237,227,0.82)); border: 1px solid var(--line); padding: 22px 22px 24px; }
+  .toc .tl { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-2); margin-bottom: 10px; }
+  .toc a { display: flex; gap: 12px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--ink-2); text-decoration: none; transition: color .2s; }
+  .toc a:first-of-type { border-top: 0; }
+  .toc a .no { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); width: 22px; flex: none; }
+  .toc a:hover { color: var(--ink); }
+  .toc a.on { color: var(--ink); }
+  .toc a.on .no { color: var(--work); }
+  .vitals { padding-top: 18px; border-top: 1px solid var(--line-2); }
+  .vitals .vt { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink); margin-bottom: 8px; }
+  .vitals .v { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .vitals .v:first-of-type { border-top: 0; }
+  .vitals .v .k { font-size: 12px; color: var(--ink-3); }
+  .vitals .v .d { font-family: var(--serif); font-size: 15px; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+  .article { position: relative; background: linear-gradient(rgba(245,240,231,0.93), rgba(243,237,227,0.91)); border: 1px solid var(--line); box-shadow: 0 40px 90px -60px rgba(45,33,18,0.5); padding: clamp(28px,3vw,50px) clamp(28px,3.4vw,56px) clamp(34px,3.4vw,54px); }
+  section.sec { padding: clamp(34px,3.6vw,52px) 0; border-top: 1px solid var(--line); }
+  section.sec:first-child { border-top: 0; padding-top: 6px; }
+  .seclabel { font-size: 12.5px; color: var(--ink-3); margin-bottom: 16px; display: flex; align-items: baseline; gap: 10px; }
+  .seclabel .no { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--work); }
+  .sec h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(25px,2.6vw,35px); line-height: 1.14; letter-spacing: -0.015em; margin: 0 0 18px; max-width: 24ch; text-wrap: balance; }
+  .sec h2 em { font-style: italic; color: var(--ink-2); }
+  .sec h3 { font-family: var(--serif); font-weight: 400; font-style: italic; font-size: 20px; line-height: 1.3; margin: 30px 0 8px; color: var(--ink-2); }
+  .sec p { font-family: var(--serif); font-size: 18px; line-height: 1.72; color: var(--ink); margin: 0 0 16px; max-width: 68ch; }
+  .sec p.lede { font-weight: 300; font-size: clamp(20px,2vw,24px); line-height: 1.5; color: var(--ink); max-width: 56ch; }
+  .sec b { font-weight: 500; }
+  .sec em { font-style: italic; color: var(--ink-2); }
+  .sec ul, .sec ol { margin: 8px 0 16px; padding-left: 0; list-style: none; max-width: 68ch; }
+  .sec ul li, .sec ol li { font-family: var(--serif); font-size: 17px; line-height: 1.62; color: var(--ink); padding: 9px 0 9px 30px; position: relative; border-top: 1px solid var(--line); }
+  .sec ul li:first-child, .sec ol li:first-child { border-top: 0; }
+  .sec ul li::before { content: '·'; position: absolute; left: 8px; color: var(--work); font-weight: 700; }
+  .sec ol { counter-reset: ol; }
+  .sec ol li { counter-increment: ol; }
+  .sec ol li::before { content: counter(ol); position: absolute; left: 0; top: 9px; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-3); }
+
+  .finding { margin: 22px 0; padding: 20px 26px; border-left: 1px solid var(--work); background: linear-gradient(rgba(154,123,60,0.05), rgba(154,123,60,0.02)); }
+  .finding .fk { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--work); margin-bottom: 8px; }
+  .finding h3 { font-family: var(--serif); font-weight: 400; font-style: normal; font-size: 21px; line-height: 1.25; margin: 0 0 10px; color: var(--ink); }
+  .finding p { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0; max-width: 66ch; }
+  .finding.hold { border-left-color: var(--hold); background: linear-gradient(rgba(169,105,78,0.05), rgba(169,105,78,0.02)); }
+  .finding.hold .fk { color: var(--hold); }
+  .finding.calm { border-left-color: var(--calm); background: linear-gradient(rgba(95,122,92,0.05), rgba(95,122,92,0.02)); }
+  .finding.calm .fk { color: var(--calm); }
+
+  .pull { font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(24px,2.8vw,33px); line-height: 1.34; color: var(--ink); margin: 32px 0; padding-left: 26px; border-left: 1px solid var(--line-2); max-width: 26ch; }
+
+  /* a captioned figure (Listing or measure) · REVIEW Q1/Q2 */
+  figure.fig { margin: 26px 0 30px; }
+  figure.fig figcaption { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink-3); margin-bottom: 11px; }
+  figure.fig figcaption b { font-style: normal; font-weight: 400; color: var(--ink-2); }
+  .atom { border: 1px solid var(--line-2); background: linear-gradient(rgba(247,242,233,0.55), rgba(244,238,228,0.45)); padding: 20px 24px; font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink-2); white-space: pre-wrap; }
+  .atom .k { color: var(--ink-3); } .atom .val { color: var(--ink); } .atom .gd { color: var(--calm); }
+  .measure { border: 1px solid var(--line); background: rgba(255,255,255,0.20); padding: 22px 26px 14px; }
+
+  .tbl { margin: 28px 0; }
+  .tbl .cap { font-size: 12.5px; color: var(--ink-3); margin-bottom: 12px; }
+  .tbl .cap b { font-family: var(--serif); font-style: italic; color: var(--ink-2); font-weight: 400; }
+  table.data { width: 100%; border-collapse: collapse; }
+  table.data th { text-align: left; font-family: var(--sans); font-weight: 500; font-size: 12px; color: var(--ink-3); padding: 0 14px 10px 0; border-bottom: 1px solid var(--line-2); vertical-align: bottom; }
+  table.data th.n, table.data td.n { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  table.data td { font-family: var(--serif); font-size: 16px; color: var(--ink); padding: 11px 14px 11px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.data td .d { font-family: var(--sans); font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
+  table.data tr:last-child td { border-bottom: 0; }
+  table.data tr.win td { background: linear-gradient(90deg, rgba(154,123,60,0.09), transparent 72%); }
+  table.data tr.win td:first-child { border-left: 2px solid var(--work); padding-left: 12px; }
+
+  .about { margin-top: 8px; padding: 22px 26px; border: 1px solid var(--line-2); background: rgba(255,255,255,0.3); }
+  .about .ak { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink); margin-bottom: 8px; }
+  .about p { font-family: var(--serif); font-size: 16px; line-height: 1.62; color: var(--ink-2); margin: 0; max-width: 66ch; }
+  .about p b { color: var(--ink); font-weight: 500; }
+
+  .refs { margin-top: clamp(30px,3.4vw,48px); }
+  .refs h2 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin: 0 0 16px; }
+  .refs ol { counter-reset: r; list-style: none; margin: 0; padding: 0; }
+  .refs li { counter-increment: r; position: relative; padding: 11px 0 11px 36px; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+  .refs li:first-child { border-top: 0; }
+  .refs li::before { content: counter(r); position: absolute; left: 0; top: 12px; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-3); }
+  .refs li i { color: var(--ink); font-style: italic; }
+
+  .colophon { margin-top: clamp(34px,4vw,56px); padding-top: 22px; border-top: 1px solid var(--line-2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-3); }
+  .colophon .imprint { color: var(--ink-2); }
+  .colophon .full { flex-basis: 100%; font-size: 13px; color: var(--ink-3); }
+
+  @media (max-width: 1040px) {
+    .grid { grid-template-columns: 1fr; } .rail { position: static; }
+    .metastats { grid-template-columns: 1fr 1fr; } .metastats .ms:nth-child(3) { border-left: 0; padding-left: 28px; }
+  }
+</style>
+</head>
+<body data-room="6" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">independent · by Arseny Gorokh</span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#artefacts">artefacts</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">aar &middot; 01</span>
+  </header>
+
+  <!-- cover -->
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 06 · 13</span>
+      <span class="dot">·</span><span>aar-01</span>
+      <span class="dot">·</span><span>18 min read</span>
+      <span class="dot">·</span><span>position &amp; design research</span>
+    </div>
+    <h1>MCP harvesting:<em>trustworthy data when your agent has a connector, not an API.</em></h1>
+    <p class="lede">If you wire agents to enterprise systems that expose a flaky MCP connector instead of a clean API, the agent will eventually report a fact it never actually read, and a downstream system will act on it before anyone checks. MCP harvesting is the discipline that stops that: it refuses to promote any claim that cannot point back to a real source, with provenance. The number that should set your bar, on a set built to fool both gates: an entailment check caught 98 percent of unsupported claims where the similarity check most teams reach for first caught 27.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">55%</div><span class="l">the accuracy ceiling of the best end-to-end system over messy enterprise data, 62 percent even with perfect retrieval, which is why a disciplined pipeline still beats one agent call (KRAMABENCH).</span></div>
+      <div class="ms"><div class="v">27%</div><span class="l">of unsupported claims a similarity gate catches at the false-refuse rate where an entailment gate catches 98, on a set built to fool both.</span></div>
+      <div class="ms"><div class="v">the&nbsp;disk</div><span class="l">where determinism begins: the agent collects raw bytes; every guarantee, hashing, dedup, provenance, runs on what is written down.</span></div>
+      <div class="ms"><div class="v">72</div><span class="l">hand-authored claim and source pairs behind the gate result. One controlled experiment, stated as such, not a benchmark.</span></div>
+    </div>
+
+    <div class="artefacts" id="artefacts">
+      <span class="k">artefacts</span><span class="dot">·</span>
+      <a href="../artefacts/mcp-harvesting/provenance_atom.schema.json">provenance-atom v0.1</a><span class="dot">·</span>
+      <a href="../artefacts/mcp-harvesting/run_eval.py">the gate harness</a><span class="dot">·</span>
+      <a href="../artefacts/mcp-harvesting/dataset.jsonl">the labelled set</a><span class="dot">·</span>
+      <a href="../artefacts/mcp-harvesting/results.md">results</a><span class="dot">·</span>
+      <a href="../artefacts/mcp-harvesting/gate.py">the structural gate</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The failure</a>
+        <a href="#s02"><span class="no">ii</span>A surface you don't control</a>
+        <a href="#s03"><span class="no">iii</span>Sample a sensor</a>
+        <a href="#s04"><span class="no">iv</span>Refine, do not trust</a>
+        <a href="#s05"><span class="no">v</span>The claim, tested</a>
+        <a href="#s06"><span class="no">vi</span>When to use it</a>
+        <a href="#s07"><span class="no">vii</span>Honest limits</a>
+        <a href="#s08"><span class="no">·</span>Closing</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">13 jun 2026</span></div>
+        <div class="v"><span class="k">version</span><span class="d">2.1</span></div>
+        <div class="v"><span class="k">experiment n</span><span class="d">72</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">aar-01</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>a small, expensive failure</span></div>
+        <h2>The model did not hallucinate. The data was <em>never read.</em></h2>
+        <p class="lede">If you let an agent read enterprise systems through a tool connector, this failure is already in your pipeline, and it is silent: the model does not hallucinate, the data is simply never read.</p>
+        <p>An agent is asked whether a supplier's safety certification is current. It calls a search tool, gets a result titled "Supplier Certification Overview," and reports that the supplier is certified. The answer is wrong: the snippet came from a two-year-old summary, and the current status, a lapsed certificate with a renewal in progress, was in a hidden tab the search never opened. Two steps later a second agent has written "certified" into a sourcing decision, and nothing records that the status was never read from a current source.</p>
+        <p>The model summarised exactly what the tool handed it. The failure was upstream, in the gap between <em>the tool returned a result</em> and <em>the data was actually captured</em>. The fix is not a smarter model. It is a discipline: never treat a search result as data, capture the real body, record where it came from, and refuse to promote any claim that cannot point back to a real source. Applied to an MCP surface, I call that discipline <b>MCP harvesting</b>. The mechanics are ordinary, and section vii of the full note names which prior work each piece comes from. The contribution is two framings and one experiment.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the consumer side, and a lossy surface</span></div>
+        <h2>The surface you are given is lossy, and you <em>cannot fix it.</em></h2>
+        <p>The new consumer of enterprise data is often another agent, and it cannot glance at a snippet and infer the rest, cannot tell a result is tangential, and does not get a second look. When the reader is a machine, the data has to carry its own context. The industry has noticed the demand side: a16z made machine legibility a headline of its 2026 outlook, and the data vendors are merging to ship "context layers" agents can read. Every one of those is written for the data <em>producer</em>, the team that owns the system and can clean it. The agent owner who was granted access to someone else's flaky surface, and has no authority to fix the server, is the consumer side of the same problem, and the 2026 discourse does not serve them.</p>
+        <p>That surface is lossy and non-deterministic, measured rather than asserted: a 2026 benchmark of real multi-tool tasks found frontier models completing under 60 percent of them, needing a parallel reference harness just to account for the surface returning different things at different times.<sup>1</sup> The failure modes are specific and repeatable, and each one shapes the architecture.</p>
+        <ul>
+          <li><b>A search hit is a lead, not evidence.</b> A title or snippet is not the document; it becomes evidence only when a second call captures the actual body. Classify honestly what you captured; a preserved-but-unread file is a recorded gap, not a success.</li>
+          <li><b>A "permission denied" is often a routing artifact.</b> A file the user can already open returns 403 on one route and resolves on another. Chain fallback routes inside that one granted access, and record the trail. A genuine denial is a gap, never retried.</li>
+          <li><b>A record id is not a content identity.</b> The same bytes appear under two ids; hash the content and make the hash the identity, or you double-count.</li>
+          <li><b>Search is ambiguous, and the failure is entity resolution.</b> A query for one company matches a different one named alike. Bind every record to its entity by strength and keep only the strong bindings. Most agent failures over enterprise data are entity-resolution failures wearing the costume of reasoning failures.</li>
+          <li><b>It is a documented security exposure.</b> The lethal trifecta of tool access, untrusted content, and outbound capability has a name and a growing incident list; a 2026 review reported roughly two hundred thousand exposed servers.<sup>2</sup> Recording origin, classifying sensitivity, and never executing what you ingest is both the harvest discipline and the security posture.</li>
+        </ul>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the pattern</span></div>
+        <h2>Sample a sensor, <em>do not call an API.</em></h2>
+        <p>You do not trust any single read. You sample repeatedly, stamp every sample with where and when it came from, and make the sampling safe to repeat. Idempotency, content hashing, and the disk boundary are not arbitrary choices; they are what sampling a sensor requires.</p>
+        <p class="pull">The real decision is not deterministic or agentic. It is where you draw the line between the two.</p>
+        <p>The line is the disk. The agent collects and writes raw bytes; every deterministic guarantee runs on what is now on disk. There is one honest seam: the first hop, the agent issuing the call, is itself agent-mediated and not fully deterministic, so the discipline keeps that hop thin and mechanical and makes everything downstream idempotent, so a re-run catches what a flaky first read missed.</p>
+        <div class="finding calm">
+          <div class="fk">The invariant</div>
+          <h3>Plain code for the mechanics, a model only for meaning.</h3>
+          <p>Any step that touches input or output, retries, hashing, file paths, or rate limits is plain code. Any step that requires judgment about meaning is the model. Mixing them is the bug: the hash decides whether two files are duplicates, and the model decides what they mean.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>refine, do not trust</span></div>
+        <h2>Refine with a model cascade, then <em>gate every claim.</em></h2>
+        <p>Refinement turns the raw harvest into typed knowledge through a cheap-model, expensive-model cascade. I want to be exact: in the single run I have, one top-tier model did both steps. The cascade is the design, not a result I can show yet, and the savings the literature reports are modest, around a quarter to a half at matched quality, not the headline figures.<sup>3</sup></p>
+        <p>The output is a <b>typed atom</b>: one claim, a payload a schema constrains, and two things that make it checkable. A <b>locator</b> carries the source, the content hash, the exact location, and a short quote copied literally from the source, the falsifiability handle; if the model cannot produce a real quote, the atom is dropped. An <b>evidence strength</b>, one of stated, implied, or inferred, tells a downstream agent how far to trust it.</p>
+        <figure class="fig">
+          <figcaption><b>Listing 1</b> · a provenance atom, the unit that travels to the next agent. The gate sets the verdict, not the extractor.</figcaption>
+          <div class="atom"><span class="k">kind:</span>              <span class="val">tech_stack</span>
+<span class="k">claim:</span>             <span class="val">"The supplier plans to retire its legacy scheduling system next fiscal year."</span>
+<span class="k">evidence_strength:</span> <span class="val">implied</span>
+<span class="k">locator:</span>
+  <span class="k">source:</span>          <span class="val">vendor-review.pptx</span>
+  <span class="k">sha256:</span>          <span class="val">9f2c8a...</span>
+  <span class="k">where:</span>           <span class="val">slide 14, presenter notes</span>
+  <span class="k">quote:</span>           <span class="val">"target: retire legacy scheduler, pending budget approval"</span>
+<span class="k">gate_verdict:</span>      <span class="gd">supported</span></div>
+        </figure>
+        <p>Then the gate. The single strongest reason it exists: a 2026 study found citation links almost always work and are usually on-topic, yet the share of claims the cited source actually supports ran from 24 to 77 percent, collapsing toward 17 percent for one frontier model as tool calls scaled into the hundreds.<sup>4</sup> A citation that looks valid and is not is worse than no citation, because it passes a glance. So the gate checks, deterministically, that the cited artifact is present, the quote appears, and the claim does not contradict the aggregated facts. Whether the better <em>semantic</em> check actually pays is the next section.</p>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>the claim, tested</span></div>
+        <h2>A similarity gate scores relatedness. <em>Relatedness is not support.</em></h2>
+        <p class="lede">A claim that can be wrong, the experiment pre-registered to break it, and what happened when it ran.</p>
+        <div class="finding">
+          <div class="fk">The claim under test</div>
+          <h3>An entailment gate catches materially more unsupported claims than a similarity gate, at a false-refuse rate worth the cost.</h3>
+          <p>72 hand-authored claim and source pairs in generic enterprise domains, 28 genuinely supported and 44 not, labelled by hand. Built hard in both directions: unsupported claims that overlap their source heavily (a scope widened from "US data centres" to "all," a plan reported as a fact, a rival's layoffs attributed to the company), and supported claims worded so differently that surface similarity is low. Four gates ran over the same pairs.</p>
+        </div>
+
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · catch rate at a matched false-refuse of 7 percent. A similarity gate held to the entailment gate's error budget catches almost nothing of what it should.</figcaption>
+          <div class="measure" data-atelier-figure='{"type":"measure","min":0,"max":100,"unit":"%","ticks":[0,25,50,75,100],"marks":[{"at":27,"value":"27%","label":"embedding similarity","tint":"hold"},{"at":98,"value":"98%","label":"entailment / reasoning","tint":"work"}]}'></div>
+        </figure>
+
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> four gates over the same 72 pairs. A gate accepts a claim it judges supported and rejects otherwise. <b>catch</b> is the share of not-supported claims rejected; <b>false-refuse</b> is the share of supported claims wrongly rejected.</div>
+          <table class="data">
+            <thead><tr><th>gate</th><th class="n">catch</th><th class="n">false-refuse</th><th class="n">accuracy</th></tr></thead>
+            <tbody>
+              <tr class="win"><td><b>LLM reasoning / entailment</b><div class="d">judges support, two model families agree</div></td><td class="n">0.98 to 1.00</td><td class="n">0.04 to 0.07</td><td class="n">0.96 to 0.97</td></tr>
+              <tr><td>embedding similarity<div class="d">cosine of claim against source, best threshold</div></td><td class="n">0.84</td><td class="n">0.68</td><td class="n">0.64</td></tr>
+              <tr><td>lexical similarity<div class="d">term-frequency cosine, best threshold</div></td><td class="n">0.86</td><td class="n">0.71</td><td class="n">0.64</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>The structural reason is in the embeddings: the unsupported similarity-traps average a cosine of 0.89 to their source and the contradicted pairs 0.87, both <em>higher</em> than the genuinely supported paraphrases at 0.77. No threshold separates supported from unsupported, because the most dangerous unsupported claims look more like their source than the honest supported ones do. To catch most unsupported claims a similarity gate has to reject most good ones. The pre-registered falsification condition, that entailment fails to beat similarity at an equal or lower false-refuse rate, did not trigger. On this corpus the claim survives.</p>
+        <p><b>What this does and does not establish.</b> The corpus is synthetic and I authored and labelled it alone, so it has no independent label check; it is built to contain the adversarial cases the grounding literature documents in the wild, and the finding is the gap between gate types, not an absolute rate. The "embedding gate" is a bi-encoder cosine; a cross-encoder or a fine-tuned natural-language-inference model would do better, and shades into the entailment gate. That is the honest boundary: similarity <em>scoring</em> cannot separate related from supported; <em>entailment judgment</em>, whether a small fine-tuned model or an LLM, can.</p>
+
+        <h3>And what one production run cannot show</h3>
+        <p>I also ran the full pattern end to end once, on a single enterprise account. It demonstrated the failure modes in the wild: the same bytes under two ids that hashing caught, a record named after the target that belonged to a different company, material the convenient query path missed.</p>
+        <div class="finding hold">
+          <div class="fk">The honest shape of one run</div>
+          <h3>Zero rejections is what a working gate and a broken one both produce.</h3>
+          <p>The grounding review returned zero unsupported and zero contradicted claims, and I do not read that as success. On a relatively clean corpus graded by a capable model, zero rejections is exactly what an over-accepting verifier produces, and this run cannot distinguish the two. The cascade did not run; one top-tier model did everything, so the cost figure is the un-cascaded one. The controlled experiment above is where the gate's reject path was actually exercised.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>when to use it</span></div>
+        <h2>When to use this, and <em>when not.</em></h2>
+        <p>If a clean, complete API sits right behind the surface and you are authorised to call it, building this machinery is the wrong tool. The pattern earns its keep in a narrow box, and outside it is over-engineering.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 2 ·</b> a rough, operator-tunable decision rubric. The thresholds are deliberately crude; the point is to force the four axes into the call instead of arguing taste.</div>
+          <table class="data">
+            <thead><tr><th>if the situation is</th><th>then</th></tr></thead>
+            <tbody>
+              <tr><td>a clean, complete API you are authorised to call</td><td><span class="d">Call the API. Skip harvesting.</span></td></tr>
+              <tr><td>a small, static corpus with one reader</td><td><span class="d">Put the raw files in a long-context model.</span></td></tr>
+              <tr><td>a low-stakes, one-shot question</td><td><span class="d">Answer it directly. Provenance is pure cost.</span></td></tr>
+              <tr class="win"><td><b>a changing, multi-reader corpus behind a surface you cannot replace, where a wrong answer gets acted on</b></td><td><span class="d">Harvest: deterministic spine, cascade, grounding gate.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>One boundary on the architecture: the deterministic spine is only as deterministic as the surface allows. If the server is a thin shell over flaky screen automation, the retries are deterministically re-poking an unstable pipe. Harvesting bounds the damage, it records what it got and refuses to over-claim, but it cannot manufacture a reliability the source does not have.</p>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>honest limits</span></div>
+        <h2>The conditions under which <em>this is wrong.</em></h2>
+        <ol>
+          <li><b>Not "MCP replaced the API."</b> The API usually remains the source of truth. The claim is only that the surface an agent is granted is increasingly lossier than the API behind it.</li>
+          <li><b>The mechanics are not new.</b> Idempotent extraction is data engineering; the cascade is model routing; the deterministic-around-the-model shape is compound AI systems.<sup>5</sup> The contribution is two framings and one experiment.</li>
+          <li><b>Frontier models may shrink the niche.</b> The pattern durably wins only where provenance is required, the fact count is high, freshness matters, and an audit trail is mandatory. Outside that box it is over-engineering, the condition that would make this wrong.</li>
+          <li><b>The central benefit is unproven on production data.</b> The gate result is on a synthetic set; the one production run did not run the cascade or exercise the gate's reject path. The magnitudes are corpus-specific; the structural claims are what transfer.</li>
+          <li><b>The substrate mostly does not exist in production yet.</b> Analysts rate agent-ready data as over-hyped and forecast more than 40 percent of agentic projects cancelled within two years.<sup>6</sup> The missing substrate is the opportunity and the reason most attempts will not ship.</li>
+        </ol>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">·</span><span>closing</span></div>
+        <h2>The reader is a machine. <em>The surface gives it less.</em></h2>
+        <p>The shift underneath all of this is that the consumer of enterprise data is becoming a machine that needs more structure and more provenance than a human ever did, and the access it is granted is becoming an unreliable tool surface rather than a clean API. MCP harvesting answers both at once: it samples the surface like a sensor, stamps every sample, refines with a model only where judgment is genuinely required, and gates the result so an unsupported claim cannot pass as a supported one. The mechanics are borrowed and named honestly. What is mine to defend is the framing, and the one test that says whether the central design choice earns its cost.</p>
+
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI research note by Arseny Gorokh. <b>Not an official EPAM publication.</b> The pattern is drawn from building a real harvesting agent; all worked examples are composite or synthetic and describe no single client. The gate result is one controlled experiment on a hand-authored set of 72 pairs, reported as such. <b>Re-run the harness in the companion repository before treating any number as portable.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>LiveMCP-101 (Duke University and Zoom), <i>arXiv:2508.15760</i>, 2025. Frontier models under 60% on real multi-tool MCP tasks.</li>
+          <li>OX Security, <i>MCP supply-chain advisory</i>, Apr 2026; Simon Willison, <i>the lethal trifecta</i>, 2025.</li>
+          <li>FrugalGPT (Chen et al.), <i>arXiv:2305.05176</i>, 2023; UCCI, <i>arXiv:2605.18796</i>, 2026 (31% at matched accuracy).</li>
+          <li><i>Cited but Not Verified</i>, <i>arXiv:2605.06635</i>, 2026. Citation links 94 to 100% valid; per-claim factual support 24 to 77%.</li>
+          <li>Zaharia et al., <i>The shift from models to compound AI systems</i>, Berkeley BAIR, 2024.</li>
+          <li>Gartner, <i>more than 40% of agentic AI projects cancelled by end of 2027</i>, 2025; KRAMABENCH, <i>arXiv:2506.06541</i>, ICLR 2026.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>aar-01</span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('pbar');
+  const links = [...document.querySelectorAll('.toc a')];
+  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
+  function onScroll() {
+    const sd = window.scrollY || document.documentElement.scrollTop;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    const y = sd + 130; let cur = targets[0];
+    for (const o of targets) { if (o.t.getBoundingClientRect().top + sd <= y) cur = o; }
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) cur.a.classList.add('on');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  links.forEach(a => a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
+  }));
+  onScroll();
+</script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A memory-and-policy layer above the model: the build-versus-buy case · Applied Intelligence</title>
+<meta name="description" content="A model gateway routes a prompt but knows nothing about your repository, policy, or budget. The build-versus-buy case for owning the in-path memory-and-policy layer while the model underneath stays swappable.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/value-layer.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="A memory-and-policy layer above the model: the build-versus-buy case for enterprise AI">
+<meta property="og:description" content="A model gateway routes a prompt but knows nothing about your repository, policy, or budget. The build-versus-buy case for owning the in-path memory-and-policy layer while the model underneath stays swappable.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/value-layer.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta name="twitter:title" content="A memory-and-policy layer above the model: the build-versus-buy case for enterprise AI">
+<meta name="twitter:description" content="Own the in-path layer that governs memory, policy, and cost while the model underneath stays swappable, and prove it ports across providers.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style> body { background:#e6dccb; } </style>
+</head>
+<body data-room="3" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">independent · by Arseny Gorokh</span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#artefacts">artefacts</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">aar &middot; 04</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 06 · 05</span>
+      <span class="dot">·</span><span>aar-04</span>
+      <span class="dot">·</span><span>12 min read</span>
+      <span class="dot">·</span><span>strategy &amp; architecture</span>
+    </div>
+    <h1>A memory-and-policy layer above the model:<em>the build-versus-buy case for enterprise AI.</em></h1>
+    <p class="lede">If you are deciding what to build versus buy in your AI stack, the trap is pouring scarce engineering into the layer the next model release will commoditise. A model gateway routes your prompt but knows nothing about your repository, your policy, your budget, or the decision you made last week, and that gap is where the defensible work lives. This note makes the case for owning the in-path layer that governs memory, policy, and cost while the model underneath stays swappable: keep the open-source gateway, own the layer, and prove it ports across providers so no single vendor owns your exit.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">the&nbsp;endpoint</div><span class="l">the defensible product is the active in-path endpoint above the kernel, not the gateway, and not the dashboards that read it.</span></div>
+      <div class="ms"><div class="v">5</div><span class="l">criteria, stated before any code, that decide whether this is a portable product or just customisation of one platform.</span></div>
+      <div class="ms"><div class="v">2</div><span class="l">kernels at least must pass the same conformance suite before portability is a claim rather than a slogan.</span></div>
+      <div class="ms"><div class="v">31</div><span class="l">components mapped across the inherited open-source kernel, the owned layer, and runtime support.</span></div>
+    </div>
+
+    <div class="artefacts" id="artefacts">
+      <span class="k">artefacts</span><span class="dot">·</span>
+      <a href="https://github.com/agorokh/agentic-memory-mcp">the memory server</a><span class="dot">·</span>
+      <a href="../2026-05-19_choosing-memory-for-enterprise-agents/artefacts/adoption-bar.md">the adoption bar</a><span class="dot">·</span>
+      <a href="../2026-05-19_choosing-memory-for-enterprise-agents/artefacts/methodology.md">the methodology</a><span class="dot">·</span>
+      <span>further artefacts on request</span>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>Four findings</a>
+        <a href="#s02"><span class="no">ii</span>Context before the call</a>
+        <a href="#s03"><span class="no">iii</span>Product or demo</a>
+        <a href="#s04"><span class="no">iv</span>Keep the commodity</a>
+        <a href="#s05"><span class="no">v</span>Two deployment forms</a>
+        <a href="#s06"><span class="no">vi</span>The cut line</a>
+        <a href="#s07"><span class="no">vii</span>Portability as proof</a>
+        <a href="#s08"><span class="no">·</span>Closing</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">5 jun 2026</span></div>
+        <div class="v"><span class="k">components</span><span class="d">31</span></div>
+        <div class="v"><span class="k">criteria</span><span class="d">5</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">aar-04</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>a decision memo, not an architecture diagram</span></div>
+        <h2>Four findings, <em>one company spine.</em></h2>
+        <p class="lede">Where should scarce proprietary effort go when the model underneath is becoming a commodity?</p>
+        <p>Spend it forking a gateway and you inherit maintenance debt for something that is becoming free; spend it nowhere and you have no moat at all. The argument here is about what to build <em>above</em> the gateway, and EPAM's open-source DIAL is the capable, swappable floor it sits on. Four findings carry it: keep DIAL as the inherited kernel rather than forking it into maintenance debt; own the active endpoint that runs before and after every model call; sell two angles, coding-agent memory and vertical AI workflows, through one shared runtime; and treat kernel portability as a test plan, not a slogan. The fourth is the load-bearing caveat: the layer is designed around a portable internal contract that has to be proven per kernel for request fidelity, latency, cost extraction, and failure handling.</p>
+        <div class="finding">
+          <div class="fk">The investable claim</div>
+          <h3>Active context control, not another gateway.</h3>
+          <p>A governed endpoint that remembers, routes, prices, and explains agentic work across kernels. The gateway is inherited and replaceable; the endpoint above it, the thing that decides what context and policy and budget enter each prompt, is the product.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>context before the model call</span></div>
+        <h2>A gateway routes a prompt. It does not <em>know the work.</em></h2>
+        <p>A model gateway is useful but does not by itself know the repository, the issue, the customer workflow, the budget, or which prior decision must be preserved. Two corpora need that context, and the failure mode differs by corpus.</p>
+        <ul>
+          <li><b>An SDLC corpus.</b> Coding agents draw on architecture decisions, tickets, pull requests, incidents, and handoff notes. The risk a memory layer prevents: reversing a prior decision, or burning tokens re-fetching context the agent should already hold.</li>
+          <li><b>A domain corpus.</b> Vertical workflows need source-bound customer knowledge, policy, and workflow state. The risk: a plausible answer that triggers the wrong business action.</li>
+        </ul>
+        <p>The shared problem is context selection under policy. The layer wins only if it makes model calls better, cheaper, or safer in a way a customer can see, not as a hidden prompt trick.</p>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the adoption bar</span></div>
+        <h2>Five criteria decide <em>product or demo.</em></h2>
+        <p>The architecture is attractive only if it clears a bar stated before implementation. These five test whether the value layer survives real deployment pressure.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> the adoption bar, fixed in advance. The layer is a product only if all five pass.</div>
+          <table class="data">
+            <thead><tr><th>criterion</th><th>pass condition</th><th>why it matters</th></tr></thead>
+            <tbody>
+              <tr><td><b>Active control</b></td><td><span class="d">Runs in the request path, not only after the event.</span></td><td><span class="d">Memory, policy, and cost decisions must happen before spend occurs.</span></td></tr>
+              <tr><td><b>Kernel portability</b></td><td><span class="d">DIAL plus at least one non-DIAL kernel pass the same conformance suite.</span></td><td><span class="d">Otherwise the product is DIAL customisation, not a portable layer.</span></td></tr>
+              <tr><td><b>Cost truth</b></td><td><span class="d">Usage is joined to a rate card and session identity.</span></td><td><span class="d">Buyers need spend explained per workflow, not only per provider bill.</span></td></tr>
+              <tr><td><b>Memory governance</b></td><td><span class="d">Every surfaced fact can point to a source and a policy reason.</span></td><td><span class="d">Agent memory must be auditable, not a hidden prompt trick.</span></td></tr>
+              <tr><td><b>Failure behaviour</b></td><td><span class="d">Memory, kernel, and policy-stop each produce a clear degraded mode.</span></td><td><span class="d">Reliability claims start with what happens when dependencies fail.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>where the product lives</span></div>
+        <h2>Keep the commodity foundation, <em>own the value layer.</em></h2>
+        <p>A model can answer only the prompt it receives. The value layer decides what context, policy, and budget information enters that prompt. Dashboards read the telemetry but do not make the endpoint valuable on their own; the endpoint earns value when it changes what the model sees and what the organisation can govern.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · the request lifecycle. The in-path endpoint, not the kernel, is where memory, policy, and cost truth are decided.</figcaption>
+          <div class="flow">
+            <div class="stage"><div class="sn">01</div><div class="st">Client</div><div class="sd">Cursor, Claude Code, Codex-style agents, or vertical apps.</div></div>
+            <div class="stage work"><div class="sn">02</div><div class="st">In-path endpoint</div><div class="sd">session, issue, policy, and workspace identity.</div></div>
+            <div class="stage"><div class="sn">03</div><div class="st">Memory &amp; budget</div><div class="sd">context lookup, rate card, cache hint, route guard.</div></div>
+            <div class="stage"><div class="sn">04</div><div class="st">Kernel</div><div class="sd">DIAL Core, Bedrock, Vertex, Foundry, OpenRouter, or an OSS gateway.</div></div>
+            <div class="stage"><div class="sn">05</div><div class="st">Cost truth</div><div class="sd">usage fields, cache result, final rate, telemetry trace.</div></div>
+          </div>
+        </figure>
+        <p>The repository ledger separates inherited open-source components from the local proprietary layer and supporting runtime services. The licence line matters for diligence: an Apache-2.0 foundation makes commercial composition possible, but inherited features must never be presented as proprietary inventions.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 2 ·</b> the component map, 31 components in three bands.</div>
+          <table class="data">
+            <thead><tr><th>layer</th><th>components</th></tr></thead>
+            <tbody>
+              <tr><td><b>Inherited DIAL</b></td><td><span class="d">Core, Chat, Admin, RAG, Quick Apps, Analytics, SDKs.</span></td></tr>
+              <tr class="win"><td><b>Owned layer</b></td><td><span class="d">the model-to-DIAL adapter, the custom telemetry plane, cost exporters, memory interceptors, vertical workbenches.</span></td></tr>
+              <tr><td><b>Runtime support</b></td><td><span class="d">Redis, Postgres, a vector store, InfluxDB, Grafana, an OpenTelemetry collector.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>one logic, two shapes</span></div>
+        <h2>One layer, shipped as an interceptor <em>or a standalone endpoint.</em></h2>
+        <p>The same proprietary logic can ship as a DIAL-native interceptor (Mode A) or as a standalone primary endpoint (Mode B), and the choice changes the risk profile.</p>
+        <div class="finding calm">
+          <div class="fk">The decision rule</div>
+          <h3>Interceptor mode to prove value inside DIAL; standalone mode to prove the layer survives without it.</h3>
+          <p>Mode A keeps the customer close to DIAL's configuration model and is best for native distribution; its risk is contract drift from upstream interceptor changes. Mode B lets the company own the primary control point and is best for proving kernel substitution, but it inherits responsibility for auth, scaling, session management, and failure handling.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>the cut line</span></div>
+        <h2>What to keep upstream, <em>what to own and close.</em></h2>
+        <p>The cut line protects the story from overclaiming and tells engineering where to spend. Keep the commodity foundation upstream; own the context, the cost ledger, and the proof.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 3 ·</b> the cut line between inherited and defensible.</div>
+          <table class="data">
+            <thead><tr><th>keep upstream</th><th>own and close</th><th>reason</th></tr></thead>
+            <tbody>
+              <tr><td>DIAL unified API and Core routing</td><td><span class="d">policy and memory enrichment</span></td><td><span class="d">routing is the foundation; context policy is the value.</span></td></tr>
+              <tr><td>DIAL Chat and Admin</td><td><span class="d">customer-specific workbenches</span></td><td><span class="d">default UI proves access; vertical UI proves workflow fit.</span></td></tr>
+              <tr><td>DIAL realtime analytics</td><td><span class="d">a billing-grade cost ledger</span></td><td><span class="d">observability explains behaviour; cost truth supports decisions.</span></td></tr>
+              <tr><td>DIAL SDKs and interceptor SDK</td><td><span class="d">the conformance suite and adapters</span></td><td><span class="d">the SDK is a contract; the company owns proof that it holds.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>portability is a proof requirement</span></div>
+        <h2>Portability is a test <em>you can rerun across providers.</em></h2>
+        <p>A portable value layer needs a normalised internal contract; each kernel adapter then proves it preserves request meaning, cost fields, and failure semantics, judged on four properties: request fidelity, latency overhead, cost extraction, and failure behaviour. The adapter effort tiers: a thin OpenRouter or OSS gateway as the first non-DIAL test, medium-effort enterprise tests on Bedrock, Vertex, or Foundry where cost and policy controls differ by provider, and DIAL Core as the reference anchor. Build the proof in the order a buyer can verify: this quarter, define and test the contract; next, prove one coding workflow; then prove one vertical workflow.</p>
+        <div class="finding hold">
+          <div class="fk">Bounded claims</div>
+          <h3>What this note does not claim.</h3>
+          <p>It does not claim Palantir parity (the category benchmark for ontology and operational AI), Faculty-level packaging maturity, that every kernel works, that analytics is the product, or that licence diligence is finished. It claims one thing: active context control, proven per kernel, is the defensible layer above a commodity gateway.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">·</span><span>closing</span></div>
+        <h2>The model stays swappable; <em>the in-path layer is the product.</em></h2>
+        <p>The inference kernel is becoming a commodity that several vendors will supply interchangeably. What an enterprise cannot buy off the shelf is a governed, in-path endpoint that holds its memory, enforces its policy, prices its own spend, and explains agentic work across whichever kernel runs underneath. That endpoint is where scarce proprietary effort earns a return, and the discipline of this note is to keep the line between what is inherited and what is owned honest enough to survive diligence.</p>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> EPAM's DIAL is the open-source platform the research studies; the architecture argument is the author's own. Companion artefacts are available on request.</p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>EPAM <i>DIAL</i> open-source repositories (Core, Chat, Admin, RAG, Quick Apps, Analytics, SDKs), the inherited kernel.</li>
+          <li><i>Apache-2.0 licence</i>, under which commercial composition of the inherited components is possible; notices and upgrade paths remain an operational responsibility.</li>
+          <li><i>OpenTelemetry GenAI semantic conventions</i>, the basis of the cost-truth telemetry plane.</li>
+          <li>Palantir <i>Foundry and AIP</i>, cited as a category bound for ontology and operational AI, not a parity claim.</li>
+          <li>Faculty <i>Frontier</i>, cited as a packaging and decision-intelligence maturity bound.</li>
+          <li>Cloud gateway documentation, <i>Bedrock, Vertex, Foundry, OpenRouter</i>, behind the kernel-substitution tiers and the per-provider cost and policy variance.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>aar-04</span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('pbar');
+  const links = [...document.querySelectorAll('.toc a')];
+  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
+  function onScroll() {
+    const sd = window.scrollY || document.documentElement.scrollTop;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    const y = sd + 130; let cur = targets[0];
+    for (const o of targets) { if (o.t.getBoundingClientRect().top + sd <= y) cur = o; }
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) cur.a.classList.add('on');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  links.forEach(a => a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
+  }));
+  onScroll();
+</script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>

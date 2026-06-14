@@ -1,0 +1,138 @@
+/* ============================================================================
+   Applied AI Research — the shared note stylesheet.
+   The Atelier publication register (REVIEW: data-mood="paper"), extracted so
+   every note is content, not a repeated style block. Link AFTER theme.css.
+   Page-local <style> in a note should only set body background + rare overrides.
+   ============================================================================ */
+
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--line); z-index: 60; }
+.progress i { display: block; height: 100%; width: 0; background: var(--ink); }
+.sheet { max-width: 1240px; }
+
+/* ── cover ───────────────────────────────────────────────────────────────── */
+.cover { padding: clamp(34px,4vw,64px) 0 clamp(30px,3.4vw,48px); }
+.eyebrow { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; font-size: 12.5px; color: var(--ink-3); }
+.eyebrow .lead { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-2); }   /* quiet, never gold (REVIEW Move 3.1) */
+.eyebrow .dot { color: var(--ink-4); }
+.cover h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(42px,5.6vw,84px); line-height: 0.98; letter-spacing: -0.025em; margin: 22px 0 0; max-width: 20ch; text-wrap: balance; }
+.cover h1 em { display: block; font-style: italic; color: var(--ink-2); font-size: 0.82em; line-height: 1.04; margin-top: 4px; }  /* subtitle scale (REVIEW Move 3.3) */
+.cover .lede { font-family: var(--serif); font-weight: 300; font-size: clamp(19px,1.9vw,23px); line-height: 1.5; color: var(--ink); margin: 28px 0 0; max-width: 62ch; }
+
+/* cover key figures — serif value + prose label; NO inline vs/to (REVIEW Move 3.2) */
+.metastats { display: grid; grid-template-columns: repeat(4,1fr); margin-top: 40px; }
+.metastats .ms { padding: 22px 26px; border-left: 1px solid var(--line); }
+.metastats .ms:first-child { border-left: 0; padding-left: 28px; }
+.metastats .v { font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1; color: var(--ink); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.metastats .l { display: block; margin-top: 13px; font-size: 12.5px; line-height: 1.55; color: var(--ink-3); }
+.artefacts { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink-3); }
+.artefacts .k { color: var(--ink-3); }
+.artefacts a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.artefacts a:hover { border-bottom-color: var(--ink); color: var(--ink); }
+.artefacts .dot { color: var(--ink-4); }
+
+/* ── body grid: sticky rail + article on paper ───────────────────────────── */
+.grid { display: grid; grid-template-columns: 232px minmax(0,1fr); gap: clamp(34px,4vw,72px); margin-top: clamp(28px,3vw,44px); align-items: start; }
+.rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 22px; background: linear-gradient(rgba(245,240,231,0.84), rgba(243,237,227,0.82)); border: 1px solid var(--line); padding: 22px 22px 24px; }
+.toc .tl { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-2); margin-bottom: 10px; }
+.toc a { display: flex; gap: 12px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--ink-2); text-decoration: none; transition: color .2s; }
+.toc a:first-of-type { border-top: 0; }
+.toc a .no { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); width: 22px; flex: none; }
+.toc a:hover { color: var(--ink); }
+.toc a.on { color: var(--ink); }
+.toc a.on .no { color: var(--work); }
+.vitals { padding-top: 18px; border-top: 1px solid var(--line-2); }
+.vitals .vt { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink); margin-bottom: 8px; }
+.vitals .v { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); }
+.vitals .v:first-of-type { border-top: 0; }
+.vitals .v .k { font-size: 12px; color: var(--ink-3); }
+.vitals .v .d { font-family: var(--serif); font-size: 15px; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.article { position: relative; background: linear-gradient(rgba(245,240,231,0.93), rgba(243,237,227,0.91)); border: 1px solid var(--line); box-shadow: 0 40px 90px -60px rgba(45,33,18,0.5); padding: clamp(28px,3vw,50px) clamp(28px,3.4vw,56px) clamp(34px,3.4vw,54px); }
+section.sec { padding: clamp(34px,3.6vw,52px) 0; border-top: 1px solid var(--line); }
+section.sec:first-child { border-top: 0; padding-top: 6px; }
+.seclabel { font-size: 12.5px; color: var(--ink-3); margin-bottom: 16px; display: flex; align-items: baseline; gap: 10px; }
+.seclabel .no { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--work); }
+.sec h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(25px,2.6vw,35px); line-height: 1.14; letter-spacing: -0.015em; margin: 0 0 18px; max-width: 24ch; text-wrap: balance; }
+.sec h2 em { font-style: italic; color: var(--ink-2); }
+.sec h3 { font-family: var(--serif); font-weight: 400; font-style: italic; font-size: 20px; line-height: 1.3; margin: 30px 0 8px; color: var(--ink-2); }
+.sec p { font-family: var(--serif); font-size: 18px; line-height: 1.72; color: var(--ink); margin: 0 0 16px; max-width: 68ch; }
+.sec p.lede { font-weight: 300; font-size: clamp(20px,2vw,24px); line-height: 1.5; color: var(--ink); max-width: 56ch; }
+.sec b { font-weight: 500; }
+.sec em { font-style: italic; color: var(--ink-2); }
+.sec sup { font-family: var(--sans); font-size: 11px; color: var(--work); font-weight: 500; vertical-align: 5px; }
+.sec ul, .sec ol { margin: 8px 0 16px; padding-left: 0; list-style: none; max-width: 68ch; }
+.sec ul li, .sec ol li { font-family: var(--serif); font-size: 17px; line-height: 1.62; color: var(--ink); padding: 9px 0 9px 30px; position: relative; border-top: 1px solid var(--line); }
+.sec ul li:first-child, .sec ol li:first-child { border-top: 0; }
+.sec ul li::before { content: '·'; position: absolute; left: 8px; color: var(--work); font-weight: 700; }
+.sec ol { counter-reset: ol; }
+.sec ol li { counter-increment: ol; }
+.sec ol li::before { content: counter(ol); position: absolute; left: 0; top: 9px; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-3); }
+
+/* ── finding callouts — the three tints ──────────────────────────────────── */
+.finding { margin: 22px 0; padding: 20px 26px; border-left: 1px solid var(--work); background: linear-gradient(rgba(154,123,60,0.05), rgba(154,123,60,0.02)); }
+.finding .fk { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--work); margin-bottom: 8px; }
+.finding h3 { font-family: var(--serif); font-weight: 400; font-style: normal; font-size: 21px; line-height: 1.25; margin: 0 0 10px; color: var(--ink); }
+.finding p { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0; max-width: 66ch; }
+.finding p + p { margin-top: 10px; }
+.finding.hold { border-left-color: var(--hold); background: linear-gradient(rgba(169,105,78,0.05), rgba(169,105,78,0.02)); }
+.finding.hold .fk { color: var(--hold); }
+.finding.calm { border-left-color: var(--calm); background: linear-gradient(rgba(95,122,92,0.05), rgba(95,122,92,0.02)); }
+.finding.calm .fk { color: var(--calm); }
+
+.pull { font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(24px,2.8vw,33px); line-height: 1.34; color: var(--ink); margin: 32px 0; padding-left: 26px; border-left: 1px solid var(--line-2); max-width: 26ch; }
+
+/* ── figures: captioned Listing / measure / chart (REVIEW Q1/Q2) ─────────── */
+figure.fig { margin: 26px 0 30px; }
+figure.fig figcaption { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink-3); margin-bottom: 11px; }
+figure.fig figcaption b { font-style: normal; font-weight: 400; color: var(--ink-2); }
+.atom { border: 1px solid var(--line-2); background: linear-gradient(rgba(247,242,233,0.55), rgba(244,238,228,0.45)); padding: 20px 24px; font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink-2); white-space: pre-wrap; overflow-x: auto; }
+.atom .k { color: var(--ink-3); } .atom .val { color: var(--ink); } .atom .gd { color: var(--calm); } .atom .ng { color: var(--neg); }
+.measure { border: 1px solid var(--line); background: rgba(255,255,255,0.20); padding: 22px 26px 14px; }
+
+/* ── hairline flow — ordered stages, token strokes (topology / lifecycle) ── */
+.flow { border: 1px solid var(--line); background: rgba(255,255,255,0.18); padding: 26px 22px; display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+.flow .stage { flex: 1 1 0; min-width: 130px; padding: 0 14px; position: relative; }
+.flow .stage + .stage::before { content: ''; position: absolute; left: -1px; top: 7px; bottom: 7px; width: 1px; background: var(--line); }
+.flow .stage .sn { font-family: var(--mono); font-size: 10.5px; color: var(--ink-4); }
+.flow .stage .st { font-family: var(--serif); font-size: 16px; color: var(--ink); margin: 5px 0 6px; line-height: 1.2; }
+.flow .stage .sd { font-family: var(--sans); font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+.flow .stage.work .st { color: var(--work); }
+@media (max-width: 720px){ .flow { flex-direction: column; } .flow .stage + .stage::before { display: none; } .flow .stage { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 10px; } }
+
+/* ── data tables — at most one gold winner row; results serif tabular ────── */
+.tbl { margin: 28px 0; }
+.tbl .cap { font-size: 12.5px; color: var(--ink-3); margin-bottom: 12px; }
+.tbl .cap b { font-family: var(--serif); font-style: italic; color: var(--ink-2); font-weight: 400; }
+table.data { width: 100%; border-collapse: collapse; }
+table.data th { text-align: left; font-family: var(--sans); font-weight: 500; font-size: 12px; color: var(--ink-3); padding: 0 14px 10px 0; border-bottom: 1px solid var(--line-2); vertical-align: bottom; }
+table.data th .sub { display: block; font-weight: 400; font-size: 10.5px; color: var(--ink-4); margin-top: 3px; }
+table.data th.n, table.data td.n { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+table.data td { font-family: var(--serif); font-size: 16px; color: var(--ink); padding: 11px 14px 11px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.data td .d { font-family: var(--sans); font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
+table.data td .mono { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+table.data tr:last-child td { border-bottom: 0; }
+table.data tr.win td { background: linear-gradient(90deg, rgba(154,123,60,0.09), transparent 72%); }
+table.data tr.win td:first-child { border-left: 2px solid var(--work); padding-left: 12px; }
+
+/* ── about / references / colophon ───────────────────────────────────────── */
+.about { margin-top: 8px; padding: 22px 26px; border: 1px solid var(--line-2); background: rgba(255,255,255,0.3); }
+.about .ak { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink); margin-bottom: 8px; }
+.about p { font-family: var(--serif); font-size: 16px; line-height: 1.62; color: var(--ink-2); margin: 0; max-width: 66ch; }
+.about p b { color: var(--ink); font-weight: 500; }
+.refs { margin-top: clamp(30px,3.4vw,48px); }
+.refs h2 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin: 0 0 16px; }
+.refs ol { counter-reset: r; list-style: none; margin: 0; padding: 0; }
+.refs li { counter-increment: r; position: relative; padding: 11px 0 11px 36px; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+.refs li:first-child { border-top: 0; }
+.refs li::before { content: counter(r); position: absolute; left: 0; top: 12px; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-3); }
+.refs li i { color: var(--ink); font-style: italic; }
+
+/* the colophon carries the imprint (REVIEW Move 2); never "Atelier" */
+.colophon { margin-top: clamp(34px,4vw,56px); padding-top: 22px; border-top: 1px solid var(--line-2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-3); }
+.colophon .imprint { color: var(--ink-2); }
+.colophon .full { flex-basis: 100%; font-size: 13px; color: var(--ink-3); }
+
+@media (max-width: 1040px) {
+  .grid { grid-template-columns: 1fr; } .rail { position: static; }
+  .metastats { grid-template-columns: 1fr 1fr; } .metastats .ms:nth-child(3) { border-left: 0; padding-left: 28px; }
+}

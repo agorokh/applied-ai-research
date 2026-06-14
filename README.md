@@ -1,6 +1,6 @@
-# Applied AI Research — practitioner notes
+# Applied Intelligence: applied AI research notes
 
-Independent applied-AI engineering notes by [Arseny Gorokh](https://github.com/agorokh), a practitioner at EPAM Applied AI. **Not an official EPAM publication.** Each report takes one frontier or consumer-grade AI capability — memory, agents, gateways, observability — and measures what it takes to make it enterprise-deployable on a real stack.
+Independent applied-AI engineering notes by [Arseny Gorokh](https://github.com/agorokh), a practitioner at EPAM Applied AI. **Not an official EPAM publication.** Each note takes one frontier or consumer-grade AI capability (agent data, open models, telemetry, memory) and measures what it takes to make it enterprise-deployable on a real stack.
 
 **Live site:** <https://agorokh.github.io/applied-ai-research/>
 
@@ -10,20 +10,22 @@ Working drafts. Published independently. See [ABOUT.md](ABOUT.md) for the full d
 
 ## The series
 
-| Date | Report | Iteration |
-|------|--------|-----------|
-| 2026-05-19 | [Choosing memory for enterprise agents](https://agorokh.github.io/applied-ai-research/2026-05-19_choosing-memory-for-enterprise-agents/) | 3 |
-| 2026-05-15 | [Claude Code via EPAM DIAL · POC report](https://agorokh.github.io/applied-ai-research/2026-05-15_claude-code-via-dial-poc/) | 3 |
+| Date | Note | Decision it informs |
+|------|------|---------------------|
+| 2026-06-13 | [MCP harvesting: trustworthy data when your agent has a connector, not an API](https://agorokh.github.io/applied-ai-research/notes/mcp-harvesting.html) | agent data |
+| 2026-06-05 | [A memory-and-policy layer above the model: the build-versus-buy case](https://agorokh.github.io/applied-ai-research/notes/value-layer.html) | agent memory |
+| 2026-05-15 | [Claude Code through DIAL: eight models, 192 runs, metering every request](https://agorokh.github.io/applied-ai-research/notes/telemetry-plane.html) | agent telemetry |
+| 2026-05-14 | [Which models can run Claude Code through DIAL?](https://agorokh.github.io/applied-ai-research/notes/harness-viability.html) | open models |
 
 ## What "applied AI research" means here
 
-Not academic research. Not peer-reviewed. Not a controlled benchmark with a public dataset and reproducible runs. These are **engineering decision memos** based on real stacks, measured trials, cost curves, named failure modes, and deployment constraints — written so another practitioner can re-instantiate the canary on their own corpus rather than rely on a vendor's published number.
+Not academic research. Not peer-reviewed. Not a controlled benchmark with a public dataset and reproducible runs. These are **engineering decision memos** based on real stacks, measured trials, cost curves, named failure modes, and deployment constraints, written so another practitioner can re-instantiate the canary on their own corpus rather than rely on a vendor's published number.
 
 The discipline is: state the adoption bar before the measurement, publish the weighting before the score, name the scope limits as plainly as the headline.
 
 ## Format
 
-Each report is a single self-contained HTML file in the dialx visual subsystem (Tiempos serif for display, Söhne for body, JetBrains Mono for labels and code, dark palette with violet + magenta accents). Reports are designed to read at 1280px or wider. Each report's folder also contains an `artefacts/` directory with the methodology, claims ledger, falsification conditions, and supporting reference files referenced inline from the report.
+Each note is a single self-contained HTML file under `notes/`, set in the Atelier reading style (Newsreader serif for display, Schibsted Grotesk for body, Spline Sans Mono for labels and code, a warm paper palette with hairline rules). Notes are designed to read at 1280px or wider. Companion material (methodology, claims ledger, falsification conditions, reproducibility artefacts) lives under `artefacts/<slug>/` or in a linked companion repository, referenced inline from the note. The design language is owned by Claude Design; `assets/theme.css` is its tokens and primitives and is never edited by hand.
 
 ## Contributing
 

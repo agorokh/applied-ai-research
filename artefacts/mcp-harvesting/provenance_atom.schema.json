@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agorokh.github.io/applied-ai-research/schema/provenance-atom-v0.1.json",
+  "title": "provenance-atom",
+  "version": "0.1",
+  "description": "One typed claim extracted from a harvested source, carrying the provenance and evidence strength that let a downstream agent decide how far to trust it. The locator is the falsifiability handle: a quote copied literally from the source, checkable without a model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "claim", "evidence_strength", "locator"],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "description": "The typed category of the claim. The set is open; these ten cover most enterprise-source intel.",
+      "enum": [
+        "pain_point", "competitor_signal", "money_figure", "decision_maker",
+        "tech_stack", "compliance_posture", "capability_emphasis", "red_flag",
+        "open_question", "engagement_signal"
+      ]
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The proposition, in one sentence. A downstream agent reads this."
+    },
+    "evidence_strength": {
+      "type": "string",
+      "enum": ["stated", "implied", "inferred"],
+      "description": "stated: the source literally says it. implied: the source structurally suggests it. inferred: a reading across several facts. A consumer must not treat 'inferred' as fact."
+    },
+    "locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "sha256", "quote"],
+      "properties": {
+        "source": {"type": "string", "description": "The source artifact filename or stable id."},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{6,64}$", "description": "Content hash of the captured source body. The identity of the bytes, not the connector's record id."},
+        "where": {"type": "string", "description": "The exact location inside the source: slide, sheet, page, paragraph offset."},
+        "quote": {"type": "string", "minLength": 1, "description": "A short string copied literally from the source. The grounding gate checks this appears in the source verbatim; if it does not, the atom is rejected as a fabricated citation, with no model in the loop."}
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "What the source does not resolve. Required to be present (may be empty) so an extractor cannot quietly assume completeness."
+    },
+    "red_flags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Signals of internal disagreement or risk found in the source. Required to be present (may be empty)."
+    },
+    "gate_verdict": {
+      "type": "string",
+      "enum": ["supported", "partially_supported", "unsupported", "contradicted"],
+      "description": "Set by the grounding gate, not the extractor. Only 'supported' and 'partially_supported' atoms are promoted into the data product the next agent reads."
+    }
+  }
+}
