@@ -3,11 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Moved · Applied AI Research</title>
-<meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/">
-<meta name="description" content="This earlier report has been retired from the front catalogue. The Applied AI Research index carries the current notes, including the in-path memory-and-policy layer note.">
-<noscript><meta http-equiv="refresh" content="0; url=../"></noscript>
+<title>Choosing the memory substrate for enterprise agents · Applied Intelligence</title>
+<meta name="description" content="Two purpose-built memory substrates, a chunk-text retriever and an entity graph, plus a filesystem baseline, run against a five-criterion adoption bar on an SDLC corpus. Production-frequency weighting separates them by 36 points where uniform weighting calls it a tie.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/2026-05-19_choosing-memory-for-enterprise-agents/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Choosing the memory substrate for enterprise agents: LightRAG, Graphiti, and the weighting that decides">
+<meta property="og:description" content="Two purpose-built memory substrates, a chunk-text retriever and an entity graph, plus a filesystem baseline, run against a five-criterion adoption bar on an SDLC corpus. Production-frequency weighting separates them by 36 points where uniform weighting calls it a tie.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/2026-05-19_choosing-memory-for-enterprise-agents/">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta name="twitter:title" content="Choosing the memory substrate for enterprise agents: LightRAG, Graphiti, and the weighting that decides">
+<meta name="twitter:description" content="Production-frequency weighting separates a chunk-text retriever from an entity graph by 36 points, where uniform weighting calls it a tie; the weighting choice is the load-bearing finding.">
 <!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
@@ -18,23 +27,252 @@
 
   gtag('config', 'G-HHYGP07F16');
 </script>
-<style>
-  html,body{margin:0;height:100%}
-  body{background:#e6dccb;color:#2d2112;font-family:Georgia,'Times New Roman',serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .m{max-width:32rem;padding:2rem;text-align:center}
-  .m .k{font-size:12.5px;letter-spacing:.06em;color:#9a7b3c;margin-bottom:16px}
-  .m h1{font-weight:400;font-size:27px;line-height:1.3;margin:0 0 14px}
-  .m p{font-size:16px;line-height:1.62;color:#4a3c28;margin:0 0 20px}
-  .m a{color:#2d2112;text-decoration:none;border-bottom:1px solid #2d2112;font-style:italic}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style> body { background:#e6dccb; } </style>
 </head>
-<body>
-<div class="m">
-  <div class="k">applied ai research · moved</div>
-  <h1>This report has been retired.</h1>
-  <p>An earlier note on choosing memory for enterprise agents has left the front catalogue. The current notes, including the in-path memory-and-policy layer, are on the index. If you are not redirected automatically, continue there.</p>
-  <a href="../">Go to the index &nbsp;&rsaquo;</a>
+<body data-room="4" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">independent · by Arseny Gorokh</span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#artefacts">artefacts</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">aar &middot; 05</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 05 · 19</span>
+      <span class="dot">·</span><span>aar-05</span>
+      <span class="dot">·</span><span>14 min read</span>
+      <span class="dot">·</span><span>agent memory</span>
+    </div>
+    <h1>Choosing the memory substrate for enterprise agents:<em>LightRAG, Graphiti, and the weighting that decides.</em></h1>
+    <p class="lede">If you are giving coding agents long-term memory, the substrate you pick, a chunk-text retriever or an entity graph, changes both what they recall and what they fabricate, and the benchmark you trust to choose between them may be measuring the wrong thing. This note runs two purpose-built substrates and a filesystem baseline against a five-criterion adoption bar on an SDLC corpus. The result that should set your method: weighting the test families to production frequency separates the chunk-text retriever from the entity graph by 36 points, where uniform weighting calls it a tie, so the weighting choice, not the substrate, is the load-bearing finding.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">36 pts</div><span class="l">production-weighted retrieval gap between the chunk-text retriever and the entity graph on this corpus; uniform weighting is a statistical tie. The weighting choice is the methodology finding, and the magnitude is corpus-specific.</span></div>
+      <div class="ms"><div class="v">0 vs 4</div><span class="l">hallucinated retrievals: zero from the chunk-text retriever versus four of 128 paired trials, about 3 percent, from the entity graph, all on the exact family its bi-temporal metadata was meant to help.</span></div>
+      <div class="ms"><div class="v">5</div><span class="l">criteria in the adoption bar, stated before any candidate ran, so a rejection is reproducible by the next reviewer against the same project.</span></div>
+      <div class="ms"><div class="v">4 / 5</div><span class="l">adoption criteria a fourth candidate, Tencent DB Agent-Memory, failed at the bar check before any retrieval canary ran.</span></div>
+    </div>
+
+    <div class="artefacts" id="artefacts">
+      <span class="k">artefacts</span><span class="dot">·</span>
+      <a href="artefacts/methodology.md">methodology</a><span class="dot">·</span>
+      <a href="artefacts/claims.md">claims ledger</a><span class="dot">·</span>
+      <a href="artefacts/invalidation.md">invalidation</a><span class="dot">·</span>
+      <a href="artefacts/canary-harness/README.md">the canary harness</a><span class="dot">·</span>
+      <a href="https://github.com/agorokh/agentic-memory-mcp">the memory server</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The failure that costs</a>
+        <a href="#s02"><span class="no">ii</span>Two corpora, one problem</a>
+        <a href="#s03"><span class="no">iii</span>The adoption bar</a>
+        <a href="#s04"><span class="no">iv</span>Test design</a>
+        <a href="#s05"><span class="no">v</span>The weighting decides</a>
+        <a href="#s06"><span class="no">vi</span>Two failure shapes</a>
+        <a href="#s07"><span class="no">vii</span>Tier interaction</a>
+        <a href="#s08"><span class="no">·</span>Decision and defaults</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the study</div>
+        <div class="v"><span class="k">published</span><span class="d">19 may 2026</span></div>
+        <div class="v"><span class="k">substrates</span><span class="d">3</span></div>
+        <div class="v"><span class="k">criteria</span><span class="d">5</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">aar-05</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the failure that costs you</span></div>
+        <h2>The benchmark that ranks substrates <em>can hide a confident wrong answer.</em></h2>
+        <p class="lede">If you are choosing a memory substrate for agents, the failure that costs you is not a missing fact, it is a confident wrong one, and the benchmark you would normally trust to rank substrates can hide exactly that.</p>
+        <p>This note is structured as a deployment-decision memo, not a benchmark recap. Two purpose-built substrates run against a filesystem baseline on one SDLC-shaped corpus, scored by two independent judges in opposite orderings to rule out position bias. The four findings below are the headline; the body is the supporting argument. The frontier layer keeps publishing capability jumps, <a href="https://research.google/blog/turboquant-redefining-ai-efficiency-with-extreme-compression/">Google Research's TurboQuant</a> (ICLR 2026, 3-bit KV-cache quantisation, about 8x H100 throughput) is a recent one with no managed-inference SLA from a major vendor as of this writing, and consumer products convert a subset into features (Claude memory, ChatGPT's cross-session dossier). Neither layer ships the tenancy, audit, schema-stability, or cost-bound contract an enterprise substrate has to honour. This report closes that gap on one capability: long-term memory for coding-orchestration agents.</p>
+        <div class="finding">
+          <div class="fk">The headline</div>
+          <h3>Production-weighted retrieval separates the two substrates by 36 points; uniform weighting is a tie.</h3>
+          <p>The chunk-text retriever (<a href="https://github.com/HKUDS/LightRAG">LightRAG</a>) outperformed the entity graph (<a href="https://github.com/getzep/graphiti">Graphiti</a>) on this corpus's observed query distribution once the eight test families were weighted to production frequency. Under uniform weighting the two were statistically tied, with a confidence interval that crossed zero. The methodology finding, the one that transfers, is that the weighting choice decides the outcome; the 36-point magnitude is a function of this corpus and its production profile, and another team's corpus will produce a different gap. Re-derive the weighting on your own corpus before treating the magnitude as portable.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>why memory matters</span></div>
+        <h2>Two corpus shapes, <em>one retrieval problem.</em></h2>
+        <p>Across enterprise-agent engagements the memory-substrate question recurs because agents are useful only when they retrieve the right knowledge at the right moment. The corpus shape varies; the underlying problem does not. Two classes cover most of the work. Class A is the SDLC corpus: ADRs, design records, ticket history, post-incident reviews, runbooks, architecture invariants, queried by its present. Coding-orchestration agents have to remember what was decided three turns ago, hold a project-wide invariant across files, and resist drifting into a different solution because the conversation accumulated noise. The hallucination cost is a reversed architectural decision. Class B is the business or domain corpus: case files, regulatory references, product knowledge, customer history, where high volume meets high query specificity and the cost of a wrong answer is that it gets acted on at a client's expense.</p>
+        <p>Both classes share the same retrieval problem: fetch the relevant knowledge with bounded hallucination, when the agent needs it. The substrate-selection question is identical; only the corpus shape and the production query distribution differ. The empirical work here is on Class A; the substrate-pairing pattern transfers to Class B with re-measured magnitudes. Three structural choices, in combination, define a memory architecture: what is retained (turns, file chunks, summarised sessions, decision artefacts), how retention is keyed (recency window, semantic similarity, tags, graph traversal, deterministic indexing), and what gets surfaced per turn (the slice the executor actually sees on a given call). LightRAG and Graphiti differ on all three. Enterprise teams do not buy a model; they buy a system whose memory architecture decides whether a multi-day workflow holds together.</p>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the adoption bar</span></div>
+        <h2>Five criteria, weighted, <em>stated up front.</em></h2>
+        <p>A substrate that survives the first production query is one selected against named criteria, not against taste. Stating the criteria first is what makes a rejection reproducible by another reviewer applying the same bar to the same project. The five below are calibrated to one delivery context, a Python-first stack, an EPAM DIAL gateway, an MCP-compatible agent surface; a team with a TypeScript-only stack would weight integration surface differently, and a team with a different gateway would re-state operational fit. The discipline is to publish the bar; the contents are domain-specific.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> the five-criterion adoption bar, weights summing to 1.0, stated before any candidate ran.</div>
+          <table class="data">
+            <thead><tr><th>criterion</th><th>what it asks</th><th class="n">weight</th><th>pass bar</th></tr></thead>
+            <tbody>
+              <tr><td><b>Integration surface</b></td><td><span class="d">Python-callable read path, MCP-compatible agent interface, multi-tenant per-workspace mode.</span></td><td class="n">0.25</td><td><span class="d">all three present.</span></td></tr>
+              <tr><td><b>Install hygiene</b></td><td><span class="d">no post-install scripts that patch sibling packages, modify the host, or silently fall through on error.</span></td><td class="n">0.20</td><td><span class="d">clean install.</span></td></tr>
+              <tr><td><b>Test coverage</b></td><td><span class="d">a non-trivial suite that exercises the API the consuming stack would call; wired-but-empty fails.</span></td><td class="n">0.20</td><td><span class="d">suite present, non-trivial.</span></td></tr>
+              <tr><td><b>Maintenance posture</b></td><td><span class="d">more than one active contributor, a sustainable cadence, age enough to surface common bugs.</span></td><td class="n">0.15</td><td><span class="d">2-plus contributors, 6-plus months.</span></td></tr>
+              <tr><td><b>Operational fit</b></td><td><span class="d">model calls through the sanctioned gateway, standard telemetry and secrets, no bespoke infra.</span></td><td class="n">0.20</td><td><span class="d">gateway-routed; standard secrets.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Write the bar before you evaluate candidates. A bar applied post-hoc rationalises a decision already made; a bar applied a priori constrains the decision and is reproducible by the next reviewer who runs the same scoring against the same project. <a href="artefacts/methodology.md">The methodology</a> records how each weight was derived.</p>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>test design</span></div>
+        <h2>Three substrates, eight task families, <em>two judges in opposite orderings.</em></h2>
+        <p>The empirical design served one question: which substrate performs best on the SDLC corpus's actual production query distribution, evaluated so as to rule out the most common position-bias failure mode in LLM-judge benchmarks. Three substrates were measured. The chunk-text retriever, tested as LightRAG (HKU, <a href="https://arxiv.org/abs/2410.05779">arXiv:2410.05779</a>), splits documents into chunks and returns the literal source text with its path attached: mature, low-overhead, predictable. The entity graph, tested as Graphiti (Zep, <a href="https://arxiv.org/abs/2501.13956">arXiv:2501.13956</a>), runs an LLM extraction step that pulls entities and relations on ingest, stamps nodes with <code>valid-from</code> and <code>superseded-on</code>, and returns node summaries plus relations. The filesystem baseline is the trust-of-last-resort: keyword extraction, recursive grep, the first matched files' head to the judge, the fallback an engineer takes when no purpose-built substrate is available. A fourth candidate, <a href="https://github.com/mem0ai/mem0">Mem0</a>, was screened out as the same architectural class as Graphiti, an extraction-mediated semantic store with an LLM-rewrite step at ingest, so a second sample of the same approach was not informative.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 2 ·</b> the eight task families and their observed production frequency on this corpus. Re-derive the column on yours.</div>
+          <table class="data">
+            <thead><tr><th>task family</th><th>what the agent is trying to do</th><th class="n">prod freq</th></tr></thead>
+            <tbody>
+              <tr><td><b>Current canonical text</b></td><td><span class="d">read the literal current rule, invariant, or decision for X.</span></td><td class="n">~50%</td></tr>
+              <tr><td><b>Handoff continuity</b></td><td><span class="d">where did the previous session leave off, and what is next.</span></td><td class="n">~20%</td></tr>
+              <tr><td><b>Entity disambiguation</b></td><td><span class="d">which of several same-named entities is meant here.</span></td><td class="n">~10%</td></tr>
+              <tr><td>Temporal supersession</td><td><span class="d">what changed between two points in time, what deprecated what.</span></td><td class="n">~4%</td></tr>
+              <tr><td>Multi-hop traversal</td><td><span class="d">which investigations led to this decision, what chain supports this rule.</span></td><td class="n">~4%</td></tr>
+              <tr><td>Knowledge updates</td><td><span class="d">what the new doctrine imposed that the old one did not.</span></td><td class="n">~4%</td></tr>
+              <tr><td>Abstention on false premise</td><td><span class="d">the question cites a rule that does not exist; refuse to answer.</span></td><td class="n">~4%</td></tr>
+              <tr><td>Link-graph traversal</td><td><span class="d">which other documents link to this one.</span></td><td class="n">~4%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Sixty-four paired questions ran through every pair of substrates. Each retrieval was scored by two independent judges, chosen from different model families so family-specific preferences would surface as judge disagreement rather than silent bias, and the same question was shown to each judge twice with the two candidate retrievals in opposite orderings. A pair only wins when the judge prefers the same candidate in both orderings; position-swap disagreement collapses to a tie. The rule-change threshold was pre-registered before any retrieval ran: a 20-percentage-point absolute gap, a 2x difference in fabrication rate, or a confidence interval that excludes zero. When you run your own canary, do not skip the position-swap: over-counting ties is the feature that forces the headline to survive judge order.</p>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>the headline result</span></div>
+        <h2>Uniform said tie. Production weighting <em>said 36 points.</em></h2>
+        <p>The retrieval-quality comparison between the two purpose-built substrates went in opposite directions depending on how the eight task families were combined into one aggregate. Which one is right is a question about the production workload, not about statistics. A uniform-weighted aggregate counts every family equally; a frequency-weighted aggregate counts each by how often it shows up in real production queries. The two often disagree on which substrate wins, and the disagreement is usually the finding. Under uniform weighting, LightRAG and Graphiti were tied: a small win-rate gap with a confidence interval that crossed zero, the number a report stopping at the uniform aggregate would publish. Re-weighted to the production distribution from the prior section, LightRAG beat Graphiti by a wide margin. The two families that carry 70 percent of production weight on this corpus, current canonical text and handoff continuity, are the two where chunk-text wins decisively; the one family where the entity graph wins, entity disambiguation, carries 10 percent.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 3 ·</b> the substrate comparison on the production-weighted result. 128 paired appearances per substrate.</div>
+          <table class="data">
+            <thead><tr><th>substrate</th><th class="n">win (weighted)</th><th class="n">fabrications</th><th class="n">bar</th><th>standing</th></tr></thead>
+            <tbody>
+              <tr class="win"><td><b>LightRAG</b> <span class="d">chunk-text</span></td><td class="n">68%</td><td class="n">0 / 128</td><td class="n">5 / 5</td><td><span class="d">production-weighted win; clears the bar; the default.</span></td></tr>
+              <tr><td>Graphiti <span class="d">entity-graph</span></td><td class="n">32%</td><td class="n">4 / 128</td><td class="n">5 / 5</td><td><span class="d">tied under uniform, below under production; entity-disambiguation side path.</span></td></tr>
+              <tr><td>Filesystem <span class="d">baseline</span></td><td class="n">below both</td><td class="n">0 / 128</td><td class="n">n/a</td><td><span class="d">intentionally naive; the trust-of-last-resort comparison.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · the headline, as a 36-point gap. Production-frequency-weighted win rate on this corpus; uniform weighting collapses the two purpose-built substrates to a tie that crosses zero.</figcaption>
+          <div data-atelier-figure='{"type":"bars","max":100,"unit":"%","rows":[{"label":"LightRAG (weighted)","value":68,"valueLabel":"68%","tint":"work"},{"label":"Graphiti (weighted)","value":32,"valueLabel":"32%","tint":"hold"},{"label":"LightRAG (uniform)","value":50,"valueLabel":"~tied","tint":"ink"},{"label":"Graphiti (uniform)","value":50,"valueLabel":"~tied","tint":"ink"}]}'></div>
+        </figure>
+        <p>The chunk-text substrate returns the literal source sentence, which is what current-canonical-text queries actually want; the entity graph runs an LLM extraction step at ingest that rewrites node summaries, so the literal phrasing is lost by the time the agent retrieves it. Substrate architecture sets the ceiling for each family; the family weighting decides which ceiling matters for the aggregate. One caveat on transfer: a corpus where entity disambiguation dominates, a customer-support knowledge base where the same product is named differently across regions, would re-weight in favour of the entity graph. The pattern transfers, weight by your own production distribution and not by uniform; the magnitude does not transfer without re-measurement. The pre-measurement reading of the published vendor numbers had the entity graph as the canonical substrate on its bi-temporal differentiation; the frequency-weighted canary inverted that in the first pass, and the retraction is itself a finding: an adoption bar that catches errors before they ship is worth more than a decision that was right on the first try.</p>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>reliability</span></div>
+        <h2>Zero versus four out of 128, small in absolute, <em>structural in shape.</em></h2>
+        <p>Counting fabricated answers is not the most powerful retrieval-quality discriminator at this sample size; the shape of the failure mode behind the count is the part that should change a deployment decision. A retrieval is hallucinated when it returns content that does not exist in any source document, and incorrect when it returns the wrong source document. The distinction matters because an incorrect-but-real source can be cross-checked, and a fabricated one cannot. Across 128 paired appearances per substrate, LightRAG produced zero hallucinated retrievals; Graphiti produced four, about 3 percent; the filesystem baseline produced zero, because its failure mode is the wrong file head, incorrect-but-real, not a fabrication category.</p>
+        <div class="finding hold">
+          <div class="fk">The fabrication result</div>
+          <h3>All four invented relations land on the family the bi-temporal metadata was meant to help.</h3>
+          <p>Four out of 128 is too small to clear the rule-change threshold as a standalone statistical claim, but it names the structural difference cleanly. All four of Graphiti's hallucinated outputs were on temporal-supersession queries. The extraction step occasionally produces a "fact F1 was superseded by fact F2 at time t" relation when no source document records the supersession. The metadata that was supposed to be the differentiator is the surface area where the failure mode lives. A chunk-text pipeline has no extraction step on the read path, so the source text either exists or it does not.</p>
+        </div>
+        <p>This does not say Graphiti is unsafe at scale; four out of 128 cannot be generalised that strongly. It says that under autonomous-writeback paths, where a single fabricated relation gets acted on, the substrate whose failure mode is the wrong chunk has a safer profile than the substrate whose failure mode is an invented relation. The first is recoverable on read; the second is not. For review-gated assist paths with explicit approval before any write, the gap is much smaller. So restrict autonomous-writeback paths, where the agent drafts a decision document, files a ticket, or generates a handoff, to the substrate whose failure mode is the wrong source chunk. These two failure shapes, wrong chunk for the chunk-text retriever and invented relation for the extraction-mediated graph, are the part of the comparison that outlives the specific numbers.</p>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>tier interaction</span></div>
+        <h2>Same extra context, <em>opposite signs across executor tiers.</em></h2>
+        <p>The structural finding from the closed-loop pilot, the part that does not appear in any vendor's published numbers, is that the value of extra structural context, the bi-temporal valid-from and superseded-on metadata, flips sign across two executor capability tiers tested on the same workload. The counts in this section come from a pilot run, eight tasks per cell, three conditions. Two cells per executor is not enough to claim a sign-flip as a stable property; treat the direction as motivation for the structural claim, not as a per-tier default recommendation. The full closed-loop suite at a defensible cell count is the next iteration of this work.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 4 ·</b> the stale-fact inversion, direction only. Cell counts withheld because two-cell deltas cannot be reported as numbers at this N.</div>
+          <table class="data">
+            <thead><tr><th>executor</th><th>tier</th><th>effect of bi-temporal context</th></tr></thead>
+            <tbody>
+              <tr><td><b>Gemini 2.5 Flash</b></td><td><span class="d">smaller / cheaper</span></td><td><span class="d">stale-fact recall improves.</span></td></tr>
+              <tr><td><b>Claude Sonnet 4.5</b></td><td><span class="d">more-capable</span></td><td><span class="d">stale-fact recall degrades.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The cheaper executor benefits from explicit supersession metadata because without it the model picks a plausible older fact when no recency signal is in scope. The more-capable executor sometimes re-quotes the older fact because the metadata told it the older fact existed at all; the explicit valid-from and superseded-on payload broadens the candidate set the stronger executor considers, and it occasionally picks the wrong one. Two checkpoints from two model families is not sufficient to fully separate capability-tier effects from family-specific effects; the conservative reading is that capability tier matters, family may also matter, and the interaction is worth measuring per pair. It is sufficient to motivate the structural claim: the value of extra context is conditional on the executor consuming it, not an absolute property of the substrate. For platform teams setting defaults, do not enable bi-temporal context as a global default; leave the payload configurable rather than hard-coded, so the cell-counted re-measurement can drive the default later.</p>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">·</span><span>decision, defaults, and the limits</span></div>
+        <h2>A fourth candidate fails the bar; <em>chunk-text becomes the default.</em></h2>
+        <p>Two decisions land here. The first is a candidate rejected against the named bar before any retrieval canary cost was spent. The fourth candidate considered, <a href="https://github.com/Tencent/agent-memory-toolkit">Tencent DB Agent-Memory</a>, the most architecturally distinct option in the set, a four-layer local-memory pipeline with a task-state working memory, was publicly unevaluated outside its own README at evaluation time, so the bar check below is the first published external read on record. Against the five criteria: integration surface failed, distributed primarily as a TypeScript and Node package against a Python-first stack; install hygiene failed, the post-install step rewrites a sibling package's runtime files and silently falls through on error; test coverage failed, the harness is wired but a search for test files in the published source returns zero; operational fit failed, no MCP server surface, no graph database, no fit with the per-workspace HTTP server pattern or with gateway-routed model calls. Maintenance posture was partial, about six weeks old at most recent release with two contributors. Four of five fails, one partial. The decision is reproducible against the stated bar. "Did not fit this adoption bar" is not the same as "is a bad project"; the rejection is re-evaluable when the candidate ships material changes against the failing criteria. <a href="artefacts/claims.md">The claims ledger</a> records the evidence.</p>
+        <div class="finding calm">
+          <div class="fk">The downstream consequence</div>
+          <h3>The entity graph leaves the default deployment path; the bar is the durable artefact.</h3>
+          <p>Graphiti cleared integration, install, test, and maintenance criteria under the bar. The production-weighted retrieval gap plus the autonomous-writeback failure-mode shape place it below the operational-fit bar for default deployments. It is retained for the narrow entity-disambiguation side path where its architecture wins; the default path no longer routes to it. Retirement is what the comparison produced, not an operational call made separately.</p>
+        </div>
+        <p>So the four DIAL-routed defaults for the next deployment: chunk-text retrieval is the default substrate for SDLC-shaped corpora, with the entity graph a side path for entity-disambiguation queries rather than a switch of the default; treat bi-temporal context as a configurable per-workspace toggle, not a global default, until a cell-counted re-measurement confirms the per-tier shape; route autonomous-writeback through the substrate with no extraction step on read, while review-gated assist paths can use either; and route model calls through your sanctioned-inference gateway in production, verifying the rankings on the path you will deploy. Encode these as defaults in the per-workspace configuration so the right choice is the easy choice and the wrong one an explicit opt-out. The read-path MCP bridge used here, workspace-aware routing to LightRAG with a host-scoped allowlist, is open-source at <a href="https://github.com/agorokh/agentic-memory-mcp">github.com/agorokh/agentic-memory-mcp</a> (Apache-2.0), and the canary harness is published so the next team can re-instantiate it on their corpus in a day.</p>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> EPAM's DIAL and the named substrates are the public subject; the corpus, the canary harness, and the adoption bar are the author's own. The limits bound the claim: one corpus class and one work instance, about 130 SDLC documents; eight paired questions per family, enough to detect large effects only; a deliberately naive filesystem baseline; two-judge position-swap consensus that inflates ties; one provider path during evaluation; a tier-interaction finding resting on two executor checkpoints at pilot N; an adoption-bar verdict that is project-state-as-of-evaluation-time; and no cost-per-decision number. The 36-point gap, the 0-versus-4 fabrication count, and the stale-fact inversion magnitude do not transfer without re-measurement. <b>Re-run the canary on your own corpus before treating any magnitude as portable.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>LightRAG (HKUDS), the chunk-text retriever tested here, <i>github.com/HKUDS/LightRAG</i> and <i>arXiv:2410.05779</i>: documents split into chunks, embedding plus keyword index, literal source text returned.</li>
+          <li>Graphiti (getzep), the entity graph with bi-temporal metadata, <i>github.com/getzep/graphiti</i> and <i>arXiv:2501.13956</i>: LLM extraction at ingest, nodes stamped valid-from and superseded-on.</li>
+          <li>Tencent DB Agent-Memory, the fourth candidate rejected at the bar check before any canary ran; named in the body so the rejection is auditable against the same five criteria.</li>
+          <li>Mem0 (<i>arXiv:2504.19413</i>) and the Zep rebuttal on LoCoMo, which dispute each other by 10 to 30 percentage points depending on whose methodology is used; screened out as the same architectural class as the entity graph.</li>
+          <li>The production-weighting method: a frequency-weighted aggregate over test families derived from the observed production query distribution, the load-bearing choice that separates the substrates where uniform weighting calls a tie.</li>
+          <li>The unbiased-evaluation GraphRAG paper (<i>arXiv:2506.06331</i>), whose position, length, and trial-bias controls motivated parts of the position-swap judging design.</li>
+          <li>Google Research, <i>TurboQuant</i> (ICLR 2026), 3-bit KV-cache quantisation at about 8x H100 throughput: the frontier-versus-enterprise framing, a capability jump with no managed-inference SLA from a major vendor as of this writing.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>aar-05</span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
 </div>
-<script>window.setTimeout(function(){window.location.replace("../");},150);</script>
+
+<script>
+  const bar = document.getElementById('pbar');
+  const links = [...document.querySelectorAll('.toc a')];
+  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
+  function onScroll() {
+    const sd = window.scrollY || document.documentElement.scrollTop;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    const y = sd + 130; let cur = targets[0];
+    for (const o of targets) { if (o.t.getBoundingClientRect().top + sd <= y) cur = o; }
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) cur.a.classList.add('on');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  links.forEach(a => a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
+  }));
+  onScroll();
+</script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
 </body>
 </html>

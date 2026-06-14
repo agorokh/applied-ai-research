@@ -3,11 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Moved · Applied AI Research</title>
-<meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/">
-<meta name="description" content="This earlier report has been retired from the front catalogue. The Applied AI Research index carries the current notes.">
-<noscript><meta http-equiv="refresh" content="0; url=../"></noscript>
+<title>Picking the extraction LLM for knowledge-graph ingestion · Applied Intelligence</title>
+<meta name="description" content="Eleven models measured as the entity-extraction LLM for a knowledge-graph RAG system, same corpus and rubric. Gemini 2.5 Flash cleared every retrieval cell at roughly three percent of the strongest commercial model's ingest cost; breadth of extraction beats density of relations.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Picking the extraction LLM for knowledge-graph ingestion: breadth beats density, and Gemini 2.5 Flash wins on cost">
+<meta property="og:description" content="Eleven models measured as the entity-extraction LLM for a knowledge-graph RAG system, same corpus and rubric. Gemini 2.5 Flash cleared every retrieval cell at roughly three percent of the strongest commercial model's ingest cost; breadth of extraction beats density of relations.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta name="twitter:title" content="Picking the extraction LLM for knowledge-graph ingestion: breadth beats density, and Gemini 2.5 Flash wins on cost">
+<meta name="twitter:description" content="Gemini 2.5 Flash cleared every retrieval cell at roughly three percent of the strongest commercial model's ingest cost; breadth of extraction beats density of relations.">
 <!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
@@ -18,23 +27,250 @@
 
   gtag('config', 'G-HHYGP07F16');
 </script>
-<style>
-  html,body{margin:0;height:100%}
-  body{background:#e6dccb;color:#2d2112;font-family:Georgia,'Times New Roman',serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .m{max-width:32rem;padding:2rem;text-align:center}
-  .m .k{font-size:12.5px;letter-spacing:.06em;color:#9a7b3c;margin-bottom:16px}
-  .m h1{font-weight:400;font-size:27px;line-height:1.3;margin:0 0 14px}
-  .m p{font-size:16px;line-height:1.62;color:#4a3c28;margin:0 0 20px}
-  .m a{color:#2d2112;text-decoration:none;border-bottom:1px solid #2d2112;font-style:italic}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style> body { background:#e6dccb; } </style>
 </head>
-<body>
-<div class="m">
-  <div class="k">applied ai research · moved</div>
-  <h1>This report has been retired.</h1>
-  <p>An earlier note on picking the extraction LLM for knowledge-graph ingestion has left the front catalogue. If you are not redirected automatically, continue to the index.</p>
-  <a href="../">Go to the index &nbsp;&rsaquo;</a>
+<body data-room="1" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">independent · by Arseny Gorokh</span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#artefacts">artefacts</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">aar &middot; 06</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 04 · 28</span>
+      <span class="dot">·</span><span>aar-06</span>
+      <span class="dot">·</span><span>16 min read</span>
+      <span class="dot">·</span><span>empirical study</span>
+    </div>
+    <h1>Picking the extraction LLM for knowledge-graph ingestion:<em>breadth beats density, and Gemini 2.5 Flash wins on cost.</em></h1>
+    <p class="lede">If you run a knowledge-graph RAG system, the model that extracts entities at ingest time is the one variable the published benchmarks hold constant, and in production it dominates both your retrieval quality and your ingest bill. This note measures eleven models on one such system, same corpus and the same rubric. Gemini 2.5 Flash cleared every retrieval cell at roughly three percent of the strongest commercial model's ingest cost, and the reason is counter-intuitive: breadth of extraction, not density of relations, is what decides graph-traversal retrieval.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">24/24</div><span class="l">smoke cells passed by Gemini 2.5 Flash, the only model in the matrix with a strict 24/0/0 score across six queries by four retrieval modes.</span></div>
+      <div class="ms"><div class="v">11</div><span class="l">candidate models measured as the extraction LLM: frontier commercial, mid-tier commercial, and local open-source, on one fixed corpus and rubric.</span></div>
+      <div class="ms"><div class="v">~3%</div><span class="l">of Claude Sonnet 4.6's list-priced ingest cost, six to nine times cheaper, that Gemini 2.5 Flash carries while clearing every cell Sonnet loses.</span></div>
+      <div class="ms"><div class="v">2x</div><span class="l">the entity-extraction breadth of Sonnet 4.6 per document, at a lower relation-to-entity ratio of 1.15 against 1.43, yet it wins on traversal.</span></div>
+    </div>
+
+    <div class="artefacts" id="artefacts">
+      <span class="k">artefacts</span><span class="dot">·</span>
+      <a href="artefacts/methodology.md">methodology</a><span class="dot">·</span>
+      <a href="artefacts/smoke-rubric/README.md">the smoke rubric</a><span class="dot">·</span>
+      <a href="artefacts/claims.md">claims ledger</a><span class="dot">·</span>
+      <a href="artefacts/invalidation.md">invalidation</a><span class="dot">·</span>
+      <a href="artefacts/model-matrix.md">the model matrix</a><span class="dot">·</span>
+      <a href="artefacts/cost-model.md">the cost model</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>Three findings</a>
+        <a href="#s02"><span class="no">ii</span>What ingest controls</a>
+        <a href="#s03"><span class="no">iii</span>The fixed rubric</a>
+        <a href="#s04"><span class="no">iv</span>The matrix</a>
+        <a href="#s05"><span class="no">v</span>Breadth versus density</a>
+        <a href="#s06"><span class="no">vi</span>Per-document cost</a>
+        <a href="#s07"><span class="no">vii</span>Local open-source</a>
+        <a href="#s08"><span class="no">·</span>What to deploy</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the study</div>
+        <div class="v"><span class="k">published</span><span class="d">28 apr 2026</span></div>
+        <div class="v"><span class="k">models</span><span class="d">11</span></div>
+        <div class="v"><span class="k">cells</span><span class="d">24 each</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">aar-06</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>three findings, one model recommendation</span></div>
+        <h2>The extractor decides retrieval and cost, <em>so measure it directly.</em></h2>
+        <p class="lede">If you are standing up a knowledge-graph RAG system, the extraction LLM is the choice the benchmarks quietly make for you, and it is the one that moves your retrieval quality and your bill the most.</p>
+        <p>The companion <a href="../2026-05-19_choosing-memory-for-enterprise-agents/">memory substrate report</a> answers the question "which graph substrate." This note answers the question that operationally dominates it for any system in this class: which LLM the substrate should use during ingestion. The choice is not interchangeable. It controls retrieval quality more than the substrate choice does, and it controls cost by an order of magnitude or more. Eleven candidates were evaluated against a fixed twenty-document subset and a twenty-four-cell smoke rubric. One model passed every cell, then was validated on a separate 482-document legal corpus before being recommended for production. The measurements are on LightRAG, the canonical open-source implementation of this class, but the findings are about the class.</p>
+        <div class="finding">
+          <div class="fk">The headline</div>
+          <h3>Breadth beats density for graph-traversal retrieval; Gemini 2.5 Flash is the cheapest model that clears every cell.</h3>
+          <p>Gemini 2.5 Flash extracts roughly two times more entities and 1.6 times more relations per document than Claude Sonnet 4.6 on the same chunks, with a lower relation-to-entity ratio, 1.15 against 1.43. Graph-traversal retrieval anchors chunks by the entity index, so the extra entities anchor extra chunks at retrieval time and breadth wins. Sonnet 4.6 scored 22/0/2 on the smoke rubric, two fail cells; Gemini 2.5 Flash scored a clean 24/0/0. The breadth ranking holds across every corpus measured here.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>what ingest actually controls</span></div>
+        <h2>The extraction LLM <em>is the substrate.</em></h2>
+        <p>Knowledge-graph RAG systems share one ingest shape. The published benchmarks for these systems hold the extractor constant, the architecture diagrams hide it inside the ingest box, and the ablation tables vary chunk size and retrieval mode but not the extractor. In production it is the variable that decides what your graph looks like. The class includes <a href="https://github.com/microsoft/graphrag">Microsoft GraphRAG</a>, <a href="https://github.com/HKUDS/LightRAG">LightRAG</a>, and the smaller ecosystem of similar pipelines on Neo4j vector-plus-graph storage. They differ in retrieval strategy, graph schema, and configuration surface; they share the same ingest pattern. For each chunk of source text, an LLM extracts entities, an LLM extracts relations among them, an LLM summarises an entity that appears across many chunks, and an LLM gleans a second pass to recover missed extractions. All four are LLM calls. The call dominates wall-clock time, dominates dollar cost, and produces every node and edge in the graph. The graph is what retrieval traverses, so the extractor's biases become permanent properties of the substrate until you re-ingest from scratch.</p>
+        <p>The published benchmarks rarely specify or vary the extractor. LightRAG's paper names gpt-4o-mini for some runs and reports retrieval scores; it does not study sensitivity to extractor choice. A reader who deploys with the upstream defaults gets gpt-4o-mini as the implicit extractor and inherits its limits without ever seeing the choice. That implicit-default-as-decision pattern is the failure mode this note makes explicit. Three properties of the extractor show up downstream.</p>
+        <ul>
+          <li><b>Entity count per document.</b> Determines how much of the chunk text is reachable from any given query. More entities means more anchor points, means more chunks retrievable when a query lands on any of them.</li>
+          <li><b>Schema fidelity.</b> LightRAG expects pipe-delimited records. Models that violate the format have their output dropped by the parser. Schema noise looks like missing data in the graph but is actually rejected extraction.</li>
+          <li><b>Description quality.</b> When LightRAG summarises an entity that appears across many chunks, that summary becomes the canonical description stored in the graph. A weak summary degrades query-time matching even when the entity was extracted correctly.</li>
+        </ul>
+        <p>None of this is what a chat-quality benchmark measures. The extractor's job is structured-text production under a tight schema with no narrative, so the best chat model on Arena leaderboards is not necessarily the best extractor.</p>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>method</span></div>
+        <h2>The rubric is fixed <em>before any model runs.</em></h2>
+        <p>Stating the rubric a priori is what makes a benchmark reproducible; stating it post hoc reduces to a justification of whatever happened. Five things held constant across all eleven model rows: the corpus, the chunking, the embedder, the smoke rubric, and the reporting columns. The corpus is twenty documents pinned by explicit file list, not by directory glob, so the same files are ingested for every row; a benchmark that uses "the first twenty files alphabetically" silently drifts as new files land. Chunking uses LightRAG defaults, 1200 tokens per chunk with 100 token overlap, about four chunks per document. The embedder is a local 1024-dimensional model held constant so the variable under study is the extractor only.</p>
+        <p>The smoke rubric is six canary queries times four retrieval modes, naive, local, global, and hybrid, which equals twenty-four cells per model. Each cell is scored pass, marginal, or fail by the same evaluator against the documented expected references, and the cells and references were written before any model ran. Each row records entities per document, relations per document, the relation-to-entity ratio, the smoke score, and measured cost on the twenty-document subset, with cost taken at the provider's invoice level, not estimated. A separate 482-document legal corpus was used for production-class validation of the winning model.</p>
+        <div class="finding hold">
+          <div class="fk">What this method does not measure</div>
+          <h3>A fast acceptance gate, not a full evaluation harness, scored by one human without an inter-rater check.</h3>
+          <p>The twenty-four-cell smoke rubric is a fast acceptance gate; models that pass it earn a production trial on the larger 482-document corpus, where the production claims live. It does not measure latency or throughput at scale, which would dominate streaming-ingest workloads; this note is for batch ingest. The 264 cells, eleven models by twenty-four, sit inside one person's judgement of pass versus marginal, with no inter-rater check and no LLM-as-judge second pass. The schema in the smoke-rubric artefact includes the inter-rater discipline that would close this gap; a second-scorer pass on the matrix is the single highest-value re-measurement another practitioner could contribute back.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>the matrix</span></div>
+        <h2>Eleven rows, <em>one clean winner.</em></h2>
+        <p>The full table lives in <a href="artefacts/model-matrix.md">the model-matrix artefact</a>. The headline rows, sorted by smoke score, show one model with a strict 24/0/0 and a spread of density numbers that, read alone, would mislead. Note that gpt-4o-mini's density columns come from a 150-document full-corpus run rather than the pinned twenty-document subset, so its smoke score is comparable here while its entity and relation counts are not, and Llama 3.2 3B's ratio reflects only the relations that survived schema validation after the parser dropped most as malformed.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> the headline rows, by entities and relations per document and smoke score (pass / marginal / fail, out of 24).</div>
+          <table class="data">
+            <thead><tr><th>model</th><th class="n">ent / doc</th><th class="n">rel / doc</th><th class="n">ratio</th><th class="n">smoke</th></tr></thead>
+            <tbody>
+              <tr class="win"><td><b>Gemini 2.5 Flash</b> <span class="d">Google</span></td><td class="n">82.5</td><td class="n">95.0</td><td class="n">1.15</td><td class="n">24 / 0 / 0</td></tr>
+              <tr><td>Gemini 3.1 flash-lite preview <span class="d">Google</span></td><td class="n">19.6</td><td class="n">23.3</td><td class="n">1.19</td><td class="n">22 / 1 / 1</td></tr>
+              <tr><td>Claude Sonnet 4.6 <span class="d">Anthropic</span></td><td class="n">40.8</td><td class="n">58.4</td><td class="n">1.43</td><td class="n">22 / 0 / 2</td></tr>
+              <tr><td>Gemini 3 flash preview <span class="d">Google</span></td><td class="n">34.0</td><td class="n">40.0</td><td class="n">1.18</td><td class="n">21 / 3 / 0</td></tr>
+              <tr><td>OpenAI gpt-4o-mini <span class="d">OpenAI</span></td><td class="n">n/a</td><td class="n">n/a</td><td class="n">n/a</td><td class="n">19 / 3 / 2</td></tr>
+              <tr><td>Llama 3.2 3B Q4 <span class="d">local Ollama</span></td><td class="n">17.4</td><td class="n">6.0</td><td class="n">0.34</td><td class="n">11 / 13 / 0</td></tr>
+              <tr><td>Qwen 3.5 4B no-think <span class="d">local Ollama</span></td><td class="n">53.3</td><td class="n">34.2</td><td class="n">0.64</td><td class="n">8 / 4 / 12</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Three observations the table does not state outright. The two Gemini "newer is better" hypotheses, 3-flash-preview and 3.1-flash-lite-preview, both lost to 2.5 Flash; the 3.x line extracts more conservatively, produces sparser graphs, and loses smoke cells on the queries that need breadth. Newer is not better for this task. The relation-to-entity ratio is misleading on its own: Sonnet 4.6 has the highest ratio, 1.43, and still lost cells to Gemini Flash at 1.15, because a high ratio with a low absolute count is a dense little graph with poor coverage. And small open-source models do not fail gracefully: the 3B Llama row ran to completion while LightRAG's parser silently dropped most of its relation output, a failure invisible without explicit schema-violation counting.</p>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>breadth versus density</span></div>
+        <h2>Why the lower ratio <em>wins on traversal.</em></h2>
+        <p>The counter-intuitive finding sits in two columns of the matrix. Gemini 2.5 Flash produces a graph with two times the entities and 1.6 times the relations per document of Claude Sonnet 4.6, but its relation-to-entity ratio is lower, 1.15 against 1.43. On a chat benchmark you would expect the higher-ratio extractor to win on synthesis because each entity is more richly connected. On this benchmark the opposite happens: the model that produces more loosely connected nodes wins.</p>
+        <p>The mechanism is in the retrieval shape shared by every system in this class. A query is embedded and matched against entity nodes, the top-k entity neighbourhoods are traversed, and the chunks that originally produced those entities are fetched and returned. Whether the right chunk gets returned depends primarily on whether any entity in that chunk matches the query, not on how densely entities link to each other. Doubling the entity count roughly doubles the surface area the entity index covers, which roughly doubles the probability that a query lands on at least one entity from each chunk that should be returned. Relation density matters too, but only on the smaller class of queries that need multi-hop traversal across the graph; most production queries look like "what does this corpus say about X," and for those, breadth of the entity index dominates density of the relation index.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · breadth against smoke score. Gemini 2.5 Flash sits far right on entity breadth and clears all twenty-four cells; Sonnet 4.6, denser per entity but narrower, loses two.</figcaption>
+          <div data-atelier-figure='{"type":"scatter","x":{"label":"entities per document","min":0,"max":90,"unit":""},"y":{"label":"smoke cells passed (of 24)","min":0,"max":24},"points":[{"x":82.5,"y":24,"label":"Gemini 2.5 Flash","tint":"work"},{"x":40.8,"y":22,"label":"Sonnet 4.6","tint":"ink"},{"x":34.0,"y":21,"label":"Gemini 3 flash","tint":"ink"},{"x":19.6,"y":22,"label":"Gemini 3.1 flash-lite","tint":"ink"},{"x":17.4,"y":11,"label":"Llama 3.2 3B","tint":"hold"}]}'></div>
+        </figure>
+        <p>This generalises across knowledge-graph RAG systems with traversal-then-fetch retrieval: optimise the extractor for entity coverage first, and optimise for relation density only when the query distribution actually rewards it. It does not generalise to systems that score retrieval purely on relation paths, a smaller class than the literature implies, or to pure vector RAG without an entity index.</p>
+        <div class="finding calm">
+          <div class="fk">Honest scope</div>
+          <h3>The breadth ranking holds across corpora; the absolute counts do not.</h3>
+          <p>The 82.5 entities per document is the number from the twenty-document smoke corpus. The same model and chunking on the 482-document legal corpus produced 39.8 entities per document at a higher ratio of 1.43. The breadth advantage over Sonnet 4.6 holds on both, but the absolute breadth varies by roughly a factor of two depending on what is in the chunks. The recommendation that follows, default to Gemini 2.5 Flash and re-validate the smoke rubric on your own corpus, is exactly what this falls out of: the ranking transfers, the magnitudes do not.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>per-100-document cost</span></div>
+        <h2>Normalised so you can <em>project your own corpus.</em></h2>
+        <p>The cost table covers the commercial rows measured on the twenty-document smoke corpus plus one local row that finished all twenty documents. Per-100-document figures are derived as documented in <a href="artefacts/cost-model.md">the cost-model artefact</a>. This note does not name a total dollar figure because the absolute number depends on document length, chunking, gleaning aggressiveness, and the contract price with whatever gateway sits in front of the model. Each document on this corpus produced about four chunks of 1200 tokens, and LightRAG made about 2.5 LLM calls per chunk on average, with each call consuming roughly 8K input and producing roughly 2K output tokens. That comes to about 80K input plus 20K output tokens per document, or 8M input plus 2M output per 100 documents, before any gleaning overhead.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 2 ·</b> ingest cost per 100 documents at list price, with cost ratio against Gemini 2.5 Flash and smoke score.</div>
+          <table class="data">
+            <thead><tr><th>model</th><th class="n">list, in / out</th><th class="n">cost / 100 docs</th><th class="n">ratio</th><th class="n">smoke</th></tr></thead>
+            <tbody>
+              <tr class="win"><td><b>Gemini 2.5 Flash</b></td><td class="n">$0.30 / $2.50</td><td class="n">~$7 to $10</td><td class="n">1.0x</td><td class="n">24 / 0 / 0</td></tr>
+              <tr><td>gpt-4o-mini</td><td class="n">$0.15 / $0.60</td><td class="n">~$2 to $3</td><td class="n">~0.2x to 0.4x</td><td class="n">19 / 3 / 2</td></tr>
+              <tr><td>Claude Sonnet 4.6</td><td class="n">$3.00 / $15.00</td><td class="n">~$54 to $69</td><td class="n">~6x to 9x</td><td class="n">22 / 0 / 2</td></tr>
+              <tr><td>Llama 3.2 3B <span class="d">local</span></td><td class="n">$0</td><td class="n">$0</td><td class="n">0x</td><td class="n">11 / 13 / 0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Two caveats live with the Sonnet row. The six-to-nine-times range is the list-price calculator; the measured invoice on the twenty-document smoke corpus ran roughly thirty to thirty-three times Gemini Flash because gleaning fired more aggressively and the model added explanatory text the calculator does not anticipate. Use the list ratio for contract pricing and the invoice ratio for projecting re-ingest cost at the wrong model's rate. The local row shows zero inference cost; the workstation, GPU, power, and wall-clock time it consumes are independent of model choice and not included.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 2</b> · relative ingest cost per 100 documents, list-priced against Gemini 2.5 Flash at 1.0. Sonnet's six-to-nine-times band is the structural penalty for the cells it still loses.</figcaption>
+          <div data-atelier-figure='{"type":"bars","unit":"x","rows":[{"label":"gpt-4o-mini (loses cells)","value":0.3,"tint":"hold"},{"label":"Gemini 2.5 Flash (24/0/0)","value":1.0,"tint":"work"},{"label":"Claude Sonnet 4.6 (22/0/2)","value":7.5,"tint":"ink"}]}'></div>
+        </figure>
+        <p>The ranking conclusion is robust to multiplicative pricing factors below roughly ten times. Gemini 2.5 Flash is cheaper than Sonnet 4.6 on every published rate card surveyed here and is the only model in the matrix with a strict 24/0/0 smoke score. The cheapest model that hits 24/0/0 is the production answer, and nothing in the cost table flips that. An enterprise gateway discount changes the absolute numbers but rarely changes the ratios inside the cluster.</p>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>open-source local trials</span></div>
+        <h2>Hardware is the binding constraint, <em>and reasoning mode is a tax.</em></h2>
+        <p>The local-extractor question matters separately from cost, because some corpora cannot leave the operator's machine for sensitivity reasons. For those the question is not "is local cheaper," since cloud is so cheap on this workload that the cost argument barely survives, but "is local viable at all." Six local trials ran across two hardware tiers, a consumer-class GPU with 6 GB VRAM and a 32 GB Apple Silicon workstation. The 4B-class models in the 6 GB tier ran end-to-end; mid-size 14B-class models on the Apple Silicon tier ran with partial completion; 26B-class and above did not complete on either tier within the worker-timeout shape. None of the local rows cleared the smoke rubric against Gemini Flash. Qwen 3.5 4B no-think scored highest among the structurally usable local graphs at 8/4/12, and a Qwen 2.5 14B GGUF Q4 build on M1 Max was the best Apple Silicon completion at 5/4/15 on nineteen of twenty documents, not cross-comparable to the full-corpus rows. Neither approaches 24/0/0.</p>
+        <div class="finding hold">
+          <div class="fk">The discipline caveat</div>
+          <h3>Name what local can and cannot do: it is a data-residency choice, and reasoning mode is a tax on extraction.</h3>
+          <p>Schema noise dominates small-model output. The 3B Llama row produced hundreds of schema-violation warnings; LightRAG's parser dropped most of its extraction, so the model "completed" while producing a sparse graph, invisible without explicit violation counting. Thinking-mode models add latency and billable tokens without adding schema-compliant output: a reasoning-style model emits a long internal monologue before the structured record the parser then discards, long enough to blow out the default worker timeout, and on commercial providers those thought tokens count toward output cost. Where a no-think variant or a flag to disable reasoning exists, default to it for structured extraction, and verify the flag actually reaches the model. Some Ollama versions silently ignore <code>think: false</code> on the OpenAI-compatible endpoint and honour it only on the native one, which is the difference between a model that ingests in two hours and one that ingests in twelve. Local is a viability choice driven by data residency, not a quality choice: if the corpus can leave the machine, the cloud is the better answer at every measured price point.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">·</span><span>what to deploy, and where it does not transfer</span></div>
+        <h2>Default to Gemini 2.5 Flash, <em>and re-run the rubric on your own corpus.</em></h2>
+        <ul>
+          <li><b>Default extractor.</b> Gemini 2.5 Flash via the provider gateway you already use. Re-validate the smoke rubric on a twenty-document subset of your own corpus before locking it in; the rubric file is small enough to keep in your repo.</li>
+          <li><b>Reject the implicit gpt-4o-mini default.</b> Several systems ship a small-tier model as the implicit extractor. It is three to five times cheaper at list price and loses cells you will care about; if you cannot upgrade it, at least make the choice explicit so future operators see it.</li>
+          <li><b>Treat the relation-to-entity ratio as diagnostic, not a target.</b> A ratio above ~1.4 with entity count below ~30 per document is a dense small graph that underperforms at scale; a ratio near 1.0 with entity count above ~60 is a wide sparse graph that traverses well.</li>
+          <li><b>For local-only corpora driven by data residency.</b> A 14B-class GGUF Q4 model on a 32 GB-or-larger Apple Silicon host, or a 4B no-think model on a consumer GPU, are the structurally viable options. Neither clears Gemini Flash; pair either with a separate query-time model for synthesis and accept the trade of retrieval breadth for residency.</li>
+          <li><b>Where these numbers do not transfer.</b> A corpus dominated by structured data, pure narrative, or specialist vocabularies may rank models differently; absolute breadth varies by roughly two times across corpora; changing chunk size, embedder, or contract pricing shifts magnitudes more than ratios. Each scope claim has a falsification condition in <a href="artefacts/invalidation.md">the invalidation artefact</a>.</li>
+        </ul>
+        <p>The takeaway for a delivery team is not the specific model; Gemini 2.5 Flash will be obsolete by the next reading. The thing to take is the discipline: when the substrate's published benchmarks hold a variable constant, that variable is usually the one that decides outcomes in production. Name it, run a smoke rubric on it before locking it in, and instrument the deployment so the documented decision survives day-to-day operations.</p>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> Where EPAM DIAL appears in companion notes it is the gateway product as a technical reference, not institutional sponsorship; the corpus, rubric, and measurements are the author's own. The limits bound the claim: one stack measured under stated conditions, a single human scorer with no inter-rater check, one knowledge-base corpus shape plus one legal validation corpus, list-price cost models, LightRAG as the representative implementation, and a fast acceptance gate rather than a full retrieval harness. <b>Re-run the smoke rubric on your own corpus before treating any magnitude as portable.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li><a href="https://github.com/HKUDS/LightRAG">LightRAG</a>, the canonical open-source knowledge-graph RAG implementation used here as the representative system; its paper names gpt-4o-mini for some runs but does not study sensitivity to extractor choice.</li>
+          <li><a href="https://github.com/microsoft/graphrag">Microsoft GraphRAG</a> and the Neo4j vector-plus-graph ecosystem, the wider class of traversal-then-fetch systems the findings are claimed to generalise across.</li>
+          <li>The <a href="artefacts/smoke-rubric/README.md">smoke-rubric artefact</a>, the a-priori twenty-four-cell protocol, schema, and a neutral-domain fixture, re-instantiable on another corpus.</li>
+          <li>The <a href="artefacts/cost-model.md">cost-model artefact</a>, source of the per-100-document derivation and the list-versus-invoice reconciliation for the Sonnet row.</li>
+          <li>The <a href="artefacts/invalidation.md">invalidation artefact</a>, the falsification condition attached to each scope claim, so a re-measurer can decide whether a result invalidates or extends it.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>aar-06</span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
 </div>
-<script>window.setTimeout(function(){window.location.replace("../");},150);</script>
+
+<script>
+  const bar = document.getElementById('pbar');
+  const links = [...document.querySelectorAll('.toc a')];
+  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
+  function onScroll() {
+    const sd = window.scrollY || document.documentElement.scrollTop;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    const y = sd + 130; let cur = targets[0];
+    for (const o of targets) { if (o.t.getBoundingClientRect().top + sd <= y) cur = o; }
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) cur.a.classList.add('on');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  links.forEach(a => a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
+  }));
+  onScroll();
+</script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
 </body>
 </html>

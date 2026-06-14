@@ -14,8 +14,10 @@ Working drafts. Published independently. See [ABOUT.md](ABOUT.md) for the full d
 |------|------|---------------------|
 | 2026-06-13 | [MCP harvesting: trustworthy data when your agent has a connector, not an API](https://agorokh.github.io/applied-ai-research/notes/mcp-harvesting.html) | agent data |
 | 2026-06-05 | [A memory-and-policy layer above the model: the build-versus-buy case](https://agorokh.github.io/applied-ai-research/notes/value-layer.html) | agent memory |
+| 2026-05-19 | [Choosing the memory substrate for enterprise agents: LightRAG, Graphiti, and the weighting that decides](https://agorokh.github.io/applied-ai-research/2026-05-19_choosing-memory-for-enterprise-agents/) | memory substrate |
 | 2026-05-15 | [Claude Code through DIAL: eight models, 192 runs, metering every request](https://agorokh.github.io/applied-ai-research/notes/telemetry-plane.html) | agent telemetry |
 | 2026-05-14 | [Which models can run Claude Code through DIAL?](https://agorokh.github.io/applied-ai-research/notes/harness-viability.html) | open models |
+| 2026-04-28 | [Picking the extraction LLM for knowledge-graph ingestion: breadth beats density](https://agorokh.github.io/applied-ai-research/2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/) | ingest model |
 
 ## What "applied AI research" means here
 
