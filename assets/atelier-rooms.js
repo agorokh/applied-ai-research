@@ -1,7 +1,7 @@
 /* ============================================================================
-   ATELIER — rotating room background (soft / mood layer)
+   ATELIER:rotating room background (soft / mood layer)
    Base engine by Claude Design (the design language).
-   ADDED here, per REVIEW Move 1: the `data-mood="paper"` PUBLICATION tier — one
+   ADDED here, per REVIEW Move 1: the `data-mood="paper"` PUBLICATION tier:one
    step more muted than archival, so the photograph becomes a warm tonal
    atmosphere with a soft diagonal of light, never an identifiable building.
    Archival stays as-is for the cockpit's internal research; the two never drift.
@@ -30,7 +30,7 @@
         'linear-gradient(112deg,rgba(242,235,225,0.62) 0%,rgba(242,235,225,0.46) 40%,rgba(242,235,225,0.38) 66%,rgba(240,230,216,0.48) 100%),' +
         'radial-gradient(135% 130% at 82% 16%,rgba(60,42,20,0) 38%,rgba(48,32,16,0.16) 100%),' +
         'radial-gradient(120% 120% at 8% 96%,rgba(255,240,214,0.20),rgba(255,240,214,0) 50%);}' +
-    /* archival — the cockpit's own research pages (unchanged) */
+    /* archival:the cockpit's own research pages (unchanged) */
     'body[data-mood="archival"] #atelier-bg{background:#e3d9c7;}' +
     'body[data-mood="archival"] #atelier-bg .rm{' +
       'filter:blur(9px) saturate(0.5) contrast(0.96) brightness(1.08);}' +
@@ -38,7 +38,7 @@
       'background:' +
         'linear-gradient(180deg,rgba(245,240,231,0.88) 0%,rgba(244,238,228,0.84) 50%,rgba(242,235,224,0.86) 100%),' +
         'radial-gradient(120% 120% at 8% 0%,rgba(255,244,222,0.28),rgba(255,244,222,0) 55%);}' +
-    /* paper — the PUBLICATION tier (REVIEW Move 1): a breath of warm room under
+    /* paper:the PUBLICATION tier (REVIEW Move 1): a breath of warm room under
        paper, a soft diagonal of light, no legible architecture. veil ~0.92. */
     'body[data-mood="paper"] #atelier-bg{background:#e6dccb;}' +
     'body[data-mood="paper"] #atelier-bg .rm{' +

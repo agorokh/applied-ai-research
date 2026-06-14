@@ -1,5 +1,5 @@
 /* ============================================================================
-   Applied AI Research — the shared note stylesheet.
+   Applied Intelligence: the shared note stylesheet.
    The Atelier publication register (REVIEW: data-mood="paper"), extracted so
    every note is content, not a repeated style block. Link AFTER theme.css.
    Page-local <style> in a note should only set body background + rare overrides.
@@ -18,7 +18,7 @@
 .cover h1 em { display: block; font-style: italic; color: var(--ink-2); font-size: 0.82em; line-height: 1.04; margin-top: 4px; }  /* subtitle scale (REVIEW Move 3.3) */
 .cover .lede { font-family: var(--serif); font-weight: 300; font-size: clamp(19px,1.9vw,23px); line-height: 1.5; color: var(--ink); margin: 28px 0 0; max-width: 62ch; }
 
-/* cover key figures — serif value + prose label; NO inline vs/to (REVIEW Move 3.2) */
+/* cover key figures:serif value + prose label; NO inline vs/to (REVIEW Move 3.2) */
 .metastats { display: grid; grid-template-columns: repeat(4,1fr); margin-top: 40px; }
 .metastats .ms { padding: 22px 26px; border-left: 1px solid var(--line); }
 .metastats .ms:first-child { border-left: 0; padding-left: 28px; }
@@ -68,7 +68,7 @@ section.sec:first-child { border-top: 0; padding-top: 6px; }
 .sec ol li { counter-increment: ol; }
 .sec ol li::before { content: counter(ol); position: absolute; left: 0; top: 9px; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-3); }
 
-/* ── finding callouts — the three tints ──────────────────────────────────── */
+/* ── finding callouts:the three tints ──────────────────────────────────── */
 .finding { margin: 22px 0; padding: 20px 26px; border-left: 1px solid var(--work); background: linear-gradient(rgba(154,123,60,0.05), rgba(154,123,60,0.02)); }
 .finding .fk { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--work); margin-bottom: 8px; }
 .finding h3 { font-family: var(--serif); font-weight: 400; font-style: normal; font-size: 21px; line-height: 1.25; margin: 0 0 10px; color: var(--ink); }
@@ -89,7 +89,7 @@ figure.fig figcaption b { font-style: normal; font-weight: 400; color: var(--ink
 .atom .k { color: var(--ink-3); } .atom .val { color: var(--ink); } .atom .gd { color: var(--calm); } .atom .ng { color: var(--neg); }
 .measure { border: 1px solid var(--line); background: rgba(255,255,255,0.20); padding: 22px 26px 14px; }
 
-/* ── hairline flow — ordered stages, token strokes (topology / lifecycle) ── */
+/* ── hairline flow:ordered stages, token strokes (topology / lifecycle) ── */
 .flow { border: 1px solid var(--line); background: rgba(255,255,255,0.18); padding: 26px 22px; display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
 .flow .stage { flex: 1 1 0; min-width: 130px; padding: 0 14px; position: relative; }
 .flow .stage + .stage::before { content: ''; position: absolute; left: -1px; top: 7px; bottom: 7px; width: 1px; background: var(--line); }
@@ -99,7 +99,7 @@ figure.fig figcaption b { font-style: normal; font-weight: 400; color: var(--ink
 .flow .stage.work .st { color: var(--work); }
 @media (max-width: 720px){ .flow { flex-direction: column; } .flow .stage + .stage::before { display: none; } .flow .stage { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 10px; } }
 
-/* ── data tables — at most one gold winner row; results serif tabular ────── */
+/* ── data tables:at most one gold winner row; results serif tabular ────── */
 .tbl { margin: 28px 0; }
 .tbl .cap { font-size: 12.5px; color: var(--ink-3); margin-bottom: 12px; }
 .tbl .cap b { font-family: var(--serif); font-style: italic; color: var(--ink-2); font-weight: 400; }

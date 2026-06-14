@@ -1,8 +1,8 @@
 /* ============================================================================
-   ATELIER FIGURES — the shared instrument-design figure renderer.
-   Per REVIEW ("hairline measures, machined ticks, tokenised stroke/fill — never
+   ATELIER FIGURES:the shared instrument-design figure renderer.
+   Per REVIEW ("hairline measures, machined ticks, tokenised stroke/fill:never
    chunky bars, never a default chart library's palette"). One renderer, shared
-   across every Applied AI Research note. Every stroke and fill is a var(--…)
+   across every Applied Intelligence note. Every stroke and fill is a var(--…)
    token. Inline SVG, viewBox-scaled, prints, no dependency.
 
    Usage: drop an element with a JSON config and the renderer fills it.
