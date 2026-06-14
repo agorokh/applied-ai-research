@@ -1,6 +1,10 @@
 .cursor/*
 .scratch/
 
+# Python bytecode caches — never track generated artefacts.
+__pycache__/
+*.py[cod]
+
 # /post-merge unification (agorokh/agent-factory#246 follow-up):
 # allow the post-merge skill surfaces under .claude/.cursor/.codex even
 # when those parent dirs are otherwise ignored, so /post-merge works
