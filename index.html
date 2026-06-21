@@ -78,6 +78,10 @@
   .pubabout .side .sv { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-top:1px solid var(--line); font-size:13px; }
   .pubabout .side .sv:first-of-type { border-top:0; }
   .pubabout .side .sv .k { color:var(--ink-3); } .pubabout .side .sv .d { font-family:var(--serif); color:var(--ink); }
+  .pubabout .side .elsewhere-h { margin-top:18px; }
+  .pubabout .side .elsewhere { display:flex; flex-wrap:wrap; gap:6px 12px; padding-top:8px; font-size:13px; }
+  .pubabout .side .elsewhere a { color:var(--ink-2); text-decoration:none; border-bottom:1px solid var(--line-2); transition:color .2s, border-color .2s; }
+  .pubabout .side .elsewhere a:hover { color:var(--ink); border-bottom-color:var(--ink); }
   @media (max-width:880px){ .pubabout{grid-template-columns:1fr;} }
 </style>
 </head>
@@ -168,12 +172,19 @@
       <div class="sv"><span class="k">latest</span><span class="d">ai-06</span></div>
       <div class="sv"><span class="k">register</span><span class="d">applied AI research</span></div>
       <div class="sv"><span class="k">set in</span><span class="d">Newsreader</span></div>
+      <div class="sk elsewhere-h">elsewhere</div>
+      <div class="elsewhere">
+        <a href="https://x.com/agorokh">@agorokh on X</a>
+        <!-- TODO(linkedin): operator adds their LinkedIn link beside X here, e.g.
+             <a href="https://www.linkedin.com/in/USERNAME/">LinkedIn</a> -->
+      </div>
     </div>
   </section>
 
   <div class="colophon">
     <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
     <span>by Arseny Gorokh</span>
+    <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
     <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
   </div>
 </div>
