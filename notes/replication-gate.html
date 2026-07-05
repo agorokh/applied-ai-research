@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>"It's done." The most expensive tokens an agent produces · completion gates for coding agents, independently replicated · Applied Intelligence</title>
+<meta name="description" content="A new paper proposes that a coding agent's completion claim should be a validated workspace state, not a message. I replicated it independently with a different agent family, on the authors' released harness, unmodified: the gate passed and refused four real method errors on the way. Then the translation enterprise agent programs need: which parts are science, and which parts are practice you can adopt now.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/replication-gate.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="&quot;It's done.&quot; The most expensive tokens an agent produces.">
+<meta property="og:description" content="Agent completion as a validated workspace state, independently replicated with a different agent family: the gate passed, refused four real errors on the way, and the note separates the science from the practice an enterprise can adopt now.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/replication-gate.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-09-social.png">
+<meta property="og:image:alt" content="A typographic plate: the words 'It's done.' set as a large display line, described as the most expensive tokens an agent produces; beneath it a ledger of four refusals across three targets, each marked refused, fixed, matched.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-09-social.png">
+<meta name="twitter:title" content="&quot;It's done.&quot; The most expensive tokens an agent produces.">
+<meta name="twitter:description" content="Agent completion as a validated workspace state, independently replicated with a different agent family: the gate passed, refused four real errors, and the note separates the science from the enterprise practice.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+</style>
+</head>
+<body data-room="4" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 09</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 07 · 04</span>
+      <span class="dot">·</span><span>ai-09</span>
+      <span class="dot">·</span><span>12 min read</span>
+      <span class="dot">·</span><span>one independent replication</span>
+    </div>
+    <h1>"It's done." The most expensive tokens an agent produces.<em>an independent test of completion gates for coding agents, and what an enterprise agent program should copy from it.</em></h1>
+    <p class="lede">If you run coding agents unattended, you have met the failure that matters most: the agent reports done, and the artifact is not. The dashboard is blank, the test never ran, the claim was a sentence. Enterprises solved this problem for human work long ago, with acceptance criteria, service levels, and audits; agent output arrived dressed as conversation and slipped past all of it. A new paper from Purdue proposes the structural fix: make completion a property of the workspace that external validator scripts check, so the agent cannot declare anything. The authors evaluated it with one agent family, their own. I replicated it independently: a different agent family, their released harness unmodified, one of the paper's own case studies end to end. The gate passed. On the way it refused four of my agent's attempts, across three targets, and every refusal was a genuine method error that an unchecked workflow would have shipped as done. This note reports the replication, then does the separation this publication exists for: which parts of this are science, a source of curiosity, and which parts are practice an enterprise agent program can adopt this quarter.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">2</div><span class="l">agent families have now passed the same gate: the authors' own, and this replication's, which met the harness cold. The discipline lives in the workspace, not in the model.</span></div>
+      <div class="ms"><div class="v">11 of 11</div><span class="l">planned replication targets reached MATCHED with all four external validators green, on the SINDy case study from the paper's own evaluation; what "planned" hides is section vi.</span></div>
+      <div class="ms"><div class="v">4</div><span class="l">attempts the validators refused mid-run, across three targets. All four refusals were real method errors on my side, caught by the gate, not by me.</span></div>
+      <div class="ms"><div class="v">half</div><span class="l">of claims, at worst, got the same acceptance-rule type across the authors' own repeated runs (95 percent at best, computed from their released data). The judgment gap the gate does not close.</span></div>
+    </div>
+
+    <div class="artefacts" id="artefacts">
+      <span class="k">artefacts</span><span class="dot">·</span>
+      <a href="https://arxiv.org/abs/2607.02134">the paper</a><span class="dot">·</span>
+      <a href="https://github.com/PredictiveScienceLab/paper-replication-paper">the authors' release</a><span class="dot">·</span>
+      <a href="../artefacts/2026-07-03_paper-replication/replication_report.pdf">my replication report</a><span class="dot">·</span>
+      <a href="../artefacts/2026-07-03_paper-replication/reproduction_matrix.csv">the target matrix</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The failure</a>
+        <a href="#s02"><span class="no">ii</span>The paper's answer</a>
+        <a href="#s03"><span class="no">iii</span>The replication</a>
+        <a href="#s04"><span class="no">iv</span>Four refusals</a>
+        <a href="#s05"><span class="no">v</span>The provenance cascade</a>
+        <a href="#s06"><span class="no">vi</span>Two open limits</a>
+        <a href="#s07"><span class="no">vii</span>Science vs practice</a>
+        <a href="#s08"><span class="no">·</span>The ledger</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">4 jul 2026</span></div>
+        <div class="v"><span class="k">replication</span><span class="d">n = 1, one paper</span></div>
+        <div class="v"><span class="k">harness</span><span class="d">authors' release, unmodified</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-09</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the failure that matters</span></div>
+        <h2>Sometimes it is done. <em>Sometimes the sentence is all there is.</em></h2>
+        <p class="lede">Anyone who runs agents on real work learns this early. The model writes plausible code, runs some of it, and reports completion in fluent, confident prose. Sometimes it is done. Sometimes the figure was never generated, the comparison never ran, and the sentence is load-bearing for nothing. The failure is not dishonesty; it is that in most workflows the agent's claim is the only artifact of completion there is.</p>
+        <p>I have written before about what an agent-first workflow preserves: the reasoning chain, the dead ends, the corrected beliefs, all of it landing as reviewable artifacts. That note ended on trust: you do not trust the agent, you trust the substrate it stands on. This note is about the sharpest instrument that substrate can carry: a gate that decides, from files on disk, whether the work is actually finished, and that the agent cannot talk its way past.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the paper's answer</span></div>
+        <h2>Every claim becomes a target. <em>Done becomes a workspace state, not a sentence.</em></h2>
+        <p>On 2 July, Atharva Hans and Ilias Bilionis of Purdue posted "Coding-agents can replicate scientific machine learning papers". The task they picked is a hard, honest one: hand an agent a scientific paper's LaTeX source and ask it to reproduce the paper's computational claims from the text alone, no author code. But the contribution that matters beyond scientific ML is the workflow they wrapped around the agent.</p>
+        <p>Every computational claim in the source paper becomes a recorded row in a reproduction matrix: where the claim lives, what would count as reproducing it, an acceptance rule with a tolerance, a status. A wrapper tracks every execution into a run ledger. A target can only reach MATCHED when a chain of evidence exists on disk: the generated artifact, the run that produced it, provenance pinning the code, configuration and seed by hash, a recorded comparison under the acceptance rule, and the artifact embedded in a compiled report. Paper-provided assets are hash-indexed as reference-only, so an agent that copies the paper's own figure into its results is caught mechanically. And the finish line is not a message: four external validator scripts check the workspace, and the run is complete only when every target is MATCHED, no target is active, and the report PDF exists. The authors' phrase for it is exact: completion is a workspace state rather than a statement in the agent's final message.</p>
+        <p>Their evaluation: twelve independent runs across four scientific ML papers, driven by one agent family at a high reasoning setting. All twelve workspaces passed the gate; 158 recorded targets matched with report coverage. What varied, and the paper is candid about this, was judgment: how finely runs decomposed the same paper into targets, and which acceptance rules they chose.</p>
+        <div class="finding calm">
+          <div class="fk">The design idea</div>
+          <h3>The agent cannot declare completion. It can only produce a workspace that passes.</h3>
+          <p>Targets, evidence bundles, hash-pinned provenance, external validators. The verdict comes from scripts reading files, not from the model's summary of itself.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the replication</span></div>
+        <h2>A different agent, the authors' harness, <em>unmodified.</em></h2>
+        <p>A workflow paper evaluated only by its own authors, with one agent family, leaves the transfer question open. The authors released everything: the harness, the validators, the prompts, and agent-facing instructions in two dialects, one of which happens to target the agent stack I run. So the replication design chose itself. Take the released harness at its pinned commit, change nothing, and drive it with a different agent family than the one in the paper's evaluation, on one of the paper's own four case studies. For the record, the paper appeared on 2 July and this run happened the following day; the timing matters for exactly one reason, which is that the authors had no opportunity to assist, so whatever the harness did, it did on its own.</p>
+        <p>The subject paper was SINDy, the 2016 sparse-regression method for discovering governing equations from data, the least expensive of their four. The driver was Claude, through the Claude Code dialect of the authors' released instructions; their evaluation ran Codex, so the two agent families meet only at the harness. My run planned eleven targets covering the paper's core low-dimensional claims: the damped oscillators, the chaotic Lorenz system, the logistic map's bifurcation cascade, the Hopf normal form. Every tolerance was pre-registered in config files before the first fit ran, anchored to the numbers printed in the source paper's own tables. The method was rebuilt from the paper's text alone, under the harness's default policy that forbids author code. And the design has a real failure branch: a target that cannot be reproduced simply stays unmatched, its refused attempts on the ledger, and the gate never passes. Non-reproduction would have been a recorded state, not a silent absence; that is the property being tested.</p>
+        <p>The result: all eleven targets reached MATCHED, all four validators returned green, and the compiled report passed the completion gate. The recovered dynamics sit close to the printed tables: the Lorenz coefficients within 0.002 of the paper's values against a pre-registered tolerance of 0.15, the logistic map within 0.0006, and the Hopf normal form within 0.9 percent of ground truth, where the source paper reports its own coefficients off by almost 8 percent.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · the logistic-map claim, reproduced. Attracting sets against the parameter: the stochastically forced system that generated the training data (left), and the bifurcation diagram of the sparse model the agent identified from it (right). Red lines mark the ten sampled parameter values.</figcaption>
+          <a href="../assets/ai-09-bifurcation.png"><img src="../assets/ai-09-bifurcation.png" alt="Two panels. Left: attracting sets of the stochastically forced logistic map, a noisy fan of points. Right: the identified model's clean bifurcation diagram with the period-doubling cascade and chaotic bands. Red vertical lines mark the sampled parameter values." style="width:100%; height:auto; border:1px solid var(--line-2);"></a>
+        </figure>
+        <p>One evening, one laptop, no cluster. The authors' SINDy runs took between 1.2 and 2.7 hours of wall clock each with 20 targets; mine planned fewer targets and spent its time differently, most of it in the loop this note is actually about.</p>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>the lived centerpiece</span></div>
+        <h2>The gate refused my agent four times. <em>It was right every time.</em></h2>
+        <p>The most informative part of a replication is not the green light at the end; it is what the machinery does when the work is wrong. Mine was wrong four times, on three targets.</p>
+        <p><b>The first refusal.</b> On the three-dimensional linear system, my agent's fit produced spurious terms, and the comparison gate refused to record a match. Two causes surfaced under the refusal. My polynomial library was one order too rich, aliasing exponential decay rates against each other, a degeneracy the source paper itself warns about in a sentence that is easy to skim past. And the source paper's displayed equation and its own appendix table disagree on a sign convention, a small, decade-old discrepancy of the kind target-anchored comparison surfaces mechanically. The authors' released runs hit the analogous ambiguity in another example and resolved it the same way mine did, toward the table. Two strangers' agents, independently converging on the same reading of a typo, is a small preview of what replication at scale looks like.</p>
+        <p><b>The second and third refusals</b> were both the logistic map, and together they are the best argument for the loop. The first fit came back dense, spurious terms everywhere, because I had starved the regression: one initial condition per parameter value leaves the polynomial library nearly collinear, and the fit soaks noise into phantom terms. I fixed the sampling; the gate refused again, because recovery was still fragile across seeds. The real cause took an isolation experiment to find: my data generator was clipping the stochastic map's state into its domain and recording the clipped value as the regression target, which biased the residual exactly at the domain edges. Regress on the raw forced value instead, and recovery is exact-support across every seed tested. Two refusals, two distinct causes, and the sparse regression was never the problem; my measurement pipeline was, twice.</p>
+        <p><b>The fourth refusal.</b> The Hopf normal form, fit from noisy states through a total-variation-regularized derivative, came back dense too. An isolation test with exact derivatives recovered the true support perfectly, which located the fault in one regularization constant: over-smoothed derivatives, biased just enough to scatter energy across the library. One parameter change, verified across seeds, and the fit landed inside one percent of truth.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 2</b> · closeness to ground truth on the hardest target. Maximum coefficient deviation on the Hopf normal form: the source paper's own reported fit, and this replication after the fourth refusal was resolved.</figcaption>
+          <div data-atelier-figure='{"type":"measure","min":0,"max":10,"unit":"% deviation from truth","ticks":[0,2,4,6,8,10],"marks":[{"at":8,"label":"the 2016 paper, its own reported fit","value":"~8%","tint":"ink"},{"at":0.84,"label":"this replication, after the refusal","value":"0.84%","tint":"calm"}]}'></div>
+        </figure>
+        <p>Here is the sentence that matters: under an ordinary agent workflow, all four of those errors ship. Each produced a plausible artifact, a figure that looked right at arm's length, and an agent ready to summarize success. What stopped them was not my vigilance and not the model's conscience; it was a script comparing files against a rule I had been forced to write down before running anything. Which is to say: every refusal is the authors' architecture doing exactly what it promises, against an agent and an operator it had never met.</p>
+        <div class="pull">The refusals are the product. The green light is just the receipt.</div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>the audit-integrity bill</span></div>
+        <h2>Fix one file, <em>and seven finished targets reopen.</em></h2>
+        <p>Midway through, the second refusal's fix touched a shared implementation file. The next validator pass failed seven targets that had already been matched: their provenance records pinned the hash of the code that produced them, the file had changed, and the harness considered their evidence stale. The only way forward was to re-run and re-register every one of them against the settled code.</p>
+        <p>My first reaction was that this was the harness being bureaucratic. My second was that it goes a long way toward explaining the authors' own numbers: their released SINDy workspaces record between 20 and 34 executions per 20-target run, and at least part of that surplus is this, superseded evidence kept honest. If evidence claims to descend from code, and the code changes, the evidence is no longer evidence. Most human research workflows never enforce this. This one does, mechanically, and the cost is real and worth paying. The final eleven of eleven is the workspace state after that re-registration, not before it.</p>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>what the gate does not close</span></div>
+        <h2>Two limits, <em>and I am the demonstration of the first.</em></h2>
+        <p>To be precise about attribution: the paper itself names both of these in principle. Completion, the authors write, "remains relative to the target set recorded in the reproduction matrix", and hash checks "do not detect every transformed copy". What an independent run adds is their empirical shape, how they behave under a stranger's hands, and a mechanical fix for each.</p>
+        <p><b>Coverage is planner-relative.</b> The completion gate binds status to evidence: every planned target must earn its match. It says nothing about whether the plan covers the paper. The agent writes its own target list, and a scoped plan passes the same gate a comprehensive plan passes. I know because I did it: my eleven targets deliberately excluded the source paper's fluid-dynamics example, which needs simulation data I had no business generating on a laptop, and the gate was equally green. The exclusion is recorded and argued in the workspace, but no validator demanded that. The authors' own data shows the same freedom operating less deliberately: the same source paper decomposed into 8 targets in one of their runs and 25 in another. The gate guarantees the work claimed was done; it cannot guarantee the work needed was claimed. The fix is knowable, a coverage validator comparing the planned matrix against the paper's own figure and table inventory, with exclusions required in writing.</p>
+        <p><b>Provenance is declaration-deep.</b> Each target's evidence pins the hash of the code file the agent declares as its implementation. It does not pin the file's imports. When my shared-module edit invalidated seven targets, that was the net working. But a later edit to a sibling module, the one holding the actual numerical method, invalidated nothing, because no target had declared it. The anti-tamper net has holes exactly where the agent chooses not to declare, which is exactly where an adversarial or lazy agent would put things. The fix is equally knowable: pin the transitive import closure, or hash the whole source tree.</p>
+        <p>And beneath both sits the variance the authors report frankly: across their repeated runs, the share of claims receiving the same acceptance-rule type ranged from one half on the hardest paper to 95 percent on the cleanest, computed from their released analysis data. Target decomposition, acceptance rules, and tolerances are the three levers a sloppy run could use to pass its own gate. Pre-registering tolerances before the first run, as this replication did, closes part of that; an independent review of the plan before it locks would close more.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 3</b> · the judgment gap. Share of claims receiving the same acceptance-rule type across the authors' three independent runs, per source paper; from the released analysis data.</figcaption>
+          <div data-atelier-figure='{"type":"bars","unit":"%","max":100,"rows":[{"label":"SINDy","value":95,"valueLabel":"95%","tint":"calm"},{"label":"PIFT","value":73,"valueLabel":"73%","tint":"calm"},{"label":"PINN, part II","value":65,"valueLabel":"65%","tint":"ink"},{"label":"PINN, part I","value":50,"valueLabel":"50%","tint":"ink"}]}'></div>
+        </figure>
+        <div class="finding hold">
+          <div class="fk">The two demonstrations</div>
+          <h3>The gate proves the claimed work was done. It cannot prove the needed work was claimed, or that undeclared code stayed honest.</h3>
+          <p>Both limits are acknowledged by the authors in principle; both have mechanical fixes: a coverage validator against the paper's own asset inventory, and provenance over the import closure instead of one declared file. Neither weakens the design; both complete it.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>science and practice, separated</span></div>
+        <h2>What is science here, <em>and what you can use on Monday.</em></h2>
+        <p>Nothing in the workflow's core knows it is about physics. A claim becomes a recorded target with an acceptance rule written down in advance. Work becomes tracked executions. Evidence becomes hash-pinned provenance. Done becomes a workspace state that external validators check. And because an agent family the harness had never met conformed to a gate designed around a different one, the contract is evidently about the workspace, not the actor. That is a general contract for agent-delivered work, and scientific replication is simply the domain where pretending is hardest, because the source paper's printed tables are the acceptance rule, sitting in public, decades old, indifferent to fluent prose.</p>
+        <div class="finding calm">
+          <div class="fk">The science, and my curiosity</div>
+          <h3>Why a practitioner replicates a methods paper at all.</h3>
+          <p>Three open questions live here, and they are research questions, not product ones. Does a completion gate transfer across agent families, or was it tuned to one? (This run: one data point that it transfers.) How much does agent judgment vary when agents write their own acceptance rules? (The authors' own data: agreement from one half to 95 percent, the honest weak edge of the field.) And what should provenance actually pin, declared files or execution lineage? These same questions apply to the whole replication-benchmark class, PaperBench included. None of this needs to interest you for the next box to be useful.</p>
+        </div>
+        <div class="finding hold">
+          <div class="fk">The practice, for enterprise agent programs</div>
+          <h3>Five things to copy, none of which require the science.</h3>
+          <p>One: every agent task gets a written acceptance rule before the run, the same discipline your contracts and SLAs already encode for human work; if nobody can write the rule, the task is not ready for an agent. Two: a validator script declares done, never the agent; completion becomes a fact about files. Three: keep refused attempts on a ledger instead of overwriting them; the refusals are your audit trail and your evidence the gate is working. Four: pin evidence to the code and configuration that produced it, so a later change cannot silently orphan earlier results. Five: change the KPI question from "how many tasks did the agents complete" to "how many completions did the gate refuse"; a gate that never refuses is not a gate. And the trust question resolves itself: "can I trust the agent" has no answer, "can I trust the gate" is an engineering question with an inspectable one.</p>
+        </div>
+        <p>The failure mode all of this displaces has a name in my telemetry: sessions where the agent edited and reported, and no verification action ever ran. Every workflow that lets the agent narrate its own finish line has that hole, and enterprise agent programs have spent three years excited about building agents while leaving it open. Science is simply the oldest culture whose entire product is checked claims; importing its machinery is what turns an impressive demo into something a business can bill against.</p>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">·</span><span>the ledger</span></div>
+        <h2>What this run established, <em>and what it cannot.</em></h2>
+        <p><b>Established by this replication.</b> The released harness runs unmodified outside the authors' hands, on a different agent family, and its completion gate passed on a real case study with no author involvement. The validators refused four genuinely wrong intermediate results that a narrated workflow would have shipped. The provenance net catches shared-code drift and forces re-registration. The recovered dynamics match the 2016 paper's printed tables within pre-registered tolerances, in one case an order of magnitude closer to ground truth than the source paper's own fit.</p>
+        <p><b>Not established, and this note does not claim it.</b> One run, one subject paper, the cheapest of the authors' four, with a deliberately scoped target plan. Nothing here measures how the workflow behaves on papers whose claims resist decomposition, or under agents motivated to game the acceptance rules; section vi is exactly where they would press. The two proposed fixes are designs, not results. And a replication whose verdict agrees with the authors' carries less information than one that had to disagree; the disagreements here were all between the gate and me, which is the outcome the design wants but only one run's worth of it.</p>
+        <div class="finding">
+          <div class="fk">If you take one thing</div>
+          <h3>Stop accepting completion claims from the entity that benefits from making them.</h3>
+          <p>The gate does not need to be this paper's gate. It needs to be external, deterministic, and written before the work: a validator reading files, refusing until the evidence exists. The refusals will be the most valuable output you get.</p>
+        </div>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> The replication was run by the author's own agent stack against the authors' publicly released harness, unmodified, at its pinned commit; the paper and harness belong to their named authors, and the 2016 SINDy paper to its. The evidence bundle linked above carries the final target matrix, the completion-gate output, the assumptions log with all four refused attempts, and the compiled replication report. <b>N = 1: one run, one paper. Treat the transfer claim as demonstrated once, not established.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>A. Hans and I. Bilionis, <a href="https://arxiv.org/abs/2607.02134">"Coding-agents can replicate scientific machine learning papers"</a>, arXiv:2607.02134, submitted 2 July 2026. The workflow, the completion gate, the twelve-run evaluation (158 targets, all matched), and the candid variance reporting.</li>
+          <li>The authors' release bundle, <a href="https://github.com/PredictiveScienceLab/paper-replication-paper">PredictiveScienceLab/paper-replication-paper</a>: the agent-facing harness in two dialects, the validators, the prompts, twelve agent-generated case-study workspaces, and the analysis data behind Figure 3. This replication ran the harness at commit <code>46ad437</code>, unmodified; its own unit suite passed 42 of 42 on the replication machine.</li>
+          <li>S. L. Brunton, J. L. Proctor, and J. N. Kutz, <a href="https://arxiv.org/abs/1509.03580">"Discovering governing equations from data: Sparse identification of nonlinear dynamical systems"</a>, 2016 (PNAS 113:15). The subject of the replication; the appendix tables are the acceptance anchors, and the text's own warning about library degeneracy is the one my first refusal rediscovered.</li>
+          <li>This replication's evidence bundle: <a href="../artefacts/2026-07-03_paper-replication/reproduction_matrix.csv">the final reproduction matrix</a> (11 of 11 MATCHED, pre-registered tolerances), <a href="../artefacts/2026-07-03_paper-replication/completion.json">the completion-gate output</a>, <a href="../artefacts/2026-07-03_paper-replication/assumptions_and_unknowns.md">the assumptions and refusal log</a>, and <a href="../artefacts/2026-07-03_paper-replication/replication_report.pdf">the compiled replication report</a> with every figure and table.</li>
+          <li>G. Starace et al., <a href="https://arxiv.org/abs/2504.01848">"PaperBench: Evaluating AI's Ability to Replicate AI Research"</a>, 2025. The adjacent benchmark family: author-informed rubrics where this paper uses agent-recorded targets; the two validity questions in section vii apply across the class.</li>
+          <li>The prior note in this thread: <a href="pr-memory.html">"The meeting forgets. The pull request remembers."</a> (ai-08), on what an agent-first workflow preserves; this note is about what enforces it.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-09</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('pbar');
+  const links = [...document.querySelectorAll('.toc a')];
+  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
+  function onScroll() {
+    const sd = window.scrollY || document.documentElement.scrollTop;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    const y = sd + 130; let cur = targets[0];
+    for (const o of targets) { if (o.t.getBoundingClientRect().top + sd <= y) cur = o; }
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) cur.a.classList.add('on');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  links.forEach(a => a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
+  }));
+  onScroll();
+</script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>
