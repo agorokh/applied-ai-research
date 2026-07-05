@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>The meeting forgets. The pull request remembers. · Applied Intelligence</title>
+<meta name="description" content="Conventional engineering culture keeps the conclusions of its decisions and discards the reasoning: the explorations, the rejected options, the corrected beliefs. An agent-first workflow preserves the whole chain as queryable artifacts, and agents finally make that affordable. Half of this is measured science; the other half is a hypothesis, treated as one.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/pr-memory.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="The meeting forgets. The pull request remembers.">
+<meta property="og:description" content="Engineering orgs burn the reasoning behind their decisions at a measured, well-documented rate. An agent-first workflow keeps the whole chain, and enforces that it gets read. The measured half, the hypothesis half, and the falsifiers.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/pr-memory.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-08-social.png">
+<meta property="og:image:alt" content="Two panels: the human loop, where rejected options and corrected beliefs evaporate; and the agent loop, where every step lands in a queryable memory graph.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-08-social.png">
+<meta name="twitter:title" content="The meeting forgets. The pull request remembers.">
+<meta name="twitter:description" content="Engineering orgs burn the reasoning behind their decisions at a measured rate. An agent-first workflow keeps the whole chain, and enforces that it gets read.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+</style>
+</head>
+<body data-room="8" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 08</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 07 · 02</span>
+      <span class="dot">·</span><span>ai-08</span>
+      <span class="dot">·</span><span>11 min read</span>
+      <span class="dot">·</span><span>literature + one lived system</span>
+    </div>
+    <h1>The meeting forgets. The pull request remembers.<em>where engineering reasoning goes when the meeting ends, and what agents change about it.</em></h1>
+    <p class="lede">People keep asking me how I can rely on agents in an engineering process, how I expect them to behave properly. The question assumes the agent is the fragile part and the human process is the solid one. I think it is the other way around, and the answer has nothing to do with the agents themselves. Conventional engineering culture keeps the conclusions of its decisions and throws away the reasoning that produced them; an agent-first workflow preserves the whole chain as queryable artifacts, and enforces that the chain actually gets read. The first half of that claim is measured science, verified here against primary sources. The second half is a hypothesis, and this note treats it as one.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">83%</div><span class="l">of practitioners in an industrial field study said architecture decisions were documented rarely or occasionally, with no clear guidelines. The undocumented baseline is measured, and it is bad.</span></div>
+      <div class="ms"><div class="v">3+ days</div><span class="l">of full-time reverse engineering one interviewee spent recovering what a departed colleague could have explained over coffee; recovery costs after a departure are real and measured.</span></div>
+      <div class="ms"><div class="v">no. 1</div><span class="l">where 269 surveyed engineers ranked commits among the channels through which project knowledge is exchanged and created: above documentation, above meetings. The memory was always in the artifacts.</span></div>
+      <div class="ms"><div class="v">5,838 + 3,109</div><span class="l">merged pull requests and vault knowledge nodes across the sixteen-repository fleet behind this note, counted on 2 july 2026; all of it written as exhaust of the work.</span></div>
+    </div>
+
+    <div class="artefacts" id="artefacts">
+      <span class="k">sources</span><span class="dot">·</span>
+      <a href="https://dl.acm.org/doi/10.1145/3468264.3473923">the turnover interviews</a><span class="dot">·</span>
+      <a href="https://dl.acm.org/doi/10.1145/2884781.2884851">the knowledge-loss measurements</a><span class="dot">·</span>
+      <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">the METR trial</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The question</a>
+        <a href="#s02"><span class="no">ii</span>How decisions die</a>
+        <a href="#s03"><span class="no">iii</span>Forty years of failing</a>
+        <a href="#s04"><span class="no">iv</span>What agents change</a>
+        <a href="#s05"><span class="no">v</span>The lived example</a>
+        <a href="#s06"><span class="no">vi</span>The honest ledger</a>
+        <a href="#s07"><span class="no">·</span>The answer</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">2 jul 2026</span></div>
+        <div class="v"><span class="k">claims verified</span><span class="d">23 of 25</span></div>
+        <div class="v"><span class="k">lived system</span><span class="d">n = 1</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-08</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the question people keep asking</span></div>
+        <h2>"How do you expect agents <em>to behave properly?"</em></h2>
+        <p class="lede">I got some version of this all week: how can you rely on agents in an engineering process, how do you expect them to act correctly without a human watching every step. It is a fair question, and it rests on an assumption worth pulling out into the light: that the agent is the fragile part, and the human process it plugs into is the solid one.</p>
+        <p>This note argues the opposite is closer to the truth. The fragile thing in most engineering organizations is not any single worker, human or machine. It is what the process remembers. And on that dimension, the conventional way of making engineering decisions has a failure mode so well documented that the research reads like an indictment.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the conventional loop</span></div>
+        <h2>The conclusion survives. <em>The intelligence that produced it does not.</em></h2>
+        <p>Picture the usual loop. A lead engineer, Josh, says in a meeting: Sam, go figure out whether we should build the warehouse on ClickHouse or stay on Influx. Sam goes away for a week, tries things, hits dead ends, changes his mind twice. The team gets back together and talks it through. Josh trusts Sam's read, because Sam has earned that, and the team converges. Someone writes the implementation doc for the winning option.</p>
+        <p>In the best case, that doc says what was decided and why. What it never contains is the week: what Sam actually tried, which alternative died for which reason, which assumption turned out to be wrong and how he caught it, the side findings that were interesting but not relevant that day. All of that lived in Sam's head and in the hallway, and it evaporates by the next sprint. Six months later, when the team hits a wall, nobody reasons from Sam's week. It no longer exists anywhere.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · the two loops. On the left, the knowledge that leaves the room; on the right, the same work leaving a queryable trail, with review and enforced retrieval as the load-bearing steps.</figcaption>
+          <a href="../assets/ai-08-social.png"><img src="../assets/ai-08-social.png" alt="Two panels. The human loop: the meeting, a week of exploration, the meeting again, one final doc; rejected options, corrected beliefs, and side findings evaporate by next sprint. The agent loop: the pull request, agent review, the paper trail, the vault, the memory graph, and the gate, closing back into the next decision." style="width:100%; height:auto; border:1px solid var(--line-2);"></a>
+        </figure>
+        <p>This is not me being dramatic; the baseline is measured. In a 2024 industrial field study, 83 percent of practitioners said architecture decisions were documented rarely or occasionally, with no clear guidelines, and half were dissatisfied with what did get written. Robillard's interviews with 27 developers and managers across three companies found that when engineers leave, the people who inherit their code are left "guessing the intent", and one participant described spending "at least three or four days, maybe more than eight hours a day" reverse-engineering what a departed colleague could have explained over coffee.</p>
+        <p>And the loss is worse than the averages suggest. Rigby and colleagues measured turnover-induced knowledge loss at Avaya and Chrome and found it heavy-tailed: the bad quarters lost 3.6 to 3.8 times the expected knowledge. An organization that plans for typical attrition is systematically underestimating the real risk.</p>
+        <div class="finding hold">
+          <div class="fk">The measured baseline</div>
+          <h3>The conclusion survives in the org. The reasoning that produced it does not.</h3>
+          <p>Rarely documented decisions, successors guessing at intent, multi-day recovery costs, heavy-tailed losses concentrated in exactly the tacit knowledge that never got written down. Every claim in this paragraph traces to a primary source in the references.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the prior art, honestly</span></div>
+        <h2>"Just write it down" has been failing <em>for forty years.</em></h2>
+        <p>Capturing design reasoning is not a new idea. Issue-based information systems, IBIS and its graphical successor gIBIS, tried to map arguments, positions, and rejected alternatives back in the 1980s. The systems worked; the adoption did not. Horner and Atwood's survey of the barriers names the reason, borrowing Grudin's groupware principle: there must not be a disparity between who pays the cost and who gets the benefit, and "a major shortcoming in design rationale is the failure to minimize the cost to the original designers." The engineer with the knowledge pays at the busiest moment; the beneficiary is someone else, later, if the archive is even searchable then.</p>
+        <p>Robillard's interviews add the uncomfortable nuance: even when documentation exists, the practical knack, the "fine tuning in the heads of people", stays there and leaves with them. Documentation replaced a departed expert only in the ideal, minority case. More often it was missing, disorganized, stale, or in the wrong shape for the question at hand.</p>
+        <div class="finding calm">
+          <div class="fk">The economics</div>
+          <h3>The honest reading is not that engineers are lazy.</h3>
+          <p>It is that for forty years the writing cost too much and the reading almost never happened. Rationale capture died on Grudin's cost-benefit disparity, not on anyone's character.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>the delta</span></div>
+        <h2>Two things change with agents, <em>and neither is "the model is smart."</em></h2>
+        <p><b>The writing became a byproduct.</b> In the ecosystem this note comes from, every change ships as a pull request. Dead ends become investigation notes, recurring mistakes become pitfall entries, choices become decision records. The repository behind this site carries 650 merged pull requests and 386 knowledge nodes, among them 198 investigations and 99 decision records; the fleet it belongs to, sixteen repositories run the same way, this one included, carries 5,838 merged pull requests and 3,109 knowledge nodes, including some 1,270 investigations, 384 decision records, and 185 registered pitfalls, counted on 2 july 2026. Nobody sat down after work to document any of it; the artifacts are the exhaust of doing the work. And they do not land blind: every pull request is reviewed before merge, by other agents and review bots arguing with the author, and the review threads themselves become part of the preserved record. The chain is not "an agent wrote a note". It is proposed, challenged, revised, merged.</p>
+        <p><b>The reading became enforceable.</b> The knowledge nodes are ingested into a graph index, and a deterministic gate blocks an agent from touching code until it has run a relevant query against that memory. Retrieval stopped being a virtue and became a precondition. When an agent picks up a task, the graph can answer: we tried this, it died for this reason, here is the note.</p>
+        <p>A fair question I am deliberately not answering here: what happens when there are thousands of decision records, does the graph bloat, do you feed everything into memory forever? That is a real problem, it is a separate problem, and it is being worked: supersession pointers, node schemas, ingest cadence, archives that expire. For this note, the contract is simply that the chain is saved, first as linked notes, then into the graph.</p>
+        <p>There is a detail from the turnover research that I find quietly damning for the meeting-based way. When 269 engineers were surveyed on which channels project knowledge is actually exchanged and created through, commits ranked first, above code reviews, above project documentation, and well above meetings. And version-control traces alone carry real signal: co-change history predicted the right successor for abandoned code 34 to 48 percent of the time, versus 7 to 10 percent for random assignment.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 2</b> · recorded work history versus unaided assignment. Share of correct successor recommendations for abandoned files, from co-change coordination data at two organizations.</figcaption>
+          <div data-atelier-figure='{"type":"bars","unit":"%","max":50,"rows":[{"label":"co-change, Avaya","value":48,"valueLabel":"48%","tint":"calm"},{"label":"co-change, Chrome","value":34,"valueLabel":"34%","tint":"calm"},{"label":"random, Avaya","value":10,"valueLabel":"10%","tint":"ink"},{"label":"random, Chrome","value":7,"valueLabel":"7%","tint":"ink"}]}'></div>
+        </figure>
+        <p>The research frontier is starting to formalize both halves of this. The big 2025 survey of agent memory argues that explicit, token-level memory, text and knowledge graphs, is the form that is inspectable, auditable, and traceable back to "concrete memory units". A 2026 economic analysis proposes treating tokens spent on persistent knowledge as capital goods rather than consumables, and volunteers an honest detail I appreciate: in its own small case study, compounding did not make queries cheaper in raw tokens. You are not buying a cheaper question. You are buying a durable asset. Both papers are arguments and small-scale measurements, not field evidence, and I cite them as exactly that.</p>
+        <div class="pull">The organization's memory was already in the artifacts. The culture just never wrote most of it down.</div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>the lived example</span></div>
+        <h2>The funny thing about <em>my hypothetical.</em></h2>
+        <p>I keep reaching for "ClickHouse versus Influx" as a made-up example. Then I checked the vault. The repo behind this site made exactly that decision in June, and the preserved chain is a small case study in everything above.</p>
+        <p>The original decision record chose ClickHouse for a telemetry warehouse and preserved, inline, a belief I had gotten wrong: an earlier research pass concluded there was "no public signal" of a related platform moving to ClickHouse, and the correction records both the new fact and why the first pass missed it. Nine days later a new record superseded the host layout, with an explicit pointer; the old node stayed, banner on top. Ten days after that the server crashed, and the reliability decision reasoned from the preserved chain, why the build was pinned, why re-pulling was riskier, and recorded the one dissenting review opinion for the next reader.</p>
+        <p>Nobody documented heroically. The workflow exhaled it. And it is exactly what the next storage decision, made by me, a teammate, or an agent, will reason from.</p>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>established versus hypothesis</span></div>
+        <h2>The honest ledger, <em>both columns.</em></h2>
+        <p><b>Established, each claim verified against its primary source.</b> Turnover destroys organizational knowledge, the tacit part is the most damaging, and the loss is heavy-tailed. The undocumented-decision baseline is measured and bad. Recovery from a departure costs days of full-time reverse engineering. Artifacts, especially commits, are the channel engineers actually use to recover knowledge. Introducing decision records measurably improved documentation quality in a field study. And rationale capture historically failed on Grudin's cost-benefit disparity, not on engineers' character.</p>
+        <p><b>Not established, and this note does not claim it:</b> that an agent-maintained reasoning chain measurably compounds into better long-term outcomes. That is the hypothesis. The published support is arguments and small case studies; my own evidence is one operator, one ecosystem, no control group. Three risks get their own lines.</p>
+        <ul>
+          <li><b>Write-only archive.</b> If the graph is never consulted at decision time, all of this is theater. That is exactly why consultation is enforced by a deterministic gate rather than requested by a guideline.</li>
+          <li><b>Rot.</b> Agent-written notes can go stale faster than human ones, because no human paid a cost they would defend. Supersession pointers and schema checks help; rot remains a maintenance bill, not a solved problem.</li>
+          <li><b>Perception.</b> METR's randomized trial found experienced developers 19 percent slower with early-2025 AI tools while believing they were 20 percent faster, and its 2026 follow-up came back inconclusive. Feelings of speedup are not data, in either direction, including mine.</li>
+        </ul>
+        <div class="finding">
+          <div class="fk">The falsifiers</div>
+          <h3>The hypothesis is measurable, and I intend to measure it.</h3>
+          <p>How often already-settled decisions get re-attempted. How often registered pitfalls recur. Whether preserved chains are actually cited by later decisions. All three are instrumentable in this ecosystem, and a future note will report them.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">·</span><span>the answer</span></div>
+        <h2>You do not trust the agent. <em>You trust the substrate it stands on.</em></h2>
+        <p>A human team runs on memory and reputation. Both are real, and both are private and lossy. An artifact-first ecosystem runs on a chain anyone can query and an agent can be forced to query. Some weeks we do not move the needle on any single technical direction. But every pull request, every dead end, every corrected belief made the substrate smarter, and the substrate is what the next decision stands on.</p>
+        <p>The measured half of this story says the conventional way burns intelligence at a well-documented rate. The hypothesis half says agents finally make the alternative affordable. I intend to keep measuring.</p>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> The workflow described, the gates, the vault, and the memory graph are the author's own single-operator ecosystem; the cited studies belong to their named authors. The half of the argument that is hypothesis is labeled as hypothesis, and the numbers quoted from the literature were verified against the primary sources before publication. <b>N = 1 on the lived system; treat the workflow claims as a design worth testing, not a result.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>M. P. Robillard, <a href="https://dl.acm.org/doi/10.1145/3468264.3473923">"Turnover-Induced Knowledge Loss in Practice"</a>, ESEC/FSE 2021. Interviews with 27 professional developers and managers: "guessing the intent", the multi-day recovery quote, and documentation replacing experts only in the ideal case.</li>
+          <li>P. C. Rigby et al., <a href="https://dl.acm.org/doi/10.1145/2884781.2884851">"Quantifying and Mitigating Turnover-Induced Knowledge Loss"</a>, ICSE 2016. Heavy-tailed losses at Avaya and Chrome (3.6 to 3.8 times expected) and successor prediction from co-change history (34 to 48 percent versus 7 to 10 percent random), the data behind Figure 2.</li>
+          <li>E. Jabrayilzade, M. Evtikhiev, E. T&uuml;z&uuml;n, and V. Kovalenko, <a href="https://dl.acm.org/doi/10.1145/3510457.3513082">"Bus Factor in Practice"</a>, ICSE-SEIP 2022. The 269-engineer survey ranking knowledge-exchange channels: commits first at MRR 0.560, above code reviews (0.403), issues (0.316), project documentation (0.268), and meetings (0.214 and 0.203); also the report of up to 6 person-months to recover a project after a departure.</li>
+          <li>B. Ahmeti, M. Linder, R. Groner, and R. Wohlrab, <a href="https://rebekkaa.github.io/files/2024_ECSA.pdf">"Architecture Decision Records in Practice: An Action Research Study"</a>, ECSA 2024: 83 percent reported decisions documented rarely or occasionally before ADRs; agreement and satisfaction scores rose measurably after a three-month introduction.</li>
+          <li>J. Horner and M. E. Atwood, <a href="https://research.cs.vt.edu/ns/cs5724papers/1.motivatingreuse.tpgap.atwood.drationale.pdf">"Design Rationale: The Rationale and the Barriers"</a>, citing Grudin's cost-benefit disparity; with J. Conklin and M. Begeman's gIBIS (1988) as the design-rationale prior art.</li>
+          <li>A systematic review of turnover-induced knowledge loss, 91 empirical studies 2000 to 2022, <a href="https://www.emerald.com/insight/content/doi/10.1108/tlo-09-2022-0107/full/html">The Learning Organization</a>: the most detrimental losses come from departures of critical employees whose knowledge is tacit.</li>
+          <li><a href="https://arxiv.org/abs/2512.13564">"Memory in the Age of AI Agents"</a> (survey, 2025): explicit token-level memory is inspectable, auditable, transferable, and decisions trace back to concrete memory units. <a href="https://arxiv.org/abs/2604.11243">"Knowledge Compounding"</a> (2026): tokens spent on persistent knowledge as capital goods; in its own four-query case study, compounding did not minimize raw token cost.</li>
+          <li>METR, <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">the early-2025 developer productivity RCT</a> (16 experienced open-source developers, 246 issues: 19 percent slower with AI, forecast +24, post-hoc belief +20) and <a href="https://metr.org/blog/2026-02-24-uplift-update/">the 2026 update</a> reporting the late-2025 follow-up as inconclusive under selection effects.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-08</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('pbar');
+  const links = [...document.querySelectorAll('.toc a')];
+  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
+  function onScroll() {
+    const sd = window.scrollY || document.documentElement.scrollTop;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
+    const y = sd + 130; let cur = targets[0];
+    for (const o of targets) { if (o.t.getBoundingClientRect().top + sd <= y) cur = o; }
+    links.forEach(a => a.classList.remove('on'));
+    if (cur) cur.a.classList.add('on');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  links.forEach(a => a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
+  }));
+  onScroll();
+</script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>

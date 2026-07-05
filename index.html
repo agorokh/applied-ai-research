@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<title>Applied Intelligence · independent · by Arseny Gorokh</title>
+<meta name="description" content="Independent applied-AI engineering notes by Arseny Gorokh, a practitioner at EPAM Applied AI. Not an official EPAM publication. Each note measures one capability, agent data, open models, telemetry, memory, on a real stack with named failure modes.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Applied Intelligence · independent · by Arseny Gorokh">
+<meta property="og:description" content="Independent applied-AI engineering notes. Each note takes one piece of real engineering, an agent, an adapter, a gateway, a gate, and reports what held and what did not, with the magnitudes kept honest.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
+<meta name="twitter:title" content="Applied Intelligence · independent · by Arseny Gorokh">
+<meta name="twitter:description" content="Independent applied-AI engineering notes. One piece of real engineering per note; what held, what did not, magnitudes kept honest.">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+  .sheet { max-width: 1180px; }
+
+  /* the journal cover · the featured note */
+  .folio-cover { padding: clamp(36px,4vw,68px) 0 clamp(28px,3vw,44px); }
+  .folio-cover .eyebrow { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:baseline; font-size:12.5px; color:var(--ink-3); }
+  .folio-cover .eyebrow .lead { font-family:var(--serif); font-style:italic; font-size:15px; color:var(--ink-2); }
+  .folio-cover .eyebrow .dot { color:var(--ink-4); }
+  .folio-cover h1 { font-family:var(--serif); font-weight:300; font-size:clamp(40px,5.4vw,80px); line-height:0.99; letter-spacing:-0.025em; margin:20px 0 0; max-width:18ch; text-wrap:balance; }
+  .folio-cover h1 em { display:block; font-style:italic; color:var(--ink-2); font-size:0.82em; margin-top:4px; }
+  .folio-cover .abstract { font-family:var(--serif); font-weight:300; font-size:clamp(18px,1.8vw,22px); line-height:1.55; color:var(--ink); margin:26px 0 0; max-width:64ch; }
+  .folio-cover .read { display:inline-block; margin-top:24px; font-family:var(--serif); font-style:italic; font-size:16px; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:3px; }
+  .folio-cover .read:hover { color:var(--ink-2); }
+
+  /* the claims band · quiet hairline grid, serif value + prose label */
+  .claims { display:grid; grid-template-columns:repeat(4,1fr); margin-top:38px; border-top:1px solid var(--line-2); border-bottom:1px solid var(--line); }
+  .claims .c { padding:20px 24px 22px; border-left:1px solid var(--line); }
+  .claims .c:first-child { border-left:0; padding-left:0; }
+  .claims .cv { font-family:var(--serif); font-size:28px; color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-0.01em; }
+  .claims .cl { display:block; margin-top:10px; font-size:12px; line-height:1.5; color:var(--ink-3); }
+
+  /* the bound archive · rows on a paper sheet, never cards */
+  .archive { margin-top:clamp(40px,4vw,64px); }
+  .archive h2 { font-family:var(--serif); font-weight:400; font-style:italic; font-size:19px; color:var(--ink-2); margin:0 0 4px; }
+  .archive .sub { font-size:12.5px; color:var(--ink-3); margin-bottom:14px; }
+  .archive .sheet-rows { background:linear-gradient(rgba(245,240,231,0.9),rgba(243,237,227,0.88)); border:1px solid var(--line); box-shadow:0 30px 70px -55px rgba(45,33,18,0.45); }
+  .arow { display:grid; grid-template-columns:88px 116px 116px minmax(0,1fr) 64px; gap:18px; align-items:baseline; padding:20px 28px; border-top:1px solid var(--line); text-decoration:none; transition:background .2s; }
+  .arow:first-child { border-top:0; }
+  .arow:hover { background:rgba(154,123,60,0.05); }
+  .arow .code { font-family:var(--mono); font-size:12.5px; color:var(--work); }
+  .arow .date { font-size:12.5px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+  .arow .type { font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--ink-3); }
+  .arow .ttl { min-width:0; }
+  .arow .ttl .t { font-family:var(--serif); font-size:20px; line-height:1.2; color:var(--ink); }
+  .arow .ttl .th { font-family:var(--sans); font-size:13px; line-height:1.5; color:var(--ink-2); margin-top:5px; max-width:62ch; }
+  .arow .read { font-family:var(--serif); font-style:italic; font-size:13px; color:var(--ink-3); text-align:right; white-space:nowrap; }
+  @media (max-width:880px){ .claims{grid-template-columns:1fr 1fr;} .arow{grid-template-columns:72px 1fr; gap:6px 14px;} .arow .date,.arow .type,.arow .read{grid-column:2;} }
+
+  .pubabout { margin-top:clamp(40px,4vw,64px); display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:clamp(28px,4vw,64px); align-items:start; }
+  .pubabout h2 { font-family:var(--serif); font-weight:400; font-size:clamp(24px,2.4vw,32px); line-height:1.16; margin:0 0 16px; max-width:20ch; }
+  .pubabout h2 em { font-style:italic; color:var(--ink-2); }
+  .pubabout p { font-family:var(--serif); font-size:17px; line-height:1.7; color:var(--ink); margin:0 0 14px; max-width:60ch; }
+  .pubabout .side { padding-top:6px; }
+  .pubabout .side .sk { font-family:var(--serif); font-style:italic; font-size:14px; color:var(--ink-2); margin-bottom:8px; }
+  .pubabout .side .sv { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-top:1px solid var(--line); font-size:13px; }
+  .pubabout .side .sv:first-of-type { border-top:0; }
+  .pubabout .side .sv .k { color:var(--ink-3); } .pubabout .side .sv .d { font-family:var(--serif); color:var(--ink); }
+  .pubabout .side .elsewhere-h { margin-top:18px; }
+  .pubabout .side .elsewhere { display:flex; flex-wrap:wrap; gap:6px 12px; padding-top:8px; font-size:13px; }
+  .pubabout .side .elsewhere a { color:var(--ink-2); text-decoration:none; border-bottom:1px solid var(--line-2); transition:color .2s, border-color .2s; }
+  .pubabout .side .elsewhere a:hover { color:var(--ink); border-bottom-color:var(--ink); }
+  @media (max-width:880px){ .pubabout{grid-template-columns:1fr;} }
+</style>
+</head>
+<body data-room="5" data-mood="paper">
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="index.html" class="here">index</a>
+      <a href="#archive">notes</a>
+      <a href="#about">about</a>
+    </nav>
+    <span class="folio">applied AI research · independent</span>
+  </header>
+
+  <!-- featured note: the journal cover -->
+  <section class="folio-cover anim d2">
+    <div class="eyebrow">
+      <span class="lead">in this issue</span>
+      <span class="dot">·</span><span>ai-08</span>
+      <span class="dot">·</span><span>applied research note</span>
+      <span class="dot">·</span><span>2 jul 2026</span>
+      <span class="dot">·</span><span>11 min read</span>
+    </div>
+    <h1>The meeting forgets. The pull request remembers.<em>where engineering reasoning goes when the meeting ends, and what agents change about it.</em></h1>
+    <p class="abstract">Conventional engineering culture keeps the conclusions of its decisions and throws away the reasoning: the explorations, the rejected options, the corrected beliefs. The research on what that costs reads like an indictment, and it is verified here against primary sources. An agent-first workflow preserves the whole chain as queryable artifacts and enforces that the chain gets read; whether that compounds is a hypothesis, labeled as one, with falsifiers named.</p>
+    <a class="read" href="notes/pr-memory.html">Read the note &nbsp;›</a>
+
+    <div class="claims">
+      <div class="c"><div class="cv">83%</div><span class="cl">of practitioners in an industrial field study said architecture decisions were documented rarely or occasionally. The undocumented baseline is measured, and it is bad.</span></div>
+      <div class="c"><div class="cv">no. 1</div><span class="cl">where 269 surveyed engineers ranked commits among the channels through which project knowledge is exchanged and created: above documentation, above meetings.</span></div>
+      <div class="c"><div class="cv">3.8x</div><span class="cl">the expected knowledge loss in Avaya's worst quarters (3.6x at Chrome); the loss is heavy-tailed, so planning for average attrition underestimates the risk.</span></div>
+      <div class="c"><div class="cv">23 of 25</div><span class="cl">literature claims behind this note that survived adversarial verification against primary sources; the two that failed were excluded.</span></div>
+    </div>
+  </section>
+
+  <!-- the bound archive -->
+  <section class="archive" id="archive">
+    <h2>the archive</h2>
+    <div class="sub">every note carries one folio. the magnitudes are corpus-specific; the structural claims are what transfer.</div>
+    <div class="sheet-rows">
+      <a class="arow" href="notes/pr-memory.html">
+        <span class="code">ai-08</span><span class="date">2 jul 2026</span><span class="type">engineering memory</span>
+        <span class="ttl"><span class="t">The meeting forgets. The pull request remembers.</span><span class="th">Conventional engineering culture discards the reasoning behind its decisions at a measured, well-documented rate; an agent-first workflow preserves the chain as queryable artifacts and enforces the reading. The measured half, the hypothesis half, and the falsifiers.</span></span>
+        <span class="read">11 min</span>
+      </a>
+      <a class="arow" href="notes/harness-conduct.html">
+        <span class="code">ai-07</span><span class="date">30 jun 2026</span><span class="type">model routing</span>
+        <span class="ttl"><span class="t">Three open models drove Claude Code through its governance gates</span><span class="th">GLM 5.2, Qwen 3.7 Plus, and Kimi K2.7 Code solved an identical fix perfectly, so they separate only under governance friction; a scan of 627 sessions found zero faked-compliance and exonerated the model the first read accused.</span></span>
+        <span class="read">14 min</span>
+      </a>
+      <a class="arow" href="notes/mcp-harvesting.html">
+        <span class="code">ai-06</span><span class="date">13 jun 2026</span><span class="type">agent data</span>
+        <span class="ttl"><span class="t">MCP harvesting: trustworthy data when your agent has a connector, not an API</span><span class="th">An agent that can only reach a system through a flaky MCP connector treats its output as evidence to check, not a value to trust; an entailment gate caught 98 percent of unsupported claims where a similarity gate caught 27.</span></span>
+        <span class="read">18 min</span>
+      </a>
+      <a class="arow" href="notes/value-layer.html">
+        <span class="code">ai-05</span><span class="date">5 jun 2026</span><span class="type">agent memory</span>
+        <span class="ttl"><span class="t">A memory-and-policy layer above the model: the build-versus-buy case</span><span class="th">A gateway routes a prompt but does not know the repository, policy, or budget; own the in-path layer that governs memory, policy, and cost while the model stays swappable, and prove it ports across providers.</span></span>
+        <span class="read">12 min</span>
+      </a>
+      <a class="arow" href="2026-05-19_choosing-memory-for-enterprise-agents/">
+        <span class="code">ai-04</span><span class="date">19 may 2026</span><span class="type">memory substrate</span>
+        <span class="ttl"><span class="t">Choosing the memory substrate for enterprise agents: LightRAG, Graphiti, and the weighting that decides</span><span class="th">Two purpose-built substrates and a filesystem baseline against a five-criterion adoption bar on an SDLC corpus; production weighting separates them by 36 points where uniform weighting calls it a tie, and the entity graph fabricated four times where the chunk-text retriever never did.</span></span>
+        <span class="read">14 min</span>
+      </a>
+      <a class="arow" href="notes/telemetry-plane.html">
+        <span class="code">ai-03</span><span class="date">15 may 2026</span><span class="type">agent telemetry</span>
+        <span class="ttl"><span class="t">Claude Code through DIAL: eight models, 192 runs, and metering every request</span><span class="th">A POC connecting Claude Code to DIAL across eight models; the cheapest that passes everything is open-source, and the routing adapter meters every request for a per-project view of AI-coding cost.</span></span>
+        <span class="read">17 min</span>
+      </a>
+      <a class="arow" href="notes/harness-viability.html">
+        <span class="code">ai-02</span><span class="date">14 may 2026</span><span class="type">open models</span>
+        <span class="ttl"><span class="t">Which models can run Claude Code through DIAL? Five upstreams, and the cost</span><span class="th">Three Anthropic tiers and two open Qwen coders through one gateway; an open 480B passed every task at $0.101 each, the cheapest of the field, and capability tracks scale, not vendor.</span></span>
+        <span class="read">16 min</span>
+      </a>
+      <a class="arow" href="2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/">
+        <span class="code">ai-01</span><span class="date">28 apr 2026</span><span class="type">ingest model</span>
+        <span class="ttl"><span class="t">Picking the extraction LLM for knowledge-graph ingestion: breadth beats density</span><span class="th">Eleven models measured as the entity-extraction LLM for a knowledge-graph RAG system; Gemini 2.5 Flash cleared every retrieval cell at roughly three percent of the strongest commercial model's ingest cost, because breadth of extraction beats density of relations.</span></span>
+        <span class="read">16 min</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- about -->
+  <section class="pubabout" id="about">
+    <div>
+      <h2>An applied-AI reading style, <em>for work that has to survive diligence.</em></h2>
+      <p>Applied Intelligence is an independent practitioner publication. Each note takes one piece of real engineering, an agent, an adapter, a gateway, a gate, and reports what held and what did not, with the magnitudes kept honest and the structural claims stated so another team can re-derive them.</p>
+      <p>The register is deliberate: calm on the surface, hard engineering underneath. A finding leads; the evidence follows; the method and the limits sit where a reader can check them. The companion repositories are artefacts, one click away, never decoration: <a href="https://github.com/agorokh/sdlc-dial-adapter">sdlc-dial-adapter</a> and <a href="https://github.com/agorokh/agentic-memory-mcp">agentic-memory-mcp</a>.</p>
+      <p>Written by Arseny Gorokh. The notes draw on real systems and name the public platforms they study; all client-specific material is excluded, and the notes are not official publications of any employer.</p>
+    </div>
+    <div class="side">
+      <div class="sk">the publication</div>
+      <div class="sv"><span class="k">notes</span><span class="d">8</span></div>
+      <div class="sv"><span class="k">latest</span><span class="d">ai-08</span></div>
+      <div class="sv"><span class="k">register</span><span class="d">applied AI research</span></div>
+      <div class="sv"><span class="k">set in</span><span class="d">Newsreader</span></div>
+      <div class="sk elsewhere-h">elsewhere</div>
+      <div class="elsewhere">
+        <a href="https://x.com/agorokh">@agorokh on X</a>
+        <!-- TODO(linkedin): operator adds their LinkedIn link beside X here, e.g.
+             <a href="https://www.linkedin.com/in/USERNAME/">LinkedIn</a> -->
+      </div>
+    </div>
+  </section>
+
+  <div class="colophon">
+    <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+    <span>by Arseny Gorokh</span>
+    <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
+    <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+  </div>
+</div>
+
+<script src="assets/atelier-rooms.js"></script>
+</body>
+</html>

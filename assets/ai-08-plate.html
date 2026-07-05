@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="notes.css">
+<style>
+  html, body { width:1600px; height:900px; overflow:hidden; }
+  body { background:#e6dccb; }
+  .plate { position:absolute; inset:0; padding:56px 72px 48px;
+    background:
+      radial-gradient(120% 90% at 12% 0%, rgba(255,248,235,0.7), transparent 50%),
+      linear-gradient(176deg, var(--paper) 0%, var(--paper-2, #ece4d7) 100%);
+    display:flex; flex-direction:column; }
+
+  .mast { display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:1px solid var(--line-2); padding-bottom:14px; }
+  .mast .name { font-family:var(--serif); font-size:22px; color:var(--ink); }
+  .mast .sub { font-family:var(--serif); font-style:italic; font-size:14px; color:var(--ink-2); margin-left:12px; }
+  .mast .folio { font-family:var(--mono); font-size:13px; color:var(--ink-2); letter-spacing:0.08em; }
+
+  .eyebrow { display:flex; gap:8px 14px; align-items:baseline; font-size:13.5px; color:var(--ink-3, rgba(42,36,28,0.5)); margin-top:30px; }
+  .eyebrow .lead { font-family:var(--serif); font-style:italic; font-size:16px; color:var(--ink-2); }
+  .eyebrow .dot { color:var(--ink-4, rgba(42,36,28,0.35)); }
+
+  h1 { font-family:var(--serif); font-weight:300; font-size:104px; line-height:0.99;
+    letter-spacing:-0.025em; margin:18px 0 0; color:var(--ink); }
+  h1 em { display:block; font-style:italic; color:var(--ink-2); font-size:0.82em; margin-top:4px; }
+
+  .loops { display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:44px;
+    border-top:1px solid var(--line-2); flex:1; }
+  .loop { padding:22px 40px 0 0; }
+  .loop + .loop { border-left:1px solid var(--line); padding:22px 0 0 40px; }
+  .seclabel { display:flex; align-items:baseline; gap:12px; font-family:var(--mono);
+    font-size:12.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-2); }
+  .seclabel .no { font-family:var(--serif); font-style:italic; text-transform:none; letter-spacing:0; font-size:15px; }
+  .loop.human .seclabel .no { color:var(--neg, #a05a44); }
+  .loop.agent .seclabel .no { color:var(--pos, #4f6b4c); }
+  .loop .why { font-family:var(--serif); font-style:italic; font-size:17px; color:var(--ink-2); margin-top:6px; }
+
+  .steps { margin:18px 0 0; padding:0; list-style:none; }
+  .steps li { display:flex; align-items:baseline; gap:14px; padding:9px 0;
+    border-bottom:1px solid var(--line); }
+  .steps li:last-child { border-bottom:0; }
+  .steps .n { font-family:var(--mono); font-size:12px; color:var(--ink-3, rgba(42,36,28,0.5)); min-width:22px; }
+  .steps .t { font-family:var(--serif); font-size:21.5px; color:var(--ink); }
+  .steps .d { font-size:13px; color:var(--ink-3, rgba(42,36,28,0.5)); margin-left:auto; text-align:right; max-width:46%; }
+
+  .coda { font-family:var(--serif); font-style:italic; font-size:17.5px; margin-top:16px; line-height:1.4; }
+  .loop.human .coda { color:var(--neg, #a05a44); }
+  .loop.agent .coda { color:var(--pos, #4f6b4c); }
+
+  .foot { border-top:1px solid var(--line-2); margin-top:26px; padding-top:16px;
+    display:flex; justify-content:space-between; align-items:baseline; gap:40px; }
+  .foot .fact { font-family:var(--serif); font-weight:300; font-size:21px; line-height:1.4; max-width:72ch; color:var(--ink); }
+  .foot .fact b { font-weight:500; font-style:italic; }
+  .foot .cite { font-family:var(--mono); font-size:12.5px; color:var(--ink-3, rgba(42,36,28,0.5)); white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="plate">
+  <div class="mast">
+    <span><span class="name">Applied Intelligence</span><span class="sub">independent · by Arseny Gorokh</span></span>
+    <span class="folio">ai &middot; 08</span>
+  </div>
+
+  <div class="eyebrow">
+    <span class="lead">applied research note</span>
+    <span class="dot">·</span><span>ai-08</span>
+    <span class="dot">·</span><span>engineering memory</span>
+    <span class="dot">·</span><span>where does the reasoning go when the meeting ends?</span>
+  </div>
+
+  <h1>The meeting forgets. <em>The pull request remembers.</em></h1>
+
+  <div class="loops">
+    <div class="loop human">
+      <div class="seclabel"><span class="no">i</span><span>the human loop</span></div>
+      <div class="why">reputation arbitrates, memory decays.</div>
+      <ol class="steps">
+        <li><span class="n">01</span><span class="t">The meeting</span><span class="d">"Sam, go check ClickHouse vs Influx."</span></li>
+        <li><span class="n">02</span><span class="t">Sam's week of exploration</span><span class="d">trials, dead ends, corrected assumptions</span></li>
+        <li><span class="n">03</span><span class="t">The meeting, again</span><span class="d">reputation decides; the team converges</span></li>
+        <li><span class="n">04</span><span class="t">One final doc</span><span class="d">what was decided. nothing else.</span></li>
+      </ol>
+      <div class="coda">rejected options, corrected beliefs, side findings: all evaporate by next sprint.</div>
+    </div>
+    <div class="loop agent">
+      <div class="seclabel"><span class="no">ii</span><span>the agent loop</span></div>
+      <div class="why">every step leaves a queryable artifact.</div>
+      <ol class="steps">
+        <li><span class="n">01</span><span class="t">Pull request</span><span class="d">the work, as it happens</span></li>
+        <li><span class="n">02</span><span class="t">Agent review</span><span class="d">challenged by other agents, then merged</span></li>
+        <li><span class="n">03</span><span class="t">ADRs · investigations · pitfalls</span><span class="d">decisions, dead ends, mistakes: kept</span></li>
+        <li><span class="n">04</span><span class="t">Vault, then memory graph</span><span class="d">linked notes, then a queryable index</span></li>
+        <li><span class="n">05</span><span class="t">The gate</span><span class="d">no code edit without querying memory first</span></li>
+      </ol>
+      <div class="coda">the next decision starts from everything above, not from what anyone remembers.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="fact">Asked which channels project knowledge actually moves through, 269 engineers ranked <b>commits first</b>: above documentation, above meetings. The memory was always in the artifacts.</span>
+    <span class="cite">jabrayilzade et al. · icse-seip 2022 &nbsp;·&nbsp; agorokh.github.io/applied-ai-research</span>
+  </div>
+</div>
+</body>
+</html>

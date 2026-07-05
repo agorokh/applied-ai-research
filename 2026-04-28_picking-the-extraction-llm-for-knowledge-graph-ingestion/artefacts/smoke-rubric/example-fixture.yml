@@ -1,0 +1,119 @@
+# Example smoke rubric on a neutral domain.
+#
+# Six query templates exercised over a small corpus of public docs about the
+# Linux kernel scheduler family (CFS, EEVDF, sched_ext). The point of this
+# fixture is not to reproduce the report's measurements; it is to give a
+# practitioner a concrete, runnable example so they can validate a harness
+# implementation on familiar public content before pointing it at their
+# real corpus.
+#
+# To run this yourself:
+#   1. Download the 6 Wikipedia / kernel.org documents listed in `files`
+#      below into a directory.
+#   2. Ingest them through your knowledge-graph RAG pipeline with the
+#      candidate extraction LLM.
+#   3. Run each `query` in each of the pipeline's 4 retrieval modes.
+#   4. Compare returned context against `expected_refs`; score each cell
+#      pass / marginal / fail.
+#
+# Total: 24 cells per candidate LLM. Expected run time on a fast cloud
+# extractor: 10 to 30 minutes per candidate including ingest.
+
+version: 1
+domain: "Linux kernel scheduler (public docs, neutral content)"
+pinned_at: "2026-04-28"
+
+files:
+  - id: cfs_wiki
+    path: cfs.md
+    source: "https://en.wikipedia.org/wiki/Completely_Fair_Scheduler"
+  - id: eevdf_lwn
+    path: eevdf.md
+    source: "https://lwn.net/Articles/925371/ (Earliest Eligible Virtual Deadline First)"
+  - id: sched_ext_intro
+    path: sched_ext.md
+    source: "https://docs.kernel.org/scheduler/sched-ext.html"
+  - id: bpf_in_kernel
+    path: bpf-overview.md
+    source: "https://docs.kernel.org/bpf/index.html"
+  - id: cgroups
+    path: cgroups.md
+    source: "https://docs.kernel.org/admin-guide/cgroup-v2.html"
+  - id: kernel_release_notes_618
+    path: linux-6.18-changelog.md
+    source: "https://kernelnewbies.org/Linux_6.18"
+
+queries:
+  - id: q1_single_entity_recall
+    shape: single-entity recall
+    query: "what does the corpus say about sched_ext"
+    expected_refs:
+      - file: sched_ext.md
+        section: null
+        why: "Primary definition of sched_ext lives here."
+
+  - id: q2_cross_document_synthesis
+    shape: cross-document synthesis
+    query: "what is the relationship between sched_ext and BPF"
+    expected_refs:
+      - file: sched_ext.md
+        section: "## Overview"
+        why: "Names BPF as the in-kernel mechanism that implements sched_ext policies."
+      - file: bpf-overview.md
+        section: null
+        why: "Provides the BPF background that anchors the cross-document link."
+
+  - id: q3_recency_temporal
+    shape: recency / temporal
+    query: "which Linux scheduler is currently the default in mainline"
+    expected_refs:
+      - file: eevdf.md
+        section: null
+        why: "EEVDF replaced CFS as the default in Linux 6.6 (2023); this is the most recent fact."
+      - file: linux-6.18-changelog.md
+        section: null
+        why: "Confirms EEVDF is still default at 6.18."
+
+  - id: q4_disambiguation
+    shape: disambiguation
+    query: "what is the difference between CFS and EEVDF"
+    expected_refs:
+      - file: cfs.md
+        section: null
+        why: "Defines CFS; needed to disambiguate from EEVDF."
+      - file: eevdf.md
+        section: null
+        why: "Defines EEVDF and explicitly compares to CFS."
+
+  - id: q5_multi_hop
+    shape: multi-hop traversal
+    query: "how does sched_ext affect cgroup CPU accounting"
+    expected_refs:
+      - file: sched_ext.md
+        section: null
+        why: "First hop: sched_ext as the scheduler class."
+      - file: cgroups.md
+        section: "## CPU controller"
+        why: "Second hop: cgroup CPU accounting that sched_ext interacts with."
+
+  - id: q6_negation_contrast
+    shape: negation / contrast
+    query: "what does sched_ext NOT replace in the kernel"
+    expected_refs:
+      - file: sched_ext.md
+        section: null
+        why: "Explicitly notes sched_ext is an additional scheduler class, not a replacement for CFS or EEVDF."
+
+scoring_notes: |
+  Pass:     returned context contains at least one of the `expected_refs`
+            file/section pairs by name or recognisable paraphrase.
+  Marginal: returned context contains material from the same conceptual
+            neighbourhood as `expected_refs` but does not name the
+            specific file or section, OR cites the file at a low rank
+            position the user would miss in a typical reading.
+  Fail:     no `expected_refs` entry surfaces in returned context.
+
+  Score the four retrieval modes separately. A clean candidate is 24 pass
+  across (6 queries x 4 modes). A practitioner-ready threshold is 22 pass
+  with both fails on the same query shape (interpretable as a query-shape
+  mismatch rather than an extractor weakness).

@@ -1,0 +1,156 @@
+/* ============================================================================
+   ATELIER — the design language for an applied AI atelier
+   ----------------------------------------------------------------------------
+   A control room read like an architecture & design magazine: a real,
+   emotional photograph sets the mood; a few panes of liquid glass float over
+   it carrying only what matters. Hairline rules, an editorial serif, prose,
+   generous air. Square corners — printed, not "app". Status is one tinted
+   italic word, never a pill with a blinking light.
+
+   This file is the SINGLE SOURCE OF TRUTH: tokens, fonts, and the primitive
+   classes every screen is built from. Link it first on every page.
+   ============================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── ink: warm near-blacks → soft greys, pulled from sunlit plaster ─────── */
+  --ink:    #2a241c;   /* primary text, rules at full weight   */
+  --ink-2:  #6a6052;   /* secondary text, prose                */
+  --ink-3:  #978c7c;   /* tertiary, captions, meta             */
+  --ink-4:  #b4ab9c;   /* faintest — placeholders, disabled    */
+
+  /* ── paper: the page beneath the photograph ────────────────────────────── */
+  --paper:   #f1ebe1;
+  --paper-2: #ece4d7;
+
+  /* ── hairlines: the editorial grid is drawn in these ───────────────────── */
+  --line:   rgba(70, 56, 36, 0.16);
+  --line-2: rgba(70, 56, 36, 0.30);
+
+  /* ── colour, used sparingly — status & emphasis only ───────────────────── */
+  --work: #9a7b3c; /* @kind color */  /* working  — muted gold  */
+  --calm: #5f7a5c; /* @kind color */  /* holding  — sage        */
+  --hold: #a9694e; /* @kind color */  /* awaiting — clay        */
+  --pos:  #4f6b4c; /* @kind color */  /* gain                   */
+  --neg:  #a05a44; /* @kind color */  /* loss / locked          */
+
+  /* ── glass: the floating instrument surface ────────────────────────────── */
+  --glass-fill:   linear-gradient(rgba(248,243,235,0.50), rgba(244,238,228,0.38)); /* @kind other */
+  --glass-blur:   blur(15px) saturate(1.12); /* @kind other */
+  --glass-shadow: 0 44px 86px -54px rgba(45,33,18,0.55); /* @kind shadow */
+
+  /* ── corners: SQUARE. printed, not app. (full only for a true circle) ──── */
+  --r:      0px;
+  --r-full: 999px;
+
+  /* ── type ──────────────────────────────────────────────────────────────── */
+  --serif: 'Newsreader', Georgia, serif; /* @kind font */
+  --sans:  'Schibsted Grotesk', system-ui, sans-serif; /* @kind font */
+  --mono:  'Spline Sans Mono', ui-monospace, monospace; /* @kind font */
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--ink);
+  background:
+    radial-gradient(120% 90% at 12% 0%, rgba(255,248,235,0.7), transparent 50%),
+    linear-gradient(176deg, var(--paper) 0%, var(--paper-2) 100%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* page column. .sheet sits above the rotating room (z-index:2). */
+.sheet { position: relative; z-index: 2; max-width: 1320px; margin: 0 auto; padding: clamp(26px, 3.4vw, 52px); }
+
+/* legibility veil over the photograph — pair with atelier-rooms.js */
+.wash { position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(105deg, rgba(242,236,227,0.46) 0%, rgba(242,236,227,0.22) 42%, rgba(242,236,227,0.06) 70%, rgba(242,236,227,0.2) 100%),
+    radial-gradient(58% 66% at 0% 6%, rgba(242,236,227,0.4), rgba(242,236,227,0) 58%);
+}
+
+/* ── masthead / running header ───────────────────────────────────────────── */
+.masthead { display: flex; align-items: center; gap: 30px; padding-bottom: 18px; border-bottom: 1px solid var(--line-2); }
+.masthead .mark { display: flex; align-items: baseline; gap: 12px; }
+.masthead .name { font-family: var(--serif); font-weight: 400; font-size: 21px; letter-spacing: 0.01em; color: var(--ink); text-decoration: none; }
+.masthead .sub  { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); }
+.masthead nav { display: flex; gap: 2px; margin-left: 4px; }
+.masthead nav a { font-size: 14px; color: var(--ink-2); text-decoration: none; padding: 7px 13px; border-radius: var(--r); transition: color .2s; white-space: nowrap; }
+.masthead nav a:hover { color: var(--ink); }
+.masthead nav a.here { color: var(--ink); }
+.masthead nav a.here::after { content: ''; display: block; height: 1px; margin-top: 4px; background: var(--ink); opacity: 0.5; }
+.masthead .folio { margin-left: auto; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-3); white-space: nowrap; }
+
+/* ── type ────────────────────────────────────────────────────────────────── */
+.display   { font-family: var(--serif); font-weight: 300; line-height: 0.98; letter-spacing: -0.02em; color: var(--ink); margin: 0; }
+.display em{ font-style: italic; font-weight: 300; color: var(--ink-2); }
+.kicker    { font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 18px; color: var(--ink-2); }
+.lede      { font-size: 16px; line-height: 1.6; color: var(--ink-2); }
+.lede b    { font-weight: 500; color: var(--ink); }
+.caption   { font-family: var(--serif); font-style: italic; font-size: 15px; line-height: 1.5; color: var(--ink-3); }
+.flabel    { font-size: 12.5px; color: var(--ink-3); }              /* small functional label — lowercase, never tracked caps */
+.num       { font-variant-numeric: tabular-nums; }
+.mono      { font-family: var(--mono); }
+
+/* ── PRIMITIVE · status (Badge) ── one tinted italic word, no pill, no dot ── */
+.status      { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-2); }
+.status.work { color: var(--work); }
+.status.calm { color: var(--calm); }
+.status.hold { color: var(--hold); }
+.status.neg  { color: var(--neg); }
+
+/* ── PRIMITIVE · glass (Glass) ── the floating instrument surface ─────────── */
+.glass {
+  position: relative;
+  background: var(--glass-fill);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--line-2); border-radius: var(--r);
+  box-shadow: var(--glass-shadow);
+}
+/* a lighter tipped-in vellum sheet (less blur, no drop shadow) */
+.vellum {
+  background: linear-gradient(rgba(247,242,233,0.55), rgba(244,238,228,0.45));
+  backdrop-filter: blur(8px) saturate(1.03); -webkit-backdrop-filter: blur(8px) saturate(1.03);
+  border: 1px solid var(--line-2); border-radius: var(--r);
+}
+
+/* ── PRIMITIVE · button (Btn) ── square, hairline; ghost underlines on hover  */
+.btn {
+  font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink);
+  background: rgba(255,255,255,0.4); border: 1px solid var(--ink); border-radius: var(--r);
+  padding: 9px 22px; cursor: pointer; transition: background .2s;
+}
+.btn:hover { background: rgba(255,255,255,0.7); }
+.btn-ghost {
+  font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink-2);
+  background: none; border: 0; border-bottom: 1px solid transparent; padding: 0 0 4px; cursor: pointer; transition: color .2s, border-color .2s;
+}
+.btn-ghost:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ── PRIMITIVE · chip (Chip) ── meta / tag / contract, hairline square ────── */
+.chip { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border: 1px solid var(--line-2); border-radius: var(--r); padding: 3px 11px; }
+.chip.work { color: var(--work); border-color: rgba(154,123,60,0.4); }
+
+/* ── hairline rules ──────────────────────────────────────────────────────── */
+.rule   { height: 1px; background: var(--line);   border: 0; margin: 0; }
+.rule-2 { height: 1px; background: var(--line-2); border: 0; margin: 0; }
+
+/* ── editorial table — print's native strength ───────────────────────────── */
+.ledger { width: 100%; border-collapse: collapse; }
+.ledger th, .ledger td { text-align: left; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.ledger thead th { font-family: var(--sans); font-weight: 500; font-size: 12px; color: var(--ink-3); }
+.ledger td { font-family: var(--serif); font-size: 17px; color: var(--ink); }
+.ledger .n { text-align: right; font-variant-numeric: tabular-nums; }
+.ledger .up { color: var(--pos); }
+.ledger .down { color: var(--neg); }
+.ledger tr:last-child td { border-bottom: 0; }
+
+/* ── entrance — visible end-state is the base; animate from hidden ────────── */
+.anim { opacity: 0; transform: translateY(12px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+.d1 { animation-delay: .04s; } .d2 { animation-delay: .16s; } .d3 { animation-delay: .3s; }
+.d4 { animation-delay: .42s; } .d5 { animation-delay: .54s; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .anim { animation: none; opacity: 1; transform: none; } }

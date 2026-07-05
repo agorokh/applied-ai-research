@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://agorokh.github.io/applied-ai-research/sitemap.xml
