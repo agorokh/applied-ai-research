@@ -236,34 +236,7 @@
   </div>
 </div>
 
-<script>
-  const bar = document.getElementById('pbar');
-  const links = [...document.querySelectorAll('.toc a')];
-  const targets = links.map(a => ({ a, t: document.querySelector(a.getAttribute('href')) })).filter(o => o.t);
-  let offsets = [];
-  function measure() {
-    const sd = window.scrollY || document.documentElement.scrollTop;
-    offsets = targets.map(o => o.t.getBoundingClientRect().top + sd);
-  }
-  function onScroll() {
-    const sd = window.scrollY || document.documentElement.scrollTop;
-    const sh = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.width = (sh ? sd / sh * 100 : 0) + '%';
-    const y = sd + 130; let cur = targets[0];
-    for (let i = 0; i < targets.length; i++) { if (offsets[i] <= y) cur = targets[i]; }
-    links.forEach(a => a.classList.remove('on'));
-    if (cur) cur.a.classList.add('on');
-  }
-  document.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => { measure(); onScroll(); }, { passive: true });
-  window.addEventListener('load', () => { measure(); onScroll(); });
-  links.forEach(a => a.addEventListener('click', e => {
-    const t = document.querySelector(a.getAttribute('href'));
-    if (t) { e.preventDefault(); window.scrollTo({ top: window.scrollY + t.getBoundingClientRect().top - 28, behavior: 'smooth' }); }
-  }));
-  measure();
-  onScroll();
-</script>
+<script src="../assets/toc.js"></script>
 <script src="../assets/atelier-figures.js"></script>
 <script src="../assets/atelier-rooms.js"></script>
 </body>
