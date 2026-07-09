@@ -1,0 +1,19 @@
+{
+  "extra_terms": [],
+  "identified_nonzero": {
+    "xxx": [
+      -0.0978542499899106,
+      -2.0002648115026647
+    ],
+    "yyy": [
+      2.0017024968795156,
+      -0.1003567623500101
+    ]
+  },
+  "max_abs_coeff_err": 0.004702496879515516,
+  "missing_terms": [],
+  "pass": true,
+  "support_match": true,
+  "target_id": "tab_ex1_2d_cubic",
+  "tolerance_max_abs_coeff_err": 0.05
+}

@@ -1,0 +1,26 @@
+{
+  "extra_terms": [],
+  "identified_nonzero": {
+    "x": [
+      -0.10058118473325663,
+      -1.9984695498347993,
+      0.0
+    ],
+    "y": [
+      2.0010819731644345,
+      -0.10054760515279479,
+      0.0
+    ],
+    "z": [
+      0.0,
+      0.0,
+      -0.3026429455431876
+    ]
+  },
+  "max_abs_coeff_err": 0.002342945543187591,
+  "missing_terms": [],
+  "pass": true,
+  "support_match": true,
+  "target_id": "tab_ex1_3d",
+  "tolerance_max_abs_coeff_err": 0.05
+}

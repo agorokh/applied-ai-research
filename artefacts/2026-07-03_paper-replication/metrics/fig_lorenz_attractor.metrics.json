@@ -1,0 +1,16 @@
+{
+  "identified_bounded": true,
+  "lobe_switches_identified": 63,
+  "lobe_switches_true": 62,
+  "pass": true,
+  "state_bounds_identified": [
+    -24.149822450070076,
+    45.81431375048503
+  ],
+  "state_bounds_true": [
+    -24.635963251427395,
+    45.18709759166386
+  ],
+  "target_id": "fig_lorenz_attractor",
+  "two_lobed_identified": true
+}

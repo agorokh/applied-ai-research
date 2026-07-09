@@ -1,0 +1,19 @@
+{
+  "extra_terms": [],
+  "identified_nonzero": {
+    "x": [
+      -0.10018382425976387,
+      -2.000503829380311
+    ],
+    "y": [
+      1.9993796348884525,
+      -0.09877519329166563
+    ]
+  },
+  "max_abs_coeff_err": 0.0033203651115474297,
+  "missing_terms": [],
+  "pass": true,
+  "support_match": true,
+  "target_id": "tab_ex1_2d_linear",
+  "tolerance_max_abs_coeff_err": 0.05
+}

@@ -1,0 +1,14 @@
+{
+  "fixed_point_convergence_mu_negative": true,
+  "limit_cycle_radius_rel_error_per_mu": {
+    "0.1": 8.302777997386783e-05,
+    "0.2": 8.304742953466641e-05,
+    "0.3": 8.306548063313319e-05,
+    "0.4": 8.307699849519218e-05,
+    "0.5": 8.308231001745869e-05
+  },
+  "max_limit_cycle_radius_rel_error": 8.308231001745869e-05,
+  "pass": true,
+  "target_id": "fig_hopf_reconstruction",
+  "tolerance_radius_rel_error": 0.1
+}
