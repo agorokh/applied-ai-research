@@ -8,13 +8,13 @@ This is a working-drafts series of practitioner research notes. Contributions ar
 
 For:
 - A correction to a report (numbers, citations, broken link, factual error)
-- A re-measurement on a different stack that confirms or invalidates a headline finding (see each report's `artefacts/invalidation.md` for the specific re-measurement that would falsify each claim)
+- A re-measurement on a different stack that confirms or invalidates a headline finding (see each report's `artifacts/invalidation.md` for the specific re-measurement that would falsify each claim)
 - A pointer to prior public work the report missed
 - A proposal for a new report (open an issue with the abstract + the corpus you plan to measure against)
 
 ### 2. Open a pull request
 
-For corrections, broken-link fixes, methodology clarifications, or new sub-artefacts under an existing report's `artefacts/` directory. Larger contributions (a new report, a structural design change) should start as an issue so we can agree on the scope before you spend time.
+For corrections, broken-link fixes, methodology clarifications, or new sub-artefacts under an existing report's `artifacts/` directory. Larger contributions (a new report, a structural design change) should start as an issue so we can agree on the scope before you spend time.
 
 ## How to write a report
 
@@ -23,7 +23,7 @@ Each note is a single HTML file under `notes/<slug>.html`, built on the Atelier 
 - [`notes/value-layer.html`](notes/value-layer.html): a prose-led decision memo
 - [`notes/harness-viability.html`](notes/harness-viability.html): a data-heavy empirical note with figures and tables
 
-A note ships its companion material under `artefacts/<slug>/` (or links the relevant companion repository). The reproducibility-grade notes ship:
+A note ships its companion material under `artifacts/<slug>/` (or links the relevant companion repository). The reproducibility-grade notes ship:
 
 - `methodology.md`: test design, scoring rubric, aggregation formula, what the methodology is NOT
 - `claims.md`: claims ledger (every headline tagged `measured` / `inferred` / `hypothetical` / `recommendation` / `scope`)

@@ -74,12 +74,12 @@
 
     <div class="artefacts" id="artefacts">
       <span class="k">artefacts</span><span class="dot">·</span>
-      <a href="artefacts/methodology.md">methodology</a><span class="dot">·</span>
-      <a href="artefacts/smoke-rubric/README.md">the smoke rubric</a><span class="dot">·</span>
-      <a href="artefacts/claims.md">claims ledger</a><span class="dot">·</span>
-      <a href="artefacts/invalidation.md">invalidation</a><span class="dot">·</span>
-      <a href="artefacts/model-matrix.md">the model matrix</a><span class="dot">·</span>
-      <a href="artefacts/cost-model.md">the cost model</a>
+      <a href="artifacts/methodology.md">methodology</a><span class="dot">·</span>
+      <a href="artifacts/smoke-rubric/README.md">the smoke rubric</a><span class="dot">·</span>
+      <a href="artifacts/claims.md">claims ledger</a><span class="dot">·</span>
+      <a href="artifacts/invalidation.md">invalidation</a><span class="dot">·</span>
+      <a href="artifacts/model-matrix.md">the model matrix</a><span class="dot">·</span>
+      <a href="artifacts/cost-model.md">the cost model</a>
     </div>
   </section>
 
@@ -148,7 +148,7 @@
       <section class="sec" id="s04">
         <div class="seclabel"><span class="no">iv</span><span>the matrix</span></div>
         <h2>Eleven rows, <em>one clean winner.</em></h2>
-        <p>The full table lives in <a href="artefacts/model-matrix.md">the model-matrix artefact</a>. The headline rows, sorted by smoke score, show one model with a strict 24/0/0 and a spread of density numbers that, read alone, would mislead. Note that gpt-4o-mini's density columns come from a 150-document full-corpus run rather than the pinned twenty-document subset, so its smoke score is comparable here while its entity and relation counts are not, and Llama 3.2 3B's ratio reflects only the relations that survived schema validation after the parser dropped most as malformed.</p>
+        <p>The full table lives in <a href="artifacts/model-matrix.md">the model-matrix artefact</a>. The headline rows, sorted by smoke score, show one model with a strict 24/0/0 and a spread of density numbers that, read alone, would mislead. Note that gpt-4o-mini's density columns come from a 150-document full-corpus run rather than the pinned twenty-document subset, so its smoke score is comparable here while its entity and relation counts are not, and Llama 3.2 3B's ratio reflects only the relations that survived schema validation after the parser dropped most as malformed.</p>
         <div class="tbl">
           <div class="cap"><b>Table 1 ·</b> the headline rows, by entities and relations per document and smoke score (pass / marginal / fail, out of 24).</div>
           <table class="data">
@@ -187,7 +187,7 @@
       <section class="sec" id="s06">
         <div class="seclabel"><span class="no">vi</span><span>per-100-document cost</span></div>
         <h2>Normalised so you can <em>project your own corpus.</em></h2>
-        <p>The cost table covers the commercial rows measured on the twenty-document smoke corpus plus one local row that finished all twenty documents. Per-100-document figures are derived as documented in <a href="artefacts/cost-model.md">the cost-model artefact</a>. This note does not name a total dollar figure because the absolute number depends on document length, chunking, gleaning aggressiveness, and the contract price with whatever gateway sits in front of the model. Each document on this corpus produced about four chunks of 1200 tokens, and LightRAG made about 2.5 LLM calls per chunk on average, with each call consuming roughly 8K input and producing roughly 2K output tokens. That comes to about 80K input plus 20K output tokens per document, or 8M input plus 2M output per 100 documents, before any gleaning overhead.</p>
+        <p>The cost table covers the commercial rows measured on the twenty-document smoke corpus plus one local row that finished all twenty documents. Per-100-document figures are derived as documented in <a href="artifacts/cost-model.md">the cost-model artefact</a>. This note does not name a total dollar figure because the absolute number depends on document length, chunking, gleaning aggressiveness, and the contract price with whatever gateway sits in front of the model. Each document on this corpus produced about four chunks of 1200 tokens, and LightRAG made about 2.5 LLM calls per chunk on average, with each call consuming roughly 8K input and producing roughly 2K output tokens. That comes to about 80K input plus 20K output tokens per document, or 8M input plus 2M output per 100 documents, before any gleaning overhead.</p>
         <div class="tbl">
           <div class="cap"><b>Table 2 ·</b> ingest cost per 100 documents at list price, with cost ratio against Gemini 2.5 Flash and smoke score.</div>
           <table class="data">
@@ -227,7 +227,7 @@
           <li><b>Reject the implicit gpt-4o-mini default.</b> Several systems ship a small-tier model as the implicit extractor. It is three to five times cheaper at list price and loses cells you will care about; if you cannot upgrade it, at least make the choice explicit so future operators see it.</li>
           <li><b>Treat the relation-to-entity ratio as diagnostic, not a target.</b> A ratio above ~1.4 with entity count below ~30 per document is a dense small graph that underperforms at scale; a ratio near 1.0 with entity count above ~60 is a wide sparse graph that traverses well.</li>
           <li><b>For local-only corpora driven by data residency.</b> A 14B-class GGUF Q4 model on a 32 GB-or-larger Apple Silicon host, or a 4B no-think model on a consumer GPU, are the structurally viable options. Neither clears Gemini Flash; pair either with a separate query-time model for synthesis and accept the trade of retrieval breadth for residency.</li>
-          <li><b>Where these numbers do not transfer.</b> A corpus dominated by structured data, pure narrative, or specialist vocabularies may rank models differently; absolute breadth varies by roughly two times across corpora; changing chunk size, embedder, or contract pricing shifts magnitudes more than ratios. Each scope claim has a falsification condition in <a href="artefacts/invalidation.md">the invalidation artefact</a>.</li>
+          <li><b>Where these numbers do not transfer.</b> A corpus dominated by structured data, pure narrative, or specialist vocabularies may rank models differently; absolute breadth varies by roughly two times across corpora; changing chunk size, embedder, or contract pricing shifts magnitudes more than ratios. Each scope claim has a falsification condition in <a href="artifacts/invalidation.md">the invalidation artefact</a>.</li>
         </ul>
         <p>The takeaway for a delivery team is not the specific model; Gemini 2.5 Flash will be obsolete by the next reading. The thing to take is the discipline: when the substrate's published benchmarks hold a variable constant, that variable is usually the one that decides outcomes in production. Name it, run a smoke rubric on it before locking it in, and instrument the deployment so the documented decision survives day-to-day operations.</p>
         <div class="about" id="about">
@@ -241,9 +241,9 @@
         <ol>
           <li><a href="https://github.com/HKUDS/LightRAG">LightRAG</a>, the canonical open-source knowledge-graph RAG implementation used here as the representative system; its paper names gpt-4o-mini for some runs but does not study sensitivity to extractor choice.</li>
           <li><a href="https://github.com/microsoft/graphrag">Microsoft GraphRAG</a> and the Neo4j vector-plus-graph ecosystem, the wider class of traversal-then-fetch systems the findings are claimed to generalise across.</li>
-          <li>The <a href="artefacts/smoke-rubric/README.md">smoke-rubric artefact</a>, the a-priori twenty-four-cell protocol, schema, and a neutral-domain fixture, re-instantiable on another corpus.</li>
-          <li>The <a href="artefacts/cost-model.md">cost-model artefact</a>, source of the per-100-document derivation and the list-versus-invoice reconciliation for the Sonnet row.</li>
-          <li>The <a href="artefacts/invalidation.md">invalidation artefact</a>, the falsification condition attached to each scope claim, so a re-measurer can decide whether a result invalidates or extends it.</li>
+          <li>The <a href="artifacts/smoke-rubric/README.md">smoke-rubric artefact</a>, the a-priori twenty-four-cell protocol, schema, and a neutral-domain fixture, re-instantiable on another corpus.</li>
+          <li>The <a href="artifacts/cost-model.md">cost-model artefact</a>, source of the per-100-document derivation and the list-versus-invoice reconciliation for the Sonnet row.</li>
+          <li>The <a href="artifacts/invalidation.md">invalidation artefact</a>, the falsification condition attached to each scope claim, so a re-measurer can decide whether a result invalidates or extends it.</li>
         </ol>
       </div>
 

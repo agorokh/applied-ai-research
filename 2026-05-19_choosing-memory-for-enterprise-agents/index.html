@@ -74,10 +74,10 @@
 
     <div class="artefacts" id="artefacts">
       <span class="k">artefacts</span><span class="dot">·</span>
-      <a href="artefacts/methodology.md">methodology</a><span class="dot">·</span>
-      <a href="artefacts/claims.md">claims ledger</a><span class="dot">·</span>
-      <a href="artefacts/invalidation.md">invalidation</a><span class="dot">·</span>
-      <a href="artefacts/canary-harness/README.md">the canary harness</a><span class="dot">·</span>
+      <a href="artifacts/methodology.md">methodology</a><span class="dot">·</span>
+      <a href="artifacts/claims.md">claims ledger</a><span class="dot">·</span>
+      <a href="artifacts/invalidation.md">invalidation</a><span class="dot">·</span>
+      <a href="artifacts/canary-harness/README.md">the canary harness</a><span class="dot">·</span>
       <a href="https://github.com/agorokh/agentic-memory-mcp">the memory server</a>
     </div>
   </section>
@@ -143,7 +143,7 @@
             </tbody>
           </table>
         </div>
-        <p>Write the bar before you evaluate candidates. A bar applied post-hoc rationalises a decision already made; a bar applied a priori constrains the decision and is reproducible by the next reviewer who runs the same scoring against the same project. <a href="artefacts/methodology.md">The methodology</a> records how each weight was derived.</p>
+        <p>Write the bar before you evaluate candidates. A bar applied post-hoc rationalises a decision already made; a bar applied a priori constrains the decision and is reproducible by the next reviewer who runs the same scoring against the same project. <a href="artifacts/methodology.md">The methodology</a> records how each weight was derived.</p>
       </section>
 
       <section class="sec" id="s04">
@@ -223,7 +223,7 @@
       <section class="sec" id="s08">
         <div class="seclabel"><span class="no">·</span><span>decision, defaults, and the limits</span></div>
         <h2>A fourth candidate fails the bar; <em>chunk-text becomes the default.</em></h2>
-        <p>Two decisions land here. The first is a candidate rejected against the named bar before any retrieval canary cost was spent. The fourth candidate considered, <a href="https://github.com/Tencent/agent-memory-toolkit">Tencent DB Agent-Memory</a>, the most architecturally distinct option in the set, a four-layer local-memory pipeline with a task-state working memory, was publicly unevaluated outside its own README at evaluation time, so the bar check below is the first published external read on record. Against the five criteria: integration surface failed, distributed primarily as a TypeScript and Node package against a Python-first stack; install hygiene failed, the post-install step rewrites a sibling package's runtime files and silently falls through on error; test coverage failed, the harness is wired but a search for test files in the published source returns zero; operational fit failed, no MCP server surface, no graph database, no fit with the per-workspace HTTP server pattern or with gateway-routed model calls. Maintenance posture was partial, about six weeks old at most recent release with two contributors. Four of five fails, one partial. The decision is reproducible against the stated bar. "Did not fit this adoption bar" is not the same as "is a bad project"; the rejection is re-evaluable when the candidate ships material changes against the failing criteria. <a href="artefacts/claims.md">The claims ledger</a> records the evidence.</p>
+        <p>Two decisions land here. The first is a candidate rejected against the named bar before any retrieval canary cost was spent. The fourth candidate considered, <a href="https://github.com/Tencent/agent-memory-toolkit">Tencent DB Agent-Memory</a>, the most architecturally distinct option in the set, a four-layer local-memory pipeline with a task-state working memory, was publicly unevaluated outside its own README at evaluation time, so the bar check below is the first published external read on record. Against the five criteria: integration surface failed, distributed primarily as a TypeScript and Node package against a Python-first stack; install hygiene failed, the post-install step rewrites a sibling package's runtime files and silently falls through on error; test coverage failed, the harness is wired but a search for test files in the published source returns zero; operational fit failed, no MCP server surface, no graph database, no fit with the per-workspace HTTP server pattern or with gateway-routed model calls. Maintenance posture was partial, about six weeks old at most recent release with two contributors. Four of five fails, one partial. The decision is reproducible against the stated bar. "Did not fit this adoption bar" is not the same as "is a bad project"; the rejection is re-evaluable when the candidate ships material changes against the failing criteria. <a href="artifacts/claims.md">The claims ledger</a> records the evidence.</p>
         <div class="finding calm">
           <div class="fk">The downstream consequence</div>
           <h3>The entity graph leaves the default deployment path; the bar is the durable artefact.</h3>

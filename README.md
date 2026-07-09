@@ -27,7 +27,7 @@ The discipline is: state the adoption bar before the measurement, publish the we
 
 ## Format
 
-Each note is a single self-contained HTML file under `notes/`, set in the Atelier reading style (Newsreader serif for display, Schibsted Grotesk for body, Spline Sans Mono for labels and code, a warm paper palette with hairline rules). Notes are designed to read at 1280px or wider. Companion material (methodology, claims ledger, falsification conditions, reproducibility artefacts) lives under `artefacts/<slug>/` or in a linked companion repository, referenced inline from the note. The design language is owned by Claude Design; `assets/theme.css` is its tokens and primitives and is never edited by hand.
+Each note is a single self-contained HTML file under `notes/`, set in the Atelier reading style (Newsreader serif for display, Schibsted Grotesk for body, Spline Sans Mono for labels and code, a warm paper palette with hairline rules). Notes are designed to read at 1280px or wider. Companion material (methodology, claims ledger, falsification conditions, reproducibility artefacts) lives under `artifacts/<slug>/` or in a linked companion repository, referenced inline from the note. The design language is owned by Claude Design; `assets/theme.css` is its tokens and primitives and is never edited by hand.
 
 ## Contributing
 

@@ -20,7 +20,7 @@ The reproducibility discipline the series aims for is:
 - Cite prior public work where it exists, and call out the gap explicitly when it does not.
 - Ship supporting artefacts (methodology, claims ledger, falsification conditions) inside each paper's folder, not as vapor in the prose.
 
-The artefact bundle for each report lives at `<paper-slug>/artefacts/` in this repository.
+The artefact bundle for each report lives at `<paper-slug>/artifacts/` in this repository.
 
 ## Audience
 
@@ -34,7 +34,7 @@ Or just link the report URL directly. The series exists to be discussed and re-m
 
 ## What invalidates findings
 
-Each report carries an `artefacts/invalidation.md` file naming the specific re-measurement that would falsify the headline finding. If you run that re-measurement and the result inverts, please open an issue, the bar is the durable artefact, the magnitude is workload-specific.
+Each report carries an `artifacts/invalidation.md` file naming the specific re-measurement that would falsify the headline finding. If you run that re-measurement and the result inverts, please open an issue, the bar is the durable artefact, the magnitude is workload-specific.
 
 ## License
 
