@@ -4,7 +4,7 @@ Per-100-document ingest cost derivation. Normalised so a reader can multiply by 
 
 ## A note on what is measured vs estimated
 
-The per-call token counts in this artefact are derivations from the chunk size and observed extraction shape, not direct measurements from the LLM's token-usage records. They are within an order of magnitude of what an audit pass over the on-disk LLM-cache JSON would report; they are not invoice-level numbers. The list-price table below yields **~$7 to $10 per 100 documents** for Gemini 2.5 Flash: ~$7 at the no-gleaning baseline, with the high end reflecting the documented 30% to 50% gleaning uplift on output cost. The calculator is the appropriate number for negotiating per-token contract pricing; for projecting future spend on a similar corpus, re-measure invoice cost on a representative subset of your own corpus rather than projecting from this calculator.
+The per-call token counts in this artifact are derivations from the chunk size and observed extraction shape, not direct measurements from the LLM's token-usage records. They are within an order of magnitude of what an audit pass over the on-disk LLM-cache JSON would report; they are not invoice-level numbers. The list-price table below yields **~$7 to $10 per 100 documents** for Gemini 2.5 Flash: ~$7 at the no-gleaning baseline, with the high end reflecting the documented 30% to 50% gleaning uplift on output cost. The calculator is the appropriate number for negotiating per-token contract pricing; for projecting future spend on a similar corpus, re-measure invoice cost on a representative subset of your own corpus rather than projecting from this calculator.
 
 ## Per-document token accounting (estimated)
 

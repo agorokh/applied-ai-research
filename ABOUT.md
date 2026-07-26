@@ -18,9 +18,9 @@ The reproducibility discipline the series aims for is:
 - Publish the weighting before the aggregate number.
 - Name the scope limits as plainly as the headline.
 - Cite prior public work where it exists, and call out the gap explicitly when it does not.
-- Ship supporting artefacts (methodology, claims ledger, falsification conditions) inside each paper's folder, not as vapor in the prose.
+- Ship supporting artifacts (methodology, claims ledger, falsification conditions) inside each paper's folder, not as vapor in the prose.
 
-The artefact bundle for each report lives at `<paper-slug>/artifacts/` in this repository.
+The artifact bundle for each report lives at `<paper-slug>/artifacts/` in this repository.
 
 ## Audience
 
@@ -34,11 +34,11 @@ Or just link the report URL directly. The series exists to be discussed and re-m
 
 ## What invalidates findings
 
-Each report carries an `artifacts/invalidation.md` file naming the specific re-measurement that would falsify the headline finding. If you run that re-measurement and the result inverts, please open an issue, the bar is the durable artefact, the magnitude is workload-specific.
+Each report carries an `artifacts/invalidation.md` file naming the specific re-measurement that would falsify the headline finding. If you run that re-measurement and the result inverts, please open an issue, the bar is the durable artifact, the magnitude is workload-specific.
 
 ## License
 
-Reports and accompanying MD artefacts: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), share, adapt, attribute. Code samples in the artefacts directories: MIT.
+Reports and accompanying MD artifacts: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), share, adapt, attribute. Code samples in the artifacts directories: MIT.
 
 ## Contact
 

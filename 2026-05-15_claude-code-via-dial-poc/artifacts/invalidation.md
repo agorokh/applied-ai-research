@@ -39,4 +39,4 @@ Per-finding Popperian commitments — the specific re-measurements that would fa
 
 ## Methodology
 
-If any of these invalidations is observed, the right response is to open an issue on this repository with the new measurement attached. The bar (the criteria + methodology) is the durable artefact; specific magnitudes expire when models, prices, or gateway behaviour change.
+If any of these invalidations is observed, the right response is to open an issue on this repository with the new measurement attached. The bar (the criteria + methodology) is the durable artifact; specific magnitudes expire when models, prices, or gateway behaviour change.

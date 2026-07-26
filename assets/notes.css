@@ -24,17 +24,17 @@
 .metastats .ms:first-child { border-left: 0; padding-left: 28px; }
 .metastats .v { font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1; color: var(--ink); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
 .metastats .l { display: block; margin-top: 13px; font-size: 12.5px; line-height: 1.55; color: var(--ink-3); }
-.artefacts { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink-3); }
-.artefacts .k { color: var(--ink-3); }
+.artifacts { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink-3); }
+.artifacts .k { color: var(--ink-3); }
 .mark .sub a.xh { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line-2); transition: color .2s, border-color .2s; }
 .mark .sub a.xh:hover { color: var(--ink); border-color: var(--ink); }
-.artefacts a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.artifacts a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line-2); }
 /* prose + reference links: ink with a hairline underline, never browser blue/purple */
 .article a, .refs a, .sec a, .lede a, .about a, .fig a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line-2); transition: border-color .2s; }
 .article a:hover, .refs a:hover, .sec a:hover { border-color: var(--ink); }
 .article a:visited, .refs a:visited, .sec a:visited, .lede a:visited, .about a:visited, .fig a:visited { color: inherit; }
-.artefacts a:hover { border-bottom-color: var(--ink); color: var(--ink); }
-.artefacts .dot { color: var(--ink-4); }
+.artifacts a:hover { border-bottom-color: var(--ink); color: var(--ink); }
+.artifacts .dot { color: var(--ink-4); }
 
 /* ── body grid: sticky rail + article on paper ───────────────────────────── */
 .grid { display: grid; grid-template-columns: 232px minmax(0,1fr); gap: clamp(34px,4vw,72px); margin-top: clamp(28px,3vw,44px); align-items: start; }

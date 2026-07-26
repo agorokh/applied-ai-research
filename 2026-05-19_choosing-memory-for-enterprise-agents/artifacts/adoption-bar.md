@@ -39,7 +39,7 @@ The project may mature into a serious option; against the bar today, it does not
 The starting point for using this bar on a different candidate:
 
 1. State the candidate version under evaluation (project + commit hash or release tag).
-2. Score each criterion against the candidate's public surface — never internal artefacts you have private access to.
+2. Score each criterion against the candidate's public surface — never internal artifacts you have private access to.
 3. Document the evidence per criterion in a table identical in shape to the Tencent scorecard above.
 4. Re-evaluate when the candidate ships material changes against the failing criteria. The bar is permanent; the rejection is re-evaluable.
 

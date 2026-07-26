@@ -27,7 +27,7 @@ These local candidates were attempted on consumer-class GPU (6 GB VRAM) and 32 G
 
 ## Pending rows (not measured in this report)
 
-The following models were scoped as candidates for a future matrix extension but were never run. They are not costed in the current [`cost-model.md`](cost-model.md) artefact (which covers only the five rows in its table). Their absence is not evidence about their quality.
+The following models were scoped as candidates for a future matrix extension but were never run. They are not costed in the current [`cost-model.md`](cost-model.md) artifact (which covers only the five rows in its table). Their absence is not evidence about their quality.
 
 | Model | Why not run |
 |---|---|
@@ -58,4 +58,4 @@ The breadth ranking (Flash > Sonnet > others) holds on both corpora. The absolut
 
 ## Sources
 
-All commercial rows ingested via OpenRouter at run time. All local rows ingested via Ollama or LM Studio on consumer-class GPU and 32 GB Apple Silicon hardware tiers. Raw smoke transcripts and ingest logs are not published because the surrounding corpus contains non-public material; the rubric file is the reusable artefact.
+All commercial rows ingested via OpenRouter at run time. All local rows ingested via Ollama or LM Studio on consumer-class GPU and 32 GB Apple Silicon hardware tiers. Raw smoke transcripts and ingest logs are not published because the surrounding corpus contains non-public material; the rubric file is the reusable artifact.

@@ -20,7 +20,7 @@ A short list of LightRAG configuration knobs that affect ingest cost, throughput
 
 These are not LightRAG defaults; they are the choices that affect cost, reproducibility, and iteration speed. The defaults are reasonable for a single-corpus experiment; the choices above start to matter when you run the same pipeline across multiple corpora or multiple iterations.
 
-## What is NOT in this artefact
+## What is NOT in this artifact
 
 - **Deployment topology.** Whether to run one process per workspace, multi-tenant, or hybrid is an orchestration choice driven by how you partition workspaces, cache policy, and per-workspace billing requirements; it is not an extractor-model finding.
 - **Per-call wall-clock numbers.** Latency depends on the provider gateway, the specific network path, the contract-tier per-minute and per-day caps, and the per-call variance the model exhibits on your corpus. Numbers measured on one deployment do not transfer.

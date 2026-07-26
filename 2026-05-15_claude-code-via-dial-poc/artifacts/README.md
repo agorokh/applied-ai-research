@@ -1,6 +1,6 @@
-# Artefacts — Claude Code via EPAM DIAL · POC report
+# Artifacts — Claude Code via EPAM DIAL · POC report
 
-Supporting MD artefacts for the [POC report](../). Each file is linked inline from the report at the point it appears.
+Supporting MD artifacts for the [POC report](../). Each file is linked inline from the report at the point it appears.
 
 ## Index
 
@@ -18,7 +18,7 @@ Supporting MD artefacts for the [POC report](../). Each file is linked inline fr
 - Per-trial cost log records. Tied to a specific engineer / project key / InfluxDB instance; would also expose DIAL contract pricing if cross-referenced with the public Bedrock rates.
 - Per-task raw judge transcripts. Provider ToS + bloat.
 
-What the report claims and what these artefacts back up is everything that does not require the held-out fixture to verify — the adapter is openly published (see Companion repository below).
+What the report claims and what these artifacts back up is everything that does not require the held-out fixture to verify — the adapter is openly published (see Companion repository below).
 
 ## Companion repository
 

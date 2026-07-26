@@ -27,7 +27,7 @@ The discipline is: state the adoption bar before the measurement, publish the we
 
 ## Format
 
-Each note is a single self-contained HTML file under `notes/`, set in the Atelier reading style (Newsreader serif for display, Schibsted Grotesk for body, Spline Sans Mono for labels and code, a warm paper palette with hairline rules). Notes are designed to read at 1280px or wider. Companion material (methodology, claims ledger, falsification conditions, reproducibility artefacts) lives under `artifacts/<slug>/` or in a linked companion repository, referenced inline from the note. The design language is owned by Claude Design; `assets/theme.css` is its tokens and primitives and is never edited by hand.
+Each note is a single self-contained HTML file under `notes/`, set in the Atelier reading style (Newsreader serif for display, Schibsted Grotesk for body, Spline Sans Mono for labels and code, a warm paper palette with hairline rules). Notes are designed to read at 1280px or wider. Companion material (methodology, claims ledger, falsification conditions, reproducibility artifacts) lives under `artifacts/<slug>/` or in a linked companion repository, referenced inline from the note. The design language is owned by Claude Design; `assets/theme.css` is its tokens and primitives and is never edited by hand.
 
 ## Contributing
 
@@ -35,4 +35,4 @@ Open to issues and pull requests from practitioners working on similar enterpris
 
 ## License
 
-Reports and supporting MD artefacts: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Code samples: MIT. EPAM DIAL is named throughout as a product reference; EPAM owns its own trademarks.
+Reports and supporting MD artifacts: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Code samples: MIT. EPAM DIAL is named throughout as a product reference; EPAM owns its own trademarks.

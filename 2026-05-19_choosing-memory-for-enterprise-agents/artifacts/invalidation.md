@@ -32,7 +32,7 @@ This is explicitly flagged as **pilot data, not the formal closed-loop suite**, 
 - Tencent ships a material release that addresses any of the failing criteria. The four failures were: integration surface (TypeScript-only), install hygiene (post-install rewrites a sibling package), test coverage (zero test files in published source), operational fit (no MCP surface). Any one of these resolved by an upstream release would warrant a re-evaluation against the same bar.
 - Identification of an evaluator error in the audit (e.g., the test files exist but are namespaced under a directory the search missed). If a reviewer re-runs the audit against the same project at the same version and reports different criterion scores, the report is happy to be the second non-vendor evaluation and to publish the reconciliation.
 
-## Architectural finding — The canary harness is the durable artefact
+## Architectural finding — The canary harness is the durable artifact
 
 This is **process claim**, not a substrate claim. The conditions under which the claim would be invalidated:
 
@@ -40,6 +40,6 @@ This is **process claim**, not a substrate claim. The conditions under which the
 
 ## Methodology
 
-If any of these invalidations is observed, the right response is to open an issue on this repository with the new measurement attached. **The bar is the durable artefact; specific magnitudes expire when models, corpora, or substrate implementations change.**
+If any of these invalidations is observed, the right response is to open an issue on this repository with the new measurement attached. **The bar is the durable artifact; specific magnitudes expire when models, corpora, or substrate implementations change.**
 
 The whole point of publishing the methodology + claims ledger + invalidation conditions is to make this kind of structured push-back cheap. A two-line issue ("re-ran the canary on corpus X, got Y") is more useful than a 500-word debate over whether the report was overstating.

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>Self-improvement is an actuation problem · closing an agent fleet's improvement loop unattended · Applied Intelligence</title>
+<meta name="description" content="The best training data an agent fleet produces is the operator's own corrections, and almost every program throws them away with the session transcripts. I built a weekly loop that mines mine into versioned behavioural policy, then audited it with one question: does the loop close without a person? The answer was no. The system and its numbers, the audit, the acceptance gate that replaced me, and three honestly reported unattended cycles.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/actuation-gap.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Self-improvement is an actuation problem.">
+<meta property="og:description" content="A weekly loop mines the operator's corrections out of fleet transcripts into versioned behavioural policy. The audit that found the loop was not closing, the acceptance gate that replaced the per-change human, and three unattended cycles honestly reported.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/actuation-gap.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-11-social.png">
+<meta property="og:image:alt" content="A typographic plate: the words 'Self-improvement is an actuation problem' set as a large display line, above a ledger of three weekly cycles marked no-op, green but blind, and closed.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-11-social.png">
+<meta name="twitter:title" content="Self-improvement is an actuation problem.">
+<meta name="twitter:description" content="A weekly loop mines the operator's corrections into versioned fleet policy. The audit that found it was not closing without a human, the gate that fixed acceptance, and three unattended cycles honestly reported.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+</style>
+</head>
+<body data-room="7" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 11</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 07 · 25</span>
+      <span class="dot">·</span><span>ai-11</span>
+      <span class="dot">·</span><span>13 min read</span>
+      <span class="dot">·</span><span>one production fleet, audited</span>
+    </div>
+    <h1>Self-improvement is an actuation problem.<em>a fleet that mines its operator's corrections into versioned policy, and the three cycles it took for that loop to close without me.</em></h1>
+    <p class="lede">If you run coding agents in production, every week of operation already produces the most valuable training data you will ever get about them: the moments a human had to step in and correct one. Nearly every program throws that signal away with the session transcript. I built a weekly loop that refuses to. It mines my own corrections out of the fleet's transcripts, some fifteen repositories where agents write most of the code. The corrections distill into candidate habits, and the survivors fold into a versioned behavioural layer that every agent loads before it acts. This note reports that system with its own numbers, and then the question that decides whether it, or any vendor's learn-from-usage feature, is real: does the improvement loop close without a person pushing it? When I audited mine, the answer was no. What follows is the system, the audit, the acceptance gate that replaced me, and the honest ledger of the three cycles it took to close the loop: the first did nothing, the second ran green and blind, the third closed. It has run without me since.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">208</div><span class="l">corrections labeled out of one week of fleet transcripts, for about 125 small-model calls and one frontier call. That signal was dying in the archive.</span></div>
+      <div class="ms"><div class="v">3</div><span class="l">mined habits hold in production today, each having passed held-out replay on sessions it was not mined from. The gate rejected the rest, reversibly, with reasons on a ledger.</span></div>
+      <div class="ms"><div class="v">0</div><span class="l">behaviour changes had landed unattended when I audited the fleet. Every producer ran on schedule; acceptance was always, quietly, me.</span></div>
+      <div class="ms"><div class="v">4-0</div><span class="l">the panel verdict on the loop's first fully unattended escalation, recorded the same day with no human in the per-change path. Three weekly cycles now close without me.</span></div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>What we are mining</a>
+        <a href="#s02"><span class="no">ii</span>The loop</a>
+        <a href="#s03"><span class="no">iii</span>The audit</a>
+        <a href="#s04"><span class="no">iv</span>The human gate fails</a>
+        <a href="#s05"><span class="no">v</span>The gate that replaced me</a>
+        <a href="#s06"><span class="no">vi</span>The first cycle, honestly</a>
+        <a href="#s07"><span class="no">vii</span>The cycles since</a>
+        <a href="#s08"><span class="no">viii</span>Science and practice</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">25 jul 2026</span></div>
+        <div class="v"><span class="k">corpus</span><span class="d">4,190 sessions, one fleet</span></div>
+        <div class="v"><span class="k">loop</span><span class="d">3 unattended cycles</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-11</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>what we are mining</span></div>
+        <h2>The best training data a fleet produces <em>is thrown away with the sessions.</em></h2>
+        <p class="lede">Where does improvement signal for production agents come from, if not benchmarks? From the corrections the human keeps having to make. When an operator has to tell an agent, dozens of times across a corpus, to keep driving until the work is actually done, or to verify a claim against the running system before reporting it, that repetition is a precise, repeated label on a dropped habit, generated for free by real work. Nearly every agent program lets it die in the transcript archive.</p>
+        <p>The corrections reduce to a small set of intents, and the intents are the taxonomy this whole system runs on. Do not stall; keep driving until the outcome is real. Own the whole task, not the fragment that was convenient. Verify against the running system before reporting. Own the surrounding system, not just the diff. Ground answers in the recorded decisions instead of guessing. Leave a clean state for whoever comes next. Each names a failure that compounds: the half-done task an agent abandons becomes the false baseline the next session inherits. One specimen shows the shape. An agent reports a fix as done; the operator replies that the dashboard still renders nothing, and tells it to verify before reporting. The miner labels that window verify-then-report. A week that produces several more windows like it turns the label into a candidate habit, and the gate then decides whether the habit generalizes. The cost of leaving those habits uncorrected is measurable. Over 75 days, holding the fleet's backlog flat had required closing 536 issues and abandoning 45 pull requests, most of that pruning done by hand. That churn is what the corrections were being spent on, and it is what a learning loop is for.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the loop</span></div>
+        <h2>A weekly loop that mines the operator, <em>and folds what survives into policy.</em></h2>
+        <p>The mining pass is deliberately cheap. The transcript corpus stood at 4,190 sessions, 1.8 GB, when first counted. A week's delta is about 356 sessions; a deterministic prefilter, no model involved, keeps the sessions where a human actually intervened, 124 of them that first week. A small model then labels each correction window, 208 labels that week, and one frontier-model call synthesizes them into candidate habits with the evidence attached. A full week of learning costs roughly 125 small-model calls and one frontier call. Thirty-three of the 208 labels were junked as mood rather than signal: the miner keeps what a correction was about and discards how it was said.</p>
+
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · what the human keeps re-teaching. Correction labels from the first mining run over one fleet's transcripts; 208 labels total, 175 kept as signal.</figcaption>
+          <div data-atelier-figure='{"type":"bars","unit":"labels","max":60,"rows":[{"label":"do not stall","value":59,"valueLabel":"59","tint":"work"},{"label":"own the whole task","value":42,"valueLabel":"42","tint":"ink"},{"label":"verify, then report","value":42,"valueLabel":"42","tint":"ink"},{"label":"own the surround","value":13,"valueLabel":"13","tint":"ink"},{"label":"ground in memory","value":12,"valueLabel":"12","tint":"ink"},{"label":"leave a clean state","value":5,"valueLabel":"5","tint":"ink"}]}'></div>
+        </figure>
+        <p>Candidates do not touch the fleet directly. They land as a written weekly proposal, and acceptance is a separate, deterministic step: habits that pass fold into a versioned behavioural layer that every agent loads before substantive work, while the agents' core instructions stay frozen. Every verdict, accept, reject, or escalate, becomes an append-only row on a ledger. The fold is the moment learning becomes behaviour, and everything else in this note hangs on one question: does that moment need me?</p>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the audit</span></div>
+        <h2>Producers alive, actuation zero. <em>The gap a demo never shows.</em></h2>
+        <p class="lede">A self-improvement loop has five stages: observe real work, propose a change, accept or reject it, distribute it to the agents, and verify it changed behaviour. Most of what is sold as self-improvement demonstrates the first two. Proposals are easy, and they demo beautifully. The claim worth diligence money lives in the last three. So I turned the fleet's own discipline on itself and audited it against one standard: show me a behaviour change that landed with no human in the chain.</p>
+        <p>The producer half looked exactly like the brochures. Across the fleet's roughly fifteen repositories, a review daemon had produced 4,292 code reviews in the previous two weeks; the weekly mining job had fired unattended three cycles running; 118 documentation merges had landed by machine. Every producer green, every schedule kept. Then the actuation side. The versioned behavioural layer had changed exactly once in its life, and that one change shipped inside the pull request that delivered the fold machinery itself. The single unattended attempt to fold new learning had quietly done nothing: the producer wrote its findings in one format, the consumer expected another, and every candidate escalated into a review queue nobody was reading. Escalations sat unread for twelve days. Origination told the same story from the other side: 204 of 204 issues opened across the fleet in 21 days came from me, and the merged changes traced to my sessions at ninety-seven percent or above.</p>
+        <p>The audit's most instructive finding was about my own behaviour. When that fold had failed, I had fixed the proposal file by hand and moved on. The artifact looked repaired; the loop stayed broken; the next scheduled run was guaranteed to fail the same way. Patching the artifact instead of the loop is how a system stays dependent on you while appearing to heal.</p>
+        <p>The stake generalizes past my desk. If an improvement loop secretly ends in a human's reading queue, its throughput is that human's attention, its latency is their calendar, and the day they stop reading, the learning system stops learning and nobody notices.</p>
+        <div class="finding calm">
+          <div class="fk">The audit's one sentence</div>
+          <h3>Every producer ran unattended. The fleet's behaviour changed only through me.</h3>
+          <p>Producing proposals is not learning. A system learns at the moment of acceptance, and acceptance was a person, every time, including the times it looked like it was not.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>the human gate fails</span></div>
+        <h2>The tempting design keeps a person approving each change. <em>It fails three ways, and I lived all three.</em></h2>
+        <p>The obvious safe design puts a human in the acceptance path: the loop proposes, the person reviews, nothing lands unapproved. It fails on volume, on visibility, and on endurance.</p>
+        <p>Volume is the polite failure: thousands of sessions a week distill into a steady stream of candidates, and reviewing them is a job nobody was hired for. Visibility is the structural one: a single soft behavioural rule produces an effect far too small to see in any one session, so the reviewer is asked to judge something that is only visible as an aggregate across many sessions, which is a machine's kind of seeing, not a person's. With nothing real to judge at that grain, approvals become rubber stamps or the queue becomes a graveyard. Mine became a graveyard: twelve days of unread escalations, and one cycle that opened ten proposals across the fleet with no consumer for them but a person.</p>
+        <p>Endurance is the failure nobody writes down. The reviewer stops. Not dramatically; they just have a week where the queue loses, and the system, whose only acceptance path was that queue, silently stops learning. Any design whose steady state depends on a human doing a machine's chore will decay to exactly that.</p>
+        <div class="pull">Moving the human from author to garbage collector is not removing the human.</div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>the gate that replaced me</span></div>
+        <h2>Acceptance the loop cannot fake. <em>Rejection as the healthy default.</em></h2>
+        <p>What replaced the per-change human is a deterministic fold: one writer, a versioned behaviour file, a recorded base version, and an append-only ledger row for every verdict. The verdicts themselves anchor outside the agent's own opinion. A candidate habit must survive held-out replay: does it actually generalize to sessions it was not mined from? And the habits that do land are the ones whose absence shows up in outcomes that are true whether or not any agent believes them, merges that survive without revert, gates that pass, work that does not boomerang.</p>
+        <p>The gate earns its keep by what it kills. One mined habit fit twelve occurrences in-sample and looked obviously right; on held-out sessions it went zero for zero, no generalization at all, and was rejected, reversibly, with the reasons recorded. The first run proposed six candidate habits; three hold in production today, each having survived held-out replay. Surviving replay proves a habit generalizes, not that it pays; that harder question waits at the end of this note. Nor does per-habit replay certify the sum: whether habits stay safe as they accumulate is an interaction question, and a separate gate this fleet has not built yet. A loop that accepts most of its candidates is accumulating, not learning.</p>
+        <p>Two more pieces keep the gate honest. First, the proposing agent never supplies the acceptance verdict: a loop scoring its own improvements is a contaminated anchor, and the collapse literature documents what happens to systems trained or selected on their own outputs. Second, what the gate cannot decide, it escalates with finality. When the miner surfaces a genuinely new category of behaviour, the question goes to a panel of four models from different model families, whose separate votes and verdict land on the ledger the same day. The human's job moved up a level: I write the standing policy, the objective, the taxonomy, the override rules that always beat a learned habit, the review cadence, versioned like any other production configuration, and then that policy runs without me in the per-change path.</p>
+        <figure class="fig">
+          <figcaption><b>Listing 1</b> · one row of the fold ledger, redacted of internal references and the candidate category's name. The loop's first fully unattended escalation, adjudicated by the panel the same day. Rejection with recorded reasons is the system working, not failing.</figcaption>
+          <div class="atom">{"week": "2026-W28", "kind": "adjudication",
+ "title": "(new candidate behaviour category, name redacted)",
+ "action": "REJECT", "votes": "4-0",
+ "reasons": ["single-occurrence evidence, wrong register, no validation mass",
+             "a defer would clutter the quarterly review; the miner re-surfaces genuine recurrence"],
+ "base_freshness": "fresh"}</div>
+        </figure>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>the first cycle, honestly</span></div>
+        <h2>It ran green. <em>It was blind.</em></h2>
+        <p>The first time the repaired chain fired with nobody watching, it ran end to end: mine, propose, fold, escalate, verify. Exit code zero. The watcher checked it thirty-five minutes later and reported healthy. That morning is when the system taught me the difference between green and true.</p>
+        <p>Under scrutiny, the green run was carrying three silent failures. It had judged the week against a stale base: the live behaviour file had moved a version ahead, the runner never pulled it, so the cycle re-derived and re-escalated questions that were already settled. About seventy network resets in the labeling stage had been swallowed into the phrase "no signal this week", which made a broken endpoint indistinguishable from a genuinely quiet week. And the exit code was zero over all of it, so the watcher, which checked exit codes, blessed the whole thing. The same morning, a parallel rules stream opened ten proposals across the fleet, and all ten were noise: the two highest-frequency "rules" had faithfully mined bot apologies, 29 comments' worth, and tool warning banners, 47 comments' worth. The loop had closed mechanically and delivered nothing.</p>
+        <p>The repairs are more interesting than the failure, and each one is general. The watcher now asserts internal invariants rather than exit codes: base freshness against the live file, network-failure rate in the labeling stage, the age of the last fold, and an explicit degraded-mode marker whenever an outage would otherwise impersonate silence. A machine adjudicator followed, and now sits where I used to: it adopts on coded criteria, defers weak signal into an incubator where recurrence can strengthen it instead of deleting it, escalates ambiguity to the panel, never auto-closes anything tagged as a security concern, and force-escalates a random five percent of its own closures for audit, so it cannot become a silent tyrant. A cycle that opens ten proposals and closes all ten now reports zero, loudly, instead of celebrating throughput.</p>
+        <p>The regenerated cycle then closed clean: a healthy run recorded on the ledger, one real escalation filed, adjudicated four to nothing by the panel the same day, verdict and reasons on the ledger, and no per-change human judgment anywhere in it. It was the loop's third unattended attempt. The first had quietly done nothing, defeated by a format mismatch; the second exited zero while carrying three silent failures. The third closed, with the evidence on the ledger.</p>
+        <div class="pull">Green exit codes are not health. A loop is healthy when its failures are loud and its rejections are recorded.</div>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>the cycles since</span></div>
+        <h2>Two more cycles, <em>and the honest ledger of them.</em></h2>
+        <p>The next cycle ran healthy and unattended, with two new taxonomy escalations recorded for review. The cycle after that, the ledger reads "quiet week: zero signal with zero stage-one errors." Before the repairs I would not have believed that line, because a dead endpoint produced the same sentence. Now it is the most trustworthy row on the ledger, precisely because an outage would have written a different one. Being able to say "nothing to learn this week" and be believed turns out to be one of the harder engineering artifacts in the whole system.</p>
+        <p>The same cycle supplied the counterexample. A scheduled audit found a parallel producer dead at load: a one-line metadata mistake that the CI runner rejects outright, so every run of that leg had been failing before its first step. Its watcher did not exist yet. The fix came with a regression guard so the mistake class dies in continuous integration rather than in a scheduled job nobody reads. The lesson is not that the fleet is fragile; it is that every leg of a learning loop needs its watcher, and the legs you have not instrumented are exactly the ones that are currently lying to you.</p>
+        <p>Two disciplines from those cycles are worth stealing outright. First, measure a stage before wiring it in. A distillation stage, meant to turn raw mined clusters into imperative rules, was run against forty real clusters before being granted a place in the weekly path: it killed four as noise and upgraded thirty-six into specific, actionable rules, against a brutal baseline, since lifetime adoptions of the raw undistilled rules stood at zero of twenty-three. Running it live also surfaced that it had never once executed in production and carried two defects only a real call reveals. The stage earned its wiring with numbers, not with plausibility. Second, verification can pollute the loop it verifies: proving the escalation path worked once minted three phantom escalations from a test fixture into the live tracker. Local runs are now side-effect-free by default, and anything that mutates shared state requires an explicit live flag.</p>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">viii</span><span>science and practice, separated</span></div>
+        <h2>What transfers, <em>and what this cannot claim yet.</em></h2>
+        <div class="finding calm">
+          <div class="fk">The science, and my curiosity</div>
+          <h3>Correction signal is not ground truth, and self-graded loops carry a documented collapse risk.</h3>
+          <p>Three open problems live under this note. Operator corrections carry mood, survivorship, and deserts: the weeks you give up correcting are silent exactly where the signal matters most, and self-reports about AI productivity are demonstrably unreliable, which is why acceptance here anchors to held-out replay and outcome records instead of anyone's impression. Held-out replay is itself only a partial anchor, still drawn from the system's own data; the fully external anchors are the outcome records. Recursive self-grading is worse than unreliable: the collapse results say a system trained or selected on its own outputs degrades in a way that is hard to reverse, which is the standing argument for external anchors. And the statistics are small: a thirteen-session week gives a held-out gate very little power, so the honest promise of a safe loop is slow-but-closed, never fast.</p>
+        </div>
+        <div class="finding hold">
+          <div class="fk">The practice, for enterprise agent programs</div>
+          <h3>Six things to copy, none of which require believing my magnitudes.</h3>
+          <p>One: mine corrections, not compliments; what your operators keep re-teaching is the curriculum, and it is already in your transcripts. Two: put a deterministic prefilter in front of every model call; 356 sessions became 124 for free, and the week's whole learning pass cost about 125 cheap calls plus one frontier call. Three: people legislate, machines judge instances; write the objective, the taxonomy, the override rules, and the review date as versioned policy, and keep every person out of the per-change path. Four: anchor acceptance outside the loop, held-out replay plus outcomes the agent cannot fake, and make rejection the recorded, healthy default. Five: a loop is delivered only when its first unattended cycle completes, so budget for that cycle to fail and instrument it to fail loudly; mine did nothing (a format mismatch between producer and consumer), then ran green but blind (a stale base, swallowed network errors, noise admitted as signal), then closed on the third attempt. Six: watchers must assert invariants, not exit codes, and every producer needs an adjudicating consumer with an incubator, a security escape hatch, and a random audit of its own closures.</p>
+        </div>
+        <p><b>Established by these three cycles.</b> The audit method finds the actuation gap that the word autonomous hides, and the gap was real in a fleet whose producers were all genuinely scheduled and green. A deterministic fold with held-out replay and a recorded ledger accepted three habits, rejected the rest with reasons, and then ran three consecutive unattended weekly cycles, including one honest quiet week and one same-day panel adjudication, with no human judgment in the per-change path. And the end state is worth naming plainly, because it is the value: my attention is no longer the loop's throughput. What reaches me now is one or two adjudicated escalations per cycle and a quarterly review of the rules; raw noise stops at the adjudicator, weak signal is incubated instead of lost, every accepted habit has passed held-out replay, every rejection carries recorded reasons an auditor can walk, and the learning itself costs about 125 small-model calls and one frontier call a week. A fleet that changes its own behaviour under audit, at that price, with that trail, is what a learn-from-usage claim has to show before the word self-improving is earned. Mine could not show it until the third cycle.</p>
+        <p><b>Not established, and this note does not claim it.</b> No productivity effect of the folded habits is claimed; the counterfactual efficacy measurement is designed and queued, and until it reports, the habits are validated as generalizing, not as valuable. It is the loop's next gate, not an afterthought. One fleet, one operator, whose corrections are one person's engineering taste. Three cycles prove the pattern, not the scale. The magnitudes are corpus-specific throughout; the structure is the transferable part.</p>
+        <div class="finding">
+          <div class="fk">If you take one thing</div>
+          <h3>Audit your loop under the word autonomous: count the changes that landed with nobody inside.</h3>
+          <p>If the count is zero, you own a recommendation engine with one subscriber, and its uptime is your attention span. The fix is not a better miner. It is an acceptance gate the loop cannot fake, watchers that check validity instead of exit codes, and people who write the rules rather than approve the changes. That state is reachable with no exotic parts: this fleet needed three cycles to get there, and the week it arrived, the loop said "nothing to learn this week" and could be believed.</p>
+        </div>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> All numbers are from the author's own fleet records, measured across June and July 2026; the fleet's internal system names are withheld by design, and the raw transcript corpus stays private. <b>N = 1 fleet, one operator, three unattended cycles: treat the magnitudes as corpus-specific and the structure as the claim.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>I. Shumailov, Z. Shumaylov, Y. Zhao, N. Papernot, R. Anderson, and Y. Gal, <a href="https://www.nature.com/articles/s41586-024-07566-y">"AI models collapse when trained on recursively generated data"</a>, Nature 631, 755-759 (2024). The collapse result behind this note's refusal to let the loop grade itself.</li>
+          <li><a href="https://arxiv.org/abs/2601.22436">"LLM Agents Are Not Always Faithful Self-Evolvers"</a>, arXiv:2601.22436, 2026. Agent self-evolution drifting from its stated objective; the standing argument for external, deterministic acceptance anchors.</li>
+          <li>J. Becker, N. Rush, E. Barnes, and D. Rein, <a href="https://arxiv.org/abs/2507.09089">"Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity"</a>, METR, arXiv:2507.09089, 2025. Experienced developers were 19 percent slower with AI assistance while estimating they were faster; the reason no self-report, including the operator's, anchors acceptance here.</li>
+          <li>S. Hu, C. Lu, and J. Clune, <a href="https://arxiv.org/abs/2408.08435">"Automated Design of Agentic Systems"</a>, arXiv:2408.08435, 2024; and A. Agrawal et al., <a href="https://arxiv.org/abs/2507.19457">"GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning"</a>, arXiv:2507.19457, 2025. The optimization half of self-improving systems; their acceptance anchors are benchmark scores, and this note is about what replaces the benchmark under governance.</li>
+          <li>The prior notes in this thread: <a href="replication-gate.html">"'It's done.' The most expensive tokens an agent produces."</a> (ai-09), the per-task completion gate whose outcome records this loop leans on; and <a href="pr-memory.html">"The meeting forgets. The pull request remembers."</a> (ai-08), the substrate that preserves corrections as reviewable artifacts in the first place.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-11</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="../assets/toc.js"></script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>

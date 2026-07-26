@@ -69,7 +69,7 @@ For each question_id:
   else: final_winner = "tie"
 ```
 
-The `pair_winner` per-judge result is itself useful for diagnostic — judges that disagree often signal a question that exercises judge-family bias. The final `tie` rate is the position-swap inflation; it discards information but rules out the position-bias artefact.
+The `pair_winner` per-judge result is itself useful for diagnostic — judges that disagree often signal a question that exercises judge-family bias. The final `tie` rate is the position-swap inflation; it discards information but rules out the position-bias artifact.
 
 ## Aggregation reference
 

@@ -1,7 +1,0 @@
-{
-  "pass": true,
-  "target_id": "fig_ex1_2d",
-  "tolerance_trajectory_rmse": 0.05,
-  "trajectory_rmse_cubic2d": 0.04789287292314689,
-  "trajectory_rmse_linear2d": 0.0022622311201042802
-}

@@ -49,7 +49,7 @@ The same question is shown to each judge **twice** — once with substrate A's r
 
 Two judges (different model families) score independently. A pair wins on the **intersection**: both judges must agree in both orderings.
 
-This is more conservative than single-judge / single-ordering setups. The over-counting of ties is a feature — it forces the headline result to survive judge order, which rules out the position-bias artefact that has surfaced in published LLM-judge benchmark critiques (see [arXiv:2506.06331](https://arxiv.org/abs/2506.06331) for the relevant prior work).
+This is more conservative than single-judge / single-ordering setups. The over-counting of ties is a feature — it forces the headline result to survive judge order, which rules out the position-bias artifact that has surfaced in published LLM-judge benchmark critiques (see [arXiv:2506.06331](https://arxiv.org/abs/2506.06331) for the relevant prior work).
 
 ## 4. Scoring rubric (5 labels)
 

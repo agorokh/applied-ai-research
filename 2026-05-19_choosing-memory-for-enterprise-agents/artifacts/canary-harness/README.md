@@ -1,6 +1,6 @@
-# Canary harness — the durable artefact
+# Canary harness — the durable artifact
 
-The [memory-substrate report](../../) makes a load-bearing promise in §11 and §12: *"the canary harness is the durable artefact"* and *"publishes the canary harness so the next account team can re-instantiate it on their corpus in a day."*
+The [memory-substrate report](../../) makes a load-bearing promise in §11 and §12: *"the canary harness is the durable artifact"* and *"publishes the canary harness so the next account team can re-instantiate it on their corpus in a day."*
 
 This directory honours that promise. Not as runnable code (the actual harness is wired to a specific deployment and validators), but as the **harness shape** — the protocol, the fixture format, the scoring rubric, and an example fixture in a neutral domain — which is the form that actually transfers.
 
@@ -81,7 +81,7 @@ To put this on your own stack in a day or less:
 - [ ] Pick two LLM judges from different model families. Wire them through whatever gateway you use in production (this matters — judge behaviour across gateways at temperature 0 is plausibly invariant but not separately measured by this report).
 - [ ] Run the protocol above. Emit JSONL per [`schema.md`](schema.md).
 - [ ] Apply the threshold. Publish both aggregates, the per-family table, and the scope limits.
-- [ ] If the result clears the threshold, the durable artefact is the harness + the bar + the section arc of the deployment-decision memo — not the magnitudes.
+- [ ] If the result clears the threshold, the durable artifact is the harness + the bar + the section arc of the deployment-decision memo — not the magnitudes.
 
 ## What this harness does NOT do
 

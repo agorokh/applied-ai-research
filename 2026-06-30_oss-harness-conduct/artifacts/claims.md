@@ -1,7 +1,7 @@
 # Claims ledger
 
 Every load-bearing claim in ai-07, with its evidence and status. A claim that
-cannot be shown from an artefact is marked as an observation, so a reader can tell
+cannot be shown from an artifact is marked as an observation, so a reader can tell
 a measured fact from a single-run impression.
 
 | # | Claim | Evidence | Status |

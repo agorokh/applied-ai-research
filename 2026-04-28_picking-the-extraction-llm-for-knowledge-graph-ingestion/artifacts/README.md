@@ -1,6 +1,6 @@
-# Artefacts
+# Artifacts
 
-Companion material to [`../index.html`](../index.html). Each artefact stands on its own; the report cites them inline.
+Companion material to [`../index.html`](../index.html). Each artifact stands on its own; the report cites them inline.
 
 | File | Purpose |
 |---|---|
@@ -18,7 +18,7 @@ The eleven model rows were measured on LightRAG specifically, as the canonical o
 
 ## Report shell layout (static HTML)
 
-Each report is a standalone `index.html` under its dated folder. Hero metadata (read time, KPI tiles, artefact footer links) intentionally duplicates patterns from the site landing page because these pages ship as static files without a build step. When adding a fourth report, copy the shell from the most recent report and update: `<title>`, hero KPIs, section count, artefact paths, and the landing-page card in [`../../index.html`](../../index.html). A shared template would reduce drift but is out of scope for this PR; the checklist above is the sync contract.
+Each report is a standalone `index.html` under its dated folder. Hero metadata (read time, KPI tiles, artifact footer links) intentionally duplicates patterns from the site landing page because these pages ship as static files without a build step. When adding a fourth report, copy the shell from the most recent report and update: `<title>`, hero KPIs, section count, artifact paths, and the landing-page card in [`../../index.html`](../../index.html). A shared template would reduce drift but is out of scope for this PR; the checklist above is the sync contract.
 
 ## How to reproduce
 

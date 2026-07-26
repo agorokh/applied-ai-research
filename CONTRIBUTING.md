@@ -14,7 +14,7 @@ For:
 
 ### 2. Open a pull request
 
-For corrections, broken-link fixes, methodology clarifications, or new sub-artefacts under an existing report's `artifacts/` directory. Larger contributions (a new report, a structural design change) should start as an issue so we can agree on the scope before you spend time.
+For corrections, broken-link fixes, methodology clarifications, or new sub-artifacts under an existing report's `artifacts/` directory. Larger contributions (a new report, a structural design change) should start as an issue so we can agree on the scope before you spend time.
 
 ## How to write a report
 
@@ -64,8 +64,8 @@ The note-creation discipline (titling, openings, gates) lives in the `applied-ai
 
 By contributing, you agree that:
 
-- Content (reports, MD artefacts, design files) is contributed under [CC BY 4.0](LICENSE)
-- Code samples (scripts, future runnable artefacts) are contributed under [MIT](LICENSE-CODE)
+- Content (reports, MD artifacts, design files) is contributed under [CC BY 4.0](LICENSE)
+- Code samples (scripts, future runnable artifacts) are contributed under [MIT](LICENSE-CODE)
 - You have the right to make the contribution under these terms (i.e., not encumbered by another employer's IP claim)
 
 If your employer requires a CLA or has open-source contribution restrictions, please open an issue first so we can discuss.

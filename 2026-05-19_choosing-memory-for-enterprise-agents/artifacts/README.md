@@ -1,6 +1,6 @@
-# Artefacts — Choosing memory for enterprise agents
+# Artifacts — Choosing memory for enterprise agents
 
-Supporting MD artefacts for the [memory-substrate report](../). Each file is linked inline from the report at the point it appears.
+Supporting MD artifacts for the [memory-substrate report](../). Each file is linked inline from the report at the point it appears.
 
 ## Index
 
@@ -11,7 +11,7 @@ Supporting MD artefacts for the [memory-substrate report](../). Each file is lin
 | [`invalidation.md`](invalidation.md) | §11 (scope), §12 (closing) | "What would falsify this finding" — per-headline Popperian commitments. |
 | [`adoption-bar.md`](adoption-bar.md) | §03, §08 (Tencent scorecard) | The five-criterion bar in standalone form, plus the Tencent scorecard re-rendered as a reusable rubric. |
 | [`task-families.md`](task-families.md) | §04 (test design), §05 (headline result) | The 8 task-family classification and the production-weight derivation. |
-| [`canary-harness/README.md`](canary-harness/README.md) | §11 (closing pointer), §12 (durable artefact claim) | The canary harness shape: paired-question protocol, fixture format, scoring rubric. **Honours the §11 promise that the harness is the durable artefact published with the report.** |
+| [`canary-harness/README.md`](canary-harness/README.md) | §11 (closing pointer), §12 (durable artifact claim) | The canary harness shape: paired-question protocol, fixture format, scoring rubric. **Honours the §11 promise that the harness is the durable artifact published with the report.** |
 | [`canary-harness/schema.md`](canary-harness/schema.md) | same | JSONL input/output schema for the paired-question fixture. |
 | [`canary-harness/example-fixture.jsonl`](canary-harness/example-fixture.jsonl) | same | 2–3 neutral-domain example paired questions to make the schema concrete. |
 
