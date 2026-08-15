@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>An agent learns to remember in the harness, not the weights · the memory bet, measured at the moment of use · Applied Intelligence</title>
+<meta name="description" content="Every agent program makes a memory bet; almost none measures it where it matters, the agent's actual work. I measured mine across 41 real sessions with a deterministic grader: the same institutional convention went 8 of 8 delivered as versioned harness context, and 1 of 8 delivered through the live retrieval layer (p = 0.0014), which added zero over a disciplined harness with retrieval forced and succeeding. The channel is the finding. What the winning harness concretely consists of, and the two-week decision rule for your own stack.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/memory-in-the-harness.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="An agent learns to remember in the harness, not the weights.">
+<meta property="og:description" content="The same institutional convention: 8/8 delivered as versioned harness context, 1/8 through the live retrieval layer, which added zero over a disciplined harness even with retrieval succeeding. The channel is the finding. The harness specified, and the decision rule for your own stack.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/memory-in-the-harness.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-12-social.png">
+<meta property="og:image:alt" content="A typographic plate: the words 'An agent learns to remember in the harness, not the weights' set as a large display line, above a ledger of the measurement: one explicit sentence in the prompt, 8/8 idiomatic; the live retrieval layer with consultation forced, 1/8, p = 0.0014; memory's marginal value over a disciplined harness, zero on every metric.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-12-social.png">
+<meta name="twitter:title" content="An agent learns to remember in the harness, not the weights.">
+<meta name="twitter:description" content="The same convention: 8/8 as versioned harness context, 1/8 through the retrieval layer, which added zero over a disciplined harness. The channel is the finding. The harness specified, plus the decision rule.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+</style>
+</head>
+<body data-room="9" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 12</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 08 · 14</span>
+      <span class="dot">·</span><span>ai-12</span>
+      <span class="dot">·</span><span>12 min read</span>
+      <span class="dot">·</span><span>one fleet's memory layer, measured</span>
+    </div>
+    <h1>An agent learns to remember in the harness, not the weights.<em>every agent program is making the memory bet. mine, measured at the only level that matters: what the agent actually does.</em></h1>
+    <p class="lede">If you run agents in production, you have already made a memory bet: a retrieval layer over the organization's knowledge, a store of decisions the fleet writes back to, or a vendor's learns-from-usage feature, and the budget line that comes with each. What almost no program has is evidence that the bet pays at the only level that matters: whether the agent's work comes out different. Retrieval metrics certify the store; they say nothing about the moment of use, where a retrieved convention competes with the model's own prior and one of them wins. I ran that measurement on my own fleet: forty-one real coding sessions, four pre-registered arms, a deterministic grader, one institutional convention the agents had to honor. Delivered as one versioned sentence in the harness (the standing context and tooling around every session), the convention held eight times out of eight. Delivered through the live retrieval layer, it held once in eight, and in the controlled follow-up the layer added zero over a disciplined harness on every metric, with retrieval forced and verifiably succeeding. The finding is not that memory is worthless. It is that the delivery channel decides everything, and the channel that wins is the one almost nobody engineers deliberately. What follows: the measurement, the mechanism, the harness that won, specified, and the decision rule to run on your own stack.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">8/8</div><span class="l">runs in which the convention held when delivered as one versioned sentence of harness context. The benchmark any memory layer has to beat is a line of honest context.</span></div>
+      <div class="ms"><div class="v">1/8</div><span class="l">runs in which the same convention held when delivered through the live retrieval layer, Fisher exact p = 0.0014 against the sentence, and below the plain harness baseline.</span></div>
+      <div class="ms"><div class="v">0</div><span class="l">measured marginal value of the retrieval layer over an equivalent-discipline harness, on every metric, in the controlled isolation run, with retrieval forced and succeeding, about nine queries per session.</span></div>
+      <div class="ms"><div class="v">80-89%</div><span class="l">of the frontier trainable-memory result's total lift comes from harness structure rather than weight training, computed from the paper's own ablation. The field and my measurement point at the same half.</span></div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The bet</a>
+        <a href="#s02"><span class="no">ii</span>The experiment</a>
+        <a href="#s03"><span class="no">iii</span>The result</a>
+        <a href="#s04"><span class="no">iv</span>The mechanism</a>
+        <a href="#s05"><span class="no">v</span>The harness, specified</a>
+        <a href="#s06"><span class="no">vi</span>The loop, briefly</a>
+        <a href="#s07"><span class="no">vii</span>The decision rule</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">14 aug 2026</span></div>
+        <div class="v"><span class="k">corpus</span><span class="d">41 real runs, one fleet</span></div>
+        <div class="v"><span class="k">anchor</span><span class="d">deterministic grader</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-12</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the bet</span></div>
+        <h2>I built the memory layer. <em>Then the measurement came due.</em></h2>
+        <p class="lede">Every serious agent program converges on the same memory shape: a store of decisions, conventions, and the reasons behind them that outlives any session; an ingest pipeline that keeps it current; retrieval that brings the right piece back mid-task. The promise is compounding, explain a rule once and no agent breaks it again. The costs are concrete and continuous, the store, the ingest, retrieval calls on every task. And the risk almost nobody prices is the moment of use: the agent pulls back the wrong thing at the wrong moment, and the work gets worse.</p>
+        <p>I have run that stack for months. Two earlier notes in this archive built it: one chose the memory substrate against an adoption bar, the next argued for owning the memory-and-policy layer above the swappable model. The layer holds the fleet's decisions and conventions, ingests on a cadence, and a deterministic gate forces agents to consult it before substantive edits. What none of that settles is the only question that matters in production: does the layer change what the agent does? Not whether ingest runs, not whether retrieval returns the right passage; whether the work comes out different. Retrieval benchmarks measure the store; nothing in them measures the moment of use, where the retrieved convention meets the model's own prior and one of them wins. So the measurement came due, pre-registered, with a grader that cannot be argued with. The result came first, above, because everything else in this note hangs off it.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the experiment</span></div>
+        <h2>One convention, four delivery channels, <em>a grader that cannot be argued with.</em></h2>
+        <p class="lede">The task is real repository work: extend a cross-boundary sharing rule by allowing a new namespace. The idiomatic fix is one line in a policy configuration file. The tempting wrong fix also hardcodes the namespace into code defaults, which works today and quietly breaks the policy contract tomorrow. The convention that separates them, configuration is policy, code carries primitives, is exactly the kind of institutional knowledge a memory layer exists to deliver. The experiment holds the convention constant and varies only the channel that delivers it.</p>
+        <p>Four arms, eight seeded runs each, the same frontier coding model throughout, thirty-two real sessions, plus a nine-run controlled follow-up. A wild arm, with the convention stripped from every channel. A harness-only arm, with full repository context but no memory product. An injected arm, which received the convention as one explicit, versioned sentence in the harness context. And an equipped arm, with the live retrieval layer connected and consultation forced: the agent queried memory about nine times per run, and the retrieval verifiably returned the relevant convention. The convention itself was scrubbed from code comments and documentation, so each arm could learn it only through its own channel. The grader is deterministic and separates three verdicts: functionally works; idiomatically right; and the verdict this experiment exists to catch, masked, meaning functionally works while quietly breaking the convention.</p>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the result</span></div>
+        <h2>Same memory, two channels: <em>eight of eight against one of eight.</em></h2>
+        <p class="lede">Through the versioned-sentence channel, the convention held in every run, eight of eight. Through the retrieval channel, it held in one of eight, Fisher exact p = 0.0014 against the sentence, statistically indistinguishable from giving the agent nothing on that dimension, and directionally below the plain harness baseline. In the controlled follow-up that isolated the layer cleanly, three arms by three seeds, the retrieval layer's marginal value over an equivalent-discipline harness was zero on every metric.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · who produced the idiomatic fix. Share of runs producing the convention-respecting solution, by arm; eight runs per arm, one task, one model.</figcaption>
+          <div data-atelier-figure='{"type":"bars","unit":"% of runs","max":100,"rows":[{"label":"versioned sentence","value":100,"valueLabel":"100%","tint":"work"},{"label":"harness only","value":50,"valueLabel":"50%","tint":"ink"},{"label":"retrieval layer","value":12,"valueLabel":"12%","tint":"neg"},{"label":"stripped baseline","value":0,"valueLabel":"0%","tint":"ink"}]}'></div>
+        </figure>
+        <p>Read the ordering, not just the winner. Full repository context alone produced the idiomatic fix half the time, so the harness was carrying real weight before any memory product entered. The versioned sentence turned half into certainty. And the retrieval layer, delivering the same convention through search instead of standing context, not only failed to add value on this task; it trended below the harness baseline. The pre-registered decision rule was written before the runs: if the equipped arm lands where the harness-only arm lands, the win is discipline and context, not memory recall. It fired. Note what this is not: it is not memory losing to no-memory. Both winning arms carried the institution's knowledge. The measurement separated delivery channels for the same knowledge, and the explicit, versioned channel crushed the search-and-inject channel.</p>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>the mechanism</span></div>
+        <h2>Consulted, returned, ignored. <em>And the field has located the same broken half.</em></h2>
+        <p class="lede">The transcripts show the failure precisely. Retrieval worked: the convention came back, run after run. But retrieval also dumped the repository's existing hardcoded defaults into the context window, and the model reasoned from what it saw: add the namespace to the configuration and to the code defaults, belt and suspenders. Functionally green, convention broken, masked. That is the context-distraction failure mode of retrieval-augmented systems, measured end to end on a production-shaped task rather than a QA benchmark. The second mechanism is quieter: my agent consulted memory nine times per run only because a deterministic gate forced it to; in earlier unforced runs it never queried the layer spontaneously at all. Availability is not use, and retrieval is not adherence, which matches what the faithfulness literature now reports at benchmark scale: agents disregard or misread the condensed experience they wrote for themselves.</p>
+        <div class="pull">Availability is not use. Retrieval is not adherence.</div>
+        <p>The frontier arrived at the same diagnosis from the other direction, weeks after my runs. AutoMem treats memory management, what to write, what to condense, what to fetch, when to trust it against a prior, as a trainable cognitive skill, and on three long-horizon game environments the full loop multiplies task performance by two to four times, bringing a 32-billion-parameter open model to the level of frontier systems on those benchmarks. The detail that matters here, computed from the paper's own ablation table (Table 1): eighty to eighty-nine percent of the total lift comes from the structure half, scaffold code, prompts, and file schemas around the model, which involves no weight training at all. The reading for a production team is not that anyone should train weights. It is that the broken half of agent memory is the same half my transcripts caught failing: not storage, not retrieval, but the management and use of what comes back. Those magnitudes live on games and personalization benchmarks and are subsidized by frontier models in the outer loop, so treat them as direction, not promise.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 2</b> · the structure half carries the frontier lift. Share of the total performance gain delivered by memory structure alone, before any weight training, computed from the AutoMem Table 1 ablation across its three environments.</figcaption>
+          <div data-atelier-figure='{"type":"bars","unit":"% of total lift","max":100,"rows":[{"label":"MiniHack","value":89,"valueLabel":"89%","tint":"work"},{"label":"Crafter","value":84,"valueLabel":"84%","tint":"ink"},{"label":"NetHack","value":80,"valueLabel":"80%","tint":"ink"}]}'></div>
+        </figure>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>the harness, specified</span></div>
+        <h2>The channel that won, <em>specified, because it is the whole point.</em></h2>
+        <p class="lede">Call the finding what it is. What beat my retrieval layer was not the absence of memory; it was memory delivered through a different channel, and that channel deserves the specification the retrieval stack usually gets. In my fleet the disciplined harness is four concrete things. A versioned instruction layer: the conventions every agent must honor, written as plain, reviewed text that agents load before substantive work, changed through the same review process as code. Scoped context: the handful of documents that govern a task's area, injected at session start, chosen by ownership rather than by similarity search. Deterministic gates: pre-action checks that refuse an edit until the agent has consulted what governs it, because agents do not consult memory spontaneously, mine never did. And independent completion checks that grade the workspace, not the agent's claim about it.</p>
+        <p>The injected arm's winning sentence is that first element at unit scale: one convention, versioned, explicit, present at the moment of work. It went eight for eight because it never had to win a fight inside the context window; it was the context. The retrieval channel lost that same context-window fight nine consultations at a time. That is the honest content of this note's title. The agent remembers in the harness when the institution's knowledge is engineered into the standing context that surrounds every task, and the store behind it becomes what it should have been from the start: the reviewed source the harness compiles from, not a search index the agent is told to trust mid-flight. The layer this publication chose in earlier notes keeps that role. What changes is where the delivery budget goes first.</p>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>the loop, briefly</span></div>
+        <h2>Memory use can be optimized by a loop. <em>This fleet has not closed that loop, and says so.</em></h2>
+        <p>If memory use is the broken half, it can be improved the way the frontier improves it: propose a change to what gets written, condensed, or injected; measure whether graded work outcomes actually improve; keep or retire. Two designs fail before they start. A person reviewing each memory change fails on volume, on the invisibility of single-change effects, and on endurance; the previous note reported that failure operating on this fleet's neighbouring behavioural loop, where acceptance had quietly become one person's attention. And a loop that grades its own changes fails worse; the model-collapse results say how that ends. What worked for the behavioural loop, and is the design here, is selection anchored to outcomes the loop cannot fake, graded verdicts, tests, incidents, real cost, several at once so gaming one does not survive the others, with one standing tripwire: the day the loop's cheap proxy stops tracking the expensive ground truth, it has started gaming itself, and a person amends the rules rather than judging the change. The published instance of gated acceptance is worth one line: a skill library admitting candidates only on net validation gain took an open model from 40.6 to 88.8 percent on a medical-agent benchmark, and its ablation found proposals without the gate no better than no skills at all.</p>
+        <p>Honesty about status: this fleet has closed exactly one loop of that shape, the behavioural one, three unattended weekly cycles, reported with its ledger in the previous note. The memory loop is designed, not closed; memory effects are finer-grained than habits, so the statistics need more sessions and the honest cadence is slower. Its first gate already exists, though, and it is this note's measurement run continuously: a memory change that cannot beat the harness-only baseline on graded outcomes does not get to stay.</p>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>the decision rule</span></div>
+        <h2>Run this before the next memory dollar. <em>Two weeks, one team, pre-registered.</em></h2>
+        <p class="lede">Everything above compresses into one staffable exercise, sized for one platform team and about two weeks: pick one convention your memory layer is supposed to carry, and make the channels compete for it.</p>
+        <div class="finding hold">
+          <div class="fk">The decision rule</div>
+          <h3>Hold the knowledge constant. Vary only the channel. Grade the work.</h3>
+          <p>One: choose a real task where honoring the convention separates the idiomatic fix from a tempting wrong one, and write a deterministic grader for it, including the masked verdict, works-but-breaks-the-rule. Two: run four arms with the same model, stripped baseline, harness only, the convention as one versioned sentence in standing context, and your live memory layer with consultation forced. Three: write the reading rule before the runs. If the memory arm lands where the harness-only arm lands, your delivery channel is the problem: move the budget to the versioned-context channel, the instruction layer, scoped injection, gates, and completion checks from section v, and let the store be its reviewed source. If the memory arm beats harness-only on graded outcomes, your layer earns its keep; scale the measurement before scaling the spend. Four: either way, keep the exercise running on a cadence, because it is also the acceptance gate any future memory optimization loop needs.</p>
+        </div>
+        <p><b>What this note claims, and does not.</b> Measured, on one fleet: the same institutional convention held 8/8 through the versioned-context channel and 1/8 through the live retrieval channel, p = 0.0014; in the controlled follow-up the retrieval layer's marginal value over an equivalent-discipline harness was zero on every metric with retrieval forced and succeeding; and the failure is a use failure, consulted but ignored, not a storage failure. Not claimed: that memory layers are worthless, this was one hard task class where the retrieved convention had to override a strong prior, the aligned-prior case is unmeasured, and cross-route replication, the same design on a second model route, is instrumented but not yet run; nor that the frontier magnitudes transfer off their benchmarks; nor that any memory optimization loop is closed here. The numbers are small and the design is honest about it; that is why the rule above says measure before scaling, in both directions.</p>
+        <div class="finding">
+          <div class="fk">If you take one thing</div>
+          <h3>The benchmark your memory layer must beat is one honest sentence in the prompt.</h3>
+          <p>Mine lost to that sentence, eight to one, on a task where memory had to override a strong prior, with retrieval working perfectly. If yours has never been asked the question, you are paying for a layer whose value is assumed, not measured. The fix is not better storage and not weight training: it is engineering the channel that won, versioned instructions, scoped context, deterministic gates, independent completion checks, and letting every memory dollar prove itself against that harness.</p>
+        </div>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> The measurement is from the author's own fleet records, June 2026: a pre-registered four-arm design, forty-one real agent sessions, deterministic grading, with the fleet's internal system names withheld by design. The frontier numbers are computed from the cited papers. <b>One task, one model route: treat the magnitudes as corpus-specific and the structure of the argument as the claim.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>S. Wu, H. Zhu, Y. Zhang, X. Wang, and S. Yeung-Levy, <a href="https://arxiv.org/abs/2607.01224">"AutoMem: Automated Learning of Memory as a Cognitive Skill"</a>, arXiv:2607.01224, 2026. The frontier result read in section iv: memory management as a trainable skill; the Table 1 ablation this note's eighty-to-eighty-nine-percent figure is computed from; a 32B open model at the level of frontier systems on three long-horizon game environments.</li>
+          <li><a href="https://arxiv.org/abs/2510.12635">"Memory as Action: Autonomous Context Curation for Long-Horizon Agentic Tasks"</a>, arXiv:2510.12635, 2025; and <a href="https://arxiv.org/abs/2509.25911">"Mem-α: Learning Memory Construction via Reinforcement Learning"</a>, arXiv:2509.25911, 2025. The sibling trainable-memory results: a 14B model curating its own working memory matches models sixteen times larger; memory construction trained at thirty-thousand-token scale generalizes past four hundred thousand.</li>
+          <li><a href="https://arxiv.org/abs/2601.22436">"Large Language Model Agents Are Not Always Faithful Self-Evolvers"</a>, arXiv:2601.22436, 2026. The benchmark-scale version of this note's measured mechanism: agents disregard or misread the condensed experience they wrote for themselves.</li>
+          <li><a href="https://arxiv.org/abs/2605.29668">"GRASP: Gated Regression-Aware Skill Proposer for Self-Improving LLM Agents"</a>, arXiv:2605.29668, 2026. The published gated-acceptance instance in section vi: proposals without validation were no better than no skills at all; with the gate and a hard regression budget, an open model went from 40.6 to 88.8 percent on MedAgentBench.</li>
+          <li>I. Shumailov, Z. Shumaylov, Y. Zhao, N. Papernot, R. Anderson, and Y. Gal, <a href="https://www.nature.com/articles/s41586-024-07566-y">"AI models collapse when trained on recursively generated data"</a>, Nature 631, 755-759 (2024). The standing argument against a loop that grades itself.</li>
+          <li>C. Packer et al., <a href="https://arxiv.org/abs/2310.08560">"MemGPT: Towards LLMs as Operating Systems"</a>, arXiv:2310.08560, 2023; and T. Sumers, S. Yao, K. Narasimhan, and T. Griffiths, <a href="https://arxiv.org/abs/2309.02427">"Cognitive Architectures for Language Agents"</a>, arXiv:2309.02427, 2023. The memory-architecture lineage the trainable-memory work now optimizes over.</li>
+          <li>The prior notes in this thread: <a href="../2026-05-19_choosing-memory-for-enterprise-agents/">"Choosing the memory substrate for enterprise agents"</a> (ai-04) and <a href="value-layer.html">"A memory-and-policy layer above the model"</a> (ai-05), the two notes whose position this measurement audits; <a href="actuation-gap.html">"Self-improvement is an actuation problem."</a> (ai-11), the behavioural loop that closed, whose acceptance doctrine section vi extends to memory; and <a href="replication-gate.html">"'It's done.' The most expensive tokens an agent produces."</a> (ai-09), the completion gate whose workspace-state verdicts are one of the non-proxy anchors.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-12</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="../assets/toc.js"></script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>
