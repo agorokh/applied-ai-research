@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>Governance is a metabolism, not a manifest · a deliberate stress test of agent governance, and the selection rule that survived it · Applied Intelligence</title>
+<meta name="description" content="Nobody hands you evidence about which agent-governance mechanisms actually change behaviour, so I ran the experiment deliberately on my own fleet: ship the candidate gates, measure each against behaviour, keep what proves itself, delete what does not, publish the ledger either way. I expected most of it to survive; it did not. Three deletions with the measurement behind each, the selection rule that survived, the self-hosted review daemon earning its keep, and the dated audit of my previous claim, including the part that broke while I was writing this.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/gate-metabolism.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Governance is a metabolism, not a manifest.">
+<meta property="og:description" content="A deliberate stress test of agent governance on one production fleet: three deletions with the measurement behind each, the selection rule that decides what survives, the self-hosted review organ that earned its life, and a dated audit of the previous note's public claim: ratified, twice qualified.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/gate-metabolism.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-13-social.png">
+<meta property="og:image:alt" content="A typographic plate: the words 'Governance is a metabolism, not a manifest' set as a large display line, above a ledger of three governance artifacts: advisory hooks, deleted on a measurement; a template auto-sync, deleted after six red weeks; a review daemon, surviving on measured yield.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-13-social.png">
+<meta name="twitter:title" content="Governance is a metabolism, not a manifest.">
+<meta name="twitter:description" content="A deliberate stress test of agent governance: what failed the measurement, the selection rule that survived, and a dated audit of the previous note's claim: ratified, twice qualified.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+</style>
+</head>
+<body data-room="2" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 13</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 08 · 20</span>
+      <span class="dot">·</span><span>ai-13</span>
+      <span class="dot">·</span><span>13 min read</span>
+      <span class="dot">·</span><span>one fleet's governance, under selection</span>
+    </div>
+    <h1>Governance is a metabolism, not a manifest.<em>a deliberate stress test of agent governance: what failed the measurement, the self-hosted reviewer that survived it, and the dated audit of my own last claim.</em></h1>
+    <p class="lede">If you govern agents in production, you are accumulating governance: review gates, policy hooks, rule files, oversight checklists, and a backlog that only ever says add more. What nobody hands you is evidence about which of those mechanisms actually change agent behaviour. So for the past four months I ran the experiment deliberately, on my own fleet: ship the candidate gates, measure each against behaviour, keep what proves itself, delete what does not, and publish the ledger either way. I expected most of it to survive the measurement. It did not: about 1,908 lines of advisory hooks went after a live test showed they changed nothing, a retired template synchronizer's zombie ran CI red for six straight weeks before that lesson landed, a fleet hook was deprecated within seventy-two hours of its promotion. That is the experiment working, not the experiment failing, and what survived it obeys one selection rule. This note is the results: three deletions with the measurement behind each, the rule that now decides what lives, the one organ that earned its keep, a self-hosted code-review daemon with 924 acted-on findings on its ledger, and, because every claim in this series ships with a re-read date, the audit of the claim I published here four weeks ago. Including the part that broke while I was writing this.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">1,908</div><span class="l">lines of advisory governance deleted in one measured pass, after a live test showed the prose layer changed no behaviour that an enforcing gate did not already control.</span></div>
+      <div class="ms"><div class="v">924 of 2,993</div><span class="l">review threads whose findings were acted on: the yield that keeps the one surviving reviewer organ alive. Its honest ledger also carries a thirty-hour unnoticed outage.</span></div>
+      <div class="ms"><div class="v">7, and 4</div><span class="l">invariants bound to a specific enforcer with a planted-violation proof, and four left on an expiring allowlist that is only allowed to shrink. Prose rules are debt with a fuse.</span></div>
+      <div class="ms"><div class="v">0</div><span class="l">escalations adjudicated since the cycle I published as proof. Nine sit queued behind a broken doorbell, and the newest cycle wrote no row at all. The audit at the end is dated.</span></div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The theater problem</a>
+        <a href="#s02"><span class="no">ii</span>Three deletions, measured</a>
+        <a href="#s03"><span class="no">iii</span>The survivor</a>
+        <a href="#s04"><span class="no">iv</span>The selection rule</a>
+        <a href="#s05"><span class="no">v</span>The audit: ratified</a>
+        <a href="#s06"><span class="no">vi</span>The audit: qualified</a>
+        <a href="#s07"><span class="no">vii</span>The oversight bridge</a>
+        <a href="#s08"><span class="no">viii</span>Science and practice</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">20 aug 2026</span></div>
+        <div class="v"><span class="k">scope</span><span class="d">4 repos, one fleet</span></div>
+        <div class="v"><span class="k">form</span><span class="d">stress test + audit</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-13</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the theater problem</span></div>
+        <h2>Every gate you add is a claim. <em>Almost none of them are measured.</em></h2>
+        <p class="lede">A governance artifact is a claim: this rule changes what the agents do. The field is good at making the claim and nearly silent on testing it, which leaves every enterprise program assembling gates on faith. So I used my own fleet as the testbed and put one question to every artifact it carries: would anyone notice if this stopped working? The first three answers set the tone, and the direction of the whole experiment: a generated schema that had sat four months stale with zero consumers; a style rule that lived a month as prose and was violated the whole time; a folder of ten architecture invariants, every one of them words that no machine had ever read.</p>
+        <p>The uncomfortable name for that class is theater, and the reason it accumulates everywhere is structural: adding a gate feels like governance, while measuring one feels like overhead. The inversion I committed to is the experiment this note reports: every governance artifact in the fleet either carries a measurement or carries an expiry date, and the results get published, deletions included, so another program can adopt the survivors without paying for the failures. Under that pressure, governance stops being a manifest of good intentions and starts behaving like a metabolism: things are born, they are measured, and most of them die. Most of mine died. One organ earned its life.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>three deletions, measured</span></div>
+        <h2>What the fleet deleted, <em>and the number behind each deletion.</em></h2>
+        <p><b>The advisory layer, about 1,908 lines.</b> The first candidate class was advisory: end-of-session reminders, drift audits, warnings printed into the agent's context in the hope of shaping behaviour. It is the cheapest governance to ship and the most popular, which is exactly why it deserved the first controlled test. The deletion was decided by that test, not by taste. Four variants of the same task: no rule, the rule as prose in the agent's context file, the rule as a loadable skill, the rule as a hard hook that blocks the action. The prose variant produced the same outcome as no rule at all; it saved some exploration tokens, because it was information, but it changed no behaviour; the failing test in the workspace did the actual enforcing. A survey of nine mature agent frameworks I ran alongside converged on the same design sentence: do not measure rule-following, remove the ability to violate the rule. So the advisory layer went, roughly 1,908 lines and two test suites in one pass, and the one gate that physically blocks stayed. The detail I keep retelling: that surviving gate blocked an edit by the very agent performing the deletion, the same day. If the deletion had been wrong, the block rate on the surviving gate would have told us; it is the metric the deletion left behind.</p>
+        <p><b>The template synchronizer.</b> The fleet's repositories were once kept aligned by an automated template-sync pipeline, the kind of machinery every platform team eventually builds. It was retired by an architecture decision, governance flows by reference to one canonical copy, never by pushing vendored copies downstream, but the honest postmortem material is what happened after: the retired workflow was never deleted, and its zombie ran the fleet's CI red seventeen consecutive weekly runs across six weeks before anyone removed the corpse. Seventeen red runs that nobody treated as signal is the purest measurement of theater I own: an alarm that fires weekly and changes nothing is not an alarm, it is set dressing. The wrong-removal detector here is the conformance check that now runs against the canonical copy; if reference-based governance drifted, that check, which does turn PRs red and does get fixed, would catch it.</p>
+        <p><b>The seventy-two-hour hook.</b> One hook was born to heal skill drift at session start, promoted to fleet-canonical status two days later, and deprecated the same day as its promotion, because a parallel mechanism running at the host level had landed the same week and covered the job with none of the per-session cost. The lifecycle looks absurd written down, born, promoted, buried inside seventy-two hours, and it is the healthiest story in this section: the fleet paid three days for a redundant organ instead of maintaining it forever out of sunk cost. Version-skew checks are the detector that would have exposed a wrong removal; they stayed green.</p>
+        <div class="finding calm">
+          <div class="fk">The pattern under the three</div>
+          <h3>Deletion was never the failure. Unmeasured survival was.</h3>
+          <p>Each artifact died holding a number: a live A/B that showed no behaviour change, seventeen ignored red runs, a same-day redundancy. And each deletion named the metric that would expose it as a mistake. A governance layer that cannot name that metric for its own artifacts is not governing; it is decorating.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the survivor</span></div>
+        <h2>One organ earned its life. <em>Here is what earning looks like.</em></h2>
+        <p>The strongest positive exhibit in the fleet is the code-review organ: a daemon on my own hardware that reviews every pull request through multiple model lenses and posts findings into the normal review surface. It exists because rented review capacity kept evaporating, one vendor reviewer moved to usage pricing, one was sunset outright, one's free tier stopped finding anything, and it has survived every measurement this stress test can throw at it, because it is the most-measured thing the fleet owns. Its yield ledger, counted from the review record: 2,993 review threads produced, 924 of them with findings acted on, six documented catches serious enough that shipping without them would have hurt. Its honesty ledger is part of the exhibit: the daemon once sat silently dead for thirty hours before anyone noticed, and the outage went into the record next to the catches, because an organ that only reports its wins is halfway back to theater.</p>
+        <p>The same measurement discipline caught the organ's most interesting failure: the learning loop downstream of review was quietly laundering findings that reviewers had already dismissed back into standing guidance, its own rejects recycled as rules. The catch came from cross-checking proposals against a ledger of dismissals, 252 rows of them, and the laundering path was closed. And the freshest number in the record is the most sobering: across 1,404 review objects, the rate of rounds that emit findings has stayed flat over 181 consecutive review rounds. Review is catching problems at a constant rate, which means review alone is not teaching the fleet to stop making them. That is the previous note's actuation lesson surfacing in a different organ: finding problems is a producer; only a closed loop changes behaviour.</p>
+        <p>The survivor and the three deletions point at the same law, and the next section writes it down: earn a measured place, or expire. The daemon's own anatomy, the lenses, the ledgers, the scheduling, deserves a note of its own. Here it stands as proof that the selection rule keeps things, not only kills them.</p>
+        <div class="pull">An organ that only reports its wins is halfway back to theater.</div>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>the selection rule</span></div>
+        <h2>Bind to an enforcer, <em>or expire.</em></h2>
+        <p>The response to the corpses was not better discipline; discipline is what had failed. It was a rule change with a mechanism. Every architecture invariant in the fleet now carries two machine-read fields: the specific enforcer that guards it, a named check that already turns pull requests red, generic catch-alls rejected, and a teeth proof, a test that plants a violation and asserts that exact enforcer rejects it. An invariant that cannot name both goes onto an allowlist with two properties that make it debt instead of decoration: every entry has an expiry date, and the list's size cap only ever shrinks. Today the registry stands at seven invariants bound, four on the expiring list.</p>
+        <p>Two refinements keep the rule from becoming its own theater. The proof must exercise the exact enforcer it names, so a test that resolves but tests something else, a false green, turns CI red; that check caught real mismatches. And the rule binds itself: the invariant that says invariants must be bound is enforced by the same gate and carries its own planted-violation proof, so its rot would be as loud as anything it guards. One proposal was rejected on the way, and the rejection is the lesson: a fault-injection simulator to test enforcer liveness, voted down as the disease in miniature, a new unmeasured organ built to watch the others. Liveness is proven by a proof that runs on every CI pass, not by new machinery.</p>
+        <figure class="fig">
+          <figcaption><b>Listing 1</b> · the selection rule as an artifact: the machine-read header of one bound invariant. Prose below this header is commentary; these fields are what the gate reads, and a missing or mismatched field turns CI red.</figcaption>
+          <div class="atom">type: invariant
+status: active
+enforced_by: a named check that already turns PRs red
+teeth_proof: a test that plants a violation and asserts
+             that exact enforcer rejects it
+# unbound alternative: expires_at + a spot on a capped,
+# only-shrinking allowlist. there is no third state.</div>
+        </figure>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>the audit, part one</span></div>
+        <h2>Four weeks ago I published a claim. <em>The ledger since: ratified.</em></h2>
+        <p>The previous note ended on a sentence I knew would age: the improvement loop that mines my corrections into fleet policy closes without me, and had run without me since. A claim like that decays silently unless someone re-reads the ledger on a date and says so in public. Read on 20 August, four scheduled cycles after publication, here is the ledger.</p>
+        <p>The run chain ratifies. Every row since publication was written without a human action in it. One cycle reported a quiet week, zero signal with zero pipeline errors, and could be believed, for exactly the reason the last note gave: outages no longer impersonate silence. The proof arrived one cycle later, when the fleet's model gateway went unreachable at run time and the loop, instead of shrugging out a fake quiet week, marked its own run unhealthy and said why. That row is the repair from the last note doing its job in production, unprompted, which is the only kind of ratification worth printing. The runs after it came back healthy, and the runner has since begun updating itself to the latest machinery before each cycle, recording the version hop in its own row.</p>
+        <figure class="fig">
+          <figcaption><b>Listing 2</b> · the ratification exhibit, redacted of internal endpoints: the cycle that refused to fake a quiet week. A dead gateway used to be indistinguishable from nothing to learn; now it writes this.</figcaption>
+          <div class="atom">{"week": "2026-W32", "kind": "producer_run",
+ "status": "unhealthy", "rc": 1,
+ "detail": "quiet week (ok-no-signal) ...
+            model-gateway preflight unreachable: timed out"}</div>
+        </figure>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>the audit, part two</span></div>
+        <h2>And twice qualified. <em>Both mechanisms found, one while writing.</em></h2>
+        <p>Two parts of the claim did not hold, and both failures have names.</p>
+        <p><b>The adjudication lane stalled.</b> The last note reported escalations reaching a panel of models and being adjudicated the same day. That happened exactly once, in the cycle I published. Since then the mining half has kept escalating, nine candidate questions now sit queued, and not one of them has ever reached the panel, so the behaviour file still sits at the version the note shipped with. The mechanism is almost comically mundane: the runner files escalations as tracker issues, and the credential it runs under stopped being allowed to create them; every attempt returns a permission error. The ledger lane kept working, so the queue is visible; the doorbell to the panel is what broke. The loop did not stop learning silently, which was the old failure class. It stopped actuating loudly, in a queue anyone can read, which is the new, better, still-unacceptable one.</p>
+        <p><b>The newest cycle wrote nothing at all.</b> Found while writing this section: the most recent scheduled cycle has no ledger row of any kind, three days after its slot. Every failure mode the loop has met so far still wrote a row, even the gateway outage wrote a row, so a missing row means the run never fired: the strongest suspect is that the runner's new self-update, the youngest organ in this whole story, broke the scheduled start. The watcher that catches a green-but-blind run asserts on the run's artifacts; nothing yet owns the run that never happens. That is a dead-man contract, it was filed against the fleet's operations backlog in the same hour as this paragraph, and it hands the metabolism its next lesson: the newest organ is always the least watched, and your public claims age at exactly the speed of your least-watched organ. This is what stress-testing governance in the open costs, and what it buys: the failure surfaced in days, with a mechanism and a fix on file, instead of surfacing in a quarter with neither.</p>
+        <div class="pull">The claim survives its audit, qualified: the loop still runs without me. What broke is the part that was newest, and the part nobody was watching.</div>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>the oversight bridge</span></div>
+        <h2>Regulators are about to ask <em>the question this note keeps asking.</em></h2>
+        <p>The distinction this stress test keeps enforcing, oversight that demonstrably fires versus oversight that exists, is no longer a private engineering taste. The EU AI Act's human-oversight article requires measures that are effective, not merely present, and its obligations are phasing in through 2026 and 2027; the frontier labs' own published safety work has converged on the same instinct, evaluations and containment measures that are tested against attempts to defeat them rather than asserted. The cheap, portable version of that discipline is exactly the teeth proof from section iii: for every oversight control you claim, keep a test that plants a violation and shows the control catching it. A gate you cannot prove has ever fired is not oversight; it is the compliance version of the seventeen red runs nobody read.</p>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">viii</span><span>science and practice, separated</span></div>
+        <h2>What transfers, <em>and what this cannot claim.</em></h2>
+        <div class="finding calm">
+          <div class="fk">The science, and my curiosity</div>
+          <h3>Selection pressure on governance artifacts, and the theater that measurement cannot yet see.</h3>
+          <p>The intellectual lineage here is fitness functions and policy-as-code: architecture rules expressed as executable checks. What a production agent fleet adds is mortality, artifacts cheap enough to breed faster than anyone maintains them, which is why the expiring allowlist and the shrinking cap matter as much as the checks. The open problems are honest ones. The anti-theater proof catches a mismatched enforcer, not a meaningless one; semantic theater, a check that fires and asserts nothing of value, still needs a human eye. An expiring allowlist is likewise only as honest as its renewals: a team that quietly extends expiry dates has rebuilt the manifest under a new name. This ledger carries survivorship bias by construction: it covers the deletions the record kept. And the flat findings curve in section iv is an open question I do not get to skip: if review findings hold steady over 181 rounds, review without an actuation loop may be a permanent tax rather than a decreasing one, and that is a measurable claim the next months of ledger will test.</p>
+        </div>
+        <div class="finding hold">
+          <div class="fk">The practice, for enterprise agent programs</div>
+          <h3>Six things to copy, none of which require believing my magnitudes.</h3>
+          <p>One: inventory your governance artifacts and, for each, write down the metric that would show it being ignored; no metric means theater, and you just found your deletion candidates. Two: A/B the advisory layer before renewing it; my four-variant test cost an afternoon and retired 1,908 lines. Three: bind every rule you keep to a named enforcer plus a planted-violation proof that exercises that exact enforcer; park everything else on an expiring list whose cap only shrinks. Four: make deletion a recorded, healthy outcome, each one shipping with the measurement that justified it and the metric that would expose it as a mistake. Five: give every surviving organ a yield ledger and an outage ledger, wins and silences in the same record. Six: re-read your own published claims on a date, in public; the parts that broke will be the newest parts, and the audit is where the credibility compounds.</p>
+        </div>
+        <p><b>Established by this stress test.</b> Three governance deletions with the measurement behind each and a named wrong-removal detector for each. A selection rule that turns toothless rules into expiring debt, catches false-green proofs, and binds itself. One surviving organ with a real yield ledger, 924 acted-on threads of 2,993, and a real outage ledger. And a dated public audit of the previous note's claim: the unattended run chain ratified by four more cycles including one self-reported outage, and two qualifications with mechanisms named, a stalled adjudication lane behind a broken permission, and one wholly silent cycle caught during the writing of this note and filed the same hour.</p>
+        <p><b>Not established, and this note does not claim it.</b> No claim that the metabolism improves fleet output; the selection rule governs governance, and its own efficacy measurement is the flat-curve question above. One fleet, one operator, and a ledger that can only see the deletions its records kept. The magnitudes are corpus-specific; the selection rule is the transferable part.</p>
+        <div class="finding">
+          <div class="fk">If you take one thing</div>
+          <h3>Count your governance artifacts. Then count the ones whose absence would be detected.</h3>
+          <p>The difference between those two numbers is your theater budget, and it is payable on demand: an afternoon of A/B for the advisory layer, a planted violation per rule you keep, an expiry date per rule you cannot bind. My fleet paid it in deletions and came out with fewer gates that all demonstrably fire, and with claims that can survive being re-read on a date.</p>
+        </div>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> All numbers are from the author's own fleet records across four repositories, measured between May and August 2026 and re-read on 20 August 2026; internal system names are withheld by design. <b>N = 1 fleet, one operator: treat the magnitudes as corpus-specific and the selection rule as the claim.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>Regulation (EU) 2024/1689 (the EU AI Act), <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Article 14, human oversight</a>: oversight measures must be effective and commensurate, with obligations phasing in through 2026 and 2027. The regulatory shape of the fired-versus-exists distinction.</li>
+          <li>N. Ford, R. Parsons, and P. Kua, <a href="https://www.thoughtworks.com/insights/books/building-evolutionary-architectures">"Building Evolutionary Architectures"</a>, O'Reilly. Fitness functions: architecture rules as executable, continuously-run checks; the lineage the selection rule extends with expiry and mortality.</li>
+          <li>The prior note in this thread: <a href="actuation-gap.html">"Self-improvement is an actuation problem."</a> (ai-11), whose closing claim, "it has run without me since", is the subject of the dated audit in sections v and vi.</li>
+          <li>Companion notes: <a href="replication-gate.html">"'It's done.' The most expensive tokens an agent produces."</a> (ai-09), the per-task completion gate, the same planted-violation instinct at task grain; and <a href="memory-in-the-harness.html">"An agent learns to remember in the harness, not the weights."</a> (ai-12), the measured-channel discipline this note applies to governance artifacts.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-13</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="../assets/toc.js"></script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>
