@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>The loop learned slowly from corrections and faster from verdicts · where a self-improvement loop's learning signal comes from, measured on one agent fleet through week 41 · Applied Intelligence</title>
+<meta name="description" content="Every agent program that learns from its own operation is already choosing what the loop consumes: human judgments, or the machine's own verdicts about execution. I ran both channels on one governed fleet and measured the yield of each through calendar week 41. Adjudicated corrections produced one new behavioural rule from about twenty candidates escalated over eleven weeks and did valuable work as a filter; the July A/B this series owed its readers measured the mined generic rules as neutral to harmful. Execution friction, ranked by recurrence and validated on held-out weeks, surfaced defects worth fixing; the loop's first unattended selection was rejected with reasons, and its first learner-selected fix measured 28 tool calls down to 11 across six trials per arm on one task, under a rule frozen before the trial. The five-state ledger with every column dated, what is and is not established, and ten practices an enterprise agent program can adopt now.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/learning-signal.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="The loop learned slowly from corrections and faster from verdicts.">
+<meta property="og:description" content="Where a self-improvement loop's learning signal comes from, measured on one governed agent fleet: adjudicated human corrections yielded one rule from eleven weeks of candidates and a published negative A/B; execution friction ranked by recurrence surfaced fixable defects, and the first learner-selected fix measured 28 tool calls down to 11 across six trials per arm under a frozen rule. The five-state ledger through week 41, dated, and ten practices for enterprise agent programs.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/learning-signal.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-14-social.png">
+<meta property="og:image:alt" content="A typographic plate: the words 'The loop learned slowly from corrections and faster from verdicts' set as a large display line, above a ledger of three learning signals: adjudicated corrections, one rule adopted from about twenty candidates; generic mined rules, none helped past the retirement floor in a July A/B; execution friction, the first learner-selected fix, 28 tool calls to 11 over six trials.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-14-social.png">
+<meta name="twitter:title" content="The loop learned slowly from corrections and faster from verdicts.">
+<meta name="twitter:description" content="What should an agent fleet's improvement loop consume? Measured on one fleet through week 41: human corrections as a filter, a published negative A/B, execution friction as the signal that found fixable defects, and one measured fix. Ten practices for enterprise agent programs.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+  /* optional methods material: a closed disclosure in the calm finding register */
+  details.methods { margin: 22px 0; padding: 18px 26px; border-left: 1px solid var(--calm); background: linear-gradient(rgba(95,122,92,0.05), rgba(95,122,92,0.02)); }
+  details.methods summary { cursor: pointer; list-style: none; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--calm); }
+  details.methods summary::-webkit-details-marker { display: none; }
+  details.methods summary::after { content: ' · open'; color: var(--ink-3); font-style: normal; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; }
+  details.methods[open] summary::after { content: ' · close'; }
+  details.methods h3 { font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.25; margin: 10px 0; color: var(--ink); }
+  details.methods p { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0; max-width: 66ch; }
+  details.methods p + p { margin-top: 10px; }
+</style>
+</head>
+<body data-room="7" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 14</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 10 · 08</span>
+      <span class="dot">·</span><span>ai-14</span>
+      <span class="dot">·</span><span>26 min read</span>
+      <span class="dot">·</span><span>one fleet's learning signals, measured through week 41</span>
+    </div>
+    <h1>The loop learned slowly from corrections and faster from verdicts.<em>where a self-improvement loop's learning signal comes from, measured on one governed agent fleet through week 41, and what to feed your own.</em></h1>
+    <p class="lede">If you run coding agents at any scale, your program is already choosing what its improvement loop learns from, whether or not anyone wrote the choice down. There are two channels. One is judgment: the corrections people type when an agent goes wrong, the review findings, the ratings. The other is verdict: what the machine itself records about execution, a timeout, a non-zero exit, a refused command, the same call retried blind. The choice matters because a loop fed the first channel can spend weeks reviewing candidates without changing policy, while a loop fed the second ranks the execution failures your fleet is already paying for in lost minutes. This series built the judgment loop first, on purpose, and published it as such: a weekly miner that turns operator corrections into versioned behavioural policy. The last note committed to measuring every governance artifact against behaviour. This note applies that measurement to the learning channel itself, reports the yield of each channel through calendar week 41, publishes the negative result the series owed its readers since July, and closes on the practices an enterprise agent program can adopt from it.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">1 of ~20</div><span class="l">candidate behavioural rules mined from operator corrections over eleven weeks and adopted after adjudication, across 22 panel verdicts written in the weeks after the last note. The rest were duplicates of existing policy, noise, or single quotes.</span></div>
+      <div class="ms"><div class="v">0 of 7</div><span class="l">generic rules the correction miner had produced that helped past the retirement floor in a real-agent A/B; every effect past the floor was harmful, three were archived. Promised in July as queued, published here.</span></div>
+      <div class="ms"><div class="v">58 of 207</div><span class="l">foreground waits for pull-request state that failed in the held-out weeks, across eighteen sessions and three models, about 390 minutes lost. The first defect the execution-friction method surfaced; its fix was delivered by applying the method by hand.</span></div>
+      <div class="ms"><div class="v">28 to 11</div><span class="l">total tool calls across six trials per arm to finish one legitimate commit, before and after the first learner-selected fix, on one model under a rule frozen before the trial; the restriction the guard protects held in every valid control. A bounded measured benefit in the ledger.</span></div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The choice you are making</a>
+        <a href="#s02"><span class="no">ii</span>What corrections yielded</a>
+        <a href="#s03"><span class="no">iii</span>The measurement I owed</a>
+        <a href="#s04"><span class="no">iv</span>The second channel</a>
+        <a href="#s05"><span class="no">v</span>Two cases</a>
+        <a href="#s06"><span class="no">vi</span>A learner that may say none</a>
+        <a href="#s07"><span class="no">vii</span>The ledger at week 41</a>
+        <a href="#s08"><span class="no">viii</span>Science and practice</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">8 oct 2026</span></div>
+        <div class="v"><span class="k">scope</span><span class="d">one fleet, two channels</span></div>
+        <div class="v"><span class="k">form</span><span class="d">measurement + ledger</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-14</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the choice you are making</span></div>
+        <h2>Every improvement loop consumes a signal. <em>Almost nobody measures which one.</em></h2>
+        <p class="lede">The learn-from-usage promise is now standard in every agent platform pitch: the system watches how your people correct it and gets better. The question underneath that promise is rarely asked, and this fleet gave me a place to ask it with numbers. Two channels were running side by side on the same agents in the same weeks. The judgment channel mined operator corrections out of session transcripts, labelled them against a taxonomy of behavioural dispositions, and escalated anything new to a panel of models for adjudication. The verdict channel, added deliberately as the second arm late in September, mined the harness's own record of execution: which tool calls the harness marked failed, timed out, or refused, and which were retried without change.</p>
+        <p>The program was built in that order on purpose. The judgment channel is the one most vendors sell and the one my own hypothesis favoured: the operator's corrections are the curriculum, and they are already in the transcripts. The previous notes reported that loop closing its first unattended cycles and then audited that claim on a date. The next step was to measure what the loop had actually learned, and the measurement changed what the fleet feeds it. That is the experiment working. The rest of this note is the yield of each channel, counted from the ledgers, with the distinction the data forced on me: a verified discovery, a delivered fix, and an adopted improvement are three different things, and only the ledger says which one you have.</p>
+        <p>One example carries most of the argument, so here it is early. The fleet's branch guard refused commits made from a feature worktree. A supported path existed and worked every time, but the refusal text showed agents only the override, and after a refusal they took the override fifty-five percent of the time. No operator correction ever surfaced that; the harness's own refusal record did, at the top of the first unscoped ranking, and the fix was one sentence of refusal text. The two channels also produced different kinds of change: corrections yielded generic behavioural guidance, verdicts yielded specific harness repairs. That difference is the practical lesson of this note, and it is more precise than machine signals beat human feedback: on this fleet, execution records were the useful place to find testable operational repairs.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>what corrections yielded</span></div>
+        <h2>Twenty-two verdicts, one new rule. <em>And a filter worth keeping.</em></h2>
+        <p>Between late August and mid September the adjudication lane that the last note reported as stalled came back to life, and worked through its whole backlog: twenty-two terminal verdicts over roughly twenty candidate rules that the correction miner had escalated since June. Read as a yield table, the result is plain. Eight candidates were folded into rules the policy already carried: the miner had rediscovered existing conventions in new words. Five were rejected with recorded reasons: a single operator quote labelled twice, an infrastructure outage mislabelled as an agent habit, boilerplate from the harness misattributed to the operator. Four were deferred to a dated review, and two of those were later rejected when the recurrence they were waiting for never came. Three escalations, from three separate weeks, were adopted as one new rule: reconvene a second voice before claiming a task is done. It earned its place the way a rule should, by recurring independently across those three weeks of corrections.</p>
+        <p>Two readings of that table are available. The first says the human channel produced too little to matter. The second says it converged: adjudicated opinion settles onto the institutional prior, because most of what an operator says in the moment restates something the policy already holds. The ledger establishes the narrower fact under either reading: low novelty yield, duplicates filtered, weak candidates rejected with reasons, one new rule adopted. It does not establish why novelty was low. Convergence is one explanation; a mature policy file, the quality of the extraction (the week-40 proposal in section vii mined an agent's own turns as the operator's voice), and the selection criteria are others, and the measured finding stands without choosing between them. The filtering was real work. A rule file that absorbed every escalation would have grown faster than anyone could keep it consistent; the panel's rejections, each with a reason an auditor can walk, are what kept it small. And the one adopted rule is the positive control for the channel: when the signal is sparse and unambiguous, corrections do move policy. They move it slowly: one new rule from eleven weeks of escalations on a fleet this size, a yield worth knowing before staffing a review council around a correction stream.</p>
+        <div class="finding calm">
+          <div class="fk">What the correction channel is for</div>
+          <h3>A governance filter with a low novelty yield, not a defect finder.</h3>
+          <p>It kept the policy small and auditable, it occasionally surfaces a genuinely new disposition, and it costs a weekly mining pass plus a panel round. What it does not do, on this evidence, is find the defects that cost the fleet minutes every week. Those were sitting in a different record, and they were a different kind of change: specific harness repairs, not behavioural guidance.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>the measurement I owed</span></div>
+        <h2>The July A/B on the mined rules. <em>Promised in July, published here.</em></h2>
+        <p>The note that introduced the loop ended with a promise: the adopted habits were validated as generalizing, not as valuable, and a counterfactual efficacy measurement was designed and queued. It reported in July, and this is its first publication. The design was a real-agent A/B: for each generic rule the miner had produced, an agent attempted a fixed suite of single-source code-repair tasks, three trials per task, once with the rule injected into its context and once without, scored in isolation by a deterministic harness that the rule text could not see. A rule was archived only if its presence had cost at least two net solves across the suite, so that a noise-level negative could not retire a rule by accident.</p>
+        <p>Seven generic rules were measured, each in its own lane of model and task suite, because the gateway's per-model quota forced a rotation; every comparison is therefore within one rule, the same agent in both arms, and the rules are not ranked against each other. None cleared the retirement floor in the helpful direction. Three cleared it in the harmful direction and were archived, with the verdict, the sample size and the rule's content hash stamped into the record, so that an edited rule voids its old verdict and has to earn a new one. Four stayed active: two with a one-solve gain, one flat, one with a one-solve loss, all below the floor, because the floor exists to be obeyed in both directions. The floor is an operational decision rule, two net solves across a rule's suite, chosen so that a noise-level result could not retire a rule by accident. It is not a significance test, and at twelve to thirty-nine samples per rule none of these differences would pass one. The table is what the loop acted on, and why.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> the seven mined rules in the July A/B, one row each. Samples are executed A/B pairs; the rate difference is the rule-present success rate minus the rule-absent rate; the floor for archiving was two net solves lost.</div>
+          <table class="data">
+            <thead><tr><th>rule, as mined from review comments</th><th>lane</th><th>samples</th><th>effect with the rule present</th><th>disposition</th></tr></thead>
+            <tbody>
+              <tr><td>A <span class="d">tool deny-list naming for an unattended bot</span></td><td><span class="d">Opus 4.8</span></td><td><span class="d">32</span></td><td><span class="d">2 solves lost, rate 0.063 lower</span></td><td><span class="d">archived, at the floor</span></td></tr>
+              <tr><td>B <span class="d">tool allow-list ordering and built-in restriction</span></td><td><span class="d">Qwen3 235B</span></td><td><span class="d">34</span></td><td><span class="d">4 solves lost, rate 0.118 lower</span></td><td><span class="d">archived</span></td></tr>
+              <tr><td>C <span class="d">no em dashes in authored prose</span></td><td><span class="d">Sonnet 4.5</span></td><td><span class="d">20</span></td><td><span class="d">3 solves lost, rate 0.150 lower</span></td><td><span class="d">archived</span></td></tr>
+              <tr><td>D <span class="d">hoist a shared constant; a chronology assumption</span></td><td><span class="d">Qwen3 235B</span></td><td><span class="d">33</span></td><td><span class="d">1 solve gained, rate 0.030 higher</span></td><td><span class="d">kept, below the floor</span></td></tr>
+              <tr><td>E <span class="d">fail closed on malformed tool overrides</span></td><td><span class="d">Sonnet 4.5</span></td><td><span class="d">38</span></td><td><span class="d">1 solve gained, rate 0.026 higher</span></td><td><span class="d">kept, below the floor</span></td></tr>
+              <tr><td>F <span class="d">canonical deny-rule names; deny no-prompt built-ins</span></td><td><span class="d">Sonnet 4.5</span></td><td><span class="d">12</span></td><td><span class="d">no change</span></td><td><span class="d">kept, below the floor</span></td></tr>
+              <tr><td>G <span class="d">log truncation and sandbox detection findings</span></td><td><span class="d">Sonnet 5</span></td><td><span class="d">39</span></td><td><span class="d">1 solve lost, rate 0.026 lower</span></td><td><span class="d">kept, below the floor</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Rule C is the representative one, because it is exactly the kind of guidance every program is tempted to inject. It was mined from four review comments that all said the same thing, and it read, in full, as below. Injected into a code-repair agent working on tooling files, it cost three solves in twenty. A style preference is a real convention; as a rule in a repair agent's context it was a tax. The lesson the loop took from the seven is structural: on these evaluations, a rule mined from a correction and generalized into always-do-this guidance was the shape that cost solves, and the rule lifecycle now archives on measurement rather than deleting on taste.</p>
+        <figure class="fig">
+          <figcaption><b>Listing 1</b> · rule C as the miner wrote it and the agent received it, lightly redacted of repository names. Every mined rule had this shape: a heading, the disclaimer, the review themes, a suggested enforcement.</figcaption>
+          <div class="atom"># Dashes Vault With (learned)
+Reviewers repeatedly raised similar feedback in this area.
+Treat as a heuristic, not a hard rule.
+
+## Representative themes
+- Remove em dashes from generated prose
+  The repository instructions record a repo-wide operator
+  preference forbidding em dashes ...
+- Replace authored em dashes
+  The instructions explicitly forbid em dashes in authored
+  content, including vault notes ...
+- Replace authored em dashes in handoff entry
+
+## Suggested enforcement
+- Document the preferred pattern in the instructions or a scoped rule.</div>
+        </figure>
+        <p>Publishing a negative result three months after measurement was a reporting delay, and the record should say so. The result arrived in the same fortnight as the loop's first unattended cycles, and those cycles were reported first. The corrective practice, adopted since and recommended below, is that a negative measurement is published in the quarter it was taken.</p>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>the second channel</span></div>
+        <h2>Execution friction, <em>and why recurrence is the ranking.</em></h2>
+        <p>The second channel reads a record the fleet was already keeping and nobody was learning from: the harness's own verdicts on every tool call. The method is the transferable part of this note, so here it is without the fleet's names. Every tool call in a transcript is grouped with its retries into an episode. A call counts as failed only when the harness said so: an error flag, a non-zero exit, a timeout, a hook or permission refusal. Words that merely appear in the output never count, because an agent writing the word error is not evidence of one. Within the failures, waste is separated from troubleshooting: a timeout, a refusal, or the same call retried unchanged is waste; a failure followed by a changed call that worked is the agent doing its job. Episodes are grouped into families derived from the command alone, by a splitter that understands quoting, heredocs, loops and substitutions. Families are ranked by recurrence, the number of distinct sessions that wasted time on them, before volume, because one session's disaster is an anecdote and twelve sessions across three models and seven harness versions points at the harness, not at any one agent. The corpus is split into a discovery half and a held-out half by calendar week, never at random, so that a week's environment drift cannot leak across the split. Every row keeps its provenance: model, harness version, host, session.</p>
+        <p>Run once over 6,943 transcripts collected since the start of July, the ranking put pull-request querying at the top, with 1,091 harness-reported failures across 456 sessions, and inside that family one sub-family dominated: waiting for a pull request's checks, review or merge to reach a state. That first ranking was pointed at one area, calls that reach a remote service. When the method in its repeatable form ran unscoped over a two-week corpus the next day, it found the same case again by wasted seconds, then surfaced a different family at the top by recurrence. Those two are the cases in the next section.</p>
+        <div class="pull">An agent writing the word error is not evidence of one. A harness recording an exit code is.</div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>two cases</span></div>
+        <h2>Waiting, and being refused. <em>Both fixed by changing what the harness says.</em></h2>
+        <p><b>Waiting for a pull request.</b> Across 27,878 wait attempts, the method the agent chose decided the outcome. Foreground polling loops written ad hoc in the shell failed twenty to forty percent of the time per week, killed at the tool call's timeout. Chained sleeps were often refused by the harness outright. Background loops almost never failed, and the fleet's existing background waiter failed zero times in 339 uses. The defect was not the waiter; it was the routing. The waiter's default budget outlived a foreground tool call, and the skill that governs pull-request resolution prescribed a ten-minute sleep followed by a foreground wait, so agents did what the instructions said and lost the call. In the held-out weeks, after the discovery split, 58 of 207 foreground waits failed across eighteen sessions and three models, about 390 minutes of agent time. The fix is small and bounded: a waiter with a hard wall-clock budget under the tool timeout, distinct exit codes for met, pending, failed and expired, one background call per wait in the skill text, and the quiet period moved inside the budget. A second pass after installation classified every observed bypass of the new waiter against the skill text each session had actually loaded: three were supported paths the text had not pointed to, one was a genuinely unsupported wait for a single rerun workflow, and two were sessions still running the old instruction. Each class got its own repair, and the acceptance measure for all of it is organic: the same scan, rerun on ordinary sessions after installation, reported per model and harness version.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · failure rate of pull-request waits by method. The foreground figures are from the held-out weeks and the worst discovery week; the background waiter's zero is observational, counted before any fix, and is not the fix's result.</figcaption>
+          <div data-atelier-figure='{"type":"bars","unit":"% of waits failed","max":50,"rows":[{"label":"foreground, worst week","value":40,"valueLabel":"40%","tint":"neg"},{"label":"foreground, held-out","value":28,"valueLabel":"28%","tint":"neg"},{"label":"background waiter","value":0,"valueLabel":"0 of 339","tint":"ink"}]}'></div>
+        </figure>
+        <p><b>Being refused.</b> The second ranking's top family by recurrence was a plain staging command, across twelve sessions, three models and seven harness versions. The drill-down showed what it really was: a branch-protection guard refusing commits made from a feature worktree, because the guard read the current branch from the tool's working directory, which was the primary checkout sitting on the protected branch. The design was deliberate and had been settled months earlier; the supported path, naming the worktree explicitly on the command, worked every time. Agents did not know that, because the refusal text offered only the override. After a refusal they overrode fifty-five percent of the time and used the supported path sixteen percent. The fix was one sentence of refusal text that names the supported path and demotes the override to a last resort. In headless trials with the hook as the only difference between arms, the installed text produced six correct outcomes in nine runs with four overrides; the new text produced six of six with none. Replaying the fixture also found the guard allowing a commit it should have refused, from the opposite direction, and that was closed in the same change. The acceptance criteria were written before installation: overrides after a refusal fall from fifty-five to at most twenty-five percent, the supported path rises from sixteen to at least fifty, measured on ordinary sessions, not proved by the change itself.</p>
+        <div class="finding calm">
+          <div class="fk">What both cases share</div>
+          <h3>Error and refusal text is an executable control, and it was never reviewed as one.</h3>
+          <p>In neither case was the agent's reasoning the defect. The harness told it the wrong thing, or nothing, at the moment of failure. A program that reviews its hooks and skill text with the same rigour as its code will find this class without a learner; the learner is what finds it when nobody is looking.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>a learner that may say none</span></div>
+        <h2>One bounded call, <em>one selection or none, with the reasons on file.</em></h2>
+        <p>Ranking is not learning. The second channel needed something that reasons over the ranked evidence and decides, and the design constraint from the last two notes applied: no new scheduler, no new credential, no per-change human in the path, and a loop that can say there is nothing to learn this week and be believed. So the friction run makes exactly one model call. The packet it receives is deterministic: the top three leads that are actually actionable, meaning families with at least two sessions whose rows no existing ledger entry already covers, with their source episodes, the harness's reason, the next call the agent made, and full provenance; the rows already covered by a delivered fix, an open owner, or a refusal that is correct by design, as context only; a live search for an open owner using a specific phrase, because a generic search for an exit code matches everything and therefore nothing; and the earlier selections still awaiting delivery. The reasoning the model is asked to perform is the written procedure a person followed to find the first case, with its digest recorded, under a contract that separates troubleshooting, legitimate refusals and covered rows from avoidable friction and permits at most one selection, with an acceptance metric.</p>
+        <p>Validation is deterministic and runs after the model has spoken. A selection must be one of the packet's leads, cite at least two sessions whose rows nothing covers, have no open owner, no pending earlier selection, and a named metric with a baseline and a target. Anything else is recorded as none, with the reason; a failed call is recorded too, so that silence is never ambiguous. On real evidence the first run returned none, and reviewing its packet found three defects in the packet itself: an owner search that matched five unrelated issues on junk vocabulary, hook errors that showed the agent's command instead of the error, and covered rows crowding out the uncovered ones. All three were fixed with tests before the second run. The second run selected a single defect, a commit-parsing case across three sessions, checked independently. A validated selection now rides the weekly ledger commit to the same adjudication lane the correction channel uses, and the same fourteen-day alarm reads it.</p>
+        <p>What it took to make the learner's yes trustworthy is the part worth copying. When its recorded selections were replayed against the source transcripts, the defects were in the evidence it had been given. The miner grouped calls by operation family, so a refused call told the learner only what the next call of the same family was; of 2,299 uncovered failed rows in the development corpus, 648 read as "the episode ends here", and 630 of those were in fact followed by a recovery through some other tool. The packet cut each refusal at 240 characters, which is where a refusal states its restriction, and dropped the end, which is where it names its remedy: in every one of four rows for one real defect the line that settled the question had been cut away. And the owner search marked a lead as already owned on any search hit at all. Each was repaired deterministically, with no model call: a bounded cross-tool recovery trace per failed row, re-derived independently from the transcripts with zero mismatches; the full refusal text; an owner search that requires the hit to be about the same component. The learner's contract changed with it: two separate judgments per lead, is the refusal correct, and is the recovery avoidable, and a selection needs the second to be yes. Then the judgment itself was measured on seven cases with labels written before any call: two selections correct under the rule frozen in advance, one of five on development cases and one of two held-out; two misses; one selection whose premise its own packet contradicted. Before those repairs, a candidate revision of the learner removed every unsupported selection seen and was still not delivered, because it failed the one contrast case built to catch over-conservatism: it read an audited override as the remedy and declined a guard refusal that had cost agents real calls.</p>
+        <p>The distinction this section insists on is the one the ledger makes: a selection, a validated selection, a delivered fix, and a measured benefit are different rows. The delivered fix in the previous section was the reference case, found by a person using the method before the learner existed. The next section is where the learner's own selections meet the same discipline, and where it costs something.</p>
+      </section>
+
+      <section class="sec" id="s07">
+        <div class="seclabel"><span class="no">vii</span><span>the ledger at week 41</span></div>
+        <h2>Discovered, accepted, delivered, adopted, measured. <em>Dated 8 October, every column.</em></h2>
+        <p class="lede">A learning loop is reported in five states; collapsing them hides where the program is working and where it is not. Read on 8 October 2026, in calendar week 41, here is the fleet's ledger for the verdict channel, one row per candidate so that no reader mistakes the populated states for a single unattended chain. Two of the rows are rejections.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 2 ·</b> every candidate the verdict channel produced, followed through the five states. Installed is not used, and a controlled-trial benefit is not benefit in ordinary sessions; the last column says which it has.</div>
+          <table class="data">
+            <thead><tr><th>candidate</th><th>origin</th><th>accepted</th><th>delivered</th><th>deployed</th><th>evidence of benefit</th></tr></thead>
+            <tbody>
+              <tr><td><b>Pull-request wait routing</b> <span class="d">the bounded waiter, section v</span></td><td><span class="d">a person applying the method, 28 September</span></td><td>yes</td><td>yes</td><td><span class="d">installed on the active hosts</span></td><td><span class="d">held-out failure rate before the fix, 58 of 207; use in ordinary sessions not yet reported</span></td></tr>
+              <tr><td><b>Refusal text naming the supported path</b> <span class="d">section v</span></td><td><span class="d">the method, second corpus, run by a person, 29 September</span></td><td>yes</td><td>yes</td><td><span class="d">installed</span></td><td><span class="d">trials: 4 overrides in 9 runs before, 0 in 6 after; the 55 percent ordinary-session baseline is re-measured after installation, not yet reported</span></td></tr>
+              <tr class="win"><td><b>Commit-guard heredoc parser</b></td><td><span class="d">the learner, held-out comparison, 7 October</span></td><td>yes, after validation</td><td>yes <span class="d">8 October</span></td><td><span class="d">three active hosts</span></td><td><span class="d">controlled trial: 28 to 11 total calls over six per arm, restriction held; ordinary use not yet reported</span></td></tr>
+              <tr><td><b>Worktree edit path rewrite</b></td><td><span class="d">the scheduled learner, 5 October</span></td><td>no, rejected with reasons</td><td>no</td><td>no</td><td><span class="d">none; the cost was one refusal turn per session</span></td></tr>
+              <tr><td><b>Refusal guidance on a second guard</b></td><td><span class="d">the learner, evaluation window</span></td><td>validated</td><td>no, measured no benefit</td><td>no</td><td><span class="d">trials: 2 calls to recover before, 3 with the guidance</span></td></tr>
+              <tr><td><b>Duplicate-work override</b></td><td><span class="d">a person labelling held-out sessions, 7 October</span></td><td>yes</td><td>yes</td><td><span class="d">installed</span></td><td><span class="d">deterministic replay only; no behavioural trial</span></td></tr>
+              <tr><td><b>Three evidence repairs for the learner</b> <span class="d">section vi</span></td><td><span class="d">replay against transcripts, by a person</span></td><td>yes</td><td>yes</td><td><span class="d">installed where the learner runs</span></td><td><span class="d">evidence capture; the learner's judgment on the restored evidence is not re-measured</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><b>The scheduled selection, rejected.</b> The week-41 cycle ran on 5 October without operator action, ranked 7,436 episodes into 57 failure families, made its one learner call, and published its proposal unattended, the first weekly to merge since the integrity check and the age alarm were separated. Re-reading every cited episode of its selection showed three things. The refusal came from the desktop harness's own worktree guard, which no component of the fleet owns. In one session the guard had already printed the exact path and the agent had used it. In the other three the agents had edited a sibling worktree on purpose, so the proposed rewrite would have redirected deliberate edits into the wrong tree. The cost was one refusal turn per session. Two panel voices and the coordinator rejected it, and the rejection is a terminal row with a reopen bar. The learner's deterministic validation could not have caught either flaw; that is recorded as a limitation of the validation path.</p>
+        <p><b>The held-out selection, accepted and delivered.</b> In a frozen comparison of the learner's judgment on held-out sessions, it picked a refusal from the fleet's commit guard, "cannot resolve git commit target", cited three sessions, and proposed a parser correction that kept the restriction. Validation corrected the owner text, which was half wrong, traced seventeen refusals in ten sessions to three causes, and found six sharing one mechanism: a quoted heredoc commit message was tokenized as shell, so a single apostrophe made the whole command unparseable. For five of those incidents it checked that the refused commit was one the policy allows, from what each intended to commit and not from its later success. The fix shipped narrow on purpose, with no bypass and no change to the policy check. Its first version regressed, turning one recorded command from refused into unexamined, while all unit tests passed; replaying the seventeen recorded commands through the guard caught it.</p>
+        <p><b>Measured.</b> One benefit, bounded, under a rule frozen before the trial: twelve sessions on one model and one harness version, six per arm, the command form left to the agent, only the parser differing.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 3 ·</b> the legitimate-commit trials, six per arm, totals across the six. The restriction controls are in the text below.</div>
+          <table class="data">
+            <thead><tr><th>measure</th><th class="n">old parser</th><th class="n">fixed parser</th></tr></thead>
+            <tbody>
+              <tr><td>verified commits</td><td class="n">6 of 6</td><td class="n">6 of 6</td></tr>
+              <tr class="win"><td>total tool calls, start to verified commit</td><td class="n">28</td><td class="n">11</td></tr>
+              <tr><td>first commit call landed the commit</td><td class="n">1 of 6</td><td class="n">6 of 6</td></tr>
+              <tr><td>calls spent recovering after a refusal</td><td class="n">16</td><td class="n">0</td></tr>
+              <tr><td>override use</td><td class="n">0</td><td class="n">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The number is only credible with its limits attached. The arms happened to draw five and three heredoc attempts; the parser accounts for those, five to six calls where refused against one where not, and not for the whole difference. Six valid restriction controls, a sensitive file already staged, landed no restricted commit in either arm, and the fixed parser let the agent meet the real policy refusal in two to four calls instead of eight to ten. One control attempt was voided and replaced under its own authorization; the methods box below says how.</p>
+        <p><b>Withheld.</b> The same discipline refused a second delivery. A refusal from a different guard was validated, reproduced through the real hooks, and given a candidate, three verified recovery steps appended to the refusal text; the frozen comparison found agents already recovering in two calls, the floor, and the guidance costing three. Not delivered, the restriction left unchanged, settled with a reopen bar.</p>
+        <div class="finding hold">
+          <div class="fk">Four dated receipts</div>
+          <h3>From the judgment channel and the instruments.</h3>
+          <p><b>The week-40 proposal did not merge, for two reasons.</b> Its lineage failed audit: twelve of its seventeen labelled corrections were an agent's own delegation and continuation turns rather than the operator's voice. None of it was adopted, and the judgment channel acquired the attribution gate the lineage audit showed it needed. And the governance watcher's alarm on adjudication age had been wired into the producer's own continuous-integration checks, so an overdue decision blocked the heartbeat that reports it. The repair separated the two; week 41 exercised the separation by publishing while the overdue decisions were still owed.</p>
+          <p><b>They were, until the day this note was read.</b> The week-38 escalation had waited 596 hours at the 8 October watch run, with four week-39 escalations and a new week-41 one behind it, and the watcher had alarmed every day, as designed. On 8 October a panel adjudicated all six in one pass: three rejected, two folded into rules the policy already carried, one deferred to a dated review, no new rule. The watcher then read the lane as clear and the incident was closed. The yield did not change; the latency did, and only because a person started the session that acted on the alarm. That is the number the checklist below asks you to track.</p>
+          <p><b>Adjudication was attended.</b> The automatic follow-up armed to trace week 41 fired and failed at once, its script having been deleted beforehand, so the trace that produced the rejection above started when a person asked for it. Unattended discovery, attended adjudication.</p>
+          <p><b>An instrument failed first.</b> The behavioural evaluator built in September to score an agent skill was inconclusive on its first run because its text transport recorded zero native tool calls. It moved to a structured transport with a preflight, and its first result record was corrected in public for four over-claims.</p>
+        </div>
+        <details class="methods">
+          <summary>Methods notes, for readers who want the mechanics</summary>
+          <h3>The voided control, the settlement scope, and the data path.</h3>
+          <p><b>The voided control.</b> A seventh restriction-control attempt in the old-parser arm was voided when the coordinator re-ran a scorer test during the run and its cleanup deleted that trial's repository mid-session. It stays in the record as an invalid attempt with its cost. The rule frozen before the trial requires all six controls, so the benefit was not claimed on five; one supplemental control then ran under its own authorization, in an isolated directory, with its fixture read before, after and after collection, and only then were the rule's conditions read as met.</p>
+          <p><b>The settlement scope.</b> When the withheld candidate was settled, the ledger entry covered every future refusal of that family regardless of model, harness or recovery cost, which would have hidden a regression from the learner. Settlement entries now cover a row only by positive evidence: the exact archived episodes, or verified recovery facts within the measured floor under the measured model and harness; everything else stays eligible, with the reason recorded.</p>
+          <p><b>The data path.</b> What the September evaluator episode delivered was not a learning result but plumbing: real deliveries now reach the weekly learning job automatically, with the driver skill identified and the operator's corrections extracted with their context, where before none of them did.</p>
+        </details>
+        <div class="pull">A learning loop is reported in five states. Collapsing them hides where the program is working, and where it is not.</div>
+      </section>
+
+      <section class="sec" id="s08">
+        <div class="seclabel"><span class="no">viii</span><span>science and practice, separated</span></div>
+        <h2>What transfers, <em>and what this cannot claim.</em></h2>
+        <div class="finding calm">
+          <div class="fk">The science, and my curiosity</div>
+          <h3>Friction is not outcome, judges are not independent, and latency is a governance variable.</h3>
+          <p>Three distinctions carry the science here. First, harness verdicts are friction signals: they establish that execution was blocked, not that the work was correct or that the agent was at fault. A clean exit on a wrong change is still a failure, a refusal can be the guard working, a timeout can be the network, and this fleet has no outcome signal for its friction fixes yet. Second, the convergence of the correction channel onto the institutional prior rhymes with what the published measurement literature says about panels, none of it from this fleet: nine model judges across seven families carried about 2.18 effective independent votes in one careful study, and adding a second judge model to an industrial visual-QA pipeline moved precision from 0.50 to 0.55 at extra cost and variance. That literature supports caution about treating panel votes as independent evidence; it does not show that panels converge on an organization's existing policy, which stays an interpretation in this note, not a result. Third, in every published paired comparison I hold, an oracle that acts and returns ground truth beat an oracle that judges: an agentic oracle that executes and inspects reached 91 percent precision where the best passive judge reached 29, and running a proposed fix instead of asking a judge to explain it cut false negatives from 54.8 to 16.3 percent. Those are analogous structures on different substrates, not this fleet's measurement, and the references name each. The variable I could not find in the literature is adjudication latency: how long a loop's escalations wait, who is alarmed, and what the alarm may block. On this fleet it was the governance gap of the quarter, and I suspect it is unmeasured in most programs because nobody has named it. And the lever this program pulled was never the model: it was evidence capture, the full refusal text, the cross-tool recovery trace, the recovery cost on record, and a rule frozen before the trial that let a voided control cost the claim instead of the rule.</p>
+        </div>
+        <div class="finding hold">
+          <div class="fk">The practice, for enterprise agent programs</div>
+          <h3>Start with one exercise a platform team can run in a week.</h3>
+          <p>It is what this fleet did, in order, and none of it requires believing my magnitudes. Everything after it is the checklist used to constrain the result.</p>
+        </div>
+        <ol>
+          <li>Rank recurring execution failures across distinct sessions from the record your harness already keeps: timeouts, non-zero exits, refusals, the same call retried unchanged. Recurrence first, volume second, and hold out the newest weeks.</li>
+          <li>For the top three families, read the full refusal and everything that followed it across every tool, and write down the recovery cost in calls.</li>
+          <li>Select one avoidable problem with a clear owner, or record none. Reject a candidate when the supported recovery already works at an acceptable cost, or when the owner is outside your fleet; investigate when avoidable recovery cost remains even though a remedy is printed, because a correct refusal and an expensive recovery are different findings.</li>
+          <li>Freeze the success measure and the restriction-preservation check before any trial, and let a voided control cost you the claim rather than the rule.</li>
+          <li>Test the repair, deliver it, then measure ordinary usage after deployment, and report installed and used as different states.</li>
+        </ol>
+        <p>The rest, as a checklist.</p>
+        <ol>
+          <li>Measure your correction stream's yield before staffing a council around it. Here it was one adopted rule from about twenty candidates escalated over eleven weeks, and the value was the filtering.</li>
+          <li>Keep friction signals apart from outcome signals, in your telemetry and in your claims. A clean exit on wrong work is still a failure.</li>
+          <li>A/B every generic behavioural rule before promotion. Archive when a loss clears a pre-set floor, keep noise-level results on record rather than acting on them, and publish the negative in the quarter it was measured.</li>
+          <li>Report the loop per candidate through five states, discovered by schedule, accepted, delivered, deployed, measured benefit, and refuse the sentence the loop works until a scheduled candidate reaches measured benefit in ordinary use. On this fleet the first scheduled selection was rejected and the first measured benefit came from a held-out selection a person validated; both rows are the loop working.</li>
+          <li>Track adjudication latency as two numbers, time to decision for closed cases and age of the oldest open case, so a stalled case cannot vanish from the average, with an alarm that lives outside the producer it watches and can never block that producer's heartbeat.</li>
+          <li>Review refusal and error text as executable controls. In trials the old refusal text drew four overrides in nine runs and the revised text none in six; the fifty-five percent ordinary-session baseline is re-measured after installation and is a separate number.</li>
+          <li>Give the learner the whole refusal and the cross-tool recovery trace, and ask it two questions per lead, is the refusal correct and is the recovery avoidable. Most wrong selections here traced to evidence it had not been given, and the rule frozen in advance caught the rest.</li>
+          <li>Preflight the instrument before you evaluate behaviour. An evaluator that records zero native tool calls cannot score anything, and it will not tell you so.</li>
+        </ol>
+        <p><b>Established by this measurement.</b> The yield of an adjudicated correction channel on one fleet, eleven weeks of candidates adjudicated in the weeks after the last note, counted from its ledger: one adopted rule, a working filter. A real-agent A/B in which none of seven generic mined rules helped past a pre-set floor and three were archived for clearing it in the harmful direction. An execution-friction method that found the fleet's most expensive recurring defect and re-found it unprompted on a second corpus, validated it on held-out weeks, and produced a delivered, installed fix with pre-registered organic acceptance criteria. A bounded learner that returned none when the evidence did not support a selection, whose first scheduled selection was rejected on re-reading the evidence, and whose held-out selection became a delivered fix with a measured benefit on one task, 28 total tool calls to 11 across six trials per arm with the restriction preserved, under a rule frozen before the trial. A second candidate measured as no benefit and withheld. And a five-state ledger with a dated entry in every column, including the rejections.</p>
+        <p><b>Not established, and this note does not claim it.</b> No fleet rate: the measured benefit is one task, one model, one harness version, twelve trials, and the arms drew unequal exposure. No outcome signal: the friction fixes are measured as reduced friction, not as better work. No unattended adjudication: discovery ran by schedule and the decision on it was made by a person with a panel, and the follow-up that was supposed to trace it failed. No business value, and no causal comparison of the two channels as signal types; they differ in volume, maturity and workflow, and this is a measured history, not a controlled experiment. One fleet, one operator. The magnitudes are corpus-specific; the method, the five states, and the latency rule are what transfer.</p>
+        <div class="finding">
+          <div class="fk">If you take one thing</div>
+          <h3>Ask what your loop consumed last week, and what it changed.</h3>
+          <p>If the answer is corrections in and policy out, count the policy: here it was one rule from eleven weeks of candidates. Then open the record your harness already keeps, the exits, the timeouts, the refusals, rank it by how many sessions paid for each family, and hold out the newest weeks. The most expensive defect candidate in your fleet is probably sitting in the first three rows; when it validates, it is often a sentence in a hook or a skill, not a flaw in the model.</p>
+        </div>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> All numbers are from the author's own fleet records, measured between July and calendar week 41 of 2026 and read on 8 October 2026; internal system names, hosts and identifiers are withheld by design, and the raw transcript corpus stays private. <b>N = 1 fleet, one operator: treat the magnitudes as corpus-specific and the method, the five-state ledger and the latency rule as the claim.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>G. Kohli, <a href="https://arxiv.org/abs/2605.29800">"Nine Judges, Two Effective Votes: Correlated Errors Undermine LLM Evaluation Panels"</a>, arXiv:2605.29800, May 2026. Nine judges across seven model families carry about 2.18 effective independent votes; unanimous panels were still wrong 9.1 percent of the time. The independence problem behind section viii.</li>
+          <li>H. Jin and H. Chen, <a href="https://arxiv.org/abs/2603.00539">"Are LLMs Reliable Code Reviewers? Systematic Overcorrection in Requirement Conformance Judgement"</a>, arXiv:2603.00539; Automated Software Engineering, 2026. Executing the proposed fix as a counterfactual cut the false-negative rate from 54.8 to 16.3 percent on HumanEval. Running beats judging.</li>
+          <li>M. Long, Y. Zhao, and H. Wang, <a href="https://arxiv.org/abs/2607.06195">"LogicHunter: Testing LLM Agent Frameworks with an Agentic Oracle"</a>, arXiv:2607.06195, July 2026. An oracle that investigates by executing and inspecting reached 91.17 percent precision against 29.27 for the best passive baseline. Cited as analogous structure, different substrate.</li>
+          <li>W. Lu, A. Senchenko, A. Sayle, A. Hindle, and C.-P. Bezemer, <a href="https://arxiv.org/abs/2603.22706">"How Far Can VLMs Go for Visual Bug Detection? Studying 19,738 Keyframes from 41 Hours of Gameplay Videos"</a>, arXiv:2603.22706, March 2026. A secondary judge model moved precision from 0.50 to 0.55 with "only marginal improvements" at additional cost and variance.</li>
+          <li>The prior notes in this thread: <a href="actuation-gap.html">"Self-improvement is an actuation problem."</a> (ai-11), which built the correction channel and promised the efficacy measurement published in section iii; and <a href="gate-metabolism.html">"Governance is a metabolism, not a manifest."</a> (ai-13), whose measure-everything commitment this note applies to the learning channel, and whose stalled adjudication lane is the one that came back in section ii.</li>
+          <li>Companion notes: <a href="replication-gate.html">"'It's done.' The most expensive tokens an agent produces."</a> (ai-09), completion as a validated workspace state, the same preference for ground truth over report at task grain; and <a href="memory-in-the-harness.html">"An agent learns to remember in the harness, not the weights."</a> (ai-12), the measured-channel discipline this note applies to learning signals.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-14</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="../assets/toc.js"></script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>
