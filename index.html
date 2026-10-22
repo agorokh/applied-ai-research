@@ -109,20 +109,20 @@
   <section class="folio-cover anim d2">
     <div class="eyebrow">
       <span class="lead">in this issue</span>
-      <span class="dot">·</span><span>ai-14</span>
+      <span class="dot">·</span><span>ai-16</span>
       <span class="dot">·</span><span>applied research note</span>
-      <span class="dot">·</span><span>8 oct 2026</span>
-      <span class="dot">·</span><span>26 min read</span>
+      <span class="dot">·</span><span>22 oct 2026</span>
+      <span class="dot">·</span><span>13 min read</span>
     </div>
-    <h1>The loop learned slowly from corrections and faster from verdicts.<em>where a self-improvement loop's learning signal comes from, measured on one governed agent fleet through week 41, and what to feed your own.</em></h1>
-    <p class="abstract">Every agent program that learns from its own operation is already choosing what the loop consumes: the judgments people type when an agent goes wrong, or the machine's own verdicts about execution, a timeout, a non-zero exit, a refused command. I ran both channels on one governed fleet and measured the yield of each through calendar week 41. Adjudicated corrections produced one new behavioural rule from about twenty candidates escalated over eleven weeks and did real work as a filter; the July A/B this series owed its readers measured the mined generic rules as neutral to harmful, and three were archived. Execution friction, ranked by how many sessions paid for each failure and validated on held-out weeks, found the fleet's most expensive recurring defect and re-found it unprompted on a second corpus. The loop's first unattended selection was rejected with reasons; its first learner-selected fix measured 28 tool calls down to 11 across six trials per arm on one task, under a rule frozen before the trial; a second candidate measured no benefit and was withheld. The five-state ledger with every column dated, what is and is not established, and a one-week exercise plus a checklist an enterprise agent program can adopt now.</p>
-    <a class="read" href="notes/learning-signal.html">Read the note &nbsp;›</a>
+    <h1>When your AI code reviewer goes quiet, check the reviewer before you credit the code.<em>instrument drift in AI code review: a findings rate that fell by half on 8,271 pull requests, and the changes under it.</em></h1>
+    <p class="abstract">If AI agents review every change your team ships, the share of changes on which they find something looks like a quality metric. Ours fell from 75 percent in July to 32 percent in October, across four model seats and 8,271 pull requests. I cannot tell from these records whether the code earned any of it: one seat exhausted its subscription quota, three seats changed models, we wrote severity rules into every prompt, and the changes got smaller, with no seat held constant. Nothing yet measures whether a finding was acted on, and reverts are too rare to grade a reviewer. What to decompose before you report an AI reviewer's trend, and the measurements we are adding. The reviewer is not a thermometer. It is four thermometers from four vendors, swapped and recalibrated while the patient was being measured.</p>
+    <a class="read" href="notes/review-curve.html">Read the note &nbsp;›</a>
 
     <div class="claims">
-      <div class="c"><div class="cv">1 of ~20</div><span class="cl">candidate behavioural rules mined from operator corrections over eleven weeks and adopted after adjudication, across 22 panel verdicts written in the weeks after the last note. The rest were duplicates, noise, or single quotes.</span></div>
-      <div class="c"><div class="cv">0 of 7</div><span class="cl">generic mined rules that helped past the retirement floor in a real-agent A/B; every effect past the floor was harmful and three were archived. Promised in July as queued, published in this note.</span></div>
-      <div class="c"><div class="cv">58 of 207</div><span class="cl">foreground waits for pull-request state that failed in the held-out weeks, across eighteen sessions and three models, about 390 minutes lost. The first defect the friction method surfaced; its fix was delivered by applying the method by hand.</span></div>
-      <div class="c"><div class="cv">28 to 11</div><span class="cl">total tool calls across six trials per arm to finish one legitimate commit, before and after the first learner-selected fix, on one model under a rule frozen before the trial; the guarded restriction held in every valid control.</span></div>
+      <div class="c"><div class="cv">32%</div><span class="cl">of reviewed changes drew at least one finding in October. In July it was 75 percent. This is the number you are tempted to report, before the next three.</span></div>
+      <div class="c"><div class="cv">0</div><span class="cl">reviews with every seat present since 29 September. The seat that had posted a third of all findings is held on its subscription quota, intermittently from late August and entirely since then, and every review since carries a degraded mark on the review itself.</span></div>
+      <div class="c"><div class="cv">28%</div><span class="cl">of posted findings rated high or critical in October, against 41 percent in August, after severity rules were written into every seat's prompt on 5 September.</span></div>
+      <div class="c"><div class="cv">18 of 4,135</div><span class="cl">findings since September with a recorded outcome. Whether a finding was acted on is not measured, by a decision rather than an accident.</span></div>
     </div>
   </section>
 
@@ -131,6 +131,11 @@
     <h2>the archive</h2>
     <div class="sub">every note carries one folio. the magnitudes are corpus-specific; the structural claims are what transfer.</div>
     <div class="sheet-rows">
+      <a class="arow" href="notes/review-curve.html">
+        <span class="code">ai-16</span><span class="date">22 oct 2026</span><span class="type">instrument drift</span>
+        <span class="ttl"><span class="t">When your AI code reviewer goes quiet, check the reviewer before you credit the code.</span><span class="th">A self-hosted review daemon's findings rate fell from 75 percent of changes in July to 32 percent in October. In the same weeks a seat went absent on quota, the models changed, severity rules entered every prompt and the changes got smaller; with no seat held constant, the code's share is unidentified. Adoption of findings is unmeasured and reverts are too rare to grade the reviewer. A reference series, an outcome per finding and a person on a sample, so the next reading means something.</span></span>
+        <span class="read">13 min</span>
+      </a>
       <a class="arow" href="notes/learning-signal.html">
         <span class="code">ai-14</span><span class="date">8 oct 2026</span><span class="type">learning signal</span>
         <span class="ttl"><span class="t">The loop learned slowly from corrections and faster from verdicts.</span><span class="th">Two learning channels on one governed fleet, measured through week 41: adjudicated operator corrections yielded one new rule from about twenty candidates escalated over eleven weeks and worked as a filter; the July A/B measured the mined generic rules as neutral to harmful; execution friction ranked by recurrence found the fleet's most expensive recurring defect, and the first learner-selected fix measured 28 tool calls down to 11 across six trials per arm under a frozen rule. The five-state ledger with every column dated, and a one-week exercise plus a checklist for enterprise agent programs.</span></span>
@@ -209,8 +214,8 @@
     </div>
     <div class="side">
       <div class="sk">the publication</div>
-      <div class="sv"><span class="k">notes</span><span class="d">13</span></div>
-      <div class="sv"><span class="k">latest</span><span class="d">ai-14</span></div>
+      <div class="sv"><span class="k">notes</span><span class="d">14</span></div>
+      <div class="sv"><span class="k">latest</span><span class="d">ai-16</span></div>
       <div class="sv"><span class="k">register</span><span class="d">applied AI research</span></div>
       <div class="sv"><span class="k">set in</span><span class="d">Newsreader</span></div>
       <div class="sk elsewhere-h">elsewhere</div>

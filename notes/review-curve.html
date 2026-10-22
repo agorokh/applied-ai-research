@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>When your AI code reviewer goes quiet, check the reviewer before you credit the code · instrument drift in AI code review: a findings rate that fell by half on 8,271 pull requests, and the changes under it · Applied Intelligence</title>
+<meta name="description" content="A self-hosted AI code reviewer posted a finding on 75 percent of the changes it saw in July and 32 percent in October. That looks like the code getting better. The records cannot show that: one of four reviewing seats went absent on its quota, two seats changed models, severity rules were written into every prompt, and the changes got smaller. Nothing yet measures whether a finding was acted on, and reverts are too rare to grade the reviewer. What to decompose before you report an AI reviewer's trend, and the measurements we are adding.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/review-curve.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="When your AI code reviewer goes quiet, check the reviewer before you credit the code.">
+<meta property="og:description" content="The reviewer is not a thermometer. It is four thermometers from four vendors, swapped and recalibrated while the patient was being measured. Our reviewer found something on 75 percent of changes in July and 32 percent in October. A seat went absent on quota, the models changed, severity rules entered every prompt, and the changes got smaller. Whether a finding was acted on is not measured. What to decompose before you credit the code.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/review-curve.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-16-social.png">
+<meta property="og:image:alt" content="A typographic plate: the words 'The reviewer is not a thermometer. It is four thermometers from four vendors, swapped and recalibrated while the patient was being measured.' set as a large display line, above a ledger of three measurements: zero reviews with every seat present since 29 September; 4 of 4 seats changed model, prompt or availability; 18 of 4,135 findings with a recorded outcome.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-16-social.png">
+<meta name="twitter:title" content="When your AI code reviewer goes quiet, check the reviewer before you credit the code.">
+<meta name="twitter:description" content="The reviewer is not a thermometer. It is four thermometers from four vendors, swapped and recalibrated while the patient was being measured. Findings fell from 75 percent of changes to 32; a seat went absent on quota, the models changed, prompts changed, changes got smaller. What to decompose before you report the trend.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+  /* optional methods material: a closed disclosure in the calm finding register */
+  details.methods { margin: 22px 0; padding: 18px 26px; border-left: 1px solid var(--calm); background: linear-gradient(rgba(95,122,92,0.05), rgba(95,122,92,0.02)); }
+  details.methods summary { cursor: pointer; list-style: none; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--calm); }
+  details.methods summary::-webkit-details-marker { display: none; }
+  details.methods summary::after { content: ' · open'; color: var(--ink-3); font-style: normal; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; }
+  details.methods[open] summary::after { content: ' · close'; }
+  details.methods h3 { font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.25; margin: 10px 0; color: var(--ink); }
+  details.methods p { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0; max-width: 66ch; }
+  details.methods p + p { margin-top: 10px; }
+</style>
+</head>
+<body data-room="7" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 16</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 10 · 22</span>
+      <span class="dot">·</span><span>ai-16</span>
+      <span class="dot">·</span><span>13 min read</span>
+      <span class="dot">·</span><span>instrument drift in AI code review</span>
+    </div>
+    <h1>When your AI code reviewer goes quiet, check the reviewer before you credit the code.<em>instrument drift in AI code review: a findings rate that fell by half on 8,271 pull requests, and the changes under it.</em></h1>
+    <p class="lede">If AI agents review every change your team ships, you already have a number that looks like a quality metric: how often the reviewer finds something. When it falls, the tempting report is that the code got better. Ours fell from 75 percent of reviewed changes in July to 32 percent in October, across four model seats, 44,074 seat reviews and 8,271 pull requests. I cannot tell from these records whether the code earned any of it. In the same weeks, one seat exhausted its subscription quota, three seats changed models, we wrote severity rules into every prompt, and the changes themselves got smaller. No seat was held constant, so the code's share of the decline is unidentified. Nothing yet measures whether a finding was acted on, and reverts are too rare in this fleet to grade a reviewer. The practical part is what to decompose before you report such a trend, and the measurements we are adding so that the next reading can be trusted. The reviewer is not a thermometer. It is four thermometers from four vendors, swapped and recalibrated while the patient was being measured.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">32%</div><span class="l">of reviewed changes drew at least one finding in October, through the 20th. In July it was 75 percent. This is the number you are tempted to report, before the next three.</span></div>
+      <div class="ms"><div class="v">0</div><span class="l">reviews with every seat present since 29 September. The seat that had posted a third of all findings is held on its subscription quota, intermittently from late August and entirely since then, and every review since carries a degraded mark on the review itself.</span></div>
+      <div class="ms"><div class="v">28%</div><span class="l">of posted findings rated high or critical in October, against 41 percent in August, after severity rules were written into every seat's prompt on 5 September.</span></div>
+      <div class="ms"><div class="v">18 of 4,135</div><span class="l">findings since September with a recorded outcome. Whether a finding was acted on is not measured, by a decision rather than an accident.</span></div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The curve fell by half</a>
+        <a href="#s02"><span class="no">ii</span>The reviewer</a>
+        <a href="#s03"><span class="no">iii</span>Four thermometers</a>
+        <a href="#s04"><span class="no">iv</span>The same patient twice</a>
+        <a href="#s05"><span class="no">v</span>Cost measured, benefit not</a>
+        <a href="#s06"><span class="no">vi</span>Pin one thermometer</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">published</span><span class="d">22 oct 2026</span></div>
+        <div class="v"><span class="k">scope</span><span class="d">one reviewer, 24 repositories</span></div>
+        <div class="v"><span class="k">form</span><span class="d">dated audit + decomposition</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-16</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the curve fell by half</span></div>
+        <h2>A falling findings rate looks like quality. <em>It is a reading of an instrument that kept changing.</em></h2>
+        <p class="lede">Any team that puts AI reviewers on every pull request gets a free time series: the share of changes on which the reviewer finds something, and the number of findings per change. When they fall, the story writes itself, because the reviewer is assumed to hold still while the code varies. The reviewer does not hold still. Its seats come and go with vendor quotas, its models change under their product names, its prompts get tuned, and the work it is shown changes shape. Each of those moves the curve without a line of code getting better or worse.</p>
+        <p>The measure here is the plainest one: of the heads the reviewer looked at in a month, what share drew at least one posted finding. In August I published, of a single repository, that "across 1,404 review objects, the rate of rounds that emit findings has stayed flat over 181 consecutive review rounds" (<a href="gate-metabolism.html#s03">the governance note, section iii</a>). Read across the 24 repositories the reviewer watches, the line was never flat for long, and from September it fell out of its band. October is a partial month, read to the 20th, with every review in it degraded.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · share of reviewed heads with at least one posted finding, by month, all 24 repositories; 2,404, 7,127, 4,588, 2,566 and 3,663 heads. October runs to the 20th. Findings posted per head over the same months: 1.6, 1.9, 1.4, 0.9 and 0.7. Dated changes in the reviewer: one seat held on its quota intermittently from the last week of August and entirely from 29 September; severity rules in every prompt on 5 September; a model change on one seat on 18 September and on another on 13 October.</figcaption>
+          <div data-atelier-figure='{"type":"bars","max":100,"unit":"%","rows":[{"label":"June","value":59.6,"valueLabel":"59.6%","tint":"ink"},{"label":"July","value":74.6,"valueLabel":"74.6%","tint":"ink"},{"label":"August","value":61.9,"valueLabel":"61.9%","tint":"ink"},{"label":"September","value":51.3,"valueLabel":"51.3%","tint":"work"},{"label":"October, to 20th","value":31.6,"valueLabel":"31.6%","tint":"work"}]}'></div>
+        </figure>
+        <p>If the reviewer were a fixed instrument, the next sentence would be that the fleet makes fewer mistakes per change than it did in July, by a wide margin. The rest of this note is why that sentence cannot be written from these records, and what would have to be in place to write it.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the reviewer</span></div>
+        <h2>Four seats, one posted review, three minutes. <em>The anatomy, and what the records hold.</em></h2>
+        <p>The reviewer is a daemon on hardware we run. A webhook tells it a pull request has a new head; it fetches the whole change against its merge base, runs four model seats over it, each a vendor coding product on a subscription we already hold (Cursor, Google Antigravity, Grok and Kimi; named because each changed on a different date, and the dates are the decomposition; no vendor took part in this note), merges their findings into one review, and posts it through the normal review surface. A small local model runs first as a pre-pass that posts nothing. Findings below medium severity are kept in the record but not posted. Since 6 September a pull request cannot merge without this review, and when a seat is unavailable the posted review says so, in a machine-readable line, with the reason.</p>
+        <p>Between 21 June, when the daemon began recording each seat's review as a row, and 20 October, it produced 44,074 seat reviews on 20,348 heads of 8,271 pull requests across 24 repositories, and posted 28,447 findings. Its attempt record begins on 4 September: of 5,923 review requests since then, 5,418 ended in a posted review, 291 raised an error and posted nothing, and 214 were skipped because the patch was identical to one already reviewed. The review is quick: the posting attempt takes 125 seconds at the median, and a separate reading of 504 reviewed rounds on code changes in one repository put the author's wait from push to posted review at 3.9 minutes at the median, 18.6 at the ninetieth percentile. In that reading, waiting on the review was 5 percent of a pull request's open-to-merge time, and the rounds the review provoked, push to next push at 22.5 minutes each, were 40 percent. Those are elapsed times on the reviewer's clock, not human effort. Readers have asked for the other clock, the operator's minutes from opening a diff to trusting it, and one of them already keeps it per model with a count of second reads [6, 7]. This note has only the reviewer's clock; the operator's is the subject of the next note in this series.</p>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>four thermometers, and what happened to each</span></div>
+        <h2>Four thermometers, and what happened to each. <em>One taken away, three swapped, all four recalibrated, and the patient changed.</em></h2>
+        <div class="pull">The reviewer is not a thermometer. It is four thermometers from four vendors, swapped and recalibrated while the patient was being measured.</div>
+        <p><b>One thermometer was taken away.</b> Over the summer the Cursor seat posted 9,818 findings, a third of all of them and within a hundred of the busiest seat. It produced 4,180 seat reviews in July, 2,673 in August, 676 in September and none in October: it exhausted its subscription quota, and the daemon did what it is built to do, posting the other seats' review and marking it degraded in the review body. The daemon records the vendor's quota refusal and nothing else, so a seat on a consumer plan can vanish from a production gate without notice. The hold was intermittent at first, with the seat present on 45 percent of heads in the last week of August, none in the second week of September, about half in the two weeks after, and none from 29 September; no review since has had every seat present. The seat's absence removed coverage, and the decline coincided with it; how much of the seat's output the other three would have duplicated is not known. This is the clean case, because the daemon wrote the cause into the record at the time.</p>
+        <p><b>Three were swapped.</b> Three seats changed the model they report in the window: Kimi on 20 July, Grok on 18 September, and Antigravity on 13 October, from Gemini 3.1 Pro to Gemini 3.8 Flash. In the seven days before that last switch the older model posted 0.29 findings per review; in the seven days after, the newer posted 0.08. That is a live change on one seat, not a controlled comparison of the two models; the drop is what the seat did, and it is the seat that sits in the gate. The fourth seat, Cursor, ran on a vendor-routed "auto" model from July, which names no model at all. Those are the names the seats reported per review, and a product label on a subscription is not itself evidence that the model under it held still between those dates.</p>
+        <p><b>All four were recalibrated.</b> On 5 September we wrote a block of severity-calibration rules into every seat's prompt, meaning to cut over-rated findings after an audit had found them. The share of posted findings rated high or critical was 37 percent in July and 41 in August, 36 in September and 28 in October, when it was 27 or 28 percent for every seat. Because findings below medium are not posted, a prompt that rates more conservatively also posts less. This was a deliberate improvement to the instrument, and it moves the curve in the same direction as code getting better.</p>
+        <p><b>The patient changed.</b> The median reviewed head changed 237 lines in June, 334 in July, 724 in August, 391 in September and 177 in October. A smaller change offers fewer places for a finding, so change size can move the per-head rate independently of how dense the defects are, and the fall from August to October is in the direction of the curve. It does not explain the curve on its own: July's highest rate came on mid-sized changes. Smaller changes may also be a response to the reviewer becoming a gate: a team that pays a round for every finding learns to ship less per round. That is a change in the workload, not in the reviewer, and the per-head rate cannot tell the two apart.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> findings posted per seat review, by month, all repositories, with the number of seat reviews under each value. The Kimi seat reported one model from 20 July; its availability and its prompt still changed, so from August it is an unchanged-model comparison, not a control. Its October rate rose while the fleet curve fell.</div>
+          <table class="data">
+            <thead><tr><th>seat</th><th>July</th><th>August</th><th>September</th><th>October</th></tr></thead>
+            <tbody>
+              <tr><td>Cursor <span class="d">vendor-routed model; absent since 29 Sep</span></td><td>1.20 <span class="d">4,180</span></td><td>0.62 <span class="d">2,673</span></td><td>0.73 <span class="d">676</span></td><td><span class="d">no reviews</span></td></tr>
+              <tr><td>Antigravity <span class="d">model changed 13 Oct</span></td><td>0.80 <span class="d">5,598</span></td><td>0.57 <span class="d">4,280</span></td><td>0.49 <span class="d">2,431</span></td><td>0.21 <span class="d">3,184</span></td></tr>
+              <tr><td>Grok <span class="d">model changed 18 Sep</span></td><td>0.45 <span class="d">1,214</span></td><td>0.25 <span class="d">3,062</span></td><td>0.20 <span class="d">1,649</span></td><td>0.19 <span class="d">3,049</span></td></tr>
+              <tr><td>Kimi <span class="d">model changed 20 Jul</span></td><td>2.28 <span class="d">1,581</span></td><td>1.16 <span class="d">1,099</span></td><td>0.60 <span class="d">668</span></td><td>0.97 <span class="d">1,219</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Read Table 1 for what is missing. No seat was held constant in model, prompt and availability across the window, so no row is a control. The one seat whose model did not change after July bounds the question a little: its October rate rose while the fleet's fell, which is consistent with the fleet decline being mostly the other seats' changes, and consistent with other things too. Even a perfectly frozen seat would not settle it on its own, because the repositories, the tasks and the change sizes also moved. Four thermometers, each handled while it was reading, and no control: the code's contribution to the decline is unidentified. It may be real. These records cannot show it, and a team with the same chart cannot either, until it has the reference series and the outcome measures in section vi.</p>
+        <div class="finding calm">
+          <div class="fk">What the daemon did right</div>
+          <h3>It wrote the degradation into the artifact.</h3>
+          <p>Every posted review that lacked a seat carries a line naming the absent seat and the reason, so the absence is readable months later without logs. That is the only one of the four changes that can be reconstructed from the reviews alone; the model changes and the prompt change had to be recovered from the warehouse rows and the change history. If you run a reviewer like this, record all four on the review itself, or on the curve as dated events. A findings curve without its instrument log is not interpretable.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>reading the same patient twice</span></div>
+        <h2>Reading the same patient twice. <em>Later pushes still draw findings; what that does and does not show.</em></h2>
+        <p>Inside a pull request the reviewer sees the same change again after every push, and every push is reviewed as the whole change against its merge base, so the seats get another pass over lines that did not move. Heads with findings were more often followed by another push: since September, 80 percent of heads with at least one posted finding got a later push, against 25 to 40 percent of clean heads. Part of that is the gate itself: since 6 September a standing finding blocks the merge, so a push is the only way forward. Most pull requests end quickly, 64 percent after one reviewed head and 14 percent after two. On the 1,806 that reached three or more, the share of heads with a finding was 76.7 percent on the first head, 75.2 on the second and 67.9 on the third. That is a description of a selected group, the changes that did not clear the gate early, not a test of whether review teaches authors; later heads carry new code as well as fixes, and a finding on the third head may be new, or an old one the seats noticed on their second pass.</p>
+        <p>What the record can say per finding is narrower. Of the 2,872 fingerprinted findings since September on a head that later got another head, 10.4 percent reappeared on a later head of the same pull request; among high-severity findings, 12.5 percent. The other nine in ten did not come back. Not coming back is not the same as fixed: the finding may have been fixed, argued away, or simply not raised again by a model that does not raise the same thing twice. It is the best proxy the record offers today, and section vi replaces it. At the other end, of the 1,580 pull requests the daemon reviewed that merged since 4 September, 229, or 14.5 percent, merged with at least one medium-or-higher finding still standing on the final reviewed head. Some may have been dismissed with a reason the gate recorded, but the gate's ledger holds 18 dismissals for the whole period, so most merged past the finding with no record of why.</p>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>cost measured, benefit not</span></div>
+        <h2>Cheap to run, and not yet shown to prevent anything. <em>The outcome thermometer reads 99.9 for the reviewed and the unreviewed alike, and the adoption chart has nobody filling it in.</em></h2>
+        <p>The running cost is low. Three of the four seats are flat subscriptions the organisation holds anyway, so the reviewer spends their quota rather than new money, which is also why a seat can go absent. The one metered seat cost $277.01 for 8,974 reviews, about three cents each. If the question were only whether the reviewer is affordable, it would be closed.</p>
+        <p>The question is whether it prevents anything. The outcome metric the board carries is the share of reviewed pull requests not reverted after merge. It reads 99.84 to 100 percent for every seat. Across the whole record it hardly moves: of 5,216 daemon-reviewed pull requests merged since 21 June, 1 was reverted; of 543 merged in the same period without a daemon review, none; of 3,397 merged between April and 20 June, before the daemon recorded anything, 4. Reverts are too rare in this fleet, and the comparison groups too different, for this measure to estimate what the reviewer adds. It cannot reject the possibility that the reviewer adds nothing, and it cannot reject the possibility that it adds a great deal. It measures how stable merges are, not what the reviewer did.</p>
+        <p>Adoption, whether a finding was acted on, is not measured at all. Of the 4,135 findings the per-finding record has held since 3 September, 18 carry a disposition, every one a dismissal from the gate's ledger; 4,117 are unknown. The column exists; nothing writes to it, because the measurement had been coupled to a proposal to feed past dispositions back into the reviewers' prompts, and that proposal was declined on evidence. The two can be separated, and section vi does. The honest ledger today reads: 28,447 findings posted, cost known, latency known, coverage known, effect on the code unknown.</p>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>pin one thermometer, keep a known fever</span></div>
+        <h2>Pin one thermometer, keep a known fever, and let a person read a sample. <em>A reference seat, a fixed benchmark set, an outcome per finding, and thirty findings a week graded by hand.</em></h2>
+        <p>Code-review research settled the shape of this problem before AI reviewers existed: what reviewers find depends on who reviews and why (Bacchelli and Bird, 2013; Sadowski and colleagues, 2018), and review's effect on quality shows up in defect outcomes, not in finding counts (McIntosh and colleagues, 2014). AI reviewers make it acute, because the reviewer is now a vendor subscription whose model, quota and prompt can change without anyone on the team deciding to change the reviewer. A falling count then invites the reading Goodhart warned about, a measure mistaken for the thing it was meant to track. None of the following is research. Each is a column and a habit, and each closes a gap this note had to work around.</p>
+        <ol>
+          <li><b>An instrument log drawn on the curve, and one thermometer pinned.</b> Every change to a seat's model, prompt, posting floor or availability becomes a dated event stored beside the findings, and every chart of findings over time carries those events. One seat is pinned, model and prompt frozen for a quarter, and reported as its own series. That series is a reference, not a control: a fixed set of benchmark changes with known defects, reviewed by every seat on a schedule, is the control, the known fever every thermometer is held against, and workload is reported by change size alongside. Until both exist, no fleet-level finding trend is reported as a quality trend. A reader put the rule more sharply than I had: a change to a reviewer's rules should land with a change to the evaluation that scores it, in the same change, or the evaluation keeps testing the old reviewer [5]. Our severity rules of 5 September landed with no such pairing, which is why their effect had to be reconstructed from the curve afterwards. This plan adopts the principle; it has not yet shown the paired evaluation in practice.</li>
+          <li><b>An outcome per finding, from what the next push did.</b> For every finding on a head that got a later head: did the same finding reappear, did the lines it pointed at change, or neither. Recurred, anchor changed, dropped, over the denominator of findings on non-final heads, per seat and per severity; findings whose head never got another push are reported separately, not folded in. An anchor that changed is an observation about the author's next push, not proof the finding was right or resolved; a person validates a sample before any of it is called adoption. Dispositions are collected without being fed back to the reviewers, so the measurement no longer waits on that debate.</li>
+          <li><b>A precision label, by a person.</b> Thirty posted findings per seat per week, sampled blind to seat and author, graded real, not real, or real but not worth a push, with a second grader on a share of them so the disagreement is on record. Without this, every other number in this note is a count of claims. It is the cheapest of the three and the one that makes the others interpretable. A reader's observation applies here: a model judge can help draft the first iterations of a scorer for an open-ended rubric [8]. In this plan the human sample is that first iteration, and a judge may follow it; it does not replace it.</li>
+        </ol>
+        <p>And one candidate replacement for reverts: the share of merged pull requests that needed a follow-up change touching the same files within fourteen days. This warehouse computed it for 271 merges between mid May and early June and then stopped. Revived, it has enough events to move, and it can be read with and without a daemon review. It is a proxy that needs validating, since a same-file follow-up is not always a defect fix and a defect fix does not always touch the same files, which is what the precision sample is for.</p>
+        <div class="finding">
+          <div class="fk">The practice, for enterprise agent programs</div>
+          <h3>Five habits, none of which depend on my magnitudes.</h3>
+          <p>One: decompose any AI-reviewer trend by seat, by model version and by change size before you read it, and refuse to report it if you cannot. Two: pin one seat as a reference series and keep a fixed benchmark set that every seat reviews on a schedule. Three: make the reviewer write its own degradation into the review it posts, so a quota hold is legible months later without logs. Four: measure a finding's outcome by what the next push did to it, and put a person on a weekly sample so that findings are not only counts of claims. Five: before you adopt an outcome metric, check that it moves without the reviewer; if your revert rate is under one in a thousand, it cannot grade one.</p>
+        </div>
+        <p><b>What this note does not show.</b> That the code got better or worse; its contribution to the decline is unidentified. That findings are correct; precision is unlabelled. That the reviewer prevents defects; the available outcome metric cannot tell. That a finding which did not recur was fixed. One fleet, one operator, and a reviewer I built, which is a reason to trust the record of its failures and to discount the record of its successes.</p>
+        <div class="finding">
+          <div class="fk">If you take one thing</div>
+          <h3>Before you credit the code for a quieter reviewer, list what changed in the reviewer.</h3>
+          <p>Ours had four changes in six weeks and a chart that looked like progress. The chart was true and the progress was unproven. Pin a seat, log the instrument, label a sample, and measure what the next push did to each finding. Check the thermometers before you congratulate the patient. Then the same chart will be worth reporting.</p>
+        </div>
+        <details class="methods">
+          <summary>Methods notes, for readers who want the mechanics</summary>
+          <h3>Grain, windows, definitions, and comparability.</h3>
+          <p><b>Grain.</b> A head is one commit of one pull request that the daemon reviewed; its seat reviews are the rows recorded for that commit, and it drew a finding if those rows posted at least one finding at medium severity or above, the posting floor the daemon has applied since it began recording on 21 June. Months are calendar months in UTC; October runs to 07:50 UTC on the 20th, when every number here was read. Repositories are counted after merging the two names one repository had before and after a transfer. Two placeholder heads written by the daemon's own tests, 7,138 rows carrying 5,112 findings all rated high, sit in the seat-review table; they are excluded here, as the daemon's own round view already excludes them. The August single-repository reading used review rounds as its grain and a dashboard query the daemon's record no longer reproduces, so this note compares months within its own measure and not against the August value.</p>
+          <p><b>Latency and coverage.</b> The 125-second execution figure is the median over the 5,418 posted rounds since 4 September, from the daemon's own clock. The seven-day windows around the Antigravity switch are 6 to 13 October and 13 to 20 October, split at the first review the new model reported. The push-to-review, round and open-to-merge figures come from a separate reading of merged code pull requests in one repository between 6 and 18 October, using the pull request timeline and check-suite times. The attempt record (posted, error, skipped) begins on 4 September; the gate began on 6 September.</p>
+          <p><b>The decomposition.</b> Seat absence is read from the attempt outcome the daemon records. Model names are the model field each seat reports per review. The severity-rule change is dated by the merge that rendered the rules into the prompts. Change size is the lines-changed field recorded per review, taken at the head. Pull request titles were also used to separate documentation and housekeeping changes from code; that split agreed with the diff-size reading, but more than half of October's heads belong to pull requests whose outcome row was not yet written, so it is not reported as a result.</p>
+          <p><b>Recurrence and outcomes.</b> Each finding carries a fingerprint built from repository, category, path and the anchored line. A finding recurred if the same fingerprint appeared on a later reviewed head of the same pull request at least a minute after; the denominator is distinct fingerprinted findings on heads that had a later head, and 676 of the 4,135 finding rows carry no fingerprint. The prevented-revert view joins reviewed pull requests to their merge outcome fourteen or more days after merge. The merged-with-findings figure counts pull requests whose last daemon-reviewed head before merge carried at least one posted finding.</p>
+        </details>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> Every number comes from the author's own reviewer records: per-seat review rows since 21 June 2026, per-finding rows since 3 September, attempt and round rows since 4 September, all read at 07:50 UTC on 20 October 2026, plus one separate reading of code pull requests in one repository between 6 and 18 October. The seats are vendor coding products on the author's own subscriptions; the vendors had no part in this note. No client material appears. The August reading audited here is the author's own.</p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>A. Bacchelli and C. Bird, "Expectations, Outcomes, and Challenges of Modern Code Review", <i>Proceedings of the 35th International Conference on Software Engineering (ICSE)</i>, 2013. What reviewers find depends on the reviewer and the review's purpose.</li>
+          <li>S. McIntosh, Y. Kamei, B. Adams, and A. E. Hassan, "The Impact of Code Review Coverage and Code Review Participation on Software Quality", <i>Proceedings of the 11th Working Conference on Mining Software Repositories (MSR)</i>, 2014. Review's effect on quality measured through post-release defects rather than review output.</li>
+          <li>C. Sadowski, E. S&ouml;derberg, L. Church, M. Sipko, and A. Bacchelli, "Modern Code Review: A Case Study at Google", <i>Proceedings of the 40th International Conference on Software Engineering: Software Engineering in Practice (ICSE-SEIP)</i>, 2018. Review at scale, its latency, and what it is used for.</li>
+          <li>M. Strathern, "'Improving ratings': audit in the British University system", <i>European Review</i> 5(3), 1997. The formulation of Goodhart's law used here: when a measure becomes a target, it ceases to be a good measure.</li>
+          <li>A reader, <a href="https://x.com/ferlogs_/status/2112537153603588443">on X, 20 October 2026</a>: "drift that passes CI just means the evals are still testing the old job. if a rule changes in the PR, its eval should change in the same PR." A reader observation, adopted as a principle in section vi.</li>
+          <li>A reader, <a href="https://x.com/stas_sorokin_/status/2112664252276158746">on X, 20 October 2026</a>: a review clock of minutes from diff open to trust, per model, plus a count of second reads. A reader observation; the operator's clock is the next note's subject.</li>
+          <li>A reader, <a href="https://x.com/RShmider/status/2112441765852758330">on X, 20 October 2026</a>: "We measure tokens, latency, and API costs, but somehow forget to include our own time." A reader observation.</li>
+          <li>A reader, <a href="https://x.com/adlrocha/status/2112429728665882781">on X, 20 October 2026</a>: a model judge "helps designing the first few iterations of the scorer" when the task is open-ended. A reader observation, qualified in section vi.</li>
+          <li>Earlier notes on the same fleet: <a href="gate-metabolism.html">"Governance is a metabolism, not a manifest."</a> (ai-13), which carried the single-repository flat-curve reading audited here; <a href="actuation-gap.html">"Self-improvement is an actuation problem."</a> (ai-11), on finding problems as a producer that does not by itself change behaviour; and "Before you train a model on your company's history, check who wrote it." (ai-15), on review records written by agents.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-16</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="../assets/toc.js"></script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>
