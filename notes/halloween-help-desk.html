@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>My Halloween skull got heckled. · What a porch full of trick-or-treaters taught me about enterprise support. · Applied Intelligence</title>
+<meta name="description" content="I built a talking skull that could take a dare, change its act and work a porch full of kids. Its Halloween shift gave me a rehearsal for running an enterprise support agent.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/halloween-help-desk.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="My Halloween skull got heckled.">
+<meta property="og:description" content="I built a talking skull that could take a dare, change its act and work a porch full of kids. Its Halloween shift gave me a rehearsal for running an enterprise support agent.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/halloween-help-desk.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-18-social.png">
+<meta property="og:image:alt" content="My Halloween skull got heckled. What a porch full of trick-or-treaters taught me about enterprise support.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="My Halloween skull got heckled.">
+<meta name="twitter:description" content="I built a talking skull that could take a dare, change its act and work a porch full of kids. Its Halloween shift gave me a rehearsal for running an enterprise support agent.">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-18-social.png">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background: #e6dccb; }
+  .sheet { max-width: 60rem; }
+  .article { max-width: 51rem; margin: 0 0 3rem; }
+  .cover h1 { max-width: 20ch; }
+  .cover h1 em { margin-top: .45em; font-size: .58em; max-width: 28ch; }
+  @media (max-width: 700px) { .masthead nav { display: none; } }
+</style>
+</head>
+<body data-room="4" data-mood="paper">
+<div class="wash"></div>
+<main class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#backstage">the build</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 18</span>
+  </header>
+  <section class="cover" id="hero">
+    <div class="eyebrow"><span class="lead">field note</span><span class="dot">·</span><span>8 nov 2026</span><span class="dot">·</span><span>ai-18</span><span class="dot">·</span><span>4 min read</span></div>
+    <h1>My Halloween skull got heckled.<em>What a porch full of trick-or-treaters taught me about enterprise support.</em></h1>
+    <p class="lede">It’s easy to spend a whole AI help desk demo auditioning the voice. Give me the shift lead’s chair for a minute. Sign-in is down across the company. How do I get that wonderfully patient agent to stop recommending password resets? Halloween gave me a rehearsal for that job. I chose the skull and its voice. The kids chose the questions.</p>
+  </section>
+
+  <article class="article">
+    <section class="sec" id="show">
+      <h2>The audience had notes</h2>
+      <p>At 4:26 on Halloween afternoon, a trick-or-treater tried to get my talking skull to do arithmetic. Its eventual ruling: “Math is for the living. The dead only count dreams.” I had rehearsed the fog cue. I hadn’t prepared for a math quiz.</p>
+      <p>The kids laughed, dared the skull to scare them and let it know when it needed better material. Three times that afternoon the verdict was the same: the skull wasn’t scary. From the booth I asked for a darker performance. The lines got sharper. One group pronounced the skull mean. As performance reviews go, I’ll take it.</p>
+    </section>
+
+    <section class="sec" id="backstage">
+      <h2>Backstage at the skull</h2>
+      <p>I gave the speaking part to Qwen3.5-4B, a small model running on my Mac. A kid could get an answer without waiting for a second opinion on the joke. At the same time a larger model, Grok 4.7, worked as director. It could read the exchange, look at the latest porch camera frame and see which effects were ready. If the actor overlooked a detail on a costume, the director could slip it a note for its next line. In the director’s log I counted 68 requests to give the actor direction and just two to say an exact line.</p>
+      <p>The booth gave me two places to put a note: <em>for this visit</em> and <em>for tonight</em>. I could keep things gentle for one group even on a scarier night. Ordinary software decided whether a note still belonged onstage. At 4:06, by the time Grok sent back a direction, a new visit had opened. The software compared visit numbers and discarded the note. During the later math visit, Grok finished a call and the software saw that I’d recently used the booth. It gave me the floor. The skull carried on.</p>
+      <p>Of course, nobody presses “New chat” on a skull. I wanted it to remember me if I ducked behind the porch pillar and came right back. On Halloween several groups came and went under one visit number, and some newcomers got the previous group’s goodbye. At a shared help terminal, I’d let an employee end the session without closing their case. The next person gets a blank screen. A specialist can verify the returning employee another way and pick up the case even while sign-in is down.</p>
+    </section>
+
+    <section class="sec" id="rehearsal">
+      <h2>Rehearsing the part the audience sees</h2>
+      <p>Before Halloween, I changed when the skull listened and gave it short replies to use while a longer answer was forming. I ran the same four simulated crowd scenes before and after. When somebody spoke directly to the skull while it was quiet, the median wait for playback to start fell from 2.6 seconds to 1.5. Even a bit of filler counted. On the porch, the fog machine gave me a different clock: in one rehearsal the camera first saw fog at the nozzle about eight and a half seconds after the cue. A timely reply is a courtesy; the fog still has to come out.</p>
+    </section>
+
+    <section class="sec" id="desk">
+      <h2>Give the shift lead a turn</h2>
+      <p>A service desk already has a backstage. In <a href="https://sre.google/sre-book/managing-incidents/">Google’s incident playbook</a>, the incident commander keeps a live record and someone is responsible for communicating updates. I’d give a support director that incident record and the agent on the call the employee’s case history. They answer different questions: is sign-in working for the company, and can <em>this person</em> get back to work?</p>
+      <p>I’d start the rehearsal with the agent halfway through preparing a password reset. The shift lead posts a temporary instruction for affected cases: skip the reset and give the caller the incident update. I’d tag each prepared reply with its case number and the version of the guidance it used. Just before speaking, check both. If either has changed, discard the reply. This caller should hear the outage update next. When the lead retires the instruction, ordinary troubleshooting should resume for anyone still locked out.</p>
+      <p>Now run that employee’s call twice against a test account. Both times the unlock service accepts the request. In one run the employee can sign in afterward; in the other they can’t. I’d close the first ticket and send the second to a specialist with the failed sign-in already in the notes. That’s the part I’d notice as a caller: somebody picks up and I don’t have to tell the whole story again.</p>
+      <p>After all the work I put into making the skull scarier, this is the line I’d keep: “Sleep now, brave crew. The dark is just a quiet blanket.”</p>
+    </section>
+    <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-18</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+  </article>
+</main>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>
