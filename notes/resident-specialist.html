@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>Before you train a model on your company's history, check who wrote it · Applied Intelligence</title>
+<meta name="description" content="I trained two models to write review comments. At screening code changes, neither beat a two-example prompt. A separate filter would have skipped 105 documentation blocks in 20 live runs on 11 changes. Zero whole reviews qualified.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/resident-specialist.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Before you train a model on your company's history, check who wrote it.">
+<meta property="og:description" content="I trained two models to write review comments. At screening code changes, neither beat a two-example prompt. A separate filter would have skipped 105 documentation blocks in 20 live runs on 11 changes. Zero whole reviews qualified.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/resident-specialist.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-15-social.png">
+<meta property="og:image:alt" content="A typographic plate: the words 'Before you train a model on your company's history, check who wrote it.' set as a large display line, above a ledger of three measurements: 2,992 of 2,993 review records written by AI agents; outside models agreed with those records 60.5 percent of the time, where calling everything clean agrees 67 percent; my training recipe beat a prompt at 0 of 2 model sizes.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-15-social.png">
+<meta name="twitter:title" content="Before you train a model on your company's history, check who wrote it.">
+<meta name="twitter:description" content="I trained two models to write review comments. At screening code changes, neither beat a two-example prompt. A separate filter would have skipped 105 documentation blocks in 20 live runs on 11 changes. Zero whole reviews qualified.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+  /* optional methods material: a closed disclosure in the calm finding register */
+  details.methods { margin: 22px 0; padding: 18px 26px; border-left: 1px solid var(--calm); background: linear-gradient(rgba(95,122,92,0.05), rgba(95,122,92,0.02)); }
+  details.methods summary { cursor: pointer; list-style: none; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--calm); }
+  details.methods summary::-webkit-details-marker { display: none; }
+  details.methods summary::after { content: ' · open'; color: var(--ink-3); font-style: normal; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; }
+  details.methods[open] summary::after { content: ' · close'; }
+  details.methods h3 { font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.25; margin: 10px 0; color: var(--ink); }
+  details.methods p { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0; max-width: 66ch; }
+  details.methods p + p { margin-top: 10px; }
+</style>
+</head>
+<body data-room="5" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 15</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 11 · 11</span>
+      <span class="dot">·</span><span>ai-15</span>
+      <span class="dot">·</span><span>10 min read</span>
+      <span class="dot">·</span><span>a data check before an in-house model</span>
+    </div>
+    <h1>Before you train a model on your company's history, check who wrote it.<em>Could I skip a whole code review?</em></h1>
+    <p class="lede">Before I would fund a model to screen code changes, I wanted to know whether training bought anything over two examples in a prompt, and whether the filter could spare a whole review. I trained 4B and 8B models to write the kinds of comments authors had acted on. When I asked them to classify changed code, neither beat the same base model given two examples.</p>
+    <p class="lede">A separate filter with a rewritten prompt looked more promising. I ran it alongside the full reviewer on 11 live changes. It would have skipped 105 documentation blocks, but every one of the 20 review runs still contained a block the filter sent for review. Zero whole reviews qualified to skip. For an enterprise pilot, that’s the number I’d ask to see before approving a rollout.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">0 of 2</div><span class="l">model sizes at which training on accepted comments beat two examples at screening code changes.</span></div>
+      <div class="ms"><div class="v">105 of 315</div><span class="l">documentation blocks the prompt-based filter would have skipped in the live trial.</span></div>
+      <div class="ms"><div class="v">0 of 78</div><span class="l">code blocks that met the same cutoff.</span></div>
+      <div class="ms"><div class="v">0 of 20</div><span class="l">review runs in which every block qualified to skip. The runs covered 11 distinct changes.</span></div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>The decision</a>
+        <a href="#s02"><span class="no">ii</span>The test</a>
+        <a href="#s03"><span class="no">iii</span>What happened</a>
+        <a href="#s04"><span class="no">iv</span>What the records say</a>
+        <a href="#s05"><span class="no">v</span>A cheaper candidate</a>
+        <a href="#s06"><span class="no">vi</span>The rollout decision</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">revised</span><span class="d">11 nov 2026</span></div>
+        <div class="v"><span class="k">scope</span><span class="d">one pipeline, one task</span></div>
+        <div class="v"><span class="k">form</span><span class="d">data check + null result</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-15</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the decision</span></div>
+        <h2>When could I switch off <em>a full review?</em></h2>
+        <p class="lede">I send a whole change for review. The filter scores one block at a time. If a change contains ten blocks and nine qualify to skip, I still pay for the full review. Only when all ten qualify could I omit that call. In the live trial I kept the full reviewer on for every change.</p>
+        <p>My review history gave me a cheap way to test the idea. I knew which comments an author had acted on. A block with no accepted comment was harder to interpret. A reviewer might have found nothing, missed a problem, or left a comment the author declined.</p>
+        <p>In ai-13 I counted 924 of 2,993 review threads whose findings an author had acted on. For this study I checked who wrote those records. Agents wrote 2,992 and a person wrote one. Those records could tell me which blocks had drawn a response. To decide whether to let a change bypass review, I also needed to know what the filter would miss.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the test</span></div>
+        <h2>The test training had to pass. <em>Beat the same model, given two examples.</em></h2>
+        <p>I had 1,097 pairs from 233 changes. Each pair contained a block of code and an accepted review comment about it. Only one comment was written by a person. I used 988 pairs for training and 109 for validation. On one machine, I fine-tuned two Qwen3 models with LoRA, a method that updates a small set of weights. The 4B run took 13 minutes and the 8B run took 20.</p>
+        <p>In training, the model saw a block and learned to write the comment. Every example had a comment to write. In the screening test I asked the model to decide whether a reviewer should flag the block. Each trained model had to answer PITFALL or CLEAN without examples. I gave its untrained counterpart two examples in the prompt, one of each answer. This tested whether learning to write comments carried over to screening. Training a classifier directly on both kinds of block would be a separate experiment.</p>
+        <p>I held out entire changes for the test and sampled 158 blocks with an accepted comment and 316 without. That one-to-two mix was a sampling choice. The share of flags that match accepted comments can change when the mix changes. Alongside the four small-model runs, I scored a paid model, Claude Haiku 4.5, and a list of keyword rules on the same 474 blocks.</p>
+        <p>Before the July run I wrote down two criteria. To justify maintaining a trained model, it had to beat its own two-example baseline. To qualify as a filter, at a setting that caught at least half the blocks with an accepted comment, at least three quarters of the blocks it flagged had to have an accepted comment.</p>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>what happened</span></div>
+        <h2>Neither trained model <em>beat its two-example baseline.</em></h2>
+        <p>At 4B, training scored 0.47 against 0.53 for the prompt. At 8B the scores were 0.55 and 0.58. The ranking score measures how often a block with an accepted comment ranks above one without. Chance scores 0.5. Precision is the share of flagged blocks with an accepted comment at the setting that catches at least half of them.</p>
+        <div class="tbl">
+          <div class="cap"><b>Table 1 ·</b> 474 held-out blocks of changed code, 158 with an accepted comment, run of 6 July 2026. The plus-or-minus is the 95 percent range of the ranking score from sampling alone.</div>
+          <table class="data">
+            <thead><tr><th>candidate</th><th class="n">ranking score</th><th class="n">precision</th><th class="n">cost per block</th></tr></thead>
+            <tbody>
+              <tr><td>paid model <span class="d">Claude Haiku 4.5</span></td><td class="n">0.70 ± 0.05</td><td class="n">0.496</td><td class="n">$0.002</td></tr>
+              <tr><td>keyword rules <span class="d">free</span></td><td class="n">0.59 ± 0.05</td><td class="n">0.394</td><td class="n">0</td></tr>
+              <tr><td>8B, prompted with two examples</td><td class="n">0.58 ± 0.05</td><td class="n">0.408</td><td class="n">0</td></tr>
+              <tr><td>8B, trained</td><td class="n">0.55 ± 0.05</td><td class="n">0.385</td><td class="n">0</td></tr>
+              <tr><td>4B, prompted with two examples</td><td class="n">0.53 ± 0.05</td><td class="n">0.370</td><td class="n">0</td></tr>
+              <tr><td>4B, trained</td><td class="n">0.47 ± 0.05</td><td class="n">0.368</td><td class="n">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The 4B trained model flagged about nine blocks in ten. Even the paid model reached only 0.496 precision against my target of 0.75. I stopped spending on this training recipe. The intervals in the table describe individual scores. Establishing how precisely I had measured the gap within each pair would require comparing their predictions block by block.</p>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>what the records say</span></div>
+        <h2>The records were hard to predict from the code. <em>For every model I tried.</em></h2>
+        <p>A weak result invites the expensive next step: a bigger model, longer training, a better method. Before spending on any of that, I asked a cheaper question. How well can anything predict these records from what my filter would see, one block of changed code? I showed a sample of 120 blocks to three large models from different vendors, Claude Opus 4.8, DeepSeek v3.2 and Qwen3 235B, without my records, and took their majority vote.</p>
+        <p>The three were unanimous on only 38 of the 119 blocks that got a clear verdict; the rest split two to one. Their majority agreed with my records 60.5 percent of the time, less than the 67 percent you would get by calling every block clean. Of the blocks my records marked as needing a comment, the panel thought half did not; of the blocks my records marked clean, the panel thought a third needed one. Nothing I tried, trained or prompted, cheap or paid, came close to my target: the best, the paid model, reached 0.496 precision on all 474 blocks, against 0.75.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · precision against my own records on the 119 sample blocks with a clear panel verdict, every candidate scored on those same blocks from the changed code alone. The rewritten prompt is the one in section v. The target was set before anyone checked how predictable the records were.</figcaption>
+          <div data-atelier-figure='{"type":"bars","max":1,"rows":[{"label":"my target","value":0.75,"valueLabel":"0.75","tint":"hold"},{"label":"rewritten prompt","value":0.465,"valueLabel":"0.47","tint":"ink"},{"label":"paid model","value":0.417,"valueLabel":"0.42","tint":"ink"},{"label":"outside panel","value":0.413,"valueLabel":"0.41","tint":"ink"},{"label":"flag everything","value":0.328,"valueLabel":"0.33","tint":"neg"}]}'></div>
+        </figure>
+        <p>Two readings fit, and they are not exclusive. The records may be noisy: whether a comment was acted on depends on which agent wrote it and on the author that day. Or a block alone may not carry what decided the record: the rest of the change, the discussion, the agent's instructions. Either way, a filter that sees only the block is working from a weak signal, and a bigger or better-trained model would be starting from the same one. A free keyword list gives a hint. Its ranking score was 0.62 against my records on the sample and fell to 0.55 against the panel's votes, while most other candidates rose when scored against the panel. Keyword rules resemble what the review agents themselves look for, so against the agents' own records they were partly grading their own work.</p>
+        <p>The panel is three AI models judging records written by other AI agents, and one of them shares a vendor with the paid candidate; the methods notes give the details. No human graded the sample. I can measure how well each model predicted my records. Whether a reviewer should have flagged a given block is a different question. In October I tested how much that answer depended on which models I asked.</p>
+        <div class="finding calm">
+          <div class="fk">What this check is for</div>
+          <h3>Test how predictable your records are before you set a target.</h3>
+          <p>It cost one sample of 120 blocks and three model calls each. Run first, it would have shown that none of the models I could reach came near my target from a single block of code. That was reason enough to look at the records and at the missing context before funding any training.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>a cheaper candidate</span></div>
+        <h2>Could a rewritten prompt <em>spare the full reviewer?</em></h2>
+        <p>On 17 October I scored changes as they arrived and kept the full reviewer running alongside the filter. The filter would have skipped 105 of 315 documentation blocks and zero of 78 code blocks. Across 20 runs on 11 distinct changes, every run still had work for the full reviewer. That was the rollout decision for this cohort. I kept full review on.</p>
+        <p>The offline results explain why I took the prompt into that trial. In July I used GEPA, a tool that rewrites a model’s instructions and examples. A large model proposed edits and a small model tried them on 120 practice blocks kept apart from the evaluation. My first scoring rule penalized a false alarm more than a missed finding. The tool learned to flag almost nothing. When I gave it one point for each correct answer, precision rose to 0.464, close to the paid model’s 0.496 in that run. Median time per block was 0.26 seconds against 2.35. About 0.04 of the gain came from vocabulary borrowed from my own pitfall notes.</p>
+        <p>After the July candidates missed the original precision target, I changed the question. How many blocks could I omit for each finding missed? I required at least five skips per miss, at most one finding in ten missed and no high or critical finding skipped. I applied the rule against both my records and the panel’s votes. The rewritten prompt qualified, as did a hand-written prompt using the same vocabulary. The keyword rules and the paid model had no qualifying setting.</p>
+        <p>I chose the July cutoff on the same 474 blocks I used to score it. It would have skipped 22 blocks, including one of the 158 with an accepted comment. Pricing those 22 at the paid model’s per-block rate gave me a reason to test on live changes. On 50 fresh blocks the filter would have skipped nine, seven of them documentation, and missed none of seven recorded findings.</p>
+        <p>In October, four models graded the original 120-block sample blind. They flagged six blocks, called 106 clean and left eight unresolved. Six positives gave me too little evidence to judge a 10 percent miss limit. Before two of those models graded the full 474, I fixed the scoring rule. They resolved 449, including 142 of the 158 historical positives. They flagged 27 blocks, 25 of which had an accepted comment. Their agreement with my records was 73.5 percent, against 68.4 percent for calling every resolved block clean.</p>
+        <p>The two graders called all 22 proposed skips clean. None of the 25 unresolved blocks fell among them. The filter missed zero of the 27 panel positives, for a one-sided 95 percent Wilson upper bound of 9.11 percent under those model labels. One miss would have put it over my limit. No human graded the sample. The model grades answered my question about missed blocks. The live runs answered how many review calls I could spare.</p>
+        <details class="methods">
+          <summary>Methods notes, for readers who want the mechanics</summary>
+          <h3>How I trained, scored and graded the models.</h3>
+          <p><b>Data.</b> Training pairs were accepted review comments with the block of code they were written against, 1,097 pairs across 233 changes, one written by a person. Evaluation used 474 blocks from changes held out as whole changes, so no change contributed to both, at one block with an accepted comment to two without.</p>
+          <p><b>Training.</b> Qwen3 at 4B and 8B parameters, 4-bit, LoRA on the top 8 layers, 300 steps of 2 examples at a learning rate of 0.00001, less than one pass over the 988 training pairs; 13 and 20 minutes on one 64 GB Apple-silicon machine. The loss covered the whole conversation, prompt included, so its fall shows the models learned to reproduce comment text, not that they learned to classify.</p>
+          <p><b>Scoring.</b> Small models were scored by the probability of the first word of a PITFALL or CLEAN answer. The trained models were asked without examples; the prompted models got two, one of each answer. The paid model returned its findings with a confidence, which gives it few distinct settings, so its ranking score is if anything understated. Ranking ranges are Hanley and McNeil 95 percent intervals, 0.052 to 0.055 wide on each side; they describe each candidate separately. The paid model's median wait was 3.5 seconds in the 6 July run and 2.35 seconds in the 20 July run that tested the rewritten prompt; each comparison here stays inside one run.</p>
+          <p><b>The July panel.</b> 120 blocks were sampled; one ended in a tie and was dropped. The panel's instructions were revised once: the first version asked for a stricter standard, a real pitfall rather than any comment worth acting on, and called 85 of 86 blocks clean, which answered a different question from the one my records ask. The final instructions ask whether a careful reviewer would leave a comment the author acts on. Claude Opus 4.8 sits on the panel, shares a vendor with the paid candidate, and also proposed the edits in the prompt-rewriting run. Chance-corrected agreement between the panel's majority and my records (Cohen's kappa) was 0.14.</p>
+          <p><b>The October panels.</b> Each model saw one block at a time and the same question about an actionable comment. For the 474-block grading I used GPT-6 Astra and Claude Fable 5.1, reusing their blind votes on the 120 overlapping blocks. They had one round to reconsider disagreements. The 25 blocks still unresolved were excluded from the miss-rate calculation. None fell among the 22 skips at the shadow cutoff. The upper limit is a one-sided 95 percent Wilson bound. All these labels came from models.</p>
+        </details>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>the rollout decision</span></div>
+        <h2>What I’d ask to see <em>before funding a rollout.</em></h2>
+        <p>I would keep full review in place. The training comparison gave me no reason to maintain these model weights, and the shadow trial identified no review call I could remove. I would fund another pilot if it could answer three questions.</p>
+        <ol>
+          <li><b>What should count as a miss?</b> I’d ask experienced reviewers to grade a blinded sample from the team’s own changes, with the surrounding code available. I’d compare their judgments with the accepted comments and inspect disagreements, especially where a severe finding might escape review.</li>
+          <li><b>Does training help with the decision I need?</b> I’d train the next model to classify blocks, including clean examples, then compare it with the same base model under the same prompt and scoring conditions. I’d choose the cutoff and agree on an acceptable miss rate before opening the test set.</li>
+          <li><b>How much review work would the team actually save?</b> On fresh changes in their usual mix, I’d keep the full reviewer on and count whole changes eligible to bypass it. I’d check the findings on those changes and compare the cost of the calls I could eliminate with the cost of screening every block. Those are the numbers I’d take to a rollout decision.</li>
+        </ol>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh. <b>Not an official EPAM publication.</b> All numbers come from the author's own pipeline records: the training comparison ran on 6 July 2026, the first panel check and the prompt rewrite later in July, and the shadow trial and additional model grading on 17 and 18 October 2026. Internal system names, hosts and identifiers are withheld, and the review records stay private. <b>One pipeline, one task, one operator: treat the magnitudes as specific to these records and the checks as the claim.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>M. J. J. Bucher and M. Martini, <a href="https://arxiv.org/abs/2406.08660">"Fine-Tuned 'Small' LLMs (Still) Significantly Outperform Zero-Shot Generative AI Models in Text Classification"</a>, arXiv:2406.08660, June 2024. The well-supported case for small trained models; their comparison is against large models asked cold, mine against the same small model given examples.</li>
+          <li>I. Begolli, M. Aksoy, and D. Neider, <a href="https://arxiv.org/abs/2507.19271">"Fine-Tuning Multilingual Language Models for Code Review: An Empirical Study on Industrial C# Projects"</a>, arXiv:2507.19271, July 2025. Training on a company's own review data improved review output, with human reviewers still stronger on changes that need context.</li>
+          <li>E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, and W. Chen, <a href="https://arxiv.org/abs/2106.09685">"LoRA: Low-Rank Adaptation of Large Language Models"</a>, arXiv:2106.09685, 2021. The training method used here.</li>
+          <li>L. A. Agrawal, S. Tan, D. Soylu, N. Ziems, R. Khare, K. Opsahl-Ong, A. Singhvi, H. Shandilya, M. J. Ryan, M. Jiang, C. Potts, K. Sen, A. G. Dimakis, I. Stoica, D. Klein, M. Zaharia, and O. Khattab, <a href="https://arxiv.org/abs/2507.19457">"GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning"</a>, arXiv:2507.19457; ICLR 2026. The prompt-rewriting tool used in section v.</li>
+          <li>J. A. Hanley and B. J. McNeil, "The Meaning and Use of the Area under a Receiver Operating Characteristic (ROC) Curve", <i>Radiology</i> 143(1), 1982. The method for the ranking-score ranges in Table 1.</li>
+          <li>Earlier notes on this review pipeline. I counted which review threads authors acted on in <a href="gate-metabolism.html">ai-13</a>. I tracked how the reviewer’s findings changed over time in <a href="review-curve.html">ai-16</a>.</li>
+          <li>Earlier notes on the same pipeline: <a href="memory-in-the-harness.html">"An agent learns to remember in the harness, not the weights."</a> (ai-12), the same program-over-weights result for memory; and <a href="learning-signal.html">"The loop learned slowly from corrections and faster from verdicts."</a> (ai-14), on which records an improvement loop should learn from.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-15</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="../assets/toc.js"></script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>
