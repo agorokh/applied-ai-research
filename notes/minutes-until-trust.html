@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<title>Where my time went after the agent wrote the code · Applied Intelligence</title>
+<meta name="description" content="Median time from opening a pull request to merging it was 95 minutes for changes with one review round and 351 for changes with seven or more. I’d measure staff time directly before funding a faster agent.">
+<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/notes/minutes-until-trust.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Applied Intelligence">
+<meta property="og:title" content="Where my time went after the agent wrote the code">
+<meta property="og:description" content="Median time from opening a pull request to merging it was 95 minutes for changes with one review round and 351 for changes with seven or more. I’d measure staff time directly before funding a faster agent.">
+<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/notes/minutes-until-trust.html">
+<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-17-social.png">
+<meta property="og:image:alt" content="Where my time went after the agent wrote the code. Median open-to-merge time by review rounds: 95 minutes for one, 245 for four to six, and 351 for seven or more.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/ai-17-social.png">
+<meta name="twitter:title" content="Where my time went after the agent wrote the code">
+<meta name="twitter:description" content="Median time from opening a pull request to merging it was 95 minutes for changes with one review round and 351 for changes with seven or more. I’d measure staff time directly before funding a faster agent.">
+<!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HHYGP07F16');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/notes.css">
+<style>
+  body { background:#e6dccb; }
+  @media (min-width: 901px) { .cover .metastats { grid-template-columns: repeat(3, 1fr); } }
+  details.methods { margin: 22px 0; padding: 18px 26px; border-left: 1px solid var(--calm); background: linear-gradient(rgba(95,122,92,0.05), rgba(95,122,92,0.02)); }
+  details.methods summary { cursor: pointer; list-style: none; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--calm); }
+  details.methods summary::-webkit-details-marker { display: none; }
+  details.methods summary::after { content: ' · open'; color: var(--ink-3); font-style: normal; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; }
+  details.methods[open] summary::after { content: ' · close'; }
+  details.methods h3 { font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.25; margin: 10px 0; color: var(--ink); }
+  details.methods p { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0; max-width: 66ch; }
+  details.methods p + p { margin-top: 10px; }
+</style>
+</head>
+<body data-room="4" data-mood="paper">
+<div class="progress"><i id="pbar"></i></div>
+<div class="wash"></div>
+
+<div class="sheet">
+  <header class="masthead anim d1">
+    <div class="mark"><a class="name" href="../index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+    <nav>
+      <a href="../index.html">index</a>
+      <a href="../index.html#archive">notes</a>
+      <a href="#refs">sources</a>
+      <a href="../index.html#about">about</a>
+    </nav>
+    <span class="folio">ai &middot; 17</span>
+  </header>
+
+  <section class="cover anim d2" id="hero">
+    <div class="eyebrow">
+      <span class="lead">applied research note</span>
+      <span class="dot">·</span><span>2026 · 11 · 18</span>
+      <span class="dot">·</span><span>ai-17</span>
+      <span class="dot">·</span><span>5 min read</span>
+      <span class="dot">·</span><span>operator attention &amp; review clocks</span>
+    </div>
+    <h1>Where my time went <em>after the agent wrote the code</em></h1>
+    <p class="lede">From opening a pull request to merging it, my median was 95 minutes for changes with one review round and 351 minutes for changes with seven or more. I counted 77 changes in the first group and 19 in the second. How much of that time needed my attention?</p>
+    <p class="lede">I went back to the timestamps from my coding sessions. They showed me where to look, but they couldn’t tell me when I was reading a diff, fixing a mistake, or working on something else. I’d fund a rollout if the value of staff time saved per accepted change exceeded the added agent and infrastructure costs, and the team stayed within its limits for rework, defects and time to merge.</p>
+
+    <div class="metastats glass">
+      <div class="ms"><div class="v">174</div><span class="l">merged code changes I could group by review-round count in the October sample.</span></div>
+      <div class="ms"><div class="v">3.9 min</div><span class="l">median wait from pushing code to receiving an automated review across 504 rounds.</span></div>
+      <div class="ms"><div class="v">29 min</div><span class="l">median elapsed time from the last green check and posted review to entry in the merge queue.</span></div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <aside class="rail anim d2">
+      <nav class="toc">
+        <div class="tl">contents</div>
+        <a href="#hero" class="on"><span class="no">·</span>Cover</a>
+        <a href="#s01"><span class="no">i</span>What I wanted to measure</a>
+        <a href="#s02"><span class="no">ii</span>What the session timestamps count</a>
+        <a href="#s03"><span class="no">iii</span>Where a change waited</a>
+        <a href="#s04"><span class="no">iv</span>Which corrections to sample</a>
+        <a href="#s05"><span class="no">v</span>Long and short sessions</a>
+        <a href="#s06"><span class="no">vi</span>When I’d fund a rollout</a>
+        <a href="#refs"><span class="no">·</span>References</a>
+      </nav>
+      <div class="vitals">
+        <div class="vt">the note</div>
+        <div class="v"><span class="k">data through</span><span class="d">24 oct 2026</span></div>
+        <div class="v"><span class="k">review sample</span><span class="d">182 merged code changes</span></div>
+        <div class="v"><span class="k">session record</span><span class="d">9,111 sessions</span></div>
+        <div class="v"><span class="k">archive</span><span class="d">ai-17</span></div>
+      </div>
+    </aside>
+
+    <article class="article">
+      <section class="sec" id="s01">
+        <div class="seclabel"><span class="no">i</span><span>the question</span></div>
+        <h2>How many minutes did a change need from me?</h2>
+        <p>In <a href="review-curve.html">my study of automated reviewers</a>, a review arrived 3.9 minutes after a push at the median. A reader described a different clock he keeps by hand: from the moment he opens a diff until he trusts the change, including any second read. Another asked where an engineer’s own time appears alongside the agent’s bill [1, 2].</p>
+        <p>When I <a href="resident-specialist.html">tested a filter for code reviews</a>, 105 documentation blocks qualified to skip. Across 20 runs, every change still needed review. In the <a href="https://www.linkedin.com/feed/update/urn:li:activity:7526892488150855680/">discussion that followed</a>, an engineer picked out both facts that mattered to him: the sample was small and zero whole reviews went away. A product manager saw a reason to start with a small pilot and test how the workflow changes. That left me with a question I could put to my own team. If someone still has to open the change, what work does the agent actually take off their hands?</p>
+        <p>I can wait for a test while I review another change. I can also spend ten uninterrupted minutes figuring out why a passing test missed a bug. Both look like ten minutes on a delivery dashboard. Only one of them took ten minutes of my attention away from other work.</p>
+      </section>
+
+      <section class="sec" id="s02">
+        <div class="seclabel"><span class="no">ii</span><span>the session record</span></div>
+        <h2>What the 35 and 532 hours actually counted</h2>
+        <p>My October 24 summary recorded 35.14 hours in a field called “specify” and 532.18 hours in one called “review” across 9,111 sessions. To interpret those labels, I checked the calculation in use at the time.</p>
+        <div class="tbl">
+          <table class="data">
+            <thead><tr><th>October total</th><th>Start of interval</th><th>End of interval</th></tr></thead>
+            <tbody>
+              <tr><td>35 hours</td><td>First recorded session event</td><td>First tool call</td></tr>
+              <tr><td>532 hours</td><td>Last tool call</td><td>Last recorded session event</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The calculation caps each interval at 30 minutes per session. A session without a tool call contributes zero to both fields. I might review the first diff and redirect the agent before its next tool call. That work falls between the two intervals. Conversely, a long gap after the final tool call can count while my attention is elsewhere. Calling the first total “prompting” and the second “reviewing and steering” would put an activity label on time the logs cannot identify.</p>
+        <p>When I rechecked the warehouse, 7,136 rows still carried timestamps through the original cutoff. Of these, 797 reached the 30-minute cap after the final tool call. Those sessions accounted for 88.9 percent of the 448.2 hours in that interval in the surviving rows. The full October totals above come from the original summary. This later check shows how strongly the cap affects the subset I could reproduce.</p>
+      </section>
+
+      <section class="sec" id="s03">
+        <div class="seclabel"><span class="no">iii</span><span>second reads on the pull request</span></div>
+        <h2>Where a change waited</h2>
+        <p>I followed 182 merged code changes in one repository from October 6 to 18. I counted 504 review rounds. I could group 174 changes by round count. The medians rise across all five groups. More complex changes may need more rounds and take longer anyway, so I can’t use the difference to predict what removing a round would save.</p>
+        <figure class="fig">
+          <figcaption><b>Figure 1</b> · Median minutes from opening to merging a pull request, grouped by review-round count. The five groups contain 77, 34, 20, 24 and 19 changes, respectively.</figcaption>
+          <div data-atelier-figure='{"type":"bars","max":400,"unit":" min","rows":[{"label":"1 round (77 PRs)","value":95,"valueLabel":"95 min","tint":"calm"},{"label":"2 rounds (34 PRs)","value":137,"valueLabel":"137 min","tint":"ink"},{"label":"3 rounds (20 PRs)","value":150,"valueLabel":"150 min","tint":"ink"},{"label":"4-6 rounds (24)","value":245,"valueLabel":"245 min","tint":"work"},{"label":"7+ rounds (19 PRs)","value":351,"valueLabel":"351 min","tint":"rust"}]}'></div>
+        </figure>
+        <div class="tbl">
+          <div class="cap"><b>Review and delivery times</b> · October 6 to 18, 2026. Round timings and pull-request timings use different units of observation.</div>
+          <table class="data">
+            <thead><tr><th>stage or cohort bucket</th><th>sample size (n)</th><th>median duration (p50)</th><th>90th percentile (p90)</th><th>what the interval measures</th></tr></thead>
+            <tbody>
+              <tr><td>Push to review posted <span class="d">daemon wait</span></td><td>504 rounds</td><td>3.9 min</td><td>18.6 min</td><td>Elapsed time from git push to the four-seat review comment landing on the pull request.</td></tr>
+              <tr><td>Review posted to next push <span class="d">agent rework</span></td><td>504 rounds</td><td>15.9 min</td><td>57.0 min</td><td>Time from the posted review to the next push, including any idle time.</td></tr>
+              <tr><td>Full review-and-fix round <span class="d">push to next push</span></td><td>504 rounds</td><td>22.5 min <span class="d">41m mean</span></td><td>71.3 min</td><td>One complete second-read cycle before the next head is evaluated.</td></tr>
+              <tr><td>Open to merge · 1 review round <span class="d">clean pass</span></td><td>77 PRs</td><td>95 min</td><td><span class="d">unreported</span></td><td>End-to-end pull-request lifetime when the first reviewed head clears the gate.</td></tr>
+              <tr><td>Open to merge · 2 review rounds <span class="d">one rework pass</span></td><td>34 PRs</td><td>137 min</td><td><span class="d">unreported</span></td><td>End-to-end lifetime with one second-read cycle.</td></tr>
+              <tr><td>Open to merge · 3 review rounds <span class="d">two rework passes</span></td><td>20 PRs</td><td>150 min</td><td><span class="d">unreported</span></td><td>End-to-end lifetime with two second-read cycles.</td></tr>
+              <tr><td>Open to merge · 4 to 6 review rounds</td><td>24 PRs</td><td>245 min</td><td><span class="d">unreported</span></td><td>End-to-end lifetime when findings recur across multiple heads.</td></tr>
+              <tr><td>Open to merge · 7+ review rounds</td><td>19 PRs</td><td>351 min <span class="d">3.7x 1-round</span></td><td><span class="d">unreported</span></td><td>Time from opening to merging for changes with seven or more rounds.</td></tr>
+              <tr><td>Final push to all gates green</td><td>182 PRs</td><td>23.8 min</td><td><span class="d">unreported</span></td><td>Final-head CI, ten-minute settle floor, and terminal review quorum.</td></tr>
+              <tr><td>Post-gate green to merge-queue enqueue <span class="d">queue wait</span></td><td>182 PRs</td><td>29 min</td><td>165 min <span class="d">35% &gt; 1 h</span></td><td>Elapsed wall-clock time after every automated check is green until the change enters the merge queue.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Once the final checks were green and the review had landed, another 29 minutes elapsed at the median before the change entered the merge queue. That interval includes time when the change could sit unattended. For a pilot I’d track it alongside a reviewer’s own record of time spent on the change.</p>
+      </section>
+
+      <section class="sec" id="s04">
+        <div class="seclabel"><span class="no">iv</span><span>corrections</span></div>
+        <h2>Which failures deserve a closer look?</h2>
+        <p>After <a href="actuation-gap.html">the correction study</a>, readers asked how much time different mistakes cost me [3, 4]. In the October sample I could match 144 actionable correction labels to 87 sessions. Of those labels, 89 (61.8 percent) described failures to finish, verify the work, or leave it in a usable state.</p>
+        <p>I divided each session’s two recorded intervals equally among its actionable labels. Execution failures then accounted for 478.2 of 672.5 allocated minutes (71.1 percent). A session with two labels contributed half its minutes to each, even if one correction took me much longer. I’d start by observing fixes for execution failures in the pilot. To price a fix, I’d need someone to record when the work began and ended.</p>
+        <div class="tbl">
+          <div class="cap">How the 672.5 session minutes were allocated across 144 correction labels</div>
+          <table class="data">
+            <thead><tr><th>Correction</th><th>Matched labels</th><th>Allocated minutes</th></tr></thead>
+            <tbody>
+              <tr><td>Failed execution</td><td>89</td><td>478.2</td></tr>
+              <tr><td>Wrong decision</td><td>36</td><td>106.3</td></tr>
+              <tr><td>Missing context</td><td>13</td><td>22.1</td></tr>
+              <tr><td>Governance question outside the existing categories</td><td>6</td><td>65.9</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sec" id="s05">
+        <div class="seclabel"><span class="no">v</span><span>task length</span></div>
+        <h2>Why I’d include long runs in the pilot</h2>
+        <p>In the October summary, 2,936 of the 5,311 sessions with debriefs and a positive timing measure had at least 40 assistant turns. Those sessions accounted for 84.8 percent of the combined time before the first and after the last tool call. That concentration makes long runs worth sampling. It leaves open whether splitting a long run would make a change easier to ship.</p>
+        <p>One reader described mistakes compounding on longer tasks. Another reported more review work as his agent filled its context window [5, 6]. My comparison groups sessions by turn count. Testing either explanation would require recording when a mistake appeared, how much context the agent had used and how long a person spent correcting it.</p>
+      </section>
+
+      <section class="sec" id="s06">
+        <div class="seclabel"><span class="no">vi</span><span>the funding decision</span></div>
+        <h2>What would justify a rollout?</h2>
+        <p>I’d run the candidate agent alongside the team’s current workflow on comparable changes. Before work starts, I’d group tasks by type and complexity, then randomly assign tasks within each group. Both groups would use the same acceptance checks. Engineers would record the minutes they actually spend prompting, reading diffs, correcting work and verifying it, including time spent on attempts that never ship.</p>
+        <p>Take a reviewer who opens a diff, reads it, requests a fix and comes back after the tests pass. I’d ask them to time both reads and the work of explaining the fix, pausing when they switch tasks. I’d keep the test wait on the delivery clock. For a first pilot I’d keep the review rules and required checks fixed and record their versions. If the team also wanted to change a rule, I’d test that separately so I could tell which change earned its cost.</p>
+        <p>For each group I’d divide those total staff minutes by the number of accepted changes. I’d price the difference at the team’s loaded labor rate and compare it with the additional agent and infrastructure cost per accepted change. I’d also track time to merge, rework and defects discovered after release, using the same follow-up period for both groups.</p>
+        <p>In the discussion of the review filter, a founder also asked about the cost of missed issues. I’d include staff time spent recovering from those issues during follow-up in both groups’ totals, and record any additional operational impact separately. A fix that takes another engineer an afternoon belongs in the cost of that accepted change.</p>
+        <div class="finding">
+          <div class="fk">My rollout decision</div>
+          <h3>I’d expand only if the value of staff time saved per accepted change exceeded the added cost.</h3>
+          <p>Before the pilot I’d agree with the team on acceptable limits for rework, post-release defects and delivery time. A rollout would also have to stay within those limits. If the sample were too small to tell whether it cleared either test, I’d keep the pilot limited.</p>
+        </div>
+        <div class="about" id="about">
+          <div class="ak">About this note</div>
+          <p>An independent applied-AI engineering note by Arseny Gorokh, based on my own coding sessions and pull-request records. <b>Not an official EPAM publication.</b></p>
+        </div>
+      </section>
+
+      <div class="refs" id="refs">
+        <h2>References</h2>
+        <ol>
+          <li>A reader, <a href="https://x.com/stas_sorokin_/status/2112664252276158746">on X, 20 October 2026</a>: tracking minutes from diff open to trust per model, alongside a count of second reads. Directly motivated the two-clock framing and per-round decomposition in sections i, ii, and iii.</li>
+          <li>A reader, <a href="https://x.com/RShmider/status/2112441765852758330">on X, 20 October 2026</a>, and <a href="https://x.com/RShmider/status/2112445478143193414">20 October 2026</a>: noting that engineering teams measure tokens, latency, and API costs while forgetting to include their own time, and proposing "minutes until I trust it" as a primary metric alongside speed and cost. The session intervals are described in section ii.</li>
+          <li>A reader, <a href="https://x.com/RShmider/status/2112610765475656116">on X, 20 October 2026</a>, and <a href="https://x.com/RShmider/status/2112617540396409045">20 October 2026</a>: asking how the 200-plus correction dataset changes when categorized by type (wrong decisions, missing context, failed execution, or approval only) and weighted by the human minutes spent fixing each one, even if the results are messy. Section iv explains the limits of assigning minutes to a correction.</li>
+          <li>Author's public commitments on X (<a href="https://x.com/agorokh/status/2112612944194502771">20 October 2026</a> and <a href="https://x.com/agorokh/status/2112651389709259184">20 October 2026</a>) to publish the time-weighted correction breakdown, messy data included, with the available session-level breakdown and its limits in section iv.</li>
+          <li>A reader, <a href="https://x.com/RShmider/status/2112308128565883237">on X, 19 October 2026</a>: noting that a model that performs well on a 5-step task can struggle after 40 turns when earlier mistakes affect later decisions, and proposing tracking human intervention to the finish line. This motivated the question about long sessions in section v.</li>
+          <li>A reader, <a href="https://x.com/Aphixx/status/2071695532334965092">on X, 29 June 2026</a>: reporting an observation from his workflow that context quality degrades past roughly 45 percent fill and needs triple review past 65 percent. Section v explains what a test of that observation would require.</li>
+          <li>Earlier notes on telemetry and cost per merged pull request: <a href="telemetry-plane.html">"Claude Code through DIAL: eight models, 192 runs, and metering every request"</a> (ai-03) and <a href="../2026-05-19_choosing-memory-for-enterprise-agents/">"Choosing the memory substrate for enterprise agents"</a> (ai-04).</li>
+          <li>Earlier note in this series: <a href="review-curve.html">"When your AI code reviewer goes quiet, check the reviewer before you credit the code."</a> (ai-16), which introduced the 261-pull-request (182 steady-state Window B, 504-round) October cohort extended in section iii.</li>
+          <li>Earlier note in this series: <a href="actuation-gap.html">"Self-improvement is an actuation problem."</a> (ai-11), which introduced the six-disposition correction miner and the 208-label first run that preceded the separate October sample in section iv.</li>
+          <li>Earlier note in this series: <a href="learning-signal.html">"The loop learned slowly from corrections and faster from verdicts."</a> (ai-14), which audited the weekly correction loop against deterministic gate verdicts.</li>
+          <li>Earlier note in this series: <a href="replication-gate.html">"'It's done.' The most expensive tokens an agent produces."</a> (ai-09), on deterministic completion gates that prevent premature completion claims.</li>
+        </ol>
+      </div>
+
+      <div class="colophon">
+        <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+        <span>ai-17</span>
+        <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a></span>
+        <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="../assets/toc.js"></script>
+<script src="../assets/atelier-figures.js"></script>
+<script src="../assets/atelier-rooms.js"></script>
+</body>
+</html>

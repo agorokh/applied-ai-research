@@ -1,32 +1,33 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="assets/favicon.ico" rel="icon" sizes="any"/>
+<link href="assets/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="assets/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <title>Applied Intelligence · independent · by Arseny Gorokh</title>
-<meta name="description" content="Independent applied-AI engineering notes by Arseny Gorokh, a practitioner at EPAM Applied AI. Not an official EPAM publication. Each note measures one capability, agent data, open models, telemetry, memory, on a real stack with named failure modes.">
-<link rel="canonical" href="https://agorokh.github.io/applied-ai-research/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Applied Intelligence">
-<meta property="og:title" content="Applied Intelligence · independent · by Arseny Gorokh">
-<meta property="og:description" content="Independent applied-AI engineering notes. Each note takes one piece of real engineering, an agent, an adapter, a gateway, a gate, and reports what held and what did not, with the magnitudes kept honest.">
-<meta property="og:url" content="https://agorokh.github.io/applied-ai-research/">
-<meta property="og:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
-<meta property="og:image:alt" content="Applied Intelligence, applied AI research by Arseny Gorokh">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png">
-<meta name="twitter:title" content="Applied Intelligence · independent · by Arseny Gorokh">
-<meta name="twitter:description" content="Independent applied-AI engineering notes. One piece of real engineering per note; what held, what did not, magnitudes kept honest.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta content="Independent applied-AI engineering notes by Arseny Gorokh, a practitioner at EPAM Applied AI. Not an official EPAM publication. Each note measures one capability, agent data, open models, telemetry, memory, on a real stack with named failure modes." name="description"/>
+<link href="https://agorokh.github.io/applied-ai-research/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Applied Intelligence" property="og:site_name"/>
+<meta content="Applied Intelligence · independent · by Arseny Gorokh" property="og:title"/>
+<meta content="Independent applied-AI engineering notes. Each note takes one piece of real engineering, an agent, an adapter, a gateway, a gate, and reports what held and what did not, with the magnitudes kept honest." property="og:description"/>
+<meta content="https://agorokh.github.io/applied-ai-research/" property="og:url"/>
+<meta content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png" property="og:image"/>
+<meta content="Applied Intelligence, applied AI research by Arseny Gorokh" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://agorokh.github.io/applied-ai-research/assets/social-preview.png" name="twitter:image"/>
+<meta content="Applied Intelligence · independent · by Arseny Gorokh" name="twitter:title"/>
+<meta content="Independent applied-AI engineering notes. One piece of real engineering per note; what held, what did not, magnitudes kept honest." name="twitter:description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&amp;family=Schibsted+Grotesk:wght@400;500;600&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
 <!-- Intentional: direct GA tag only. Do not add a visible consent banner or custom analytics wrapper in this change. -->
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-HHYGP07F16"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -34,8 +35,8 @@
 
   gtag('config', 'G-HHYGP07F16');
 </script>
-<link rel="stylesheet" href="assets/theme.css">
-<link rel="stylesheet" href="assets/notes.css">
+<link href="assets/theme.css" rel="stylesheet"/>
+<link href="assets/notes.css" rel="stylesheet"/>
 <style>
   body { background:#e6dccb; }
   .sheet { max-width: 1180px; }
@@ -91,153 +92,151 @@
   @media (max-width:880px){ .pubabout{grid-template-columns:1fr;} }
 </style>
 </head>
-<body data-room="5" data-mood="paper">
+<body data-mood="paper" data-room="5">
 <div class="wash"></div>
-
 <div class="sheet">
-  <header class="masthead anim d1">
-    <div class="mark"><a class="name" href="index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
-    <nav>
-      <a href="index.html" class="here">index</a>
-      <a href="#archive">notes</a>
-      <a href="#about">about</a>
-    </nav>
-    <span class="folio">applied AI research · independent</span>
-  </header>
-
-  <!-- featured note: the journal cover -->
-  <section class="folio-cover anim d2">
-    <div class="eyebrow">
-      <span class="lead">in this issue</span>
-      <span class="dot">·</span><span>ai-15</span>
-      <span class="dot">·</span><span>company data</span>
-      <span class="dot">·</span><span>11 nov 2026</span>
-      <span class="dot">·</span><span>10 min read</span>
-    </div>
-    <h1>Before you train a model on your company's history, <em>check who wrote it.</em></h1>
-    <p class="abstract">I trained two models to write review comments. At screening code changes, neither beat a two-example prompt. A separate filter would have skipped 105 documentation blocks in 20 live runs on 11 changes. Zero whole reviews qualified.</p>
-    <a class="read" href="notes/resident-specialist.html">Read the note &nbsp;›</a>
-  </section>
-
-  <!-- the bound archive -->
-  <section class="archive" id="archive">
-    <h2>the archive</h2>
-    <div class="sub">every note carries one folio. the magnitudes are corpus-specific; the structural claims are what transfer.</div>
-    <div class="sheet-rows">
-      <a class="arow" href="notes/halloween-help-desk.html">
-        <span class="code">ai-18</span><span class="date">8 nov 2026</span><span class="type">field note</span>
-        <span class="ttl"><span class="t">My Halloween skull got heckled.</span><span class="th">The kids wanted a scarier skull, and I could change the act from the booth. I’d give a support shift lead the same say when an agent is on a call and the whole office can’t sign in.</span></span>
-        <span class="read">4 min</span>
-      </a>
-      <a class="arow" href="notes/review-curve.html">
-        <span class="code">ai-16</span><span class="date">22 oct 2026</span><span class="type">instrument drift</span>
-        <span class="ttl"><span class="t">When your AI code reviewer goes quiet, check the reviewer before you credit the code.</span><span class="th">A self-hosted review daemon's findings rate fell from 75 percent of changes in July to 32 percent in October. In the same weeks a seat went absent on quota, the models changed, severity rules entered every prompt and the changes got smaller; with no seat held constant, the code's share is unidentified. Adoption of findings is unmeasured and reverts are too rare to grade the reviewer. A reference series, an outcome per finding and a person on a sample, so the next reading means something.</span></span>
-        <span class="read">13 min</span>
-      </a>
-      <a class="arow" href="notes/resident-specialist.html">
-        <span class="code">ai-15</span><span class="date">11 nov 2026</span><span class="type">company data</span>
-        <span class="ttl"><span class="t">Before you train a model on your company's history, check who wrote it.</span><span class="th">I trained two models to write review comments. At screening code changes, neither beat a two-example prompt. A separate filter would have skipped 105 documentation blocks in 20 live runs on 11 changes. Zero whole reviews qualified.</span></span>
-        <span class="read">10 min</span>
-      </a>
-      <a class="arow" href="notes/learning-signal.html">
-        <span class="code">ai-14</span><span class="date">8 oct 2026</span><span class="type">learning signal</span>
-        <span class="ttl"><span class="t">The loop learned slowly from corrections and faster from verdicts.</span><span class="th">Two learning channels on one governed fleet, measured through week 41: adjudicated operator corrections yielded one new rule from about twenty candidates escalated over eleven weeks and worked as a filter; the July A/B measured the mined generic rules as neutral to harmful; execution friction ranked by recurrence found the fleet's most expensive recurring defect, and the first learner-selected fix measured 28 tool calls down to 11 across six trials per arm under a frozen rule. The five-state ledger with every column dated, and a one-week exercise plus a checklist for enterprise agent programs.</span></span>
-        <span class="read">26 min</span>
-      </a>
-      <a class="arow" href="notes/gate-metabolism.html">
-        <span class="code">ai-13</span><span class="date">20 aug 2026</span><span class="type">governance stress test</span>
-        <span class="ttl"><span class="t">Governance is a metabolism, not a manifest.</span><span class="th">A deliberate stress test of agent governance on one production fleet: three deletions with the measurement behind each; the selection rule that decides what survives, bind to a named enforcer with a planted-violation proof, or expire; the self-hosted review daemon earning its life; and a dated audit of the previous note's claim, ratified and twice qualified.</span></span>
-        <span class="read">13 min</span>
-      </a>
-      <a class="arow" href="notes/memory-in-the-harness.html">
-        <span class="code">ai-12</span><span class="date">14 aug 2026</span><span class="type">agent memory</span>
-        <span class="ttl"><span class="t">An agent learns to remember in the harness, not the weights.</span><span class="th">Every agent program makes the memory bet; almost none measures it at the moment of use. I measured mine: the same convention went eight of eight delivered as versioned harness context and one of eight through the live retrieval layer, which added zero over a disciplined harness. The channel is the finding. The harness specified, and the two-week decision rule for your own stack.</span></span>
-        <span class="read">12 min</span>
-      </a>
-      <a class="arow" href="notes/actuation-gap.html">
-        <span class="code">ai-11</span><span class="date">25 jul 2026</span><span class="type">self-improvement</span>
-        <span class="ttl"><span class="t">Self-improvement is an actuation problem.</span><span class="th">A weekly loop mines the operator's corrections out of fleet transcripts into versioned behavioural policy. The audit that found the loop was not closing without a human, the held-out acceptance gate that replaced the per-change reviewer, and three unattended weekly cycles honestly reported, including the one that ran green and blind.</span></span>
-        <span class="read">13 min</span>
-      </a>
-      <a class="arow" href="notes/replication-gate.html">
-        <span class="code">ai-09</span><span class="date">4 jul 2026</span><span class="type">agent verification</span>
-        <span class="ttl"><span class="t">"It's done." The most expensive tokens an agent produces.</span><span class="th">Agent completion as a validated workspace state, independently replicated with a different agent family on the authors' released harness, unmodified; four refusals on the way, every one a real method error, and the science explicitly separated from the five practices an enterprise agent program can adopt now.</span></span>
-        <span class="read">12 min</span>
-      </a>
-      <a class="arow" href="notes/pr-memory.html">
-        <span class="code">ai-08</span><span class="date">2 jul 2026</span><span class="type">engineering memory</span>
-        <span class="ttl"><span class="t">The meeting forgets. The pull request remembers.</span><span class="th">Conventional engineering culture discards the reasoning behind its decisions at a measured, well-documented rate; an agent-first workflow preserves the chain as queryable artifacts and enforces the reading. The measured half, the hypothesis half, and the falsifiers.</span></span>
-        <span class="read">11 min</span>
-      </a>
-      <a class="arow" href="notes/harness-conduct.html">
-        <span class="code">ai-07</span><span class="date">30 jun 2026</span><span class="type">model routing</span>
-        <span class="ttl"><span class="t">Three open models drove Claude Code through its governance gates</span><span class="th">GLM 5.2, Qwen 3.7 Plus, and Kimi K2.7 Code solved an identical fix perfectly, so they separate only under governance friction; a scan of 627 sessions found zero faked-compliance and exonerated the model the first read accused.</span></span>
-        <span class="read">14 min</span>
-      </a>
-      <a class="arow" href="notes/mcp-harvesting.html">
-        <span class="code">ai-06</span><span class="date">13 jun 2026</span><span class="type">agent data</span>
-        <span class="ttl"><span class="t">MCP harvesting: trustworthy data when your agent has a connector, not an API</span><span class="th">An agent that can only reach a system through a flaky MCP connector treats its output as evidence to check, not a value to trust; an entailment gate caught 98 percent of unsupported claims where a similarity gate caught 27.</span></span>
-        <span class="read">18 min</span>
-      </a>
-      <a class="arow" href="notes/value-layer.html">
-        <span class="code">ai-05</span><span class="date">5 jun 2026</span><span class="type">agent memory</span>
-        <span class="ttl"><span class="t">A memory-and-policy layer above the model: the build-versus-buy case</span><span class="th">A gateway routes a prompt but does not know the repository, policy, or budget; own the in-path layer that governs memory, policy, and cost while the model stays swappable, and prove it ports across providers.</span></span>
-        <span class="read">12 min</span>
-      </a>
-      <a class="arow" href="2026-05-19_choosing-memory-for-enterprise-agents/">
-        <span class="code">ai-04</span><span class="date">19 may 2026</span><span class="type">memory substrate</span>
-        <span class="ttl"><span class="t">Choosing the memory substrate for enterprise agents: LightRAG, Graphiti, and the weighting that decides</span><span class="th">Two purpose-built substrates and a filesystem baseline against a five-criterion adoption bar on an SDLC corpus; production weighting separates them by 36 points where uniform weighting calls it a tie, and the entity graph fabricated four times where the chunk-text retriever never did.</span></span>
-        <span class="read">14 min</span>
-      </a>
-      <a class="arow" href="notes/telemetry-plane.html">
-        <span class="code">ai-03</span><span class="date">15 may 2026</span><span class="type">agent telemetry</span>
-        <span class="ttl"><span class="t">Claude Code through DIAL: eight models, 192 runs, and metering every request</span><span class="th">A POC connecting Claude Code to DIAL across eight models; the cheapest that passes everything is open-source, and the routing adapter meters every request for a per-project view of AI-coding cost.</span></span>
-        <span class="read">17 min</span>
-      </a>
-      <a class="arow" href="notes/harness-viability.html">
-        <span class="code">ai-02</span><span class="date">14 may 2026</span><span class="type">open models</span>
-        <span class="ttl"><span class="t">Which models can run Claude Code through DIAL? Five upstreams, and the cost</span><span class="th">Three Anthropic tiers and two open Qwen coders through one gateway; an open 480B passed every task at $0.101 each, the cheapest of the field, and capability tracks scale, not vendor.</span></span>
-        <span class="read">16 min</span>
-      </a>
-      <a class="arow" href="2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/">
-        <span class="code">ai-01</span><span class="date">28 apr 2026</span><span class="type">ingest model</span>
-        <span class="ttl"><span class="t">Picking the extraction LLM for knowledge-graph ingestion: breadth beats density</span><span class="th">Eleven models measured as the entity-extraction LLM for a knowledge-graph RAG system; Gemini 2.5 Flash cleared every retrieval cell at roughly three percent of the strongest commercial model's ingest cost, because breadth of extraction beats density of relations.</span></span>
-        <span class="read">16 min</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- about -->
-  <section class="pubabout" id="about">
-    <div>
-      <h2>An applied-AI reading style, <em>for work that has to survive diligence.</em></h2>
-      <p>Applied Intelligence is an independent practitioner publication. Each note takes one piece of real engineering, an agent, an adapter, a gateway, a gate, and reports what held and what did not, with the magnitudes kept honest and the structural claims stated so another team can re-derive them.</p>
-      <p>The register is deliberate: calm on the surface, hard engineering underneath. A finding leads; the evidence follows; the method and the limits sit where a reader can check them. The companion repositories are artefacts, one click away, never decoration: <a href="https://github.com/agorokh/sdlc-dial-adapter">sdlc-dial-adapter</a> and <a href="https://github.com/agorokh/agentic-memory-mcp">agentic-memory-mcp</a>.</p>
-      <p>Written by Arseny Gorokh. The notes draw on real systems and name the public platforms they study; all client-specific material is excluded, and the notes are not official publications of any employer.</p>
-    </div>
-    <div class="side">
-      <div class="sk">the publication</div>
-      <div class="sv"><span class="k">notes</span><span class="d">16</span></div>
-      <div class="sv"><span class="k">latest</span><span class="d">ai-15</span></div>
-      <div class="sv"><span class="k">register</span><span class="d">applied AI research</span></div>
-      <div class="sv"><span class="k">set in</span><span class="d">Newsreader</span></div>
-      <div class="sk elsewhere-h">elsewhere</div>
-      <div class="elsewhere">
-        <a href="https://x.com/agorokh">@agorokh on X</a>
-        <!-- TODO(linkedin): operator adds their LinkedIn link beside X here, e.g.
-             <a href="https://www.linkedin.com/in/USERNAME/">LinkedIn</a> -->
-      </div>
-    </div>
-  </section>
-
-  <div class="colophon">
-    <span class="imprint">An Applied Intelligence publication · independent · 2026</span>
-    <span>by Arseny Gorokh</span>
-    <span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
-    <span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
-  </div>
+<header class="masthead anim d1">
+<div class="mark"><a class="name" href="index.html">Applied Intelligence</a><span class="sub">by Arseny Gorokh · <a class="xh" href="https://x.com/agorokh">@agorokh</a></span></div>
+<nav>
+<a class="here" href="index.html">index</a>
+<a href="#archive">notes</a>
+<a href="#about">about</a>
+</nav>
+<span class="folio">applied AI research · independent</span>
+</header>
+<!-- featured note: the journal cover -->
+<section class="folio-cover anim d2">
+<div class="eyebrow">
+<span class="lead">in this issue</span>
+<span class="dot">·</span><span>ai-17</span>
+<span class="dot">·</span><span>operator time</span>
+<span class="dot">·</span><span>18 nov 2026</span>
+<span class="dot">·</span><span>5 min read</span>
 </div>
-
+<h1>Where my time went <em>after the agent wrote the code</em></h1>
+<p class="abstract">My median time from opening a pull request to merging it was 95 minutes for changes with one review round and 351 for changes with seven or more. Before funding a rollout, I’d measure the staff time saved per accepted change, including the second read of a diff.</p>
+<a class="read" href="notes/minutes-until-trust.html">Read the note  ›</a>
+</section>
+<!-- the bound archive -->
+<section class="archive" id="archive">
+<h2>the archive</h2>
+<div class="sub">every note carries one folio. the magnitudes are corpus-specific; the structural claims are what transfer.</div>
+<div class="sheet-rows"><a class="arow" href="notes/minutes-until-trust.html">
+<span class="code">ai-17</span><span class="date">18 nov 2026</span><span class="type">operator time</span>
+<span class="ttl"><span class="t">Where my time went after the agent wrote the code</span><span class="th">Median time from opening a pull request to merging it was 95 minutes for changes with one review round and 351 for changes with seven or more. I’d measure staff time directly before funding a faster agent.</span></span>
+<span class="read">5 min</span>
+</a>
+<a class="arow" href="notes/halloween-help-desk.html">
+<span class="code">ai-18</span><span class="date">8 nov 2026</span><span class="type">field note</span>
+<span class="ttl"><span class="t">My Halloween skull got heckled.</span><span class="th">The kids wanted a scarier skull, and I could change the act from the booth. I’d give a support shift lead the same say when an agent is on a call and the whole office can’t sign in.</span></span>
+<span class="read">4 min</span>
+</a>
+<a class="arow" href="notes/review-curve.html">
+<span class="code">ai-16</span><span class="date">22 oct 2026</span><span class="type">instrument drift</span>
+<span class="ttl"><span class="t">When your AI code reviewer goes quiet, check the reviewer before you credit the code.</span><span class="th">A self-hosted review daemon's findings rate fell from 75 percent of changes in July to 32 percent in October. In the same weeks a seat went absent on quota, the models changed, severity rules entered every prompt and the changes got smaller; with no seat held constant, the code's share is unidentified. Adoption of findings is unmeasured and reverts are too rare to grade the reviewer. A reference series, an outcome per finding and a person on a sample, so the next reading means something.</span></span>
+<span class="read">13 min</span>
+</a>
+<a class="arow" href="notes/resident-specialist.html">
+<span class="code">ai-15</span><span class="date">11 nov 2026</span><span class="type">company data</span>
+<span class="ttl"><span class="t">Before you train a model on your company's history, check who wrote it.</span><span class="th">I trained two models to write review comments. At screening code changes, neither beat a two-example prompt. A separate filter would have skipped 105 documentation blocks in 20 live runs on 11 changes. Zero whole reviews qualified.</span></span>
+<span class="read">10 min</span>
+</a>
+<a class="arow" href="notes/learning-signal.html">
+<span class="code">ai-14</span><span class="date">8 oct 2026</span><span class="type">learning signal</span>
+<span class="ttl"><span class="t">The loop learned slowly from corrections and faster from verdicts.</span><span class="th">Two learning channels on one governed fleet, measured through week 41: adjudicated operator corrections yielded one new rule from about twenty candidates escalated over eleven weeks and worked as a filter; the July A/B measured the mined generic rules as neutral to harmful; execution friction ranked by recurrence found the fleet's most expensive recurring defect, and the first learner-selected fix measured 28 tool calls down to 11 across six trials per arm under a frozen rule. The five-state ledger with every column dated, and a one-week exercise plus a checklist for enterprise agent programs.</span></span>
+<span class="read">26 min</span>
+</a>
+<a class="arow" href="notes/gate-metabolism.html">
+<span class="code">ai-13</span><span class="date">20 aug 2026</span><span class="type">governance stress test</span>
+<span class="ttl"><span class="t">Governance is a metabolism, not a manifest.</span><span class="th">A deliberate stress test of agent governance on one production fleet: three deletions with the measurement behind each; the selection rule that decides what survives, bind to a named enforcer with a planted-violation proof, or expire; the self-hosted review daemon earning its life; and a dated audit of the previous note's claim, ratified and twice qualified.</span></span>
+<span class="read">13 min</span>
+</a>
+<a class="arow" href="notes/memory-in-the-harness.html">
+<span class="code">ai-12</span><span class="date">14 aug 2026</span><span class="type">agent memory</span>
+<span class="ttl"><span class="t">An agent learns to remember in the harness, not the weights.</span><span class="th">Every agent program makes the memory bet; almost none measures it at the moment of use. I measured mine: the same convention went eight of eight delivered as versioned harness context and one of eight through the live retrieval layer, which added zero over a disciplined harness. The channel is the finding. The harness specified, and the two-week decision rule for your own stack.</span></span>
+<span class="read">12 min</span>
+</a>
+<a class="arow" href="notes/actuation-gap.html">
+<span class="code">ai-11</span><span class="date">25 jul 2026</span><span class="type">self-improvement</span>
+<span class="ttl"><span class="t">Self-improvement is an actuation problem.</span><span class="th">A weekly loop mines the operator's corrections out of fleet transcripts into versioned behavioural policy. The audit that found the loop was not closing without a human, the held-out acceptance gate that replaced the per-change reviewer, and three unattended weekly cycles honestly reported, including the one that ran green and blind.</span></span>
+<span class="read">13 min</span>
+</a>
+<a class="arow" href="notes/replication-gate.html">
+<span class="code">ai-09</span><span class="date">4 jul 2026</span><span class="type">agent verification</span>
+<span class="ttl"><span class="t">"It's done." The most expensive tokens an agent produces.</span><span class="th">Agent completion as a validated workspace state, independently replicated with a different agent family on the authors' released harness, unmodified; four refusals on the way, every one a real method error, and the science explicitly separated from the five practices an enterprise agent program can adopt now.</span></span>
+<span class="read">12 min</span>
+</a>
+<a class="arow" href="notes/pr-memory.html">
+<span class="code">ai-08</span><span class="date">2 jul 2026</span><span class="type">engineering memory</span>
+<span class="ttl"><span class="t">The meeting forgets. The pull request remembers.</span><span class="th">Conventional engineering culture discards the reasoning behind its decisions at a measured, well-documented rate; an agent-first workflow preserves the chain as queryable artifacts and enforces the reading. The measured half, the hypothesis half, and the falsifiers.</span></span>
+<span class="read">11 min</span>
+</a>
+<a class="arow" href="notes/harness-conduct.html">
+<span class="code">ai-07</span><span class="date">30 jun 2026</span><span class="type">model routing</span>
+<span class="ttl"><span class="t">Three open models drove Claude Code through its governance gates</span><span class="th">GLM 5.2, Qwen 3.7 Plus, and Kimi K2.7 Code solved an identical fix perfectly, so they separate only under governance friction; a scan of 627 sessions found zero faked-compliance and exonerated the model the first read accused.</span></span>
+<span class="read">14 min</span>
+</a>
+<a class="arow" href="notes/mcp-harvesting.html">
+<span class="code">ai-06</span><span class="date">13 jun 2026</span><span class="type">agent data</span>
+<span class="ttl"><span class="t">MCP harvesting: trustworthy data when your agent has a connector, not an API</span><span class="th">An agent that can only reach a system through a flaky MCP connector treats its output as evidence to check, not a value to trust; an entailment gate caught 98 percent of unsupported claims where a similarity gate caught 27.</span></span>
+<span class="read">18 min</span>
+</a>
+<a class="arow" href="notes/value-layer.html">
+<span class="code">ai-05</span><span class="date">5 jun 2026</span><span class="type">agent memory</span>
+<span class="ttl"><span class="t">A memory-and-policy layer above the model: the build-versus-buy case</span><span class="th">A gateway routes a prompt but does not know the repository, policy, or budget; own the in-path layer that governs memory, policy, and cost while the model stays swappable, and prove it ports across providers.</span></span>
+<span class="read">12 min</span>
+</a>
+<a class="arow" href="2026-05-19_choosing-memory-for-enterprise-agents/">
+<span class="code">ai-04</span><span class="date">19 may 2026</span><span class="type">memory substrate</span>
+<span class="ttl"><span class="t">Choosing the memory substrate for enterprise agents: LightRAG, Graphiti, and the weighting that decides</span><span class="th">Two purpose-built substrates and a filesystem baseline against a five-criterion adoption bar on an SDLC corpus; production weighting separates them by 36 points where uniform weighting calls it a tie, and the entity graph fabricated four times where the chunk-text retriever never did.</span></span>
+<span class="read">14 min</span>
+</a>
+<a class="arow" href="notes/telemetry-plane.html">
+<span class="code">ai-03</span><span class="date">15 may 2026</span><span class="type">agent telemetry</span>
+<span class="ttl"><span class="t">Claude Code through DIAL: eight models, 192 runs, and metering every request</span><span class="th">A POC connecting Claude Code to DIAL across eight models; the cheapest that passes everything is open-source, and the routing adapter meters every request for a per-project view of AI-coding cost.</span></span>
+<span class="read">17 min</span>
+</a>
+<a class="arow" href="notes/harness-viability.html">
+<span class="code">ai-02</span><span class="date">14 may 2026</span><span class="type">open models</span>
+<span class="ttl"><span class="t">Which models can run Claude Code through DIAL? Five upstreams, and the cost</span><span class="th">Three Anthropic tiers and two open Qwen coders through one gateway; an open 480B passed every task at $0.101 each, the cheapest of the field, and capability tracks scale, not vendor.</span></span>
+<span class="read">16 min</span>
+</a>
+<a class="arow" href="2026-04-28_picking-the-extraction-llm-for-knowledge-graph-ingestion/">
+<span class="code">ai-01</span><span class="date">28 apr 2026</span><span class="type">ingest model</span>
+<span class="ttl"><span class="t">Picking the extraction LLM for knowledge-graph ingestion: breadth beats density</span><span class="th">Eleven models measured as the entity-extraction LLM for a knowledge-graph RAG system; Gemini 2.5 Flash cleared every retrieval cell at roughly three percent of the strongest commercial model's ingest cost, because breadth of extraction beats density of relations.</span></span>
+<span class="read">16 min</span>
+</a>
+</div>
+</section>
+<!-- about -->
+<section class="pubabout" id="about">
+<div>
+<h2>An applied-AI reading style, <em>for work that has to survive diligence.</em></h2>
+<p>Applied Intelligence is an independent practitioner publication. Each note takes one piece of real engineering, an agent, an adapter, a gateway, a gate, and reports what held and what did not, with the magnitudes kept honest and the structural claims stated so another team can re-derive them.</p>
+<p>The register is deliberate: calm on the surface, hard engineering underneath. A finding leads; the evidence follows; the method and the limits sit where a reader can check them. The companion repositories are artefacts, one click away, never decoration: <a href="https://github.com/agorokh/sdlc-dial-adapter">sdlc-dial-adapter</a> and <a href="https://github.com/agorokh/agentic-memory-mcp">agentic-memory-mcp</a>.</p>
+<p>Written by Arseny Gorokh. The notes draw on real systems and name the public platforms they study; all client-specific material is excluded, and the notes are not official publications of any employer.</p>
+</div>
+<div class="side">
+<div class="sk">the publication</div>
+<div class="sv"><span class="k">notes</span><span class="d">17</span></div>
+<div class="sv"><span class="k">latest</span><span class="d">ai-15</span></div>
+<div class="sv"><span class="k">register</span><span class="d">applied AI research</span></div>
+<div class="sv"><span class="k">set in</span><span class="d">Newsreader</span></div>
+<div class="sk elsewhere-h">elsewhere</div>
+<div class="elsewhere">
+<a href="https://x.com/agorokh">@agorokh on X</a>
+<!-- TODO(linkedin): operator adds their LinkedIn link beside X here, e.g.
+             <a href="https://www.linkedin.com/in/USERNAME/">LinkedIn</a> -->
+</div>
+</div>
+</section>
+<div class="colophon">
+<span class="imprint">An Applied Intelligence publication · independent · 2026</span>
+<span>by Arseny Gorokh</span>
+<span class="follow"><a href="https://x.com/agorokh">@agorokh on X</a><!-- TODO(linkedin): add LinkedIn link beside X --></span>
+<span class="full">Set in Newsreader &amp; Spline Sans Mono · the Applied Intelligence reading style</span>
+</div>
+</div>
 <script src="assets/atelier-rooms.js"></script>
 </body>
 </html>
